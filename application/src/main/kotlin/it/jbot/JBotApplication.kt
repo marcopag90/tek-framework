@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
 @SpringBootApplication(scanBasePackages = ["it.jbot"])
 @EnableJpaAuditing
-class Application
+class JBotApplication
 
 fun main(args: Array<String>) {
-	runApplication<Application>(*args)
+    runApplication<JBotApplication>(*args)
 }

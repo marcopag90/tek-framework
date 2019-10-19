@@ -1,4 +1,4 @@
-package it.jbot.audit.config
+package it.jbot.audit.configuration
 
 import it.jbot.audit.service.AuditService
 import org.springframework.context.annotation.Configuration
@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse
  */
 @Configuration
 class AuditWebConfig(private val auditInterceptor: AuditInterceptor) : WebMvcConfigurer {
-
+    
     override fun addInterceptors(registry: InterceptorRegistry) {
-
+        
         registry.addInterceptor(auditInterceptor);
         super.addInterceptors(registry);
     }
@@ -34,16 +34,28 @@ class AuditWebConfig(private val auditInterceptor: AuditInterceptor) : WebMvcCon
 @Component
 class AuditInterceptor(private val auditService: AuditService) :
     HandlerInterceptor {
-
+    
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-
+        
         if (DispatcherType.REQUEST.name == request.dispatcherType.name && request.method == HttpMethod.GET.name)
             auditService.logRequest(request, null);
-
+        
         return true;
     }
-
-    override fun postHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any, modelAndView: ModelAndView?) {}
-
-    override fun afterCompletion(request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: Exception?) {}
+    
+    override fun postHandle(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        modelAndView: ModelAndView?
+    ) {
+    }
+    
+    override fun afterCompletion(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        ex: Exception?
+    ) {
+    }
 }

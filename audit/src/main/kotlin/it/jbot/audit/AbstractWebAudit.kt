@@ -15,11 +15,11 @@ import javax.persistence.TemporalType
 @EntityListeners(AuditingEntityListener::class)
 @JsonIgnoreProperties(value = ["requestedAt", "servedAt"], allowGetters = true)
 abstract class AbstractWebAudit {
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     var requestedAt: Date? = null
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     var servedAt: Date? = null

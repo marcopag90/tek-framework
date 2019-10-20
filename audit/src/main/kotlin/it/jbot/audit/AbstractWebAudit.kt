@@ -18,9 +18,9 @@ abstract class AbstractWebAudit {
     
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    var requestedAt: Date? = null
-    
+    open var requestedAt: Date? = null
+
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    var servedAt: Date? = null
+    open var servedAt: Date? = null
 }

@@ -1,6 +1,6 @@
 package it.jbot.audit.model
 
-import it.jbot.audit.AbstractWebAudit
+import it.jbot.audit.shared.TimeActivityAudit
 import javax.persistence.*
 
 @Entity
@@ -8,7 +8,7 @@ import javax.persistence.*
 class WebAudit(
     
     @Id @GeneratedValue
-    private var id: Long? = null,
+    var id: Long? = null,
     
     @Column(columnDefinition = "clob not null")
     @Lob
@@ -25,4 +25,4 @@ class WebAudit(
     @Transient
     val initTimeMillis: Long
 
-) : AbstractWebAudit()
+) : TimeActivityAudit()

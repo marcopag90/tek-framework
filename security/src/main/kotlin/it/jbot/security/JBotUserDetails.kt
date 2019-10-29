@@ -22,12 +22,12 @@ class JBotUserDetails : User, UserDetails {
     
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         roles.stream().map { role ->
-            logger.debug("Granting Authority to ${this.javaClass.simpleName} with role: $role")
-            SimpleGrantedAuthority(role.toString())
+            logger.info("Granting Authority to username: ${this.userName} with role: ${role.name.name}")
+            SimpleGrantedAuthority(role.name.name)
         }.collect(Collectors.toList())
     
     override fun isEnabled(): Boolean = super.enabled
-    override fun isAccountNonExpired(): Boolean = super.accountNonExpired
-    override fun isAccountNonLocked(): Boolean = super.accountNonLocked
-    override fun isCredentialsNonExpired(): Boolean = super.credentialsNonExpired
+    override fun isAccountNonExpired(): Boolean = true
+    override fun isAccountNonLocked(): Boolean = true
+    override fun isCredentialsNonExpired(): Boolean = true
 }

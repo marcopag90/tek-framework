@@ -22,6 +22,7 @@ class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRe
     
     private val logger by LoggerDelegate()
     
+    //TODO maybe a well-formatted JSON to log request and response?
     override fun logRequest(httpServletRequest: HttpServletRequest, body: Any?) {
         
         var sb: StringBuilder = StringBuilder()

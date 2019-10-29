@@ -8,7 +8,7 @@ import javax.persistence.*
  * Persistable Roles to be assigned to User
  */
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 data class Role(
     @Enumerated(EnumType.STRING)
     @NaturalId
@@ -16,12 +16,12 @@ data class Role(
 ) {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 }
 
 enum class RoleName(override val label: String) : LabelEnum {
 
-    ADMIN("Administrator"),
-    USER("User")
+    ROLE_ADMIN("Administrator"),
+    ROLE_USER("User")
 }

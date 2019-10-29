@@ -54,7 +54,6 @@ class JBotAuthServerConfig(
                     keyStoreKeyFactory = keyStoreKeyFactory(jwtSecurityProperties.jwt!!)
                 )
             )
-            setVerifierKey(getPublicKeyAsString())
         }
     }
     
@@ -100,7 +99,9 @@ class JBotAuthServerConfig(
 @Configuration
 @EnableResourceServer
 @EnableConfigurationProperties(SecurityProperties::class)
-class JBotResourceServerConfig : ResourceServerConfigurerAdapter() {
+class JBotResourceServerConfig(
+    private val jwtSecurityProperties: JwtSecurityProperties
+) : ResourceServerConfigurerAdapter() {
     
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
@@ -115,4 +116,15 @@ class JBotResourceServerConfig : ResourceServerConfigurerAdapter() {
             .and()
             .csrf().disable()
     }
+    
+    @Bean
+    fun jwtResourceAccessTokenConverter(): JwtAccessTokenConverter {
+        return JwtAccessTokenConverter().apply {
+            setVerifierKey(getPublicKeyAsString())
+        }
+    }
+    
+    private fun getPublicKeyAsString(): String =
+        IOUtils.toString(jwtSecurityProperties.jwt?.publicKey?.inputStream, UTF_8)
+    
 }

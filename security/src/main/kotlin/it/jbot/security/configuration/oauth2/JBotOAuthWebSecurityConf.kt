@@ -1,6 +1,6 @@
-package it.jbot.security.configuration
+package it.jbot.security.configuration.oauth2
 
-import it.jbot.security.service.JBotUserDetailsService
+import it.jbot.security.service.JBotAuthService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,15 +17,16 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class OAuth2WebSecurityConfig(
-    private val jBotUserDetailsService: JBotUserDetailsService
-    ) : WebSecurityConfigurerAdapter() {
+class JBotOAuthWebSecurityConf(
+    private val jBotAuthService: JBotAuthService
+) : WebSecurityConfigurerAdapter() {
     
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
     
     @Bean
-    override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
+    override fun authenticationManagerBean(): AuthenticationManager =
+        super.authenticationManagerBean()
     
     @Bean
     fun tokenServices(
@@ -40,7 +41,7 @@ class OAuth2WebSecurityConfig(
     }
     
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(jBotUserDetailsService)
+        auth?.userDetailsService(jBotAuthService)
             ?.passwordEncoder(passwordEncoder())
     }
 }

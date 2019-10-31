@@ -1,4 +1,4 @@
-package it.jbot.security.model
+package it.jbot.security.model.oauth2
 
 import javax.persistence.Column
 import javax.persistence.Entity

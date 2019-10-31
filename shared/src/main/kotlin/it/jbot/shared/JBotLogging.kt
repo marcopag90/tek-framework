@@ -8,13 +8,16 @@ import kotlin.reflect.full.companionObject
 
 interface Logging
 
-inline fun <reified T : Logging> T.logger(): Logger = getLogger(getClassForLogging(T::class.java))
+inline fun <reified T : Logging> T.logger(): Logger =
+    getLogger(getClassForLogging(T::class.java))
 
 class LoggerDelegate<in R : Any> : ReadOnlyProperty<R, Logger> {
-    override fun getValue(thisRef: R, property: KProperty<*>): Logger = getLogger(getClassForLogging(thisRef.javaClass))
+    override fun getValue(thisRef: R, property: KProperty<*>): Logger =
+        getLogger(getClassForLogging(thisRef.javaClass))
 }
 
 fun <T : Any> getClassForLogging(javaClass: Class<T>): Class<*> =
-    javaClass.enclosingClass?.takeIf { it.kotlin.companionObject?.java == javaClass } ?: javaClass
+    javaClass.enclosingClass?.takeIf { it.kotlin.companionObject?.java == javaClass }
+        ?: javaClass
     
 

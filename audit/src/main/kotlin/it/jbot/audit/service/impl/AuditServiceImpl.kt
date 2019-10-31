@@ -18,20 +18,26 @@ import javax.servlet.http.HttpServletResponse
  *
  */
 @Service
-class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRepository) : AuditService {
+class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRepository) :
+    AuditService {
     
     private val logger by LoggerDelegate()
     
     //TODO maybe a well-formatted JSON to log request and response?
-    override fun logRequest(httpServletRequest: HttpServletRequest, body: Any?) {
+    override fun logRequest(
+        httpServletRequest: HttpServletRequest,
+        body: Any?
+    ) {
         
         var sb: StringBuilder = StringBuilder()
-        var parameters: Map<String, String> = createRequestParameterMap(httpServletRequest)
+        var parameters: Map<String, String> =
+            createRequestParameterMap(httpServletRequest)
         
         sb.append("REQUEST ")
         sb.append("method=[").append(httpServletRequest.method).append("] ")
         sb.append("path=[").append(httpServletRequest.requestURI).append("] ")
-        sb.append("headers=[").append(createRequestHeaderMap(httpServletRequest)).append("] ")
+        sb.append("headers=[")
+            .append(createRequestHeaderMap(httpServletRequest)).append("] ")
         
         if (parameters.isNotEmpty())
             sb.append("parameters=[").append(parameters).append("] ")
@@ -42,7 +48,11 @@ class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRe
         var requestString = sb.toString()
         logger.info(requestString)
         var webAudit =
-            WebAudit(request = requestString, initTime = System.nanoTime(), initTimeMillis = System.currentTimeMillis())
+            WebAudit(
+                request = requestString,
+                initTime = System.nanoTime(),
+                initTimeMillis = System.currentTimeMillis()
+            )
         webAuditRepository.save(webAudit)
         httpServletRequest.setAttribute("audit", webAudit)
     }
@@ -58,7 +68,9 @@ class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRe
         sb.append("RESPONSE ")
         sb.append("method=[").append(httpServletRequest.method).append("] ")
         sb.append("path=[").append(httpServletRequest.requestURI).append("] ")
-        sb.append("responseHeaders=[").append(createResponseParameterMap(httpServletResponse)).append("] ")
+        sb.append("responseHeaders=[")
+            .append(createResponseParameterMap(httpServletResponse))
+            .append("] ")
         
         if (body != null)
             sb.append("responseBody=[").append(body).append("] ")
@@ -68,7 +80,8 @@ class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRe
         if (httpServletRequest.getAttribute("audit") != null) {
             var webAudit = httpServletRequest.getAttribute("audit") as WebAudit
             webAudit.response = responseString
-            webAudit.stats = collectStats(webAudit.initTime, webAudit.initTimeMillis)
+            webAudit.stats =
+                collectStats(webAudit.initTime, webAudit.initTimeMillis)
             webAuditRepository.saveAndFlush(webAudit)
         }
     }

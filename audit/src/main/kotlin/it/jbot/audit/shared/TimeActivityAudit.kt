@@ -18,7 +18,7 @@ abstract class TimeActivityAudit {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     open var requestedAt: Date? = null
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     open var servedAt: Date? = null

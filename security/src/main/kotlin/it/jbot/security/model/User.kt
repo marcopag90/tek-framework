@@ -17,7 +17,10 @@ import kotlin.collections.ArrayList
 @Entity
 @Table(name = "user")
 class User(
-    @Column(name = "username", unique = true) @Size(min = 3, max = 20) @NotBlank var userName: String,
+    @Column(name = "username", unique = true) @Size(
+        min = 3,
+        max = 20
+    ) @NotBlank var userName: String,
     @Column(name = "password") @NotBlank var passWord: String,
     @Column(unique = true) @Size(max = 50) @NotBlank @Email var email: String
 ) {
@@ -62,21 +65,5 @@ class User(
         this.enabled = user.enabled
         this.roles = user.roles
     }
-}
-
-fun main(args: Array<String>) {
-    
-    var user1 = User("marcopag", "fatal1ty", "marcopag90@gmail.com")
-    user1.id = 5
-    var user2 = User("marcopag", "fatal1ty", "marcopag90@gmail.com")
-    user2.id = 5
-    
-    print("${(user1 == user2)}") //it's not the same since User is not a data class and no override equals is implemented
-    
-    var userDetails: JBotUserDetails =
-        JBotUserDetails(User("marcopag", "fatal1ty", "marcopag90@gmail.com")
-            .apply {
-                //other JBotUserDetails parameters
-            })
 }
 

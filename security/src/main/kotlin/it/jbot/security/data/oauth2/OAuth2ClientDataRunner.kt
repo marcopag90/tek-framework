@@ -1,8 +1,7 @@
-package it.jbot.security.data
+package it.jbot.security.data.oauth2
 
-import it.jbot.security.model.OAuth2Client
-import it.jbot.security.repository.OAuth2ClientRepository
-import it.jbot.shared.ifNull
+import it.jbot.security.model.oauth2.OAuth2Client
+import it.jbot.security.repository.oauth2.OAuth2ClientRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
@@ -21,7 +20,8 @@ class OAuth2ClientDataRunner(
                 clientId = "clientId"
                 clientSecret = jBotPasswordEncoder.encode("secret")
                 scope = "read,write"
-                authorizedGrantTypes = "password,refresh_token,client_credentials"
+                authorizedGrantTypes =
+                    "password,refresh_token,client_credentials"
                 authorities = "ROLE_CLIENT"
                 accessTokenValidity = 300
             })

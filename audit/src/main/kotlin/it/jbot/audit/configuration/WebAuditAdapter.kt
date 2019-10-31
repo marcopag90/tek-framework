@@ -19,7 +19,10 @@ import javax.servlet.http.HttpServletRequest
 class AuditResponseBodyAdviceAdapter(private val auditService: AuditService) :
     ResponseBodyAdvice<Any> {
     
-    override fun supports(returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>): Boolean {
+    override fun supports(
+        returnType: MethodParameter,
+        converterType: Class<out HttpMessageConverter<*>>
+    ): Boolean {
         return true
     }
     
@@ -33,7 +36,11 @@ class AuditResponseBodyAdviceAdapter(private val auditService: AuditService) :
     ): Any? {
         
         if (request is ServletServerHttpRequest && response is ServletServerHttpResponse)
-            auditService.logResponse(request.servletRequest, response.servletResponse, body)
+            auditService.logResponse(
+                request.servletRequest,
+                response.servletResponse,
+                body
+            )
         
         return body
     }
@@ -64,7 +71,13 @@ class AuditRequestBodyAdviceAdapter(
         
         auditService.logRequest(httpServletRequest, body)
         
-        return super.afterBodyRead(body, inputMessage, parameter, targetType, converterType)
+        return super.afterBodyRead(
+            body,
+            inputMessage,
+            parameter,
+            targetType,
+            converterType
+        )
     }
     
     

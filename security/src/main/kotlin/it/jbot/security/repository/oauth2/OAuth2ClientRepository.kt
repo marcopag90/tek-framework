@@ -1,6 +1,6 @@
-package it.jbot.security.repository
+package it.jbot.security.repository.oauth2
 
-import it.jbot.security.model.OAuth2Client
+import it.jbot.security.model.oauth2.OAuth2Client
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

@@ -1,8 +1,8 @@
 package it.jbot.security.data
 
 import it.jbot.security.model.Role
-import it.jbot.security.model.RoleName
 import it.jbot.security.model.User
+import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
 import it.jbot.shared.ifNull
@@ -25,7 +25,10 @@ class UserDataRunner(
                     username = "admin",
                     password = "admin",
                     email = "admin@gmail.com",
-                    roles = mutableSetOf(Role(name = RoleName.ROLE_ADMIN), Role(name = RoleName.ROLE_USER))
+                    roles = mutableSetOf(
+                        Role(name = RoleName.ROLE_ADMIN),
+                        Role(name = RoleName.ROLE_USER)
+                    )
                 )
             )
         }
@@ -55,7 +58,11 @@ class UserDataRunner(
                 userRoles.add(it)
             }
         
-        return User(username, jBotPasswordEncoder.encode(password), email).apply {
+        return User(
+            username,
+            jBotPasswordEncoder.encode(password),
+            email
+        ).apply {
             this.roles = userRoles
         }
     }

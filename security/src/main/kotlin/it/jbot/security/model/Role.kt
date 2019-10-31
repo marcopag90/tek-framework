@@ -1,5 +1,6 @@
 package it.jbot.security.model
 
+import it.jbot.security.model.enums.RoleName
 import it.jbot.shared.LabelEnum
 import org.hibernate.annotations.NaturalId
 import javax.persistence.*
@@ -14,14 +15,9 @@ data class Role(
     @NaturalId
     @Column(length = 10) val name: RoleName
 ) {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 }
 
-enum class RoleName(override val label: String) : LabelEnum {
-
-    ROLE_ADMIN("Administrator"),
-    ROLE_USER("User")
-}

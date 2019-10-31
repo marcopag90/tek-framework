@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-
+    
     @Bean
     fun jbotPasswordEncoder() = BCryptPasswordEncoder()
     
@@ -25,9 +25,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .and()
             .headers().frameOptions().sameOrigin()
             .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
-
+    
 }
 
 

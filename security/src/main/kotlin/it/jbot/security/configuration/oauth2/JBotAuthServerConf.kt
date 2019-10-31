@@ -1,7 +1,8 @@
-package it.jbot.security.configuration
+package it.jbot.security.configuration.oauth2
 
+import it.jbot.security.configuration.JwtSecurityProperties
 import it.jbot.security.configuration.JwtSecurityProperties.JwtProperties
-import it.jbot.security.service.JBotUserDetailsService
+import it.jbot.security.service.JBotAuthService
 import org.apache.commons.io.IOUtils
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -34,12 +35,12 @@ import javax.sql.DataSource
 @Configuration
 @EnableAuthorizationServer
 @EnableConfigurationProperties(JwtSecurityProperties::class)
-class JBotAuthServerConfig(
+class JBotAuthServerConf(
     private val datasource: DataSource,
     private val passwordEncoder: PasswordEncoder,
     private val authenticationManager: AuthenticationManager,
     private val jwtSecurityProperties: JwtSecurityProperties,
-    private val jBotUserDetailsService: JBotUserDetailsService
+    private val jBotAuthService: JBotAuthService
 ) : AuthorizationServerConfigurerAdapter() {
     
     @Bean
@@ -51,7 +52,9 @@ class JBotAuthServerConfig(
             setKeyPair(
                 keyPair(
                     jwtProperties = jwtSecurityProperties.jwt!!,
-                    keyStoreKeyFactory = keyStoreKeyFactory(jwtSecurityProperties.jwt!!)
+                    keyStoreKeyFactory = keyStoreKeyFactory(
+                        jwtSecurityProperties.jwt!!
+                    )
                 )
             )
         }
@@ -64,7 +67,7 @@ class JBotAuthServerConfig(
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
         endpoints?.authenticationManager(authenticationManager)
             ?.accessTokenConverter(jwtAccessTokenConverter())
-            ?.userDetailsService(jBotUserDetailsService)
+            ?.userDetailsService(jBotAuthService)
             ?.tokenStore(tokenStore())
     }
     
@@ -85,46 +88,16 @@ class JBotAuthServerConfig(
     }
     
     private fun keyStoreKeyFactory(jwtProperties: JwtProperties): KeyStoreKeyFactory {
-        return KeyStoreKeyFactory(jwtProperties.keyStore, jwtProperties.keyStorePassword?.toCharArray())
+        return KeyStoreKeyFactory(
+            jwtProperties.keyStore,
+            jwtProperties.keyStorePassword?.toCharArray()
+        )
     }
     
     private fun getPublicKeyAsString(): String =
-        IOUtils.toString(jwtSecurityProperties.jwt?.publicKey?.inputStream, UTF_8)
+        IOUtils.toString(
+            jwtSecurityProperties.jwt?.publicKey?.inputStream,
+            UTF_8
+        )
 }
 
-/**OAuth2 Resource Server Configuration
- *
- * to manage access to server resources
- */
-@Configuration
-@EnableResourceServer
-@EnableConfigurationProperties(SecurityProperties::class)
-class JBotResourceServerConfig(
-    private val jwtSecurityProperties: JwtSecurityProperties
-) : ResourceServerConfigurerAdapter() {
-    
-    override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .requestMatchers(PathRequest.toH2Console()).permitAll()
-            .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
-            .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('write')")
-            .anyRequest().authenticated()
-            .and()
-            .headers().frameOptions().sameOrigin()
-            .and()
-            .csrf().disable()
-    }
-    
-    @Bean
-    fun jwtResourceAccessTokenConverter(): JwtAccessTokenConverter {
-        return JwtAccessTokenConverter().apply {
-            setVerifierKey(getPublicKeyAsString())
-        }
-    }
-    
-    private fun getPublicKeyAsString(): String =
-        IOUtils.toString(jwtSecurityProperties.jwt?.publicKey?.inputStream, UTF_8)
-    
-}

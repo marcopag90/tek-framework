@@ -1,4 +1,4 @@
-package it.jbot.security.model.oauth2
+package it.jbot.security.oauth.model
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "oauth_client_details")
-class OAuth2Client {
+class ClientDetails {
     
     @Id
     @Column(name = "client_id")

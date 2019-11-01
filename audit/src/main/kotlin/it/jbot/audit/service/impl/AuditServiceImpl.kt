@@ -4,7 +4,6 @@ import it.jbot.audit.model.WebAudit
 import it.jbot.audit.repository.WebAuditRepository
 import it.jbot.audit.service.AuditService
 import it.jbot.shared.LoggerDelegate
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -18,8 +17,9 @@ import javax.servlet.http.HttpServletResponse
  *
  */
 @Service
-class AuditServiceImpl @Autowired constructor(val webAuditRepository: WebAuditRepository) :
-    AuditService {
+class AuditServiceImpl(
+    private val webAuditRepository: WebAuditRepository
+) : AuditService {
     
     private val logger by LoggerDelegate()
     

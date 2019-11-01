@@ -1,5 +1,6 @@
 package it.jbot.security.data
 
+import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.model.Role
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component
 class UserDataRunner(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val jBotPasswordEncoder: BCryptPasswordEncoder
+    private val jBotPasswordEncoder: JBotPasswordEncoder
 ) : CommandLineRunner {
     
     override fun run(vararg args: String?) {
@@ -60,7 +61,7 @@ class UserDataRunner(
         
         return User(
             username,
-            jBotPasswordEncoder.encode(password),
+            jBotPasswordEncoder.encoder().encode(password),
             email
         ).apply {
             this.roles = userRoles

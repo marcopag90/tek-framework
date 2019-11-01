@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse
  * @author PaganM
  */
 @Configuration
-class AuditWebConfig(private val auditInterceptor: AuditInterceptor) :
+class AuditWebConfig(
+    private val auditInterceptor: AuditInterceptor
+) :
     WebMvcConfigurer {
     
     override fun addInterceptors(registry: InterceptorRegistry) {
@@ -33,7 +35,9 @@ class AuditWebConfig(private val auditInterceptor: AuditInterceptor) :
  *
  */
 @Component
-class AuditInterceptor(private val auditService: AuditService) :
+class AuditInterceptor(
+    private val auditService: AuditService
+) :
     HandlerInterceptor {
     
     override fun preHandle(

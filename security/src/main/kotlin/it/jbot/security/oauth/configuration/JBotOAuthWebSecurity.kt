@@ -1,6 +1,8 @@
-package it.jbot.security.configuration.oauth2
+package it.jbot.security.oauth.configuration
 
 import it.jbot.security.service.JBotAuthService
+import it.jbot.security.JBotPasswordEncoder
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -8,21 +10,22 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.provider.ClientDetailsService
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 
 @Configuration
+@ConditionalOnProperty(
+    prefix = "security",
+    name = ["type"],
+    havingValue = "oauth2"
+)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class JBotOAuthWebSecurityConf(
-    private val jBotAuthService: JBotAuthService
+class JBotOAuthWebSecurity(
+    private val jBotAuthService: JBotAuthService,
+    private val passwordEncoder: JBotPasswordEncoder
 ) : WebSecurityConfigurerAdapter() {
-    
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
     
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager =
@@ -42,6 +45,6 @@ class JBotOAuthWebSecurityConf(
     
     override fun configure(auth: AuthenticationManagerBuilder?) {
         auth?.userDetailsService(jBotAuthService)
-            ?.passwordEncoder(passwordEncoder())
+            ?.passwordEncoder(passwordEncoder.encoder())
     }
 }

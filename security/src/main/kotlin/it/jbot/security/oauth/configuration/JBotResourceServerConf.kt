@@ -1,7 +1,7 @@
-package it.jbot.security.configuration.oauth2
+package it.jbot.security.oauth.configuration
 
-import it.jbot.security.configuration.JwtSecurityProperties
 import org.apache.commons.io.IOUtils
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets
  * to manage access to server resources
  */
 @Configuration
+@ConditionalOnBean(JBotOAuthWebSecurity::class)
 @EnableResourceServer
 @EnableConfigurationProperties(SecurityProperties::class)
 class JBotResourceServerConf(
@@ -26,7 +27,8 @@ class JBotResourceServerConf(
 ) : ResourceServerConfigurerAdapter() {
     
     override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
+        http
+            .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console()).permitAll()
             .antMatchers(HttpMethod.GET, "/**")
             .access("#oauth2.hasScope('read')")
@@ -38,9 +40,8 @@ class JBotResourceServerConf(
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
             .and()
-            .headers().frameOptions().sameOrigin()
-            .and()
             .csrf().disable()
+            .headers().frameOptions().sameOrigin()
     }
     
     @Bean
@@ -55,5 +56,4 @@ class JBotResourceServerConf(
             jwtSecurityProperties.jwt?.publicKey?.inputStream,
             StandardCharsets.UTF_8
         )
-    
 }

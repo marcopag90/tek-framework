@@ -16,8 +16,9 @@ import java.lang.reflect.Type
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
-class AuditResponseBodyAdviceAdapter(private val auditService: AuditService) :
-    ResponseBodyAdvice<Any> {
+class AuditResponseBodyAdviceAdapter(
+    private val auditService: AuditService
+) : ResponseBodyAdvice<Any> {
     
     override fun supports(
         returnType: MethodParameter,

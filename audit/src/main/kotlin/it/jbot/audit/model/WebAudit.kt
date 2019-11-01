@@ -1,10 +1,18 @@
 package it.jbot.audit.model
 
-import it.jbot.audit.shared.TimeActivityAudit
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "webaudit")
+@EntityListeners(AuditingEntityListener::class)
+@JsonIgnoreProperties(
+    "requestedAt", "servedAt",
+    allowGetters = true
+)
 class WebAudit(
     
     @Id @GeneratedValue
@@ -19,10 +27,23 @@ class WebAudit(
     
     var stats: String? = null,
     
+    
     @Transient
     val initTime: Long,
     
     @Transient
     val initTimeMillis: Long
+) {
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    var requestedAt: Date? = null
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    var servedAt: Date? = null
+}
 
-) : TimeActivityAudit()
+
+
+

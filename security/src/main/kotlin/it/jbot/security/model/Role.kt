@@ -3,6 +3,7 @@ package it.jbot.security.model
 import it.jbot.security.model.enums.RoleName
 import it.jbot.shared.LabelEnum
 import org.hibernate.annotations.NaturalId
+import java.io.Serializable
 import javax.persistence.*
 
 /**
@@ -14,7 +15,7 @@ data class Role(
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 10) val name: RoleName
-) {
+) : Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

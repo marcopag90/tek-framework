@@ -1,7 +1,7 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.service.JBotAuthService
 import it.jbot.security.JBotPasswordEncoder
+import it.jbot.security.service.JBotAuthService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,9 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.oauth2.provider.ClientDetailsService
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
 
 @Configuration
 @ConditionalOnProperty(
@@ -31,20 +28,20 @@ class JBotOAuthWebSecurity(
     override fun authenticationManagerBean(): AuthenticationManager =
         super.authenticationManagerBean()
     
-    @Bean
-    fun tokenServices(
-        jwtTokenStore: JwtTokenStore,
-        clientDetailsService: ClientDetailsService
-    ): DefaultTokenServices = DefaultTokenServices().apply {
-        
-        setSupportRefreshToken(true)
-        setTokenStore(jwtTokenStore)
-        setClientDetailsService(clientDetailsService)
-        setAuthenticationManager(authenticationManagerBean())
-    }
+//    @Bean
+//    fun tokenServices(
+//        jdbcTokenStore: JdbcTokenStore,
+//        clientDetailsService: ClientDetailsService
+//    ): DefaultTokenServices = DefaultTokenServices().apply {
+//
+//        setSupportRefreshToken(true)
+//        setTokenStore(jdbcTokenStore)
+//        setClientDetailsService(clientDetailsService)
+//        setAuthenticationManager(authenticationManagerBean())
+//    }
     
-    override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(jBotAuthService)
-            ?.passwordEncoder(passwordEncoder.encoder())
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(jBotAuthService)
+            .passwordEncoder(passwordEncoder.encoder())
     }
 }

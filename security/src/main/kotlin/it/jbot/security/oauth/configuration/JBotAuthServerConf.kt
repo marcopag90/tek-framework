@@ -11,20 +11,18 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.KeyPair
 import javax.sql.DataSource
 
-//TODO see misunderstanding about having two split token service/token store in res and auth server..maybe it's better to provide a single bean in WebSecurityConfigurerAdapter
 /**OAuth2 Authorization Server Configuration
  *
  * to manage clientId and token validation
@@ -38,47 +36,39 @@ class JBotAuthServerConf(
     private val context: ApplicationContext,
     private val jBotPasswordEncoder: JBotPasswordEncoder,
     private val authenticationManager: AuthenticationManager,
-    private val jwtSecurityProperties: JwtSecurityProperties,
-    private val jBotAuthService: JBotAuthService
+    private val jBotAuthService: JBotAuthService,
+    private val jwtSecurityProperties: JwtSecurityProperties
 ) : AuthorizationServerConfigurerAdapter() {
     
     private val logger by LoggerDelegate()
     
     @Bean
-    fun tokenStore(): JwtTokenStore = JwtTokenStore(jwtAccessTokenConverter())
+    fun oauthAccessDeniedHandler() = OAuth2AccessDeniedHandler()
     
     @Bean
-    fun jwtAccessTokenConverter(): JwtAccessTokenConverter {
-        return JwtAccessTokenConverter().apply {
-            setKeyPair(
-                keyPair(
-                    jwtProperties = jwtSecurityProperties.jwt!!,
-                    keyStoreKeyFactory = keyStoreKeyFactory(
-                        jwtSecurityProperties.jwt!!
-                    )
-                )
-            )
-        }
-    }
+    fun tokenStore() = JdbcTokenStore(datasource)
     
     override fun configure(clients: ClientDetailsServiceConfigurer?) {
         clients?.jdbc(datasource)
     }
     
-    override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
-        endpoints?.authenticationManager(authenticationManager)
-            ?.accessTokenConverter(jwtAccessTokenConverter())
-            ?.userDetailsService(jBotAuthService)
-            ?.tokenStore(tokenStore())
-    }
-    
-    override fun configure(security: AuthorizationServerSecurityConfigurer?) {
+    override fun configure(security: AuthorizationServerSecurityConfigurer) {
         
         logger.info("Security type: ${context.environment.getProperty("security.type")}")
         
-        security?.passwordEncoder(jBotPasswordEncoder.encoder())
-            ?.tokenKeyAccess("permitAll()")
-            ?.checkTokenAccess("isAuthenticated()")
+        security
+            .tokenKeyAccess("permitAll()")
+            .checkTokenAccess("isAuthenticated()")
+            .passwordEncoder(jBotPasswordEncoder.encoder())
+    }
+    
+    override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
+        
+        //TODO access token converter
+        endpoints
+            .tokenStore(tokenStore())
+            .authenticationManager(authenticationManager)
+            .userDetailsService(jBotAuthService)
     }
     
     private fun keyPair(

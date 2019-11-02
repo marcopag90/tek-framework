@@ -6,11 +6,13 @@ import it.jbot.security.service.JBotAuthService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of [JBotAuthService] to get User information and authorities
  */
 @Service
+@Transactional
 class JBotAuthServiceImpl(
     private val userRepository: UserRepository
 ) : JBotAuthService {

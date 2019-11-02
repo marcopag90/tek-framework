@@ -5,15 +5,17 @@ import it.jbot.shared.LoggerDelegate
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.io.Serializable
 import java.util.logging.Logger
 import java.util.stream.Collectors
 
 /**
  * POJO to store User information for Authentication purpose
+ *
+ * All Pojo/Entities extending or implementing this _MUST_ be Serializable
  */
-class JBotUserDetails : User, UserDetails {
+class JBotUserDetails : User, UserDetails, Serializable {
     
-    private val logger by LoggerDelegate()
     
     constructor(user: User) : super(user)
     
@@ -22,7 +24,6 @@ class JBotUserDetails : User, UserDetails {
     
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         roles.stream().map { role ->
-            logger.info("Granting Authority to username: ${this.userName} with role: ${role.name.name}")
             SimpleGrantedAuthority(role.name.name)
         }.collect(Collectors.toList())
     

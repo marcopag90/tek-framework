@@ -2,6 +2,7 @@ package it.jbot.security.model
 
 import it.jbot.security.JBotUserDetails
 import org.hibernate.annotations.Type
+import java.io.Serializable
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -15,15 +16,23 @@ import kotlin.collections.ArrayList
  * @author PaganM
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 class User(
-    @Column(name = "username", unique = true) @Size(
-        min = 3,
-        max = 20
-    ) @NotBlank var userName: String,
-    @Column(name = "password") @NotBlank var passWord: String,
-    @Column(unique = true) @Size(max = 50) @NotBlank @Email var email: String
-) {
+    @NotBlank
+    @Size(min = 3, max = 20)
+    @Column(name = "username", unique = true, nullable = false)
+    var userName: String,
+
+    @NotBlank
+    @Column(name = "password", nullable = false)
+    var passWord: String,
+
+    @Email
+    @NotBlank
+    @Size(max = 50)
+    @Column(unique = true, nullable = false)
+    var email: String
+) : Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,7 +18,6 @@ class WebAudit(
     @Id @GeneratedValue
     var id: Long? = null,
     
-    @Column(columnDefinition = "clob not null")
     @Lob
     val request: String,
     
@@ -26,7 +25,6 @@ class WebAudit(
     var response: String? = null,
     
     var stats: String? = null,
-    
     
     @Transient
     val initTime: Long,

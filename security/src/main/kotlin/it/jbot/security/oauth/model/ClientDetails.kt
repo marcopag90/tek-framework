@@ -13,12 +13,12 @@ import javax.validation.constraints.Size
 class ClientDetails {
     
     @Id
-    @Column(name = "client_id")
     @Size(max = 256)
+    @Column(name = "client_id")
     var clientId: String? = null
     
-    @Column(name = "resource_ids")
     @Size(max = 256)
+    @Column(name = "resource_ids")
     var resourceId: String? = null
     
     @NotBlank

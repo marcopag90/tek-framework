@@ -16,7 +16,6 @@ import java.util.stream.Collectors
  */
 class JBotUserDetails : User, UserDetails, Serializable {
     
-    
     constructor(user: User) : super(user)
     
     override fun getUsername(): String = super.userName

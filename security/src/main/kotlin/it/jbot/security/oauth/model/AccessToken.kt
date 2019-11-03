@@ -9,12 +9,12 @@ import javax.validation.constraints.Size
 class AccessToken {
     
     @Id
-    @Size(max = 255)
+    @Size(max = 256)
     @Column(name = "authentication_id")
     var authId: String? = null
     
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 256)
     @Column(name = "token_id", nullable = false)
     var tokenId: String? = null
     
@@ -23,12 +23,12 @@ class AccessToken {
     var token: ByteArray? = null
     
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 256)
     @Column(name = "user_name", nullable = false)
     var username: String? = null
     
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 256)
     @Column(name = " client_id", nullable = false)
     var clientId: String? = null
     

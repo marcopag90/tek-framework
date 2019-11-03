@@ -57,7 +57,9 @@ class JBotAuthServerConf(
         logger.info("Security type: ${context.environment.getProperty("security.type")}")
         
         security
+            // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
             .tokenKeyAccess("permitAll()")
+            // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess("isAuthenticated()")
             .passwordEncoder(jBotPasswordEncoder.encoder())
     }

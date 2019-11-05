@@ -1,6 +1,6 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.shared.LoggerDelegate
+import it.jbot.shared.util.LoggerDelegate
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.convert.DurationUnit

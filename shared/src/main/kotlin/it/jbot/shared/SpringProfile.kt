@@ -4,14 +4,18 @@ package it.jbot.shared
  *
  * [development]
  *
+ * [test]
+ *
  * [production]
  * */
-object JBotSpringProfile {
+object SpringProfile {
     
     /**Development profile*/
     const val development = "dev"
     
+    /**Test profile*/
+    const val test = "test"
+    
     /**Production profile*/
     const val production = "prod"
-    
 }

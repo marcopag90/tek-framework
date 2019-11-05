@@ -10,6 +10,6 @@ object SecurityConstant {
         arrayOf("/*jpg", "/*png", "/*css", "/*js", "/*ico", "/webjars/**")
     val entryPointResources = arrayOf("/", "/login", "/register")
     val swaggerResources =
-        arrayOf("/v2/api-docs", "/configuration/**", "/swagger*/**")
+        arrayOf("/v2/api-docs", "/component/**", "/swagger*/**")
     
 }

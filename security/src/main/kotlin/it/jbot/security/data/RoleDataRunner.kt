@@ -3,7 +3,7 @@ package it.jbot.security.data
 import it.jbot.security.model.Role
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
-import it.jbot.shared.ifNull
+import it.jbot.shared.util.ifNull
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order

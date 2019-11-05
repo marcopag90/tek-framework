@@ -1,12 +1,10 @@
 package it.jbot.security
 
 import it.jbot.security.model.User
-import it.jbot.shared.LoggerDelegate
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
-import java.util.logging.Logger
 import java.util.stream.Collectors
 
 /**

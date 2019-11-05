@@ -1,7 +1,7 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
-import it.jbot.shared.JBotSpringProfile
+import it.jbot.shared.SpringProfile
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -31,7 +31,7 @@ class JBotResourceServerConf(
     }
     
     //TODO prod build configure
-    @Profile(JBotSpringProfile.development)
+    @Profile(SpringProfile.development)
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests()

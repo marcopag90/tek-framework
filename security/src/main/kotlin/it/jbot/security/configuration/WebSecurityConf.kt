@@ -1,9 +1,9 @@
 package it.jbot.security.configuration
 
 import it.jbot.security.oauth.configuration.JBotOAuthWebSecurity
-import it.jbot.shared.JBotSpringProfile.development
-import it.jbot.shared.LoggerDelegate
-import it.jbot.shared.SpringProperty
+import it.jbot.shared.SpringProfile.development
+import it.jbot.shared.util.LoggerDelegate
+import it.jbot.shared.util.SpringProperty
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-
+//TODO prod profile
 @Profile(development)
 @ConditionalOnMissingBean(JBotOAuthWebSecurity::class)
 @Configuration

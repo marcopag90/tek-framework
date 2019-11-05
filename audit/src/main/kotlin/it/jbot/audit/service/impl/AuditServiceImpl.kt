@@ -3,7 +3,7 @@ package it.jbot.audit.service.impl
 import it.jbot.audit.model.WebAudit
 import it.jbot.audit.repository.WebAuditRepository
 import it.jbot.audit.service.AuditService
-import it.jbot.shared.LoggerDelegate
+import it.jbot.shared.util.LoggerDelegate
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.text.SimpleDateFormat

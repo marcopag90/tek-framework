@@ -1,4 +1,4 @@
-package it.jbot.shared
+package it.jbot.shared.util
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger

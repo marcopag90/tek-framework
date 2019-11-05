@@ -6,9 +6,8 @@ import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
-import it.jbot.shared.ifNull
+import it.jbot.shared.util.ifNull
 import org.springframework.boot.CommandLineRunner
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component

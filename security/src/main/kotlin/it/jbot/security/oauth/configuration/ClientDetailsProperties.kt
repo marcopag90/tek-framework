@@ -1,10 +1,10 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.shared.LoggerDelegate
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.convert.DurationUnit
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
@@ -23,17 +23,22 @@ import java.time.temporal.ChronoUnit
 @ConditionalOnBean(JBotOAuthWebSecurity::class)
 @PropertySource(
     "classpath:security-\${spring.profiles.active}.properties",
-    ignoreResourceNotFound = true
+    ignoreResourceNotFound = true // -> fallback to default values
 )
 @ConfigurationProperties("client")
 class ClientDetailsProperties(
-    environment: Environment
+    environment: Environment,
+    context: ApplicationContext
 ) {
     
     private val logger by LoggerDelegate()
     
     init {
-        logger.info("Evaluating security.properties with profile: ${environment.activeProfiles[0]}")
+        
+        if (context.getResource("classpath:security-${environment.activeProfiles[0]}.properties").exists())
+            logger.info("Reading security-${environment.activeProfiles[0]}.properties to evaluate ClientDetailsProperties class")
+        else
+            logger.info("File security-{spring.profiles.active}.properties not found. Using default properties (see ClientDetailsProperties class for further info)")
     }
     
     /**

@@ -6,21 +6,29 @@
 	<parent>
 		<groupId>it.jbot</groupId>
 		<artifactId>framework</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<groupId>it.jbot</groupId>
 	<artifactId>audit</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+
 	<name>jbot-audit</name>
 	<description>jbot audit module</description>
 
 	<dependencies>
+		<!-- Framework -->
 		<dependency>
 			<groupId>it.jbot</groupId>
 			<artifactId>shared</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
+		<!--Auditing-->
+		<dependency>
+			<groupId>org.javers</groupId>
+			<artifactId>javers-spring-boot-starter-sql</artifactId>
+			<version>${org.javers.version}</version>
+		</dependency>
+        <!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

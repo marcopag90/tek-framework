@@ -27,19 +27,7 @@ class JBotOAuthWebSecurity(
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager =
         super.authenticationManagerBean()
-    
-//    @Bean
-//    fun tokenServices(
-//        jdbcTokenStore: JdbcTokenStore,
-//        clientDetailsService: ClientDetailsService
-//    ): DefaultTokenServices = DefaultTokenServices().apply {
-//
-//        setSupportRefreshToken(true)
-//        setTokenStore(jdbcTokenStore)
-//        setClientDetailsService(clientDetailsService)
-//        setAuthenticationManager(authenticationManagerBean())
-//    }
-    
+        
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(jBotAuthService)
             .passwordEncoder(passwordEncoder.encoder())

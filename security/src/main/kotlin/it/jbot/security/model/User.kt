@@ -1,6 +1,7 @@
 package it.jbot.security.model
 
 import it.jbot.security.JBotUserDetails
+import it.jbot.security.audit.UserActivityAudit
 import org.hibernate.annotations.Type
 import java.io.Serializable
 import java.util.*
@@ -32,13 +33,13 @@ class User(
     @Size(max = 50)
     @Column(unique = true, nullable = false)
     var email: String
-) : Serializable {
+) : UserActivityAudit(), Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
     
-    //TODO UserActivityAudit
+    //TODO Check from REST service if user activity and javers works (all crud operations)
     
     @Column(name = "userExpireAt")
     @Temporal(TemporalType.TIMESTAMP)

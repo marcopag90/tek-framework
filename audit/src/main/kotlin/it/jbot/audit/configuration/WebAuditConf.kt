@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletResponse
 @Configuration
 class AuditWebConfig(
     private val auditInterceptor: AuditInterceptor
-) :
-    WebMvcConfigurer {
+) : WebMvcConfigurer {
     
     override fun addInterceptors(registry: InterceptorRegistry) {
         
@@ -37,8 +36,7 @@ class AuditWebConfig(
 @Component
 class AuditInterceptor(
     private val auditService: AuditService
-) :
-    HandlerInterceptor {
+) : HandlerInterceptor {
     
     override fun preHandle(
         request: HttpServletRequest,
@@ -68,3 +66,4 @@ class AuditInterceptor(
     ) {
     }
 }
+

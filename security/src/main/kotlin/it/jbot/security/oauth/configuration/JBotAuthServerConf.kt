@@ -1,12 +1,10 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.JBotPasswordEncoder
-import it.jbot.security.oauth.configuration.JwtSecurityProperties.JwtProperties
 import it.jbot.security.service.JBotAuthService
 import it.jbot.shared.LoggerDelegate
-import org.apache.commons.io.IOUtils
+import it.jbot.shared.authorize
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,9 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory
-import java.nio.charset.StandardCharsets.UTF_8
-import java.security.KeyPair
 import javax.sql.DataSource
 
 /**OAuth2 Authorization Server Configuration
@@ -30,14 +25,13 @@ import javax.sql.DataSource
 @Configuration
 @ConditionalOnBean(JBotOAuthWebSecurity::class)
 @EnableAuthorizationServer
-@EnableConfigurationProperties(JwtSecurityProperties::class)
 class JBotAuthServerConf(
     private val datasource: DataSource,
     private val context: ApplicationContext,
     private val jBotPasswordEncoder: JBotPasswordEncoder,
     private val authenticationManager: AuthenticationManager,
     private val jBotAuthService: JBotAuthService,
-    private val jwtSecurityProperties: JwtSecurityProperties
+    private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
     
     private val logger by LoggerDelegate()
@@ -58,42 +52,18 @@ class JBotAuthServerConf(
         
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
-            .tokenKeyAccess("permitAll()")
+            .tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_CLIENT')")
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
-            .checkTokenAccess("isAuthenticated()")
+            .checkTokenAccess(clientDetailsProperties.authority.authorize())
             .passwordEncoder(jBotPasswordEncoder.encoder())
     }
     
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
         
-        //TODO access token converter
         endpoints
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
             .userDetailsService(jBotAuthService)
     }
-    
-    private fun keyPair(
-        jwtProperties: JwtProperties,
-        keyStoreKeyFactory: KeyStoreKeyFactory
-    ): KeyPair {
-        return keyStoreKeyFactory.getKeyPair(
-            jwtProperties.keyPairAlias,
-            jwtProperties.keyPairPassword?.toCharArray()
-        )
-    }
-    
-    private fun keyStoreKeyFactory(jwtProperties: JwtProperties): KeyStoreKeyFactory {
-        return KeyStoreKeyFactory(
-            jwtProperties.keyStore,
-            jwtProperties.keyStorePassword?.toCharArray()
-        )
-    }
-    
-    private fun getPublicKeyAsString(): String =
-        IOUtils.toString(
-            jwtSecurityProperties.jwt?.publicKey?.inputStream,
-            UTF_8
-        )
 }
 

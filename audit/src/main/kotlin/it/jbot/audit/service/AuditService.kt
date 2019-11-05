@@ -8,8 +8,8 @@ interface AuditService {
     fun logRequest(httpServletRequest: HttpServletRequest, body: Any?)
     
     fun logResponse(
-        httpServletRequest: HttpServletRequest,
-        httpServletResponse: HttpServletResponse,
+        request: HttpServletRequest,
+        response: HttpServletResponse,
         body: Any?
     )
 }

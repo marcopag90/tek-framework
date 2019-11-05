@@ -3,8 +3,6 @@ package it.jbot.security
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityConstant {
     
-    const val jwtSecurity = "security"
-    
     const val DEFAULT_SECURED_PATTERN = "/**"
     
     //TODO split into single val (kotlin can't assign constant to non-primitive types

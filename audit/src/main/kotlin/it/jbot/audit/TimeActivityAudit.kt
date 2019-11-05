@@ -1,11 +1,15 @@
 package it.jbot.audit
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import it.jbot.audit.service.AuditService
+import org.javers.core.metamodel.annotation.DiffIgnore
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.domain.AuditorAware
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import org.springframework.stereotype.Component
 import java.io.Serializable
 import java.time.LocalDateTime
 import java.util.*
@@ -13,8 +17,6 @@ import javax.persistence.EntityListeners
 import javax.persistence.MappedSuperclass
 import javax.persistence.Temporal
 import javax.persistence.TemporalType
-
-
 
 /**
  * Class extended by Entities to audit create/update time on Entity
@@ -28,42 +30,11 @@ import javax.persistence.TemporalType
 class TimeActivityAudit : Serializable {
     
     @CreatedDate
-//    @DiffIgnore
+    @DiffIgnore
     var createdAt: LocalDateTime? = null
     
     @LastModifiedDate
-//    @DiffIgnore
+    @DiffIgnore
     var updatedAt: LocalDateTime? = null
     
-}
-
-/**
- * Class extended by Entites to audit create/update time and user on Entity
- */
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener::class)
-@JsonIgnoreProperties(
-    "createdAt", "updatedAt",
-    "createdBy", "updatedBy",
-    allowGetters = true
-)
-class UserActivityAudit : Serializable {
-    
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-//    @DiffIgnore
-    var createdAt: LocalDateTime? = null
-    
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-//    @DiffIgnore
-    var updatedAt: LocalDateTime? = null
-    
-    @CreatedBy
-//    @DiffIgnore
-    var createdBy: Long? = null
-    
-    @LastModifiedBy
-//    @DiffIgnore
-    var updatedBy: Long? = null
 }

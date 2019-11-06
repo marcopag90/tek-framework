@@ -1,21 +1,25 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.JBotPasswordEncoder
+import it.jbot.security.oauth.exception.JBotOAuthException
 import it.jbot.security.service.JBotAuthService
 import it.jbot.shared.util.LoggerDelegate
-import it.jbot.shared.util.hasAuthority
 import it.jbot.shared.util.concatOR
+import it.jbot.shared.util.hasAuthority
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
-import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import javax.sql.DataSource
 
@@ -26,7 +30,7 @@ import javax.sql.DataSource
 @Configuration
 @ConditionalOnBean(JBotOAuthWebSecurity::class)
 @EnableAuthorizationServer
-class JBotAuthServerConf(
+class JBotOAuthServer(
     private val datasource: DataSource,
     private val context: ApplicationContext,
     private val jBotPasswordEncoder: JBotPasswordEncoder,
@@ -36,9 +40,6 @@ class JBotAuthServerConf(
 ) : AuthorizationServerConfigurerAdapter() {
     
     private val logger by LoggerDelegate()
-    
-    @Bean
-    fun oauthAccessDeniedHandler() = OAuth2AccessDeniedHandler()
     
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
@@ -65,6 +66,14 @@ class JBotAuthServerConf(
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
             .userDetailsService(jBotAuthService)
+            .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
+                if (it is OAuth2Exception) {
+                    return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(
+                        JBotOAuthException(it.message),
+                        HttpStatus.BAD_REQUEST
+                    )
+                } else
+                    throw it
+            })
     }
 }
-

@@ -27,8 +27,9 @@ class JBotOAuthWebSecurity(
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager =
         super.authenticationManagerBean()
-        
+    
     override fun configure(auth: AuthenticationManagerBuilder) {
+        
         auth.userDetailsService(jBotAuthService)
             .passwordEncoder(passwordEncoder.encoder())
     }

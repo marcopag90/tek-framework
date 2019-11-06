@@ -28,7 +28,8 @@ class UserDataRunner(
                     roles = mutableSetOf(
                         Role(name = RoleName.ROLE_ADMIN),
                         Role(name = RoleName.ROLE_USER)
-                    )
+                    ),
+                    enabled = true
                 )
             )
         }
@@ -39,7 +40,8 @@ class UserDataRunner(
                     username = "user",
                     password = "user",
                     email = "user@gmail.com",
-                    roles = mutableSetOf(Role(name = RoleName.ROLE_USER))
+                    roles = mutableSetOf(Role(name = RoleName.ROLE_USER)),
+                    enabled = false
                 )
             )
         }
@@ -49,7 +51,8 @@ class UserDataRunner(
         username: String,
         password: String,
         email: String,
-        roles: MutableSet<Role>
+        roles: MutableSet<Role>,
+        enabled: Boolean
     ): User {
         
         var userRoles = mutableSetOf<Role>()
@@ -64,6 +67,7 @@ class UserDataRunner(
             email
         ).apply {
             this.roles = userRoles
+            this.enabled = enabled
         }
     }
 }

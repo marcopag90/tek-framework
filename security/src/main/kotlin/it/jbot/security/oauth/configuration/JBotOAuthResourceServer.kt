@@ -1,11 +1,13 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
+import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
 import it.jbot.shared.SpringProfile
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
@@ -22,12 +24,15 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @ConditionalOnBean(JBotOAuthWebSecurity::class)
 @EnableResourceServer
 @EnableConfigurationProperties(SecurityProperties::class)
-class JBotResourceServerConf(
-    private val clientDetailsProperties: ClientDetailsProperties
+class JBotOAuthResourceServer(
+    private val clientDetailsProperties: ClientDetailsProperties,
+    private val accessDeniedHandler: JBotOAuth2AccessDeniedHandler
 ) : ResourceServerConfigurerAdapter() {
     
     override fun configure(resources: ResourceServerSecurityConfigurer) {
-        resources.resourceId(clientDetailsProperties.resourceId)
+        resources
+            .resourceId(clientDetailsProperties.resourceId)
+            .accessDeniedHandler(accessDeniedHandler)
     }
     
     //TODO prod build configure

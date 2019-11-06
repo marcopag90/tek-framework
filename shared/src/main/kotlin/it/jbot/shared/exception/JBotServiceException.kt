@@ -3,7 +3,7 @@ package it.jbot.shared.exception
 import java.lang.RuntimeException
 
 /**
- * Custom Exception to be thrown into Business Logic
+ * Custom Exception that _MUST_ be thrown only in Business Logic failures
  */
 class JBotServiceException : RuntimeException {
 

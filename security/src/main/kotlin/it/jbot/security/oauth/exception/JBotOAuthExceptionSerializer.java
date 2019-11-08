@@ -35,8 +35,8 @@ public class JBotOAuthExceptionSerializer extends StdSerializer<JBotOAuthExcepti
         generator.writeStartObject();
 
         generator.writeObjectField("timestamp", JBotDateUtils.jbotTimestamp());
+        generator.writeNumberField("status", value.getHttpErrorCode());
         generator.writeObjectField("errors", Arrays.asList(value.getMessage()));
-
         if (value.getAdditionalInformation() != null)
             for (Map.Entry<String, String> entry : value.getAdditionalInformation().entrySet())
                 generator.writeStringField(entry.getKey(), entry.getValue());

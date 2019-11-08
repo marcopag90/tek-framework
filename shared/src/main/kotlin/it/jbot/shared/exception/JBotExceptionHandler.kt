@@ -1,7 +1,7 @@
 package it.jbot.shared.exception
 
-import it.jbot.shared.JBotErrorResponse
 import it.jbot.shared.util.LoggerDelegate
+import it.jbot.shared.web.JBotErrorResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,19 +23,18 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
      */
     @ExceptionHandler(JBotServiceException::class)
     fun handleServiceException(
-        ex: Exception,
+        ex: JBotServiceException,
         request: WebRequest
     ): ResponseEntity<JBotErrorResponse> {
         
-        log.error(ex.message, ex)
+        log.error(ex.message)
         
         return ResponseEntity<JBotErrorResponse>(
-            JBotErrorResponse().apply {
+            JBotErrorResponse(ex.httpStatus).apply {
                 this.errors = arrayListOf(ex.message)
-                //TODO check if this gives the same behaviour of JBotOAuth2AccessDeniedHandler path
-                this.path = request.contextPath
+                this.path = (request as ServletWebRequest).request.servletPath
             },
-            HttpStatus.INTERNAL_SERVER_ERROR
+            ex.httpStatus
         )
     }
     
@@ -49,17 +48,16 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         request: WebRequest
     ): ResponseEntity<Any> {
         
-        log.error(ex.message, ex)
+        log.error(ex.message)
         
         return ResponseEntity<Any>(
             
-            JBotErrorResponse().apply {
+            JBotErrorResponse(status).apply {
                 this.errors =
                     ex.bindingResult.fieldErrors.stream().map { e ->
                         e.defaultMessage
                     }.collect(Collectors.toList())
-                //TODO check if this gives the same behaviour of JBotOAuth2AccessDeniedHandler path
-                this.path = request.contextPath
+                this.path = (request as ServletWebRequest).request.servletPath
             },
             headers,
             status

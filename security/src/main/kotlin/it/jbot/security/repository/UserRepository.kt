@@ -12,4 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 interface UserRepository : JpaRepository<User, Long> {
     
     fun findByUserName(userName: String): User?
+    
+    fun existsByUserName(username: String): Boolean
+    
+    fun existsByEmail(email: String): Boolean
 }

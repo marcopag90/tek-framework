@@ -9,7 +9,7 @@ class SecurityAuthorProvider(
     override fun provide(): String {
         
         return if (securityAuditorAware.currentAuditor.isPresent)
-            securityAuditorAware.currentAuditor.toString()
+            securityAuditorAware.currentAuditor.get().toString()
         else
             "unauthenticated"
     }

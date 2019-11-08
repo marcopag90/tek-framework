@@ -25,7 +25,10 @@ class JBotUserDetails : User, UserDetails, Serializable {
         }.collect(Collectors.toList())
     
     override fun isEnabled(): Boolean = super.enabled
-    override fun isAccountNonExpired(): Boolean = true
-    override fun isAccountNonLocked(): Boolean = true
-    override fun isCredentialsNonExpired(): Boolean = true
+    
+    // wish I was in the brain of the guy who wrote these interface methods!
+    override fun isAccountNonExpired(): Boolean = !super.accountExpired
+    override fun isAccountNonLocked(): Boolean = !super.accountLocked
+    override fun isCredentialsNonExpired(): Boolean = !super.credentialsExpired
 }
+

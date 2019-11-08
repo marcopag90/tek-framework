@@ -1,5 +1,6 @@
 package it.jbot.shared.exception
 
+import org.springframework.http.HttpStatus
 import java.lang.RuntimeException
 
 /**
@@ -7,6 +8,13 @@ import java.lang.RuntimeException
  */
 class JBotServiceException : RuntimeException {
 
-    constructor(message: String) : super(message)
-    constructor(message: String, cause: Throwable) : super(message, cause)
+    constructor(message: String, httpStatus: HttpStatus) : super(message) {
+        this.httpStatus = httpStatus
+    }
+    
+    constructor(message: String , httpStatus: HttpStatus, cause: Throwable) : super(message, cause) {
+        this.httpStatus = httpStatus
+    }
+    
+    var httpStatus: HttpStatus
 }

@@ -9,6 +9,8 @@ import it.jbot.security.repository.UserRepository
 import it.jbot.shared.util.ifNull
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
+import java.time.Month
+import java.util.*
 
 @Component
 class UserDataRunner(
@@ -29,19 +31,27 @@ class UserDataRunner(
                         Role(name = RoleName.ROLE_ADMIN),
                         Role(name = RoleName.ROLE_USER)
                     ),
-                    enabled = true
+                    enabled = true,
+                    pwdExpireAt = GregorianCalendar().apply {
+                        this.set(2099, GregorianCalendar.DECEMBER, 31)
+                    }.time
                 )
             )
         }
         
-        userRepository.findByUserName("user").ifNull {
+        userRepository.findByUserName("test").ifNull {
             userRepository.save(
                 createUser(
-                    username = "user",
-                    password = "user",
-                    email = "user@gmail.com",
-                    roles = mutableSetOf(Role(name = RoleName.ROLE_USER)),
-                    enabled = false
+                    username = "test",
+                    password = "test",
+                    email = "test@gmail.com",
+                    roles = mutableSetOf(
+                        Role(name = RoleName.ROLE_USER)
+                    ),
+                    enabled = true,
+                    pwdExpireAt = GregorianCalendar().apply {
+                        this.set(2099, GregorianCalendar.DECEMBER, 31)
+                    }.time
                 )
             )
         }
@@ -52,7 +62,10 @@ class UserDataRunner(
         password: String,
         email: String,
         roles: MutableSet<Role>,
-        enabled: Boolean
+        enabled: Boolean,
+        userExpireAt: Date? = null,
+        pwdExpireAt: Date,
+        lastLogin: Date? = null
     ): User {
         
         var userRoles = mutableSetOf<Role>()
@@ -68,6 +81,9 @@ class UserDataRunner(
         ).apply {
             this.roles = userRoles
             this.enabled = enabled
+            this.userExpireAt = userExpireAt
+            this.pwdExpireAt = pwdExpireAt
+            this.lastLogin = lastLogin
         }
     }
 }

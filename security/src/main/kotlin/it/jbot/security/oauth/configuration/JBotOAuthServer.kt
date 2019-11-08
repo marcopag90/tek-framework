@@ -44,8 +44,8 @@ class JBotOAuthServer(
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
     
-    override fun configure(clients: ClientDetailsServiceConfigurer?) {
-        clients?.jdbc(datasource)
+    override fun configure(clients: ClientDetailsServiceConfigurer) {
+        clients.jdbc(datasource)
     }
     
     override fun configure(security: AuthorizationServerSecurityConfigurer) {

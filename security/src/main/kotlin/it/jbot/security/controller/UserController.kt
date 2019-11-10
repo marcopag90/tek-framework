@@ -1,6 +1,6 @@
 package it.jbot.security.controller
 
-import it.jbot.security.dto.SignUpForm
+import it.jbot.security.dto.RegisterForm
 import it.jbot.security.service.JBotAuthService
 import it.jbot.security.service.UserService
 import it.jbot.shared.web.JBotResponse
@@ -20,15 +20,13 @@ class UserController(
 ) {
     
     @PostMapping("/register")
-    fun registerUser(@Valid @RequestBody signUpForm: SignUpForm): ResponseEntity<JBotResponse> {
+    fun registerUser(@Valid @RequestBody registerForm: RegisterForm): ResponseEntity<JBotResponse> {
         
         return ResponseEntity(
             JBotResponse(HttpStatus.OK).apply {
-                result = userService.registerUser(signUpForm)
+                result = userService.registerUser(registerForm)
             },
             HttpStatus.OK
         )
     }
-    
-    
 }

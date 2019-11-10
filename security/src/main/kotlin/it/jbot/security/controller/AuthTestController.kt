@@ -23,10 +23,4 @@ class AuthTestController {
     fun authUser(): String {
         return "success!"
     }
-    
-    @GetMapping("/authentication")
-    fun authentication(): Authentication? {
-        return SecurityContextHolder.getContext().authentication
-    }
-    
 }

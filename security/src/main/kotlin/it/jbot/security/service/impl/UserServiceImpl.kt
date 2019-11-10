@@ -1,7 +1,7 @@
 package it.jbot.security.service.impl
 
 import it.jbot.security.JBotPasswordEncoder
-import it.jbot.security.dto.SignUpForm
+import it.jbot.security.dto.RegisterForm
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
@@ -22,26 +22,26 @@ class UserServiceImpl(
     
     //TODO message template refactoring
     @Transactional
-    override fun registerUser(signUpForm: SignUpForm): User {
+    override fun registerUser(registerForm: RegisterForm): User {
         
-        if (userRepository.existsByUserName(signUpForm.username))
-            throw JBotServiceException("User with username: ${signUpForm.username} already exists!", HttpStatus.CONFLICT)
+        if (userRepository.existsByUserName(registerForm.username))
+            throw JBotServiceException("User with username: ${registerForm.username} already exists!", HttpStatus.CONFLICT)
         
-        if (userRepository.existsByEmail(signUpForm.email))
-            throw JBotServiceException("User with email: ${signUpForm.email} already exists!", HttpStatus.CONFLICT)
+        if (userRepository.existsByEmail(registerForm.email))
+            throw JBotServiceException("User with email: ${registerForm.email} already exists!", HttpStatus.CONFLICT)
         
-        if (signUpForm.roles.isEmpty())
-            throw JBotServiceException("${SignUpForm::roles.name} should not be empty!", HttpStatus.BAD_REQUEST)
+        if (registerForm.roles.isEmpty())
+            throw JBotServiceException("${RegisterForm::roles.name} should not be empty!", HttpStatus.BAD_REQUEST)
         
         var user: User = User(
-            userName = signUpForm.username,
-            passWord = passwordEncoder.encoder().encode(signUpForm.password),
-            email = signUpForm.email
+            userName = registerForm.username,
+            passWord = passwordEncoder.encoder().encode(registerForm.password),
+            email = registerForm.email
         )
         
         user.pwdExpireAt = JBotDateUtils.addMonthsFromNow(3)
         
-        for (role in signUpForm.roles)
+        for (role in registerForm.roles)
             when (role) {
                 RoleName.ROLE_ADMIN.name ->
                     roleRepository.findByName(RoleName.ROLE_ADMIN)?.let {

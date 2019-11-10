@@ -21,6 +21,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 import javax.sql.DataSource
 
 /**OAuth2 Authorization Server Configuration
@@ -38,30 +41,38 @@ class JBotOAuthServer(
     private val jBotAuthService: JBotAuthService,
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
-    
+
     private val logger by LoggerDelegate()
-    
+
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
-    
+
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(datasource)
     }
-    
+
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
-        
+
         logger.info("Security type: ${context.environment.getProperty("security.type")}")
-        
+
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
             .tokenKeyAccess("isAnonymous()".concatOR(clientDetailsProperties.authority.hasAuthority()))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(clientDetailsProperties.authority.hasAuthority())
             .passwordEncoder(jBotPasswordEncoder.encoder())
+            .tokenEndpointAuthenticationFilters(
+                listOf(
+                    CorsFilter(
+                        UrlBasedCorsConfigurationSource().apply {
+                            registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
+                        })
+                )
+            )
     }
-    
+
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
-        
+
         endpoints
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)

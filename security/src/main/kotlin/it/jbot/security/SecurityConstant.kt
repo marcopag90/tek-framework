@@ -4,6 +4,7 @@ package it.jbot.security
 object SecurityConstant {
     
     const val DEFAULT_SECURED_PATTERN = "/**"
+    const val REGISTER_PATTERN = "/register"
     
     //TODO split into single val (kotlin can't assign constant to non-primitive types
     val clientResources =

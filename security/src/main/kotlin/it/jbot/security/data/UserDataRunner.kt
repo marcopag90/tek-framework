@@ -18,45 +18,41 @@ class UserDataRunner(
     private val roleRepository: RoleRepository,
     private val jBotPasswordEncoder: JBotPasswordEncoder
 ) : CommandLineRunner {
-    
+
     override fun run(vararg args: String?) {
-        
+
         userRepository.findByUserName("admin").ifNull {
-            userRepository.save(
-                createUser(
-                    username = "admin",
-                    password = "admin",
-                    email = "admin@gmail.com",
-                    roles = mutableSetOf(
-                        Role(name = RoleName.ROLE_ADMIN),
-                        Role(name = RoleName.ROLE_USER)
-                    ),
-                    enabled = true,
-                    pwdExpireAt = GregorianCalendar().apply {
-                        this.set(2099, GregorianCalendar.DECEMBER, 31)
-                    }.time
-                )
+            createUser(
+                username = "admin",
+                password = "admin",
+                email = "admin@gmail.com",
+                roles = mutableSetOf(
+                    Role(name = RoleName.ROLE_ADMIN),
+                    Role(name = RoleName.ROLE_USER)
+                ),
+                enabled = true,
+                pwdExpireAt = GregorianCalendar().apply {
+                    this.set(2099, GregorianCalendar.DECEMBER, 31)
+                }.time
             )
         }
-        
+
         userRepository.findByUserName("test").ifNull {
-            userRepository.save(
-                createUser(
-                    username = "test",
-                    password = "test",
-                    email = "test@gmail.com",
-                    roles = mutableSetOf(
-                        Role(name = RoleName.ROLE_USER)
-                    ),
-                    enabled = true,
-                    pwdExpireAt = GregorianCalendar().apply {
-                        this.set(2099, GregorianCalendar.DECEMBER, 31)
-                    }.time
-                )
+            createUser(
+                username = "test",
+                password = "test",
+                email = "test@gmail.com",
+                roles = mutableSetOf(
+                    Role(name = RoleName.ROLE_USER)
+                ),
+                enabled = true,
+                pwdExpireAt = GregorianCalendar().apply {
+                    this.set(2099, GregorianCalendar.DECEMBER, 31)
+                }.time
             )
         }
     }
-    
+
     private fun createUser(
         username: String,
         password: String,
@@ -67,13 +63,13 @@ class UserDataRunner(
         pwdExpireAt: Date,
         lastLogin: Date? = null
     ): User {
-        
+
         var userRoles = mutableSetOf<Role>()
         for (role in roles)
             roleRepository.findByName(role.name)?.let {
                 userRoles.add(it)
             }
-        
+
         return User(
             username,
             jBotPasswordEncoder.encoder().encode(password),
@@ -84,7 +80,7 @@ class UserDataRunner(
             this.userExpireAt = userExpireAt
             this.pwdExpireAt = pwdExpireAt
             this.lastLogin = lastLogin
-        }
+        }.let(userRepository::save)
     }
 }
 

@@ -47,6 +47,15 @@ class JBotOAuthServer(
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
 
+    @Bean
+    fun corsFilter(): List<CorsFilter> =
+        listOf(
+            CorsFilter(
+                UrlBasedCorsConfigurationSource().apply {
+                    registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
+                })
+        )
+
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(datasource)
     }
@@ -61,14 +70,7 @@ class JBotOAuthServer(
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(clientDetailsProperties.authority.hasAuthority())
             .passwordEncoder(jBotPasswordEncoder.encoder())
-            .tokenEndpointAuthenticationFilters(
-                listOf(
-                    CorsFilter(
-                        UrlBasedCorsConfigurationSource().apply {
-                            registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
-                        })
-                )
-            )
+            .tokenEndpointAuthenticationFilters(corsFilter())
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {

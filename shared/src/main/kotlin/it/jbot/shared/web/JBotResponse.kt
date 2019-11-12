@@ -13,6 +13,10 @@ import java.util.*
 class JBotResponse(
     httpStatus: HttpStatus
 ) {
+    constructor(httpStatus: HttpStatus, result: Any?) : this(httpStatus) {
+        this.result = result
+    }
+
     val timestamp: Date = jbotTimestamp()
     val status: Int = httpStatus.value()
     var result: Any? = null

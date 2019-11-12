@@ -1,6 +1,7 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
+import it.jbot.security.SecurityConstant.REGISTER_PATTERN
 import it.jbot.shared.debug.RequireStatement.SPRING_PROFILE_ACTIVE
 import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
 import it.jbot.shared.SpringProfile
@@ -55,6 +56,9 @@ class JBotOAuthResourceServer(
     private fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
+            .antMatchers("/user$REGISTER_PATTERN").permitAll()
+            .and()
+            .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console())
             .permitAll() // allow h2-console
             .antMatchers(HttpMethod.GET, DEFAULT_SECURED_PATTERN)
@@ -74,6 +78,9 @@ class JBotOAuthResourceServer(
     
     private fun configureProdSecurity(http: HttpSecurity) {
         http
+            .authorizeRequests()
+            .antMatchers("/user$REGISTER_PATTERN").permitAll()
+            .and()
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, DEFAULT_SECURED_PATTERN)
             .access("#oauth2.hasScope('read')")

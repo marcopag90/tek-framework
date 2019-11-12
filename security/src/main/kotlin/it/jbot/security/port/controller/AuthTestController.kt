@@ -1,4 +1,4 @@
-package it.jbot.security.controller
+package it.jbot.security.port.controller
 
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication

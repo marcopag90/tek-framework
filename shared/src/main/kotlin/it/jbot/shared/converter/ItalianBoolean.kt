@@ -1,4 +1,4 @@
-package it.jbot.shared.util
+package it.jbot.shared.converter
 
 import javax.persistence.AttributeConverter
 
@@ -9,7 +9,7 @@ import javax.persistence.AttributeConverter
  * This implementation considers anything different from character "S" including **null**
  * as false
  */
-class ItalianBooleanStringConverter : AttributeConverter<Boolean, String> {
+class ItalianBoolean : AttributeConverter<Boolean, String> {
     
     override fun convertToDatabaseColumn(attribute: Boolean?): String {
         return if (attribute != null && attribute) "S" else "N"

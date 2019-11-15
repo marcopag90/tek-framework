@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam
 interface RolePort {
 
     @GetMapping("/list")
-    fun getRoles(pageable: Pageable) : ResponseEntity<JBotResponse>
+    fun list(pageable: Pageable) : ResponseEntity<JBotResponse>
 
     @GetMapping
-    fun getRole(@RequestParam("name") name: String) : ResponseEntity<JBotResponse>
+    fun getOne(@RequestParam("name") name: String) : ResponseEntity<JBotResponse>
 
 }

@@ -4,20 +4,20 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-class RegisterForm {
+data class RegisterForm(
     
     @NotBlank
     @Size(min = 3, max = 20)
-    lateinit var username: String
+    val username: String,
     
     @NotBlank
     @Size(min = 8)
-    lateinit var password: String
+    val password: String,
     
     @Email
     @NotBlank
     @Size(max = 50)
-    lateinit var email: String
+    val email: String,
     
-    var roles: MutableSet<String> = mutableSetOf()
-}
+    val roles: MutableSet<String> = mutableSetOf()
+)

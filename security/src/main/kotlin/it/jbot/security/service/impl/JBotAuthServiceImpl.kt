@@ -28,9 +28,9 @@ class JBotAuthServiceImpl(
         
         // retrieve user from repository and transactionally update User fields if needed
         var user = userRepository.findByUserName(username)?.apply {
-    
+            
             this.lastLogin = Date()
-    
+            
             this.accountExpired = isAccountExpired(this.userExpireAt)
             this.accountLocked = isAccountLocked(this.lastLogin)
             this.credentialsExpired = isCredentialsExpired(this.pwdExpireAt!!)

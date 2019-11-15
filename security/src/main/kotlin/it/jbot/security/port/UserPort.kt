@@ -11,7 +11,8 @@ import javax.validation.Valid
 
 @RequestMapping("/user")
 interface UserPort {
-
+    
     @PostMapping(REGISTER_PATTERN)
-    fun registerUser(@Valid @RequestBody registerForm: RegisterForm): ResponseEntity<JBotResponse>
+    fun register(@Valid @RequestBody registerForm: RegisterForm) : ResponseEntity<JBotResponse>
+    
 }

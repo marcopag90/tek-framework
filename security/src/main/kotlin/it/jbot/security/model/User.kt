@@ -1,8 +1,7 @@
 package it.jbot.security.model
 
 import it.jbot.security.audit.UserActivityAudit
-import it.jbot.shared.util.ItalianBooleanStringConverter
-import it.jbot.shared.util.JBotDateUtils
+import it.jbot.shared.converter.ItalianBoolean
 import it.jbot.shared.util.JBotDateUtils.isDateExpired
 import java.io.Serializable
 import java.util.*
@@ -107,7 +106,7 @@ class User(
      *
      * Usually some action is required to release it (Server or Client side)
      */
-    @Convert(converter = ItalianBooleanStringConverter::class)
+    @Convert(converter = ItalianBoolean::class)
     var enabled: Boolean = true
     
     /**
@@ -117,7 +116,7 @@ class User(
      *
      * If you don't need your User to expire, you just have to leave [User.userExpireAt] = **null**
      */
-    @Convert(converter = ItalianBooleanStringConverter::class)
+    @Convert(converter = ItalianBoolean::class)
     var accountExpired: Boolean = false
     
     //TODO check how to implement login attempts
@@ -130,7 +129,7 @@ class User(
      * 1) too many login attempts (not yet implemented)
      * 2) has been offline for more than 6 months (standard implementation)
      */
-    @Convert(converter = ItalianBooleanStringConverter::class)
+    @Convert(converter = ItalianBoolean::class)
     var accountLocked: Boolean = false
     
     /**
@@ -139,7 +138,7 @@ class User(
      *
      * A User with credentials expired has to change password, due to **GDPR** policy
      */
-    @Convert(converter = ItalianBooleanStringConverter::class)
+    @Convert(converter = ItalianBoolean::class)
     var credentialsExpired: Boolean = false
     
     /**

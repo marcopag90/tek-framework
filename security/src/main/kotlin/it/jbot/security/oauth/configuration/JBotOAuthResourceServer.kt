@@ -2,9 +2,10 @@ package it.jbot.security.oauth.configuration
 
 import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
 import it.jbot.security.SecurityConstant.REGISTER_PATTERN
-import it.jbot.shared.debug.RequireStatement.SPRING_PROFILE_ACTIVE
 import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
 import it.jbot.shared.SpringProfile
+import it.jbot.shared.debug.RequireStatement.SPRING_PROFILE_ACTIVE
+import it.jbot.shared.i18n.LOCALE_PATTERN
 import it.jbot.shared.util.unreachableCode
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
@@ -39,8 +40,8 @@ class JBotOAuthResourceServer(
     }
     
     override fun configure(http: HttpSecurity) {
-    
-        require(environment.activeProfiles.isNotEmpty()) {
+        
+        check(environment.activeProfiles.isNotEmpty()) {
             SPRING_PROFILE_ACTIVE
         }
         
@@ -49,14 +50,16 @@ class JBotOAuthResourceServer(
         }
             ?: environment.activeProfiles.find { it == SpringProfile.production }?.let {
                 configureProdSecurity(http)
-            } ?: unreachableCode() // there must always be a profile active (development or production)!
+            }
+            ?: unreachableCode() // there must always be a profile active (development or production)!
     }
     
     //TODO need to check for client resources antMatchers!
     private fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers("/user$REGISTER_PATTERN").permitAll()
+            .antMatchers(*freePatterns())
+            .permitAll()
             .and()
             .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console())
@@ -77,9 +80,10 @@ class JBotOAuthResourceServer(
     }
     
     private fun configureProdSecurity(http: HttpSecurity) {
+        
         http
             .authorizeRequests()
-            .antMatchers("/user$REGISTER_PATTERN").permitAll()
+            .antMatchers(*freePatterns()).permitAll()
             .and()
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, DEFAULT_SECURED_PATTERN)
@@ -91,5 +95,12 @@ class JBotOAuthResourceServer(
             .antMatchers(HttpMethod.DELETE, DEFAULT_SECURED_PATTERN)
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
+    }
+    
+    private fun freePatterns(): Array<String> {
+        return arrayOf(
+            LOCALE_PATTERN,
+            "/user$REGISTER_PATTERN"
+        )
     }
 }

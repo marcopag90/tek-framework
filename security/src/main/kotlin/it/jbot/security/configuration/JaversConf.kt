@@ -15,10 +15,8 @@ import org.springframework.web.context.request.ServletRequestAttributes
 class ServletRequestHolder {
     
     fun getRequestAttributes(): RequestAttributes? {
-        
         if (RequestContextHolder.getRequestAttributes() == null)
             return null
-        
         return RequestContextHolder.currentRequestAttributes()
     }
 }

@@ -1,7 +1,7 @@
 package it.jbot.shared.controller
 
-import it.jbot.shared.i18n.SharedMessageBundle
-import it.jbot.shared.i18n.SharedMessageBundle.Companion.localeLang
+import it.jbot.shared.i18n.SharedMessageSource
+import it.jbot.shared.i18n.SharedMessageSource.Companion.localeLang
 import it.jbot.shared.web.JBotResponse
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
@@ -15,7 +15,7 @@ const val LOCALE_PATTERN = "/locale"
 @RestController
 @RequestMapping(LOCALE_PATTERN)
 class LocaleController(
-    private val messageSource: SharedMessageBundle
+    private val messageSource: SharedMessageSource
 ) {
     
     @GetMapping

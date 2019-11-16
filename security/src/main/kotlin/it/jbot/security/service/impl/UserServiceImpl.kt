@@ -2,16 +2,19 @@ package it.jbot.security.service.impl
 
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.dto.RegisterForm
-import it.jbot.security.i18n.SecurityMessageBundle
-import it.jbot.security.i18n.SecurityMessageBundle.Companion.errorConflictUsername
+import it.jbot.security.i18n.SecurityMessageSource
+import it.jbot.security.i18n.SecurityMessageSource.Companion.errorConflictEmail
+import it.jbot.security.i18n.SecurityMessageSource.Companion.errorConflictUsername
+import it.jbot.security.i18n.SecurityMessageSource.Companion.errorEmptyRole
+import it.jbot.security.i18n.SecurityMessageSource.Companion.errorRoleNotFound
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.UserService
 import it.jbot.shared.exception.JBotServiceException
+import it.jbot.shared.exception.ServiceExceptionData
 import it.jbot.shared.util.JBotDateUtils
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +24,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: JBotPasswordEncoder,
-    private val messageSource: SecurityMessageBundle = SecurityMessageBundle()
+    private val messageSource: SecurityMessageSource = SecurityMessageSource()
 ) : UserService {
     
     //TODO message template refactoring
@@ -30,24 +33,32 @@ class UserServiceImpl(
         
         if (userRepository.existsByUserName(registerForm.username))
             throw JBotServiceException(
-                messageSource.getSecuritySource().getMessage(
-                    errorConflictUsername,
-                    arrayOf(registerForm.username),
-                    LocaleContextHolder.getLocale()
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = errorConflictUsername,
+                    parameters = arrayOf(registerForm.username)
                 ),
-                HttpStatus.CONFLICT
+                httpStatus = HttpStatus.CONFLICT
             )
         
         if (userRepository.existsByEmail(registerForm.email))
             throw JBotServiceException(
-                "User with email: ${registerForm.email} already exists!",
-                HttpStatus.CONFLICT
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = errorConflictEmail,
+                    parameters = arrayOf(registerForm.email)
+                ),
+                httpStatus = HttpStatus.CONFLICT
             )
         
         if (registerForm.roles.isEmpty())
             throw JBotServiceException(
-                "${RegisterForm::roles.name} should not be empty!",
-                HttpStatus.BAD_REQUEST
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = errorEmptyRole,
+                    parameters = arrayOf(RegisterForm::roles.name)
+                ),
+                httpStatus = HttpStatus.BAD_REQUEST
             )
         
         var user: User = User(
@@ -59,28 +70,16 @@ class UserServiceImpl(
         user.pwdExpireAt = JBotDateUtils.addMonthsFromNow(3)
         
         for (role in registerForm.roles)
-            when (role) {
-                RoleName.ROLE_ADMIN.name ->
-                    roleRepository.findByName(RoleName.ROLE_ADMIN)?.let {
-                        user.roles.add(it)
-                    } ?: throw JBotServiceException(
-                        "User role: $role not found!",
-                        HttpStatus.NOT_FOUND
-                    )
-                
-                RoleName.ROLE_USER.name ->
-                    roleRepository.findByName(RoleName.ROLE_USER)?.let {
-                        user.roles.add(it)
-                    } ?: throw JBotServiceException(
-                        "User role: $role not found!",
-                        HttpStatus.NOT_FOUND
-                    )
-                else -> throw JBotServiceException(
-                    "User role: $role not found!",
-                    HttpStatus.NOT_FOUND
-                )
-            }
-        
+            roleRepository.findByName(RoleName.fromString(role))?.let {
+                user.roles.add(it)
+            } ?: throw JBotServiceException(
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = errorRoleNotFound,
+                    parameters = arrayOf(role)
+                ),
+                httpStatus = HttpStatus.NOT_FOUND
+            )
         return userRepository.save(user)
     }
 }

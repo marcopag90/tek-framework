@@ -29,7 +29,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         
         log.error(ex.message)
         
-        return ResponseEntity<JBotErrorResponse>(
+        return ResponseEntity(
             JBotErrorResponse(ex.httpStatus).apply {
                 this.errors = arrayListOf(ex.message)
                 this.path = (request as ServletWebRequest).request.servletPath
@@ -50,7 +50,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         
         log.error(ex.message)
         
-        return ResponseEntity<Any>(
+        return ResponseEntity(
             
             JBotErrorResponse(status).apply {
                 this.errors =

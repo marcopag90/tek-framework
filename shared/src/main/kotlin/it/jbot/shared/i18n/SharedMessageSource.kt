@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class SharedMessageBundle {
+class SharedMessageSource : JBotMessageSource {
+    
+    override fun getResource(): MessageSource = getSharedSource()
     
     @Bean
     fun getSharedSource(): MessageSource =

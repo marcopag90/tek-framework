@@ -1,9 +1,12 @@
 package it.jbot.security.controller
 
+import it.jbot.security.i18n.SecurityMessageSource
+import it.jbot.security.i18n.SecurityMessageSource.Companion.errorRoleNotFound
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.port.RolePort
 import it.jbot.security.repository.RoleRepository
 import it.jbot.shared.exception.JBotServiceException
+import it.jbot.shared.exception.ServiceExceptionData
 import it.jbot.shared.web.JBotResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -15,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 class RoleController(
-    private val roleRepository: RoleRepository
+    private val roleRepository: RoleRepository,
+    private val messageSource: SecurityMessageSource = SecurityMessageSource()
 ) : RolePort {
     
     override fun list(pageable: Pageable): ResponseEntity<JBotResponse> {
@@ -25,7 +29,7 @@ class RoleController(
         )
     }
     
-    override fun getOne(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
+    override fun get(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
         
         roleRepository.findByName(RoleName.fromString(name))?.let {
             return ResponseEntity(
@@ -33,10 +37,12 @@ class RoleController(
                 HttpStatus.OK
             )
         } ?: throw JBotServiceException(
-            "RoleName: $name not found!",
-            HttpStatus.NOT_FOUND
+            data = ServiceExceptionData(
+                source = messageSource,
+                message = errorRoleNotFound,
+                parameters = arrayOf(name)
+            ),
+            httpStatus = HttpStatus.NOT_FOUND
         )
-        
-        
     }
 }

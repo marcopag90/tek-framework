@@ -1,12 +1,15 @@
 package it.jbot.security.i18n
 
+import it.jbot.shared.i18n.JBotMessageSource
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class SecurityMessageBundle {
+class SecurityMessageSource : JBotMessageSource {
+    
+    override fun getResource(): MessageSource = getSecuritySource()
     
     @Bean
     fun getSecuritySource(): MessageSource =
@@ -16,5 +19,10 @@ class SecurityMessageBundle {
     
     companion object {
         const val errorConflictUsername = "error.conflict.username"
+        const val errorConflictEmail = "error.conflict.email"
+        
+        const val errorEmptyRole = "error.empty.role"
+        
+        const val errorRoleNotFound = "error.notfound.role"
     }
 }

@@ -1,6 +1,6 @@
 package it.jbot.shared.i18n
 
-object JBotMessage {
+object JBotSharedMessage {
     
     const val localLanguage = "locale.lang"
     

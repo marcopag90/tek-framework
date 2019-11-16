@@ -3,6 +3,7 @@ package it.jbot.security.service.impl
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.dto.RegisterForm
 import it.jbot.security.i18n.JBotSecurityMessage.usernameConflict
+import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
@@ -10,7 +11,6 @@ import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.UserService
 import it.jbot.shared.exception.JBotServiceException
 import it.jbot.shared.util.JBotDateUtils
-import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -21,7 +21,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: JBotPasswordEncoder,
-    private val messageSource: MessageSource
+    private val messageSource: SecurityMessageSource = SecurityMessageSource()
 ) : UserService {
     
     //TODO message template refactoring
@@ -30,7 +30,7 @@ class UserServiceImpl(
         
         if (userRepository.existsByUserName(registerForm.username))
             throw JBotServiceException(
-                messageSource.getMessage(
+                messageSource.getSecuritySource().getMessage(
                     usernameConflict,
                     arrayOf(registerForm.username),
                     LocaleContextHolder.getLocale()

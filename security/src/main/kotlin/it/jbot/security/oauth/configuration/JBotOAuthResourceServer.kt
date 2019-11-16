@@ -4,8 +4,8 @@ import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
 import it.jbot.security.SecurityConstant.REGISTER_PATTERN
 import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
 import it.jbot.shared.SpringProfile
+import it.jbot.shared.controller.LOCALE_PATTERN
 import it.jbot.shared.debug.RequireStatement.SPRING_PROFILE_ACTIVE
-import it.jbot.shared.i18n.LOCALE_PATTERN
 import it.jbot.shared.util.unreachableCode
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties

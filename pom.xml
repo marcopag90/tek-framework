@@ -67,12 +67,28 @@
         </dependency>
     </dependencies>
 
-    <modules>
-        <module>shared</module>
-        <module>audit</module>
-        <module>security</module>
-        <module>application</module>
-    </modules>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>shared</module>
+                <module>audit</module>
+                <module>security</module>
+                <module>application</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>build</id>
+            <modules>
+                <module>shared</module>
+                <module>audit</module>
+                <module>security</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <build>
         <pluginManagement>

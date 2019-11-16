@@ -36,7 +36,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <springProfile>dev</springProfile>
+                <activeProfile>dev</activeProfile>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>

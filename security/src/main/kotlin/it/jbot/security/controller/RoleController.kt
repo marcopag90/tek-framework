@@ -17,23 +17,26 @@ import org.springframework.web.bind.annotation.RestController
 class RoleController(
     private val roleRepository: RoleRepository
 ) : RolePort {
-
+    
     override fun list(pageable: Pageable): ResponseEntity<JBotResponse> {
-        return ResponseEntity<JBotResponse>(
+        return ResponseEntity(
             JBotResponse(HttpStatus.OK, roleRepository.findAll(pageable)),
             HttpStatus.OK
         )
     }
-
+    
     override fun getOne(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
-
-        var role = roleRepository.findByName(RoleName.fromString(name))?.let {
-            return ResponseEntity<JBotResponse>(
+        
+        roleRepository.findByName(RoleName.fromString(name))?.let {
+            return ResponseEntity(
                 JBotResponse(HttpStatus.OK, it),
                 HttpStatus.OK
             )
-        } ?: throw JBotServiceException("RoleName: $name not found!", HttpStatus.NOT_FOUND)
-
-
+        } ?: throw JBotServiceException(
+            "RoleName: $name not found!",
+            HttpStatus.NOT_FOUND
+        )
+        
+        
     }
 }

@@ -6,11 +6,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class SecurityMessageSource {
+class SecurityMessageBundle {
     
     @Bean
     fun getSecuritySource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasename("classpath:/security_messages")
+            setBasename("classpath:/i18n/security_messages")
         }
+    
+    companion object {
+        const val errorConflictUsername = "error.conflict.username"
+    }
 }

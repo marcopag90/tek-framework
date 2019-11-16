@@ -6,11 +6,16 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class SharedMessageSource {
+class SharedMessageBundle {
     
     @Bean
     fun getSharedSource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasename("classpath:/shared_messages")
+            setBasename("classpath:/i18n/shared_messages")
         }
+    
+    companion object {
+        const val localeLang = "locale.lang"
+    }
+    
 }

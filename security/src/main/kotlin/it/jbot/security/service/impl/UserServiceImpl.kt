@@ -2,8 +2,8 @@ package it.jbot.security.service.impl
 
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.dto.RegisterForm
-import it.jbot.security.i18n.JBotSecurityMessage.usernameConflict
-import it.jbot.security.i18n.SecurityMessageSource
+import it.jbot.security.i18n.SecurityMessageBundle
+import it.jbot.security.i18n.SecurityMessageBundle.Companion.errorConflictUsername
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
@@ -21,7 +21,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: JBotPasswordEncoder,
-    private val messageSource: SecurityMessageSource = SecurityMessageSource()
+    private val messageSource: SecurityMessageBundle = SecurityMessageBundle()
 ) : UserService {
     
     //TODO message template refactoring
@@ -31,7 +31,7 @@ class UserServiceImpl(
         if (userRepository.existsByUserName(registerForm.username))
             throw JBotServiceException(
                 messageSource.getSecuritySource().getMessage(
-                    usernameConflict,
+                    errorConflictUsername,
                     arrayOf(registerForm.username),
                     LocaleContextHolder.getLocale()
                 ),

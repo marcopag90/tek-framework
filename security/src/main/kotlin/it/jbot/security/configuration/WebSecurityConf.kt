@@ -2,7 +2,6 @@ package it.jbot.security.configuration
 
 import it.jbot.security.oauth.configuration.JBotOAuthWebSecurity
 import it.jbot.shared.SpringProfile
-import it.jbot.shared.debug.RequireStatement
 import it.jbot.shared.util.LoggerDelegate
 import it.jbot.shared.util.SpringProperty
 import it.jbot.shared.util.unreachableCode
@@ -35,16 +34,14 @@ class WebSecurityConf(
         logger.info("Security type: $securityType")
         
         require(environment.activeProfiles.isNotEmpty()) {
-            RequireStatement.SPRING_PROFILE_ACTIVE
+            "At least one Spring profile must be active!"
         }
         
-        environment.activeProfiles.find { it == SpringProfile.development }?.let {
+        environment.activeProfiles.find { it == SpringProfile.DEVELOPMENT.label }?.let {
             configureDevelopmentSecurity(http)
-        }
-            ?: environment.activeProfiles.find { it == SpringProfile.production }?.let {
-                configureProdSecurity(http)
-            }
-            ?: unreachableCode() // there must always be a profile active (development or production)!
+        } ?: environment.activeProfiles.find { it == SpringProfile.PRODUCTION.label }?.let {
+            configureProdSecurity(http)
+        } ?: unreachableCode() // there must always be a profile active (development or production)!
     }
     
     //TODO need to check for client resources antMatchers!
@@ -69,7 +66,6 @@ class WebSecurityConf(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
-    
     
 }
 

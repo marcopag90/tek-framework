@@ -23,15 +23,15 @@ class ClientDetailsDataRunner(
             
             oAuth2ClientRepository.save(ClientDetails().apply {
                 
-                clientId = properties.clientId
-                clientSecret = jBotPasswordEncoder.encoder()
+                this.clientId = properties.clientId
+                this.clientSecret = jBotPasswordEncoder.encoder()
                     .encode(properties.clientSecret)
-                resourceId = properties.resourceId
-                scope = properties.scope
-                authorizedGrantTypes = properties.grants
-                authorities = properties.authority
-                accessTokenValidity = properties.accessTokenValidity.seconds.toInt()
-                refreshTokenValidity = properties.refreshTokenValidity.seconds.toInt()
+                this.resourceId = properties.resourceId
+                this.scope = properties.scope
+                this.authorizedGrantTypes = properties.grants
+                this.authorities = properties.authority
+                this.accessTokenValidity = properties.accessTokenValidity.seconds.toInt()
+                this.refreshTokenValidity = properties.refreshTokenValidity.seconds.toInt()
             })
         }
     }

@@ -20,9 +20,9 @@ class LocaleController(
     
     @GetMapping
     fun getCurrentLocale(): ResponseEntity<JBotResponse> =
-        ResponseEntity<JBotResponse>(
+        ResponseEntity(
             JBotResponse(HttpStatus.OK).apply {
-                result = messageSource.getSharedSource().getMessage(
+                this.result = messageSource.getSharedSource().getMessage(
                     localeLang,
                     null,
                     LocaleContextHolder.getLocale()

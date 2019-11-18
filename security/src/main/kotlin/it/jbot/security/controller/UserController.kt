@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/user")
 class UserController(
     private val authService: JBotAuthService,
     private val userService: UserService
@@ -20,7 +19,7 @@ class UserController(
     override fun register(registerForm: RegisterForm): ResponseEntity<JBotResponse> {
         return ResponseEntity(
             JBotResponse(HttpStatus.OK).apply {
-                result = userService.registerUser(registerForm)
+                this.result = userService.registerUser(registerForm)
             },
             HttpStatus.OK
         )

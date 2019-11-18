@@ -1,21 +1,11 @@
 package it.jbot.shared
 
-/**Spring profiles for business logics
- *
- * [development]
- *
- * [test]
- *
- * [production]
- * */
-object SpringProfile {
+import it.jbot.shared.util.LabelEnum
+
+/**Spring profiles for business logics*/
+enum class SpringProfile(override val label: String) : LabelEnum {
     
-    /**Development profile*/
-    const val development = "dev"
-    
-    /**Test profile*/
-    const val test = "test"
-    
-    /**Production profile*/
-    const val production = "prod"
+    DEVELOPMENT("dev"),
+    TEST("test"),
+    PRODUCTION("prod")
 }

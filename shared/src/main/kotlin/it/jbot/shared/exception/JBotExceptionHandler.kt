@@ -1,7 +1,8 @@
 package it.jbot.shared.exception
 
-import it.jbot.shared.util.LoggerDelegate
 import it.jbot.shared.web.JBotErrorResponse
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,8 +16,8 @@ import java.util.stream.Collectors
 
 @ControllerAdvice
 class JBotExceptionHandler : ResponseEntityExceptionHandler() {
-    
-    private val log by LoggerDelegate()
+
+    private val log: Logger = LoggerFactory.getLogger(JBotExceptionHandler::class.java)
     
     /**
      * Function to give a standard response for a [JBotServiceException]
@@ -26,9 +27,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         ex: JBotServiceException,
         request: WebRequest
     ): ResponseEntity<JBotErrorResponse> {
-        
-        log.error(ex.message)
-        
+
         return ResponseEntity(
             JBotErrorResponse(ex.httpStatus).apply {
                 this.errors = arrayListOf(ex.message)

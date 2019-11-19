@@ -11,7 +11,7 @@ import javax.validation.constraints.Size
 class RefreshToken {
     
     @Id
-    @Size(max = 255)
+    @field:Size(max = 255)
     @Column(name = "token_id")
     var tokenId: String? = null
     

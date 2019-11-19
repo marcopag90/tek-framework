@@ -10,6 +10,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 import javax.persistence.TemporalType
+import kotlin.math.max
 
 /**
  * Persistable User for Authentication purpose
@@ -18,23 +19,23 @@ import javax.persistence.TemporalType
 @Entity
 @Table(name = "users")
 class User(
-    @NotBlank
-    @Size(min = 3, max = 20)
+    @field:NotBlank
+    @field:Size(min = 3, max = 20)
     @Column(name = "username", unique = true, nullable = false)
     var userName: String,
-    
+
     //TODO password regex
-    @NotBlank
+    @field:NotBlank
     @Column(name = "password", nullable = false)
     var passWord: String,
-    
-    @Email
-    @NotBlank
-    @Size(max = 50)
+
+    @field:Email
+    @field:NotBlank
+    @field:Size(max = 50)
     @Column(unique = true, nullable = false)
     var email: String
 ) : UserActivityAudit(), Serializable {
-    
+
     //Mandatory User fields
     constructor(user: User) : this(
         userName = user.userName,
@@ -48,13 +49,13 @@ class User(
         this.enabled = user.enabled
         this.roles = user.roles
     }
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-    
+
     //TODO Check from REST service if user activity and javers works (all crud operations)
-    
+
     /**
      * Condition: _OPTIONAL_
      *
@@ -63,7 +64,7 @@ class User(
     @Column(name = "userExpireAt")
     @Temporal(TemporalType.TIMESTAMP)
     var userExpireAt: Date? = null
-    
+
     /**
      * Condition: _REQUIRED_
      *
@@ -72,7 +73,7 @@ class User(
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     var pwdExpireAt: Date? = null
-    
+
     /**
      * Condition: _REQUIRED_
      *
@@ -80,7 +81,7 @@ class User(
      */
     @Temporal(TemporalType.TIMESTAMP)
     var lastLogin: Date? = null
-    
+
     /**
      * Condition: _REQUIRED_
      *
@@ -95,9 +96,9 @@ class User(
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     var roles: MutableSet<Role> = mutableSetOf()
-    
+
     /*##################### Account Management #####################*/
-    
+
     //TODO decide user registration path (email with confirm activation, credentials etc..) to enable it
     /**
      * Condition: _REQUIRED_
@@ -106,9 +107,10 @@ class User(
      *
      * Usually some action is required to release it (Server or Client side)
      */
+    @Column(length = 1)
     @Convert(converter = ItalianBoolean::class)
     var enabled: Boolean = true
-    
+
     /**
      * Condition: _OPTIONAL_
      *
@@ -116,9 +118,10 @@ class User(
      *
      * If you don't need your User to expire, you just have to leave [User.userExpireAt] = **null**
      */
+    @Column(length = 1)
     @Convert(converter = ItalianBoolean::class)
     var accountExpired: Boolean = false
-    
+
     //TODO check how to implement login attempts
     /**
      * Condition: _REQUIRED_
@@ -129,38 +132,40 @@ class User(
      * 1) too many login attempts (not yet implemented)
      * 2) has been offline for more than 6 months (standard implementation)
      */
+    @Column(length = 1)
     @Convert(converter = ItalianBoolean::class)
     var accountLocked: Boolean = false
-    
+
     /**
      * Condition: _REQUIRED_
      * Checked by [User.pwdExpireAt]
      *
      * A User with credentials expired has to change password, due to **GDPR** policy
      */
+    @Column(length = 1)
     @Convert(converter = ItalianBoolean::class)
     var credentialsExpired: Boolean = false
-    
+
     /**
      * Check if User account has expired
      */
     fun isAccountExpired(userExpireAt: Date?): Boolean = userExpireAt?.let {
         userExpireAt < Date()
     } ?: false
-    
+
     /**
      * Check if User account has to become locked
      */
     fun isAccountLocked(lastLogin: Date?): Boolean = lastLogin?.let {
         isDateExpired(it, 6)
     } ?: false
-    
+
     /**
      * Check if User password has expired
      */
     fun isCredentialsExpired(passwordExpireAt: Date): Boolean =
         passwordExpireAt < Date()
-    
+
     /*##################### Account Management #####################*/
 }
 

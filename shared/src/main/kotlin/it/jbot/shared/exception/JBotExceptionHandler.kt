@@ -18,7 +18,7 @@ import java.util.stream.Collectors
 class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
     private val log: Logger = LoggerFactory.getLogger(JBotExceptionHandler::class.java)
-    
+
     /**
      * Function to give a standard response for a [JBotServiceException]
      */
@@ -36,7 +36,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
             ex.httpStatus
         )
     }
-    
+
     /**
      * Function to give a standard response for [MethodArgumentNotValidException]
      */
@@ -46,11 +46,13 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatus,
         request: WebRequest
     ): ResponseEntity<Any> {
-        
+
+        //TODO validazione i18n!
+
         log.error(ex.message)
-        
+
         return ResponseEntity(
-            
+
             JBotErrorResponse(status).apply {
                 this.errors =
                     ex.bindingResult.fieldErrors.stream().map { e ->

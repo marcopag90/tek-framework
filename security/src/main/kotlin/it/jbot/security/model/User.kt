@@ -24,7 +24,6 @@ class User(
     @Column(name = "username", unique = true, nullable = false)
     var userName: String,
 
-    //TODO password regex
     @field:NotBlank
     @Column(name = "password", nullable = false)
     var passWord: String,

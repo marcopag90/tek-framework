@@ -21,8 +21,6 @@ spring:
         open-in-view: false
         properties:
             hibernate:
-                show_sql: true
-                format_sql: true
                 current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
                 # Workaround. Vedi:
                 # https://github.com/pgjdbc/pgjdbc/issues/1102
@@ -45,6 +43,18 @@ spring:
         settings:
             trace: false
             web-allow-others: false
+
+logging:
+    level:
+        org.hibernate:
+            tool.hbm2ddl: DEBUG
+            SQL: DEBUG
+            type: DEBUG
+            type.EnumType: INFO
+            type.BasicTypeRegistry: INFO
+            descriptor:
+                sql: DEBUG
+                sql.BasicExtractor: DEBUG
 
 security:
     # oauth2, basic (se mancante fallback a basic automaticamente)

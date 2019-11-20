@@ -9,9 +9,7 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<groupId>it.jbot</groupId>
 	<artifactId>audit</artifactId>
-
 	<name>jbot-audit</name>
 	<description>jbot audit module</description>
 
@@ -19,7 +17,7 @@
 		<!-- Framework -->
 		<dependency>
 			<groupId>it.jbot</groupId>
-			<artifactId>shared</artifactId>
+			<artifactId>core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<!--Auditing-->

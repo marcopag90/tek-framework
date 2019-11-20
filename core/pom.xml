@@ -10,11 +10,9 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>it.jbot</groupId>
-    <artifactId>shared</artifactId>
-
-    <name>jbot-shared</name>
-    <description>jbot shared module</description>
+    <artifactId>core</artifactId>
+    <name>jbot-core</name>
+    <description>jbot core module</description>
 
     <dependencies>
         <!-- Spring -->

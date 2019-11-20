@@ -67,25 +67,22 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>core</module>
+        <module>audit</module>
+        <module>security</module>
+        <module>web</module>
+        <module>application</module>
+    </modules>
+
     <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>shared</module>
-                <module>audit</module>
-                <module>security</module>
-                <module>application</module>
-            </modules>
-        </profile>
         <profile>
             <id>build</id>
             <modules>
-                <module>shared</module>
+                <module>core</module>
                 <module>audit</module>
                 <module>security</module>
+                <module>web</module>
             </modules>
             <build>
                 <plugins>
@@ -110,8 +107,8 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <artifactId>kotlin-maven-plugin</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
                     <version>${kotlin.version}</version>
                     <configuration>
                         <args>

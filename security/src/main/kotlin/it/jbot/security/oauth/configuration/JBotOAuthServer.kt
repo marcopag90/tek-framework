@@ -3,9 +3,10 @@ package it.jbot.security.oauth.configuration
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.oauth.exception.JBotOAuthException
 import it.jbot.security.service.JBotAuthService
-import it.jbot.shared.util.LoggerDelegate
 import it.jbot.shared.util.concatOR
 import it.jbot.shared.util.hasAuthority
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -42,19 +43,16 @@ class JBotOAuthServer(
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
-    private val logger by LoggerDelegate()
+    private val log: Logger = LoggerFactory.getLogger(JBotOAuthServer::class.java)
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
 
     @Bean
     fun corsFilter(): List<CorsFilter> =
-        listOf(
-            CorsFilter(
-                UrlBasedCorsConfigurationSource().apply {
-                    registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
-                })
-        )
+        listOf(CorsFilter(UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
+        }))
 
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(datasource)
@@ -62,7 +60,7 @@ class JBotOAuthServer(
 
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
 
-        logger.info("Security type: ${context.environment.getProperty("security.type")}")
+        log.info("Security type: ${context.environment.getProperty("security.type")}")
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token

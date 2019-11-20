@@ -2,9 +2,10 @@ package it.jbot.security.configuration
 
 import it.jbot.security.oauth.configuration.JBotOAuthWebSecurity
 import it.jbot.shared.SpringProfile
-import it.jbot.shared.util.LoggerDelegate
 import it.jbot.shared.util.SpringProperty
 import it.jbot.shared.util.unreachableCode
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -26,12 +27,12 @@ class WebSecurityConf(
     
     @Value("\${security.type: basic}")
     private lateinit var securityType: SpringProperty
-    
-    private val logger by LoggerDelegate()
-    
+
+    private val log: Logger = LoggerFactory.getLogger(WebSecurityConf::class.java)
+
     override fun configure(http: HttpSecurity) {
         
-        logger.info("Security type: $securityType")
+        log.info("Security type: $securityType")
         
         require(environment.activeProfiles.isNotEmpty()) {
             "At least one Spring profile must be active!"

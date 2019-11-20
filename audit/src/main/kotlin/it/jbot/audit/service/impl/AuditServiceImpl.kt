@@ -1,11 +1,11 @@
 package it.jbot.audit.service.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.JsonParser
 import it.jbot.audit.model.WebAudit
 import it.jbot.audit.repository.WebAuditRepository
 import it.jbot.audit.service.AuditService
-import it.jbot.shared.util.LoggerDelegate
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -24,7 +24,7 @@ class AuditServiceImpl(
     private val objectMapper: ObjectMapper
 ) : AuditService {
 
-    private val logger by LoggerDelegate()
+    private val logger: Logger = LoggerFactory.getLogger(AuditServiceImpl::class.java)
 
     override fun logRequest(
         httpServletRequest: HttpServletRequest,

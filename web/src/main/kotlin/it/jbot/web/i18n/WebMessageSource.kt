@@ -1,4 +1,4 @@
-package it.jbot.shared.i18n
+package it.jbot.web.i18n
 
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -6,14 +6,14 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class SharedMessageSource : JBotMessageSource {
+class WebMessageSource : JBotMessageSource {
     
-    override fun getResource(): MessageSource = getSharedSource()
+    override fun getResource(): MessageSource = getWebResource()
     
     @Bean
-    fun getSharedSource(): MessageSource =
+    fun getWebResource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasename("classpath:/i18n/shared_messages")
+            setBasename("classpath:/i18n/web_messages")
         }
     
     companion object {

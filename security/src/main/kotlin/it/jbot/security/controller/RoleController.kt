@@ -5,9 +5,9 @@ import it.jbot.security.i18n.SecurityMessageSource.Companion.errorRoleNotFound
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.port.RolePort
 import it.jbot.security.repository.RoleRepository
-import it.jbot.shared.exception.JBotServiceException
-import it.jbot.shared.exception.ServiceExceptionData
-import it.jbot.shared.web.JBotResponse
+import it.jbot.web.exception.JBotServiceException
+import it.jbot.web.exception.ServiceExceptionData
+import it.jbot.web.JBotResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

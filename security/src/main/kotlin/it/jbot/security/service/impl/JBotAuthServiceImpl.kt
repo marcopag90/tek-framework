@@ -1,5 +1,6 @@
 package it.jbot.security.service.impl
 
+import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.JBotUserDetails
 import it.jbot.security.oauth.configuration.ClientDetailsProperties
 import it.jbot.security.repository.UserRepository
@@ -9,6 +10,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,36 +21,61 @@ import java.util.*
  */
 @Service
 class JBotAuthServiceImpl(
-    private val userRepository: UserRepository,
-    private val clientDetailsProperties: ClientDetailsProperties
+    private val userRepository: UserRepository
 ) : JBotAuthService {
-    
+
+    //TODO fix password regex
+    private val passwordRegex = Regex(
+        """(?x)
+        ^
+        (
+            (?= .* \d)
+            (?= .* [a-z])
+            (?= .* [A-Z])
+        |
+            (?= .* \d)
+            (?= .* [a-zA-Z])
+            (?= .* [\W_])
+        |
+            (?= .* [a-z])
+            (?= .* [A-Z])
+            (?= .* [\W_])
+        )
+        .{8,12}
+        $
+    """
+    )
+
+    override fun isValidPassword(password: String) = password.matches(passwordRegex)
+
+    override fun passwordEncoder() = JBotPasswordEncoder().encoder()
+
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
-        
+
         // retrieve user from repository and transactionally update User fields if needed
         var user = userRepository.findByUserName(username)?.apply {
-            
+
             this.lastLogin = Date()
-            
+
             this.accountExpired = isAccountExpired(this.userExpireAt)
             this.accountLocked = isAccountLocked(this.lastLogin)
             this.credentialsExpired = isCredentialsExpired(this.pwdExpireAt!!)
-            
+
         } ?: throw UsernameNotFoundException("User $username not found!")
-        
+
         // evaluate UserDetails for Authentication
         return JBotUserDetails(user).apply {
-            
+
             this.accountExpired = user.accountExpired
             this.accountLocked = user.accountLocked
             this.credentialsExpired = user.credentialsExpired
         }
     }
-    
+
     override fun getAuthentication(): Authentication? =
         SecurityContextHolder.getContext().authentication
-    
+
     override fun getCurrentUser(): JBotUserDetails? =
         when (val auth: Authentication? = getAuthentication()) {
             //TODO check for basic auth implementation

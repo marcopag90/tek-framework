@@ -8,6 +8,5 @@ import org.springframework.stereotype.Component
  */
 @Component
 class JBotPasswordEncoder {
-    
     fun encoder() = BCryptPasswordEncoder()
 }

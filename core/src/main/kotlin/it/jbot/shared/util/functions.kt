@@ -3,19 +3,28 @@ package it.jbot.shared.util
 import java.io.InputStream
 
 /**
- * Extension function to write _hasAuthority('[this]')_
+ * function to write _hasAuthority('[this]')_
  */
-fun String.hasAuthority() : String = "hasAuthority('$this')"
+fun hasAuthority(authority: String): String = "hasAuthority('$authority')"
+
+fun isAnonymous(): String = "isAnonymous()"
 
 /**
  * Extension function to concat a logical OR condition on the called object, with the given _parameter_
  */
-fun String.concatOR(arg: String) : String = this.plus(" || ").plus(arg)
+fun String.or(arg: String): String = this.plus(" || ").plus(arg)
 
 /**
  * Extension function to concat a logical AND condition on the called object, with the given _parameter_
  */
-fun String.concatAND(arg: String) : String = this.plus(" && ").plus(arg)
+fun String.and(arg: String): String = this.plus(" && ").plus(arg)
+
+/**
+ * Infix operator to execute a condition only if the given subject is _false_
+ */
+infix fun Boolean.ifNot(block: () -> Unit) {
+    if (!this) block()
+}
 
 /**
  * Infix operator to execute a condition only if the given subject _is null_

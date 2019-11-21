@@ -1,11 +1,12 @@
-package it.jbot.shared.exception
+package it.jbot.web.exception
 
-import it.jbot.shared.web.JBotErrorResponse
+import it.jbot.web.JBotErrorResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -30,7 +31,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
         return ResponseEntity(
             JBotErrorResponse(ex.httpStatus).apply {
-                this.errors = arrayListOf(ex.message)
+                this.errors = mapOf("message" to ex.message)
                 this.path = (request as ServletWebRequest).request.servletPath
             },
             ex.httpStatus
@@ -49,15 +50,13 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
         //TODO validazione i18n!
 
-        log.error(ex.message)
+        log.warn(ex.message)
 
         return ResponseEntity(
 
             JBotErrorResponse(status).apply {
                 this.errors =
-                    ex.bindingResult.fieldErrors.stream().map { e ->
-                        e.defaultMessage
-                    }.collect(Collectors.toList())
+                    ex.bindingResult.fieldErrors.associate { it.field to it.defaultMessage }
                 this.path = (request as ServletWebRequest).request.servletPath
             },
             headers,

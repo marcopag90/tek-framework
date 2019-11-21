@@ -1,10 +1,10 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.oauth.exception.JBotOAuthException
 import it.jbot.security.service.JBotAuthService
-import it.jbot.shared.util.concatOR
+import it.jbot.shared.util.or
 import it.jbot.shared.util.hasAuthority
+import it.jbot.shared.util.isAnonymous
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -37,7 +37,6 @@ import javax.sql.DataSource
 class JBotOAuthServer(
     private val datasource: DataSource,
     private val context: ApplicationContext,
-    private val jBotPasswordEncoder: JBotPasswordEncoder,
     private val authenticationManager: AuthenticationManager,
     private val jBotAuthService: JBotAuthService,
     private val clientDetailsProperties: ClientDetailsProperties
@@ -64,10 +63,10 @@ class JBotOAuthServer(
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
-            .tokenKeyAccess("isAnonymous()".concatOR(clientDetailsProperties.authority.hasAuthority()))
+            .tokenKeyAccess(isAnonymous().or(hasAuthority(clientDetailsProperties.authority)))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
-            .checkTokenAccess(clientDetailsProperties.authority.hasAuthority())
-            .passwordEncoder(jBotPasswordEncoder.encoder())
+            .checkTokenAccess(hasAuthority(clientDetailsProperties.authority))
+            .passwordEncoder(jBotAuthService.passwordEncoder())
             .tokenEndpointAuthenticationFilters(corsFilter())
     }
 

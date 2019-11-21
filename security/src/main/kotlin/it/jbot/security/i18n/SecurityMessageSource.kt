@@ -1,6 +1,6 @@
 package it.jbot.security.i18n
 
-import it.jbot.shared.i18n.JBotMessageSource
+import it.jbot.web.i18n.JBotMessageSource
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,7 +22,7 @@ class SecurityMessageSource : JBotMessageSource {
         const val errorConflictEmail = "error.conflict.email"
         
         const val errorEmptyRole = "error.empty.role"
-        
+        const val errorNotValidPassword = "error.notvalid.password"
         const val errorRoleNotFound = "error.notfound.role"
     }
 }

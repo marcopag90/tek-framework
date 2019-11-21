@@ -1,6 +1,6 @@
 package it.jbot.security
 
-import it.jbot.shared.controller.LOCALE_PATTERN
+import it.jbot.web.controller.LOCALE_PATTERN
 
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityConstant {

@@ -1,4 +1,4 @@
-package it.jbot.shared.configuration;
+package it.jbot.web.configuration;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

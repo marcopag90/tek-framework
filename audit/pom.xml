@@ -17,7 +17,7 @@
 		<!-- Framework -->
 		<dependency>
 			<groupId>it.jbot</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>web</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<!--Auditing-->

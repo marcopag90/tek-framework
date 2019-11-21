@@ -1,4 +1,4 @@
-package it.jbot.shared.i18n
+package it.jbot.web.i18n
 
 import org.springframework.context.MessageSource
 

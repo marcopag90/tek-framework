@@ -12,8 +12,6 @@ data class RegisterForm(
 
     //TODO password regex
     @field:NotBlank
-    @field:Size(min = 8)
-
     val password: String,
 
     @field:Email

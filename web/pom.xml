@@ -13,6 +13,14 @@
     <name>jbot-web</name>
     <description>jbot webmodule</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>it.jbot</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>

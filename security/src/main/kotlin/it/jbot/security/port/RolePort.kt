@@ -1,6 +1,6 @@
 package it.jbot.security.port
 
-import it.jbot.shared.web.JBotResponse
+import it.jbot.web.JBotResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

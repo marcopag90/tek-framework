@@ -1,4 +1,4 @@
-package it.jbot.shared.web
+package it.jbot.web
 
 import it.jbot.shared.util.JBotDateUtils.jbotTimestamp
 import org.springframework.http.HttpStatus
@@ -14,6 +14,6 @@ class JBotErrorResponse(
 ) {
     val timestamp: Date = jbotTimestamp()
     val status: Int = httpStatus.value()
-    var errors: List<String?> = mutableListOf()
+    var errors: Map<Any, String?> = mutableMapOf()
     var path: String? = null
 }

@@ -14,6 +14,6 @@ interface RolePort {
     fun list(pageable: Pageable) : ResponseEntity<JBotResponse>
 
     @GetMapping
-    fun get(@RequestParam("name") name: String) : ResponseEntity<JBotResponse>
+    fun read(@RequestParam("name") name: String) : ResponseEntity<JBotResponse>
 
 }

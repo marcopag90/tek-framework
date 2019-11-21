@@ -3,14 +3,11 @@ package it.jbot.security.model
 import it.jbot.security.audit.UserActivityAudit
 import it.jbot.shared.converter.ItalianBoolean
 import it.jbot.shared.util.JBotDateUtils.isDateExpired
-import java.io.Serializable
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
-import javax.persistence.TemporalType
-import kotlin.math.max
 
 /**
  * Persistable User for Authentication purpose
@@ -33,8 +30,7 @@ class User(
     @field:Size(max = 50)
     @Column(unique = true, nullable = false)
     var email: String
-) : UserActivityAudit(), Serializable {
-
+) : UserActivityAudit() {
     //Mandatory User fields
     constructor(user: User) : this(
         userName = user.userName,

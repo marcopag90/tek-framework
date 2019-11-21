@@ -29,7 +29,7 @@ class RoleController(
         )
     }
     
-    override fun get(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
+    override fun read(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
         
         roleRepository.findByName(RoleName.fromString(name))?.let {
             return ResponseEntity(

@@ -6,6 +6,7 @@ import it.jbot.core.SpringProfile
 import it.jbot.core.util.unreachableCode
 import it.jbot.security.SecurityConstant.nebularResources
 import it.jbot.security.SecurityConstant.clientResources
+import it.jbot.web.controller.LOCALE_PATTERN
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -31,31 +32,31 @@ class JBotOAuthResourceServer(
     private val accessDeniedHandler: JBotOAuth2AccessDeniedHandler,
     private val environment: Environment
 ) : ResourceServerConfigurerAdapter() {
-    
+
     override fun configure(resources: ResourceServerSecurityConfigurer) {
         resources
             .resourceId(clientDetailsProperties.resourceId)
             .accessDeniedHandler(accessDeniedHandler)
     }
-    
+
     override fun configure(http: HttpSecurity) {
-        
+
         check(environment.activeProfiles.isNotEmpty()) {
             "At least one Spring profile must be active!"
         }
-        
+
         environment.activeProfiles.find { it == SpringProfile.DEVELOPMENT.label }?.let {
             configureDevelopmentSecurity(http)
         } ?: environment.activeProfiles.find { it == SpringProfile.PRODUCTION.label }?.let {
             configureProdSecurity(http)
         } ?: unreachableCode()
     }
-    
+
     fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers(*unauthenticatedPatterns())
-            .permitAll()
+            .antMatchers(*unauthenticatedPatterns()).permitAll()
+            .antMatchers(LOCALE_PATTERN).permitAll() // to test locale changes
             .and()
             .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console())

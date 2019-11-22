@@ -6,10 +6,11 @@ import it.jbot.web.JBotResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import javax.validation.Valid
 
 interface AuthPort {
 
     @PostMapping(SecurityConstant.REGISTER_PATTERN)
-    fun register(@RequestBody registerForm: RegisterForm): ResponseEntity<JBotResponse>
+    fun register(@Valid @RequestBody registerForm: RegisterForm): ResponseEntity<JBotResponse>
 
 }

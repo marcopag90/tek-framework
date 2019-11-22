@@ -1,7 +1,5 @@
 package it.jbot.security
 
-import it.jbot.web.controller.LOCALE_PATTERN
-
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityConstant {
 
@@ -13,8 +11,7 @@ object SecurityConstant {
         return arrayOf(
             BASE_PATTERN,
             LOGIN_PATTERN,
-            REGISTER_PATTERN,
-            LOCALE_PATTERN
+            REGISTER_PATTERN
         )
     }
 

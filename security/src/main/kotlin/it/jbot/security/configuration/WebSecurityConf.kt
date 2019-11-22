@@ -48,7 +48,6 @@ class WebSecurityConf(
     //TODO need to check for client resources antMatchers!
     private fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
-            .cors().disable()
             .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console()).permitAll()
             .anyRequest().authenticated()

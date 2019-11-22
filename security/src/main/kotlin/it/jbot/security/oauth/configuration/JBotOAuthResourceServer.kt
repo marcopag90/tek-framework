@@ -70,13 +70,10 @@ class JBotOAuthResourceServer(
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
             .and()
-            .cors()
-            .disable() // let client app to send request from different port (eg. 4200)
             .headers().frameOptions().sameOrigin() // allow frame for h2-console
     }
     
     private fun configureProdSecurity(http: HttpSecurity) {
-        
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()

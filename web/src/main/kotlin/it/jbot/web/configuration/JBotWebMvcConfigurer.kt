@@ -2,6 +2,7 @@ package it.jbot.web.configuration
 
 import it.jbot.web.i18n.JBotLocale
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -14,4 +15,5 @@ class JBotWebMvcConfigurer(
         registry.addInterceptor(locale.localChangeInterceptor())
     }
 }
+
 

@@ -16,11 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>it.jbot</groupId>
-            <artifactId>audit</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>it.jbot</groupId>
             <artifactId>security</artifactId>
             <version>1.0.0</version>
         </dependency>

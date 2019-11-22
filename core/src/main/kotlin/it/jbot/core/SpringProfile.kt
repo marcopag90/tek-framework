@@ -1,6 +1,6 @@
-package it.jbot.shared
+package it.jbot.core
 
-import it.jbot.shared.util.LabelEnum
+import it.jbot.core.util.LabelEnum
 
 /**Spring profiles for business logics*/
 enum class SpringProfile(override val label: String) : LabelEnum {

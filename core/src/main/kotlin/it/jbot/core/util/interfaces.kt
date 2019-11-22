@@ -1,4 +1,4 @@
-package it.jbot.shared.util
+package it.jbot.core.util
 
 interface LabelEnum {
     val label: String

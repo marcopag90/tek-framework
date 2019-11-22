@@ -1,6 +1,6 @@
 package it.jbot.web.controller
 
-import it.jbot.shared.component.JBotCrudHelper
+import it.jbot.core.component.JBotCrudHelper
 import it.jbot.web.JBotResponse
 import it.jbot.web.JbotRestPort
 import org.springframework.data.domain.Pageable

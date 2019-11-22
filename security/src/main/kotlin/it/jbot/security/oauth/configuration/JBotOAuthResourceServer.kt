@@ -3,8 +3,8 @@ package it.jbot.security.oauth.configuration
 import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
 import it.jbot.security.SecurityConstant.unauthenticatedPatterns
 import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
-import it.jbot.shared.SpringProfile
-import it.jbot.shared.util.unreachableCode
+import it.jbot.core.SpringProfile
+import it.jbot.core.util.unreachableCode
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest

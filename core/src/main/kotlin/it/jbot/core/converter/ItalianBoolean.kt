@@ -1,4 +1,4 @@
-package it.jbot.shared.converter
+package it.jbot.core.converter
 
 import javax.persistence.AttributeConverter
 

@@ -2,9 +2,9 @@ package it.jbot.security.oauth.configuration
 
 import it.jbot.security.oauth.exception.JBotOAuthException
 import it.jbot.security.service.JBotAuthService
-import it.jbot.shared.util.or
-import it.jbot.shared.util.hasAuthority
-import it.jbot.shared.util.isAnonymous
+import it.jbot.core.util.or
+import it.jbot.core.util.hasAuthority
+import it.jbot.core.util.isAnonymous
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -63,7 +63,12 @@ class JBotOAuthServer(
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
-            .tokenKeyAccess(isAnonymous().or(hasAuthority(clientDetailsProperties.authority)))
+            .tokenKeyAccess(
+                isAnonymous().or(
+                    hasAuthority(
+                        clientDetailsProperties.authority
+                    )
+                ))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(hasAuthority(clientDetailsProperties.authority))
             .passwordEncoder(jBotAuthService.passwordEncoder())

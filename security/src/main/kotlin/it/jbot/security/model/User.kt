@@ -1,8 +1,8 @@
 package it.jbot.security.model
 
 import it.jbot.security.audit.UserActivityAudit
-import it.jbot.shared.converter.ItalianBoolean
-import it.jbot.shared.util.JBotDateUtils.isDateExpired
+import it.jbot.core.converter.ItalianBoolean
+import it.jbot.core.util.JBotDateUtils.isDateExpired
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email

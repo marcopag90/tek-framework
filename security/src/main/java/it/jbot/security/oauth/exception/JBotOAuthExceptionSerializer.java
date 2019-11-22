@@ -3,12 +3,10 @@ package it.jbot.security.oauth.exception;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import it.jbot.security.oauth.exception.JBotOAuthException;
-import it.jbot.shared.util.JBotDateUtils;
+import it.jbot.core.util.JBotDateUtils;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 

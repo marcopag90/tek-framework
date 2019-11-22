@@ -13,8 +13,8 @@ import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.JBotAuthService
 import it.jbot.security.service.UserService
-import it.jbot.shared.util.JBotDateUtils
-import it.jbot.shared.util.ifNot
+import it.jbot.core.util.JBotDateUtils
+import it.jbot.core.util.ifNot
 import it.jbot.web.exception.JBotServiceException
 import it.jbot.web.exception.ServiceExceptionData
 import org.springframework.http.HttpStatus

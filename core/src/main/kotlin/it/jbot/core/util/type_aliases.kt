@@ -1,4 +1,4 @@
-package it.jbot.shared.util
+package it.jbot.core.util
 
 /**kotlin typealias referencing properties
  *

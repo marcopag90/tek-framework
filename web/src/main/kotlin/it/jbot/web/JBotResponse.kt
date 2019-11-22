@@ -1,6 +1,6 @@
 package it.jbot.web
 
-import it.jbot.shared.util.JBotDateUtils.jbotTimestamp
+import it.jbot.core.util.JBotDateUtils.jbotTimestamp
 import org.springframework.http.HttpStatus
 import java.util.*
 

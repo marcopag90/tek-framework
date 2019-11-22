@@ -1,4 +1,4 @@
-package it.jbot.shared.util
+package it.jbot.core.util
 
 import java.time.LocalDate
 import java.time.ZoneId

@@ -4,7 +4,7 @@ import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.i18n.SecurityMessageSource.Companion.errorRoleNotFound
 import it.jbot.web.exception.JBotServiceException
 import it.jbot.web.exception.ServiceExceptionData
-import it.jbot.shared.util.LabelEnum
+import it.jbot.core.util.LabelEnum
 import org.springframework.http.HttpStatus
 
 enum class RoleName(

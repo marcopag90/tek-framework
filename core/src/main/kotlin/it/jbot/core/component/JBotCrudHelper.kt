@@ -1,16 +1,11 @@
-package it.jbot.shared.component
+package it.jbot.core.component
 
 import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.support.Repositories
 import org.springframework.stereotype.Component
-import java.io.Serializable
 import javax.persistence.EntityManager
 import javax.persistence.metamodel.EntityType
-import kotlin.properties.Delegates
 
 @Component
 class JBotCrudHelper(

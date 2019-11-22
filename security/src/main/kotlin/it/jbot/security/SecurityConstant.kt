@@ -4,24 +4,37 @@ import it.jbot.web.controller.LOCALE_PATTERN
 
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityConstant {
-    
-    const val DEFAULT_SECURED_PATTERN = "/**"
+
+    const val BASE_PATTERN = "/"
+    const val LOGIN_PATTERN = "/login"
     const val REGISTER_PATTERN = "/register"
-    
+
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(
-            LOCALE_PATTERN,
-            "/user$REGISTER_PATTERN"
+            BASE_PATTERN,
+            LOGIN_PATTERN,
+            REGISTER_PATTERN,
+            LOCALE_PATTERN
         )
     }
-    
-    fun unauthenticatedResources(): Array<String> {
+
+    fun clientResources(): Array<String> {
         return arrayOf(
             "/*jpg", "/*png", "/*css", "/*js", "/*ico", "/webjars/**"
         )
     }
-    
-    fun swaggerResources() : Array<String> {
+
+    fun nebularResources(): Array<String> {
+        return arrayOf(
+            "nebular.ttf?4ozerq",
+            "nebular.woff?4ozerq",
+            "/*woff",
+            "/*woff2",
+            "/*ttf"
+        )
+    }
+
+    fun swaggerResources(): Array<String> {
         return arrayOf(
             "/v2/api-docs", "/component/**", "/swagger*/**"
         )

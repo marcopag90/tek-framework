@@ -1,10 +1,11 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.SecurityConstant.DEFAULT_SECURED_PATTERN
 import it.jbot.security.SecurityConstant.unauthenticatedPatterns
 import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
 import it.jbot.core.SpringProfile
 import it.jbot.core.util.unreachableCode
+import it.jbot.security.SecurityConstant.nebularResources
+import it.jbot.security.SecurityConstant.clientResources
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -50,8 +51,7 @@ class JBotOAuthResourceServer(
         } ?: unreachableCode()
     }
     
-    //TODO need to check for client resources antMatchers!
-    private fun configureDevelopmentSecurity(http: HttpSecurity) {
+    fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns())
@@ -60,35 +60,37 @@ class JBotOAuthResourceServer(
             .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console())
             .permitAll() // allow h2-console
-            .antMatchers(HttpMethod.GET, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.GET, "/**")
             .access("#oauth2.hasScope('read')")
-            .antMatchers(HttpMethod.POST, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.POST, "/**")
             .access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.PATCH, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.PATCH, "/**")
             .access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.DELETE, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.DELETE, "/**")
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
             .and()
             .headers().frameOptions().sameOrigin() // allow frame for h2-console
     }
-    
-    private fun configureProdSecurity(http: HttpSecurity) {
+
+    //TODO need to check for client resources antMatchers!
+    fun configureProdSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()
+            .antMatchers(*clientResources()).permitAll()
+            .antMatchers(*nebularResources()).permitAll()
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.GET, "/**")
             .access("#oauth2.hasScope('read')")
-            .antMatchers(HttpMethod.POST, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.POST, "/**")
             .access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.PATCH, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.PATCH, "/**")
             .access("#oauth2.hasScope('write')")
-            .antMatchers(HttpMethod.DELETE, DEFAULT_SECURED_PATTERN)
+            .antMatchers(HttpMethod.DELETE, "/**")
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
     }
-    
-    
 }

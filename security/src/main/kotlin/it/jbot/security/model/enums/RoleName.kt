@@ -2,8 +2,8 @@ package it.jbot.security.model.enums
 
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.i18n.SecurityMessageSource.Companion.errorRoleNotFound
-import it.jbot.web.exception.JBotServiceException
-import it.jbot.web.exception.ServiceExceptionData
+import it.jbot.core.exception.JBotServiceException
+import it.jbot.core.exception.ServiceExceptionData
 import it.jbot.core.util.LabelEnum
 import org.springframework.http.HttpStatus
 

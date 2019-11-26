@@ -1,8 +1,9 @@
 package it.jbot.security.model
 
-import it.jbot.security.audit.UserActivityAudit
 import it.jbot.core.converter.ItalianBoolean
+import it.jbot.core.configuration.JBotAdapter
 import it.jbot.core.util.JBotDateUtils.isDateExpired
+import it.jbot.security.audit.UserActivityAudit
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -11,10 +12,10 @@ import javax.validation.constraints.Size
 
 /**
  * Persistable User for Authentication purpose
- * @author PaganM
  */
 @Entity
 @Table(name = "users")
+@JBotAdapter(name = "UserAdapter")
 class User(
     @field:NotBlank
     @field:Size(min = 3, max = 20)

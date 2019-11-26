@@ -1,6 +1,6 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.service.JBotAuthService
+import it.jbot.security.service.AuthService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,7 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class JBotOAuthWebSecurity(
-    private val jBotAuthService: JBotAuthService
+    private val jBotAuthService: AuthService
 ) : WebSecurityConfigurerAdapter() {
     
     @Bean

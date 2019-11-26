@@ -1,7 +1,7 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.oauth.exception.JBotOAuthException
-import it.jbot.security.service.JBotAuthService
+import it.jbot.security.service.AuthService
 import it.jbot.core.util.or
 import it.jbot.core.util.hasAuthority
 import it.jbot.core.util.isAnonymous
@@ -38,7 +38,7 @@ class JBotOAuthServer(
     private val datasource: DataSource,
     private val context: ApplicationContext,
     private val authenticationManager: AuthenticationManager,
-    private val jBotAuthService: JBotAuthService,
+    private val jBotAuthService: AuthService,
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 

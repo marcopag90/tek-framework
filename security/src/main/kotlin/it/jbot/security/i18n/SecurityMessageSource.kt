@@ -1,6 +1,6 @@
 package it.jbot.security.i18n
 
-import it.jbot.web.i18n.JBotMessageSource
+import it.jbot.core.JBotMessageSource
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

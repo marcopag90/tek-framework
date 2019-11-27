@@ -1,7 +1,7 @@
 package it.jbot.security.oauth.configuration
 
 import it.jbot.security.SecurityConstant.unauthenticatedPatterns
-import it.jbot.security.oauth.exception.JBotOAuth2AccessDeniedHandler
+import it.jbot.security.oauth.exception.OAuth2AccessDeniedHandler
 import it.jbot.core.SpringProfile
 import it.jbot.core.util.unreachableCode
 import it.jbot.security.SecurityConstant.nebularResources
@@ -24,12 +24,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  * to manage access to server resources
  */
 @Configuration
-@ConditionalOnBean(JBotOAuthWebSecurity::class)
+@ConditionalOnBean(OAuthWebSecurity::class)
 @EnableResourceServer
 @EnableConfigurationProperties(SecurityProperties::class)
-class JBotOAuthResourceServer(
+class OAuthResourceServer(
     private val clientDetailsProperties: ClientDetailsProperties,
-    private val accessDeniedHandler: JBotOAuth2AccessDeniedHandler,
+    private val accessDeniedHandler: OAuth2AccessDeniedHandler,
     private val environment: Environment
 ) : ResourceServerConfigurerAdapter() {
 

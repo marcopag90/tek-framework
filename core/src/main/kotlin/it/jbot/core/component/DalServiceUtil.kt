@@ -1,6 +1,6 @@
 package it.jbot.core.component
 
-import it.jbot.core.AbstractJBotAdapter
+import it.jbot.core.DalService
 import org.springframework.context.ApplicationContext
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.support.Repositories
@@ -9,7 +9,7 @@ import javax.persistence.EntityManager
 import javax.persistence.metamodel.EntityType
 
 @Component
-class JBotServiceHelper(
+class DalServiceUtil(
     val appContext: ApplicationContext,
     val repositories: Repositories = Repositories(appContext),
     val entityManager: EntityManager
@@ -43,7 +43,7 @@ class JBotServiceHelper(
         return entityClass.javaType
     }
 
-    fun getAdapter(serviceName: String): AbstractJBotAdapter<*> =
-        appContext.getBean(serviceName, AbstractJBotAdapter::class.java)
+    fun getAdapter(serviceName: String): DalService<*> =
+        appContext.getBean(serviceName, DalService::class.java)
 
 }

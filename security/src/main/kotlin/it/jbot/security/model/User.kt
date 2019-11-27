@@ -1,7 +1,7 @@
 package it.jbot.security.model
 
 import it.jbot.core.converter.ItalianBoolean
-import it.jbot.core.configuration.JBotAdapter
+import it.jbot.core.configuration.DalService
 import it.jbot.core.util.JBotDateUtils.isDateExpired
 import it.jbot.security.audit.UserActivityAudit
 import java.util.*
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "users")
-@JBotAdapter(name = "UserAdapter")
+@DalService(name = "UserDalService")
 class User(
     @field:NotBlank
     @field:Size(min = 3, max = 20)

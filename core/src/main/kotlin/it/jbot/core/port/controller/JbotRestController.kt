@@ -2,7 +2,7 @@ package it.jbot.core.port.controller
 
 import it.jbot.core.JBotResponse
 import it.jbot.core.port.JbotRestPort
-import it.jbot.core.configuration.JBotAdapterConfiguration
+import it.jbot.core.configuration.DalServiceConfiguration
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/crud/{entityName}")
 class JbotRestController(
-    private val configuration: JBotAdapterConfiguration
+    private val configuration: DalServiceConfiguration
 ) : JbotRestPort {
 
     @PostMapping
@@ -18,7 +18,8 @@ class JbotRestController(
         @PathVariable("entityName") entityName: String,
         @RequestBody properties: Map<String, Any?>
     ): ResponseEntity<JBotResponse> =
-        configuration.getAdapter(entityName).createEntity(properties)
+        configuration.getDalService(entityName).createEntity(properties)
+
 
     override fun getList(entityName: String, pageable: Pageable): ResponseEntity<JBotResponse> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Component providing a custom message handling for [it.jbot.security.oauth.configuration.JBotOAuthResourceServer]
+ * Component providing a custom message handling for [it.jbot.security.oauth.configuration.OAuthResourceServer]
  */
 @Component
-class JBotOAuth2AccessDeniedHandler(
+class OAuth2AccessDeniedHandler(
     private val objectMapper: ObjectMapper
 ) : AccessDeniedHandler {
     

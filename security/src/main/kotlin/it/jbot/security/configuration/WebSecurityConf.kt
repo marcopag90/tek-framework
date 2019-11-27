@@ -1,6 +1,6 @@
 package it.jbot.security.configuration
 
-import it.jbot.security.oauth.configuration.JBotOAuthWebSecurity
+import it.jbot.security.oauth.configuration.OAuthWebSecurity
 import it.jbot.core.SpringProfile
 import it.jbot.core.util.SpringProperty
 import it.jbot.core.util.unreachableCode
@@ -17,7 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 
-@ConditionalOnMissingBean(JBotOAuthWebSecurity::class)
+@ConditionalOnMissingBean(OAuthWebSecurity::class)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

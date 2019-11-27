@@ -1,6 +1,6 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.oauth.exception.JBotOAuthException
+import it.jbot.security.oauth.exception.JBotOAuth2Exception
 import it.jbot.security.service.AuthService
 import it.jbot.core.util.or
 import it.jbot.core.util.hasAuthority
@@ -32,9 +32,9 @@ import javax.sql.DataSource
  * to manage clientId and token validation
  */
 @Configuration
-@ConditionalOnBean(JBotOAuthWebSecurity::class)
+@ConditionalOnBean(OAuthWebSecurity::class)
 @EnableAuthorizationServer
-class JBotOAuthServer(
+class OAuthServer(
     private val datasource: DataSource,
     private val context: ApplicationContext,
     private val authenticationManager: AuthenticationManager,
@@ -42,7 +42,7 @@ class JBotOAuthServer(
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
-    private val log: Logger = LoggerFactory.getLogger(JBotOAuthServer::class.java)
+    private val log: Logger = LoggerFactory.getLogger(OAuthServer::class.java)
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
@@ -84,7 +84,7 @@ class JBotOAuthServer(
             .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
                 if (it is OAuth2Exception) {
                     return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(
-                        JBotOAuthException(it.message),
+                        JBotOAuth2Exception(it.message),
                         HttpStatus.BAD_REQUEST
                     )
                 } else

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import it.jbot.core.util.JBotDateUtils.jbotTimestamp
-import it.jbot.security.oauth.exception.JBotOAuthException
+import it.jbot.security.oauth.exception.JBotOAuth2Exception
 
 /**
  * JBot Serializer for {@link JBotOAuthException}
@@ -14,10 +14,10 @@ import it.jbot.security.oauth.exception.JBotOAuthException
  *     <li>errors: array of error messages provided by the base {@link OAuth2Exception}</li>
  * </ol>
  */
-class JBotOAuthExceptionSerializer : StdSerializer<JBotOAuthException>(JBotOAuthException::class.java) {
+class OAuthExceptionSerializer : StdSerializer<JBotOAuth2Exception>(JBotOAuth2Exception::class.java) {
 
     override fun serialize(
-        value: JBotOAuthException,
+        value: JBotOAuth2Exception,
         generator: JsonGenerator,
         provider: SerializerProvider?
     ) {

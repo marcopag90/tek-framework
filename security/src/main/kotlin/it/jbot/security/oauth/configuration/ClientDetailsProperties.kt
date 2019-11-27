@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit
  *
  */
 @Configuration
-@ConditionalOnBean(JBotOAuthWebSecurity::class)
+@ConditionalOnBean(OAuthWebSecurity::class)
 @ConfigurationProperties(prefix = "security.oauth2.client")
 class ClientDetailsProperties {
     

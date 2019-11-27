@@ -2,7 +2,7 @@ package it.jbot.security.oauth.data
 
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.oauth.configuration.ClientDetailsProperties
-import it.jbot.security.oauth.configuration.JBotOAuthWebSecurity
+import it.jbot.security.oauth.configuration.OAuthWebSecurity
 import it.jbot.security.oauth.model.ClientDetails
 import it.jbot.security.oauth.repository.ClientDetailsRepository
 import org.springframework.boot.CommandLineRunner
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.stereotype.Component
 
 @Component
-@ConditionalOnBean(JBotOAuthWebSecurity::class)
+@ConditionalOnBean(OAuthWebSecurity::class)
 class ClientDetailsDataRunner(
     private val properties: ClientDetailsProperties,
     private val oAuth2ClientRepository: ClientDetailsRepository,

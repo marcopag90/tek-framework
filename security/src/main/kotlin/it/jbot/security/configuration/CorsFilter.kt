@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class JBotCorsFilter : Filter {
+class CorsFilter : Filter {
 
     override fun init(filterConfig: FilterConfig?) {}
 

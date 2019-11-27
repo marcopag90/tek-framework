@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 )
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class JBotOAuthWebSecurity(
+class OAuthWebSecurity(
     private val jBotAuthService: AuthService
 ) : WebSecurityConfigurerAdapter() {
     

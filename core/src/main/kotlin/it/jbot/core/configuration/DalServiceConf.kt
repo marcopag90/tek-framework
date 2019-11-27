@@ -26,7 +26,7 @@ class DalServiceConfiguration(
 ) {
 
     @Bean
-    private fun serviceMap(): HashMap<Class<*>, DalService<*>> {
+    fun serviceMap(): HashMap<Class<*>, DalService<*>> {
 
         val map = hashMapOf<Class<*>, DalService<*>>()
         val entities = serviceUtil.entityManager.metamodel.entities

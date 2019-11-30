@@ -28,21 +28,35 @@ spring:
                 jdbc.lob.non_contextual_creation: true
 
         hibernate:
+            # Configurazione creazione tabelle Hibernate
+            ddl-auto: update
             naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    #     Database settings
+    #        datasource:
+    #            url: jdbc:h2:mem:testdb
+    #            driverClassName: org.h2.Driver
+    #            username: admin
+    #            password: admin
+    #
+    #        # H2 Settings
+    #        h2.console:
+    #            enabled: true
+    #            settings:
+    #                trace: false
+    #                web-allow-others: false
 
-    # Database settings
+    #     Database PostgreSQL
     datasource:
-        url: jdbc:h2:mem:testdb
-        driverClassName: org.h2.Driver
-        username: admin
-        password: admin
+        url: jdbc:postgresql://${POSTGRES_HOST:localhost}/jbot
+        driverClassName: org.postgresql.Driver
+        username: ${POSTGRES_USER:jbot}
+        password: ${POSTGRES_PASSWORD:jbot}
 
-    # H2 Settings
-    h2.console:
-        enabled: true
-        settings:
-            trace: false
-            web-allow-others: false
+    # Schema
+    jpa.properties.hibernate.default_schema: jbot
+
+javers:
+    sqlSchema: log
 
 logging:
     level:

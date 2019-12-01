@@ -9,16 +9,8 @@ import java.util.*
  *
  * This _MUST_ be returned to client only with ResponseEntity [HttpStatus] between 200 and 299
  */
-class JBotResponse(
-    httpStatus: HttpStatus
-) {
-    constructor(httpStatus: HttpStatus, result: Any?) : this(httpStatus) {
-        this.result = result
-    }
-
+class JBotResponse(var result: Any?) {
     val timestamp: Date = jbotTimestamp()
-    val status: Int = httpStatus.value()
-    var result: Any? = null
 }
 
 /**
@@ -26,11 +18,8 @@ class JBotResponse(
  *
  * This _MUST_ be returned to client only with ResponseEntity [HttpStatus] over 299 (300+, 400+, 500+)
  */
-class JBotErrorResponse(
-    httpStatus: HttpStatus
-) {
+class JBotErrorResponse {
     val timestamp: Date = jbotTimestamp()
-    val status: Int = httpStatus.value()
     var errors: Map<Any, String?> = mutableMapOf()
     var path: String? = null
 }

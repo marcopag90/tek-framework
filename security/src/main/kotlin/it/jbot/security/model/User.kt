@@ -1,7 +1,8 @@
 package it.jbot.security.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import it.jbot.core.converter.ItalianBoolean
-import it.jbot.core.configuration.DalService
+import it.jbot.core.dal.DalService
 import it.jbot.core.util.JBotDateUtils.isDateExpired
 import it.jbot.security.audit.UserActivityAudit
 import java.util.*
@@ -22,6 +23,7 @@ class User(
     @Column(name = "username", unique = true, nullable = false)
     var userName: String,
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @field:NotBlank
     @Column(name = "password", nullable = false)
     var passWord: String,

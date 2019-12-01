@@ -6,7 +6,7 @@ import it.jbot.core.SpringProfile
 import it.jbot.core.util.unreachableCode
 import it.jbot.security.SecurityConstant.nebularResources
 import it.jbot.security.SecurityConstant.clientResources
-import it.jbot.core.port.controller.LOCALE_PATTERN
+import it.jbot.core.i18n.LOCALE_PATTERN
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest

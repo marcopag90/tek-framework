@@ -14,11 +14,8 @@ class AuthController(
 ) : AuthPort {
 
     override fun register(registerForm: RegisterForm): ResponseEntity<JBotResponse> {
-
         return ResponseEntity(
-            JBotResponse(HttpStatus.OK).apply {
-                this.result = userService.register(registerForm)
-            },
+            JBotResponse(userService.register(registerForm)),
             HttpStatus.OK
         )
     }

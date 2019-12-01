@@ -1,6 +1,8 @@
 package it.jbot.core
 
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.util.MultiValueMap
 import javax.validation.Validation
 import javax.validation.Validator
 
@@ -17,6 +19,8 @@ abstract class DalService<Entity : Any> {
 
     var validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
-    abstract fun createEntity(properties: Map<String, Any?>): ResponseEntity<JBotResponse>
+    abstract fun create(properties: Map<String, Any?>): ResponseEntity<JBotResponse>
+
+    abstract fun list(properties: MultiValueMap<String, String>, pageable: Pageable): ResponseEntity<JBotResponse>
 
 }

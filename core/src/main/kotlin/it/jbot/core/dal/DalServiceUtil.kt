@@ -1,4 +1,4 @@
-package it.jbot.core.component
+package it.jbot.core.dal
 
 import it.jbot.core.DalService
 import org.springframework.context.ApplicationContext

@@ -1,7 +1,6 @@
-package it.jbot.core.configuration
+package it.jbot.core.dal
 
 import it.jbot.core.DalService
-import it.jbot.core.component.DalServiceUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import kotlin.reflect.full.findAnnotation
@@ -32,7 +31,7 @@ class DalServiceConfiguration(
         val entities = serviceUtil.entityManager.metamodel.entities
 
         entities.forEach { entity ->
-            entity.javaType.kotlin.findAnnotation<it.jbot.core.configuration.DalService>()?.let {
+            entity.javaType.kotlin.findAnnotation<it.jbot.core.dal.DalService>()?.let {
                 map[entity.javaType] = serviceUtil.getAdapter(it.name)
             }
         }

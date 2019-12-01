@@ -28,7 +28,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<JBotErrorResponse> {
 
         return ResponseEntity(
-            JBotErrorResponse(ex.httpStatus).apply {
+            JBotErrorResponse().apply {
                 this.errors = mapOf("message" to ex.message)
                 this.path = (request as ServletWebRequest).request.servletPath
             },
@@ -52,7 +52,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
         return ResponseEntity(
 
-            JBotErrorResponse(status).apply {
+            JBotErrorResponse().apply {
                 this.errors =
                     ex.bindingResult.fieldErrors.associate { it.field to it.defaultMessage }
                 this.path = (request as ServletWebRequest).request.servletPath

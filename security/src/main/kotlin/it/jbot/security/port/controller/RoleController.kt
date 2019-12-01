@@ -21,7 +21,7 @@ class RoleController(
 
     override fun list(pageable: Pageable): ResponseEntity<JBotResponse> {
         return ResponseEntity(
-            JBotResponse(HttpStatus.OK, roleRepository.findAll(pageable)),
+            JBotResponse(roleRepository.findAll(pageable)),
             HttpStatus.OK
         )
     }
@@ -30,7 +30,7 @@ class RoleController(
 
         roleRepository.findByName(RoleName.fromString(name))?.let {
             return ResponseEntity(
-                JBotResponse(HttpStatus.OK, it),
+                JBotResponse(it),
                 HttpStatus.OK
             )
         } ?: throw JBotServiceException(

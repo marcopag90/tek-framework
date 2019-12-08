@@ -15,30 +15,30 @@ import javax.persistence.*
     allowGetters = true
 )
 class WebAudit(
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    
-    @Lob
+
+    @Column(columnDefinition = "text")
     val request: String,
-    
-    @Lob
+
+    @Column(columnDefinition = "text")
     var response: String? = null,
-    
+
     var stats: String? = null,
-    
+
     @Transient
     val initTime: Long,
-    
+
     @Transient
     val initTimeMillis: Long
 ) {
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     var requestedAt: Date? = null
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     var servedAt: Date? = null

@@ -19,29 +19,9 @@ import java.util.*
 @Service
 class AuthServiceImpl(
     private val userRepository: UserRepository
-    ) : AuthService {
+) : AuthService {
 
-    //TODO fix password regex
-    private val passwordRegex = Regex(
-        """(?x)
-        ^
-        (
-            (?= .* \d)
-            (?= .* [a-z])
-            (?= .* [A-Z])
-        |
-            (?= .* \d)
-            (?= .* [a-zA-Z])
-            (?= .* [\W_])
-        |
-            (?= .* [a-z])
-            (?= .* [A-Z])
-            (?= .* [\W_])
-        )
-        .{8,12}
-        $
-    """
-    )
+    private val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
 

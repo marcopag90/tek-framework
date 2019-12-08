@@ -2,7 +2,6 @@ package it.jbot.security.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import it.jbot.core.converter.ItalianBoolean
-import it.jbot.core.dal.DalService
 import it.jbot.core.util.JBotDateUtils.isDateExpired
 import it.jbot.security.audit.UserActivityAudit
 import java.util.*
@@ -16,8 +15,8 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "users")
-@DalService(name = "UserDalService")
 class User(
+
     @field:NotBlank
     @field:Size(min = 3, max = 20)
     @Column(name = "username", unique = true, nullable = false)
@@ -33,7 +32,9 @@ class User(
     @field:Size(max = 50)
     @Column(unique = true, nullable = false)
     var email: String
+
 ) : UserActivityAudit() {
+
     //Mandatory User fields
     constructor(user: User) : this(
         userName = user.userName,

@@ -63,7 +63,7 @@ logging:
         org.hibernate:
             tool.hbm2ddl: DEBUG
             SQL: DEBUG
-            type: DEBUG
+            type: TRACE
             type.EnumType: INFO
             type.BasicTypeRegistry: INFO
             descriptor:

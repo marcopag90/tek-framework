@@ -8,17 +8,18 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
 class CoreMessageSource : JBotMessageSource {
-    
-    override fun getResource(): MessageSource = getWebResource()
-    
+
+    override fun getResource(): MessageSource = getCoreMessageSource()
+
     @Bean
-    fun getWebResource(): MessageSource =
+    fun getCoreMessageSource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
             setBasename("classpath:/i18n/core_messages")
+            setDefaultEncoding("UTF-8")
         }
-    
+
     companion object {
         const val localeLang = "locale.lang"
     }
-    
+
 }

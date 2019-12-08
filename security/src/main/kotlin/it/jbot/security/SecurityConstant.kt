@@ -4,13 +4,11 @@ package it.jbot.security
 object SecurityConstant {
 
     const val BASE_PATTERN = "/"
-    const val LOGIN_PATTERN = "/login"
     const val REGISTER_PATTERN = "/register"
 
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(
             BASE_PATTERN,
-            LOGIN_PATTERN,
             REGISTER_PATTERN
         )
     }

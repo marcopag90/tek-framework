@@ -11,6 +11,13 @@ import java.lang.RuntimeException
 class JBotServiceException : RuntimeException {
 
     constructor(
+        message: String,
+        httpStatus: HttpStatus
+    ) : super(message) {
+        this.httpStatus = httpStatus
+    }
+
+    constructor(
         data: ServiceExceptionData,
         httpStatus: HttpStatus
     ) : super(data.exceptionMessage) {

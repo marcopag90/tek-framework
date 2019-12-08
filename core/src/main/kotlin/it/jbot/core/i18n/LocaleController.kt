@@ -21,12 +21,11 @@ class LocaleController(
     fun getCurrentLocale(): ResponseEntity<JBotResponse> =
         ResponseEntity(
             JBotResponse(
-                messageSource.getWebResource().getMessage(
-                    localeLang,
-                    null,
-                    LocaleContextHolder.getLocale()
-                )
+                HttpStatus.OK,
+                messageSource.getCoreMessageSource().getMessage(localeLang, null, LocaleContextHolder.getLocale())
             ),
             HttpStatus.OK
         )
 }
+
+

@@ -1,4 +1,4 @@
-package it.jbot.security.port.controller
+package it.jbot.security.controller
 
 import it.jbot.security.SecurityConstant.BASE_PATTERN
 import org.springframework.stereotype.Controller

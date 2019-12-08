@@ -4,7 +4,7 @@ import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
 import it.jbot.core.util.JBotDateUtils
 import it.jbot.core.util.ifNot
-import it.jbot.security.dto.RegisterForm
+import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.User
 import it.jbot.security.model.enums.RoleName
@@ -56,13 +56,12 @@ class UserServiceImpl(
                 httpStatus = HttpStatus.CONFLICT
             )
 
-        //TODO check role is empty
         if (registerForm.roles.isEmpty())
             throw JBotServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorEmptyRole,
-                    parameters = arrayOf(RegisterForm::roles.name)
+                    parameters = arrayOf(registerForm::roles.name)
                 ),
                 httpStatus = HttpStatus.BAD_REQUEST
             )
@@ -88,5 +87,4 @@ class UserServiceImpl(
             )
         return userRepository.save(user)
     }
-
 }

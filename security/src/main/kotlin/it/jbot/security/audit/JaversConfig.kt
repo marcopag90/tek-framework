@@ -1,7 +1,5 @@
-package it.jbot.security.configuration
+package it.jbot.security.audit
 
-import it.jbot.security.audit.SecurityAuditorAware
-import it.jbot.security.audit.SecurityAuthorProvider
 import org.javers.spring.auditable.AuthorProvider
 import org.javers.spring.auditable.CommitPropertiesProvider
 import org.springframework.context.annotation.Bean
@@ -13,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes
 
 @Component
 class ServletRequestHolder {
-    
+
     fun getRequestAttributes(): RequestAttributes? {
         if (RequestContextHolder.getRequestAttributes() == null)
             return null
@@ -26,26 +24,26 @@ class JaversConf(
     private val securityAuditorAware: SecurityAuditorAware,
     private val servletRequestHolder: ServletRequestHolder
 ) {
-    
+
     @Bean
     fun provideJaversAuthor(): AuthorProvider =
         SecurityAuthorProvider(securityAuditorAware)
-    
+
     @Bean
     fun commitPropertiesProvider(): CommitPropertiesProvider {
-        
+
         return object : CommitPropertiesProvider {
-            
+
             override fun provideForCommittedObject(domainObject: Any?): MutableMap<String, String> {
-                
-                var additionalInfo = mutableMapOf<String, String>()
-                
-                var requestAttributes =
+
+                val additionalInfo = mutableMapOf<String, String>()
+
+                val requestAttributes =
                     servletRequestHolder.getRequestAttributes() as ServletRequestAttributes?
                 requestAttributes?.let {
                     additionalInfo["remote-address"] = it.request.remoteAddr
                 }
-                
+
                 return additionalInfo
             }
         }

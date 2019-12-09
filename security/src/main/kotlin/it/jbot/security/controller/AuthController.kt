@@ -1,7 +1,7 @@
 package it.jbot.security.controller
 
 import it.jbot.core.JBotResponse
-import it.jbot.security.SecurityConstant
+import it.jbot.security.SecurityPattern
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.service.UserService
 import org.springframework.http.HttpStatus
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-@RequestMapping(SecurityConstant.REGISTER_PATTERN)
+@RequestMapping(SecurityPattern.REGISTER_PATTERN)
 class AuthController(
     private val userService: UserService
 ) {

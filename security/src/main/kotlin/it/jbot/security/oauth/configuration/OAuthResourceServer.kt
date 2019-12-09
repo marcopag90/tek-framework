@@ -1,11 +1,11 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.SecurityConstant.unauthenticatedPatterns
+import it.jbot.security.SecurityPattern.unauthenticatedPatterns
 import it.jbot.security.oauth.exception.OAuth2AccessDeniedHandler
 import it.jbot.core.SpringProfile
 import it.jbot.core.util.unreachableCode
-import it.jbot.security.SecurityConstant.nebularResources
-import it.jbot.security.SecurityConstant.clientResources
+import it.jbot.security.SecurityPattern.nebularResources
+import it.jbot.security.SecurityPattern.clientResources
 import it.jbot.core.i18n.LOCALE_PATTERN
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties

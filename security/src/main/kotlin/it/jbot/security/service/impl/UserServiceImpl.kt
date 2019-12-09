@@ -2,7 +2,7 @@ package it.jbot.security.service.impl
 
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
-import it.jbot.core.util.JBotDateUtils
+import it.jbot.core.util.addMonthsFromNow
 import it.jbot.core.util.ifNot
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
@@ -72,7 +72,7 @@ class UserServiceImpl(
             email = registerForm.email
         )
 
-        user.pwdExpireAt = JBotDateUtils.addMonthsFromNow(3)
+        user.pwdExpireAt = addMonthsFromNow(3)
 
         for (role in registerForm.roles)
             roleRepository.findByName(RoleName.fromString(role))?.let {

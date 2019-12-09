@@ -1,4 +1,4 @@
-package it.jbot.core.configuration
+package it.jbot.core.web
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -14,7 +14,7 @@ import java.io.IOException
 @Configuration
 class JsonDeserializer : SimpleModule() {
     init {
-        addDeserializer(
+        this.addDeserializer(
             String::class.java,
             object : StdScalarDeserializer<String?>(String::class.java) {
                 @Throws(IOException::class)

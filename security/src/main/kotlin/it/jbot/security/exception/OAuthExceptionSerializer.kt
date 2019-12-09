@@ -3,8 +3,9 @@ package it.jbot.security.exception
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import it.jbot.core.util.JBotDateUtils.jbotTimestamp
+import it.jbot.core.util.jbotTimestamp
 import it.jbot.security.oauth.exception.JBotOAuth2Exception
+import java.util.*
 
 /**
  * JBot Serializer for {@link JBotOAuthException}
@@ -24,7 +25,7 @@ class OAuthExceptionSerializer : StdSerializer<JBotOAuth2Exception>(JBotOAuth2Ex
         generator.apply {
 
             writeStartObject()
-            writeObjectField("timestamp", jbotTimestamp())
+            writeObjectField("timestamp", Date().jbotTimestamp())
             writeNumberField("status", value.httpErrorCode)
             writeObjectField("errors", listOf(value.message))
             value.additionalInformation?.let {

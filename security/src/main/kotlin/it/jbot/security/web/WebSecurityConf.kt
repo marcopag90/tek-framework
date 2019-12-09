@@ -1,4 +1,4 @@
-package it.jbot.security.configuration
+package it.jbot.security.web
 
 import it.jbot.security.oauth.configuration.OAuthWebSecurity
 import it.jbot.core.SpringProfile

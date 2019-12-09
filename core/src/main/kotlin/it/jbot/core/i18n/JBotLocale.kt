@@ -1,4 +1,4 @@
-package it.jbot.core.component
+package it.jbot.core.i18n
 
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component

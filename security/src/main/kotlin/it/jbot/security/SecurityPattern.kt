@@ -1,7 +1,7 @@
 package it.jbot.security
 
 /**Class sharing constants among all Spring Security configurations*/
-object SecurityConstant {
+object SecurityPattern {
 
     const val BASE_PATTERN = "/"
     const val REGISTER_PATTERN = "/register"

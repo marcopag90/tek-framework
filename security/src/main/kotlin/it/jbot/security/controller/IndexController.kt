@@ -1,6 +1,6 @@
 package it.jbot.security.controller
 
-import it.jbot.security.SecurityConstant.BASE_PATTERN
+import it.jbot.security.SecurityPattern.BASE_PATTERN
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,6 +1,6 @@
 package it.jbot.core
 
-import it.jbot.core.util.JBotDateUtils.jbotTimestamp
+import it.jbot.core.util.jbotTimestamp
 import org.springframework.http.HttpStatus
 import java.util.*
 
@@ -17,7 +17,7 @@ class JBotResponse(
         this.result = result
     }
 
-    val timestamp: Date = jbotTimestamp()
+    val timestamp: Date = Date().jbotTimestamp()
     val status: Int = httpStatus.value()
     var result: Any? = null
 }
@@ -31,7 +31,7 @@ class JBotErrorResponse(
     httpStatus: HttpStatus
 ) {
 
-    val timestamp: Date = jbotTimestamp()
+    val timestamp: Date = Date().jbotTimestamp()
     val status: Int = httpStatus.value()
     var errors: Map<String, String?> = mutableMapOf()
     var path: String? = null

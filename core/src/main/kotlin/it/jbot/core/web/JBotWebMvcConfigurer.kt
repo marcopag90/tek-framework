@@ -1,7 +1,7 @@
-package it.jbot.core.configuration
+package it.jbot.core.web
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module
-import it.jbot.core.component.JBotLocale
+import it.jbot.core.i18n.JBotLocale
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter

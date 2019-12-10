@@ -63,7 +63,7 @@ class UserDataRunner(
         lastLogin: Date? = null
     ): User {
 
-        var userRoles = mutableSetOf<Role>()
+        val userRoles = mutableSetOf<Role>()
         for (role in roles)
             roleRepository.findByName(role.name)?.let {
                 userRoles.add(it)
@@ -71,7 +71,7 @@ class UserDataRunner(
 
         return User(
             username,
-            jBotPasswordEncoder.encoder().encode(password),
+            jBotPasswordEncoder.bcryptEncoder().encode(password),
             email
         ).apply {
             this.roles = userRoles

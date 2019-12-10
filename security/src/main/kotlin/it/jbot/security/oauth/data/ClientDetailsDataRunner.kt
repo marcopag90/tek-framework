@@ -16,16 +16,15 @@ class ClientDetailsDataRunner(
     private val oAuth2ClientRepository: ClientDetailsRepository,
     private val jBotPasswordEncoder: JBotPasswordEncoder
 ) : CommandLineRunner {
-    
+
     override fun run(vararg args: String?) {
-        
+
         if (!oAuth2ClientRepository.findById(properties.clientId).isPresent) {
-            
+
             oAuth2ClientRepository.save(ClientDetails().apply {
-                
+
                 this.clientId = properties.clientId
-                this.clientSecret = jBotPasswordEncoder.encoder()
-                    .encode(properties.clientSecret)
+                this.clientSecret = jBotPasswordEncoder.bcryptEncoder().encode(properties.clientSecret)
                 this.resourceId = properties.resourceId
                 this.scope = properties.scope
                 this.authorizedGrantTypes = properties.grants

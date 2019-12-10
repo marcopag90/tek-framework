@@ -1,12 +1,19 @@
 package it.jbot.security
 
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
 /**
- * Default JBot Password Encoder {bcript}
+ * Configuration for JBot Password Encoders
  */
-@Component
+@Configuration
 class JBotPasswordEncoder {
-    fun encoder() = BCryptPasswordEncoder()
+
+    /**
+     * {bcript} password encoder
+     */
+    @Bean
+    fun bcryptEncoder() = BCryptPasswordEncoder()
 }

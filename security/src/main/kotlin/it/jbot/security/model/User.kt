@@ -29,7 +29,6 @@ class User(
 
     @field:Email
     @field:NotBlank
-    @field:Size(max = 50)
     @Column(unique = true, nullable = false)
     var email: String
 

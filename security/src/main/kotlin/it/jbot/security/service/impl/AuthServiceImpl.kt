@@ -18,20 +18,21 @@ import java.util.*
  */
 @Service
 class AuthServiceImpl(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val jBotPasswordEncoder: JBotPasswordEncoder
 ) : AuthService {
 
     private val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
 
-    override fun passwordEncoder() = JBotPasswordEncoder().encoder()
+    override fun passwordEncoder() = jBotPasswordEncoder.bcryptEncoder()
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
 
         // retrieve user from repository and transactionally update User fields if needed
-        var user = userRepository.findByUserName(username)?.apply {
+        val user = userRepository.findByUserName(username)?.apply {
 
             this.lastLogin = Date()
 

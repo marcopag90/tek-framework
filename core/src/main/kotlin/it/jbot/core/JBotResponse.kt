@@ -1,6 +1,7 @@
 package it.jbot.core
 
 import it.jbot.core.util.jbotTimestamp
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import java.util.*
 
@@ -20,6 +21,18 @@ class JBotResponse(
     val timestamp: Date = Date().jbotTimestamp()
     val status: Int = httpStatus.value()
     var result: Any? = null
+}
+
+class JBotPageEntityResponse<T>(
+    httpStatus: HttpStatus
+) {
+    constructor(httpStatus: HttpStatus, result: Page<T>) : this(httpStatus) {
+        this.result = result
+    }
+
+    val timestamp: Date = Date().jbotTimestamp()
+    val status: Int = httpStatus.value()
+    var result: Page<T>? = null
 }
 
 /**

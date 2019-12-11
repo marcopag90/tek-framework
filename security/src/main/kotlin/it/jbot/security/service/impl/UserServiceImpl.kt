@@ -2,7 +2,9 @@ package it.jbot.security.service.impl
 
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
-import it.jbot.core.util.*
+import it.jbot.core.util.addMonthsFromNow
+import it.jbot.core.util.isFalse
+import it.jbot.core.util.isTrue
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.User
@@ -21,7 +23,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val messageSource: SecurityMessageSource
-) : UserService {
+) : UserService<User> {
 
     @Transactional
     override fun register(registerForm: RegisterForm): User {
@@ -77,5 +79,11 @@ class UserServiceImpl(
             ),
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
         )
+    }
+
+    //TODO update service
+    override fun <Entity> update(properties: Map<String, Any?>): Entity {
+        val user = User("", "", "")
+        return user as Entity
     }
 }

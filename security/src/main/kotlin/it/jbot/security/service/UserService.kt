@@ -1,9 +1,9 @@
 package it.jbot.security.service
 
+import it.jbot.core.web.UpdatableService
 import it.jbot.security.form.RegisterForm
-import it.jbot.security.model.User
 
-interface UserService {
+interface UserService<User> : UpdatableService<User> {
 
     fun register(registerForm: RegisterForm): User
 

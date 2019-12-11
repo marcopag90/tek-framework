@@ -45,11 +45,13 @@ class OAuthResourceServer(
             "At least one Spring profile must be active!"
         }
 
-        environment.activeProfiles.find { it == SpringProfile.DEVELOPMENT.label }?.let {
-            configureDevelopmentSecurity(http)
-        } ?: environment.activeProfiles.find { it == SpringProfile.PRODUCTION.label }?.let {
-            configureProdSecurity(http)
-        } ?: unreachableCode()
+        environment.activeProfiles.map { profile ->
+            when (profile) {
+                SpringProfile.DEVELOPMENT -> configureDevelopmentSecurity(http)
+                SpringProfile.PRODUCTION -> configureProdSecurity(http)
+                else -> unreachableCode() // there must always be a profile active (development or production)!
+            }
+        }
     }
 
     fun configureDevelopmentSecurity(http: HttpSecurity) {

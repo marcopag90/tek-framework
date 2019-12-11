@@ -17,8 +17,15 @@ fun String.and(arg: String): String = this.plus(" && ").plus(arg)
 /**
  * Infix operator to execute a condition only if the given subject is _false_
  */
-infix fun Boolean.ifNot(block: () -> Unit) {
+infix fun Boolean.isFalse(block: () -> Unit) {
     if (!this) block()
+}
+
+/**
+ * Infix operator to execute a condition only if the given subject is true
+ */
+infix fun Boolean.isTrue(block: () -> Unit) {
+    if (this) block()
 }
 
 /**

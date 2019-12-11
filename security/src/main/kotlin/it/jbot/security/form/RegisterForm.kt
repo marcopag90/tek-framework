@@ -1,7 +1,9 @@
 package it.jbot.security.form
 
+import javax.validation.Valid
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 data class RegisterForm(
@@ -15,7 +17,5 @@ data class RegisterForm(
 
     @field:NotBlank
     @field:Email
-    val email: String,
-
-    val roles: MutableSet<String> = mutableSetOf()
+    val email: String
 )

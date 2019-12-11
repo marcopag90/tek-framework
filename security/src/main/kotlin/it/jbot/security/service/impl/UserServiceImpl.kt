@@ -2,8 +2,7 @@ package it.jbot.security.service.impl
 
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
-import it.jbot.core.util.addMonthsFromNow
-import it.jbot.core.util.ifNot
+import it.jbot.core.util.*
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.User
@@ -21,12 +20,13 @@ class UserServiceImpl(
     private val authService: AuthService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val messageSource: SecurityMessageSource = SecurityMessageSource()
+    private val messageSource: SecurityMessageSource
 ) : UserService {
 
     @Transactional
     override fun register(registerForm: RegisterForm): User {
-        authService.isValidPassword(registerForm.password).ifNot {
+
+        authService.isValidPassword(registerForm.password).isFalse {
             throw JBotServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
@@ -36,7 +36,7 @@ class UserServiceImpl(
             )
         }
 
-        if (userRepository.existsByUserName(registerForm.username))
+        userRepository.existsByUserName(registerForm.username).isTrue {
             throw JBotServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
@@ -45,8 +45,9 @@ class UserServiceImpl(
                 ),
                 httpStatus = HttpStatus.CONFLICT
             )
+        }
 
-        if (userRepository.existsByEmail(registerForm.email))
+        userRepository.existsByEmail(registerForm.email).isTrue {
             throw JBotServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
@@ -55,36 +56,26 @@ class UserServiceImpl(
                 ),
                 httpStatus = HttpStatus.CONFLICT
             )
+        }
 
-        if (registerForm.roles.isEmpty())
-            throw JBotServiceException(
-                data = ServiceExceptionData(
-                    source = messageSource,
-                    message = SecurityMessageSource.errorEmptyRole,
-                    parameters = arrayOf(registerForm::roles.name)
-                ),
-                httpStatus = HttpStatus.BAD_REQUEST
+        roleRepository.findByName(RoleName.ROLE_USER)?.let { role ->
+            return userRepository.save(
+                User(
+                    userName = registerForm.username,
+                    passWord = authService.passwordEncoder().encode(registerForm.password),
+                    email = registerForm.email
+                ).apply {
+                    this.pwdExpireAt = addMonthsFromNow(3)
+                    this.roles.add(role)
+                }
             )
-
-        val user = User(
-            userName = registerForm.username,
-            passWord = authService.passwordEncoder().encode(registerForm.password),
-            email = registerForm.email
+        } ?: throw JBotServiceException(
+            data = ServiceExceptionData(
+                source = messageSource,
+                message = SecurityMessageSource.errorRoleNotFound,
+                parameters = arrayOf(RoleName.ROLE_USER.name)
+            ),
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
         )
-
-        user.pwdExpireAt = addMonthsFromNow(3)
-
-        for (role in registerForm.roles)
-            roleRepository.findByName(RoleName.fromString(role))?.let {
-                user.roles.add(it)
-            } ?: throw JBotServiceException(
-                data = ServiceExceptionData(
-                    source = messageSource,
-                    message = SecurityMessageSource.errorRoleNotFound,
-                    parameters = arrayOf(role)
-                ),
-                httpStatus = HttpStatus.NOT_FOUND
-            )
-        return userRepository.save(user)
     }
 }

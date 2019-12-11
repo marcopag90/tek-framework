@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 class RoleController(
     private val roleRepository: RoleRepository,
-    private val messageSource: SecurityMessageSource = SecurityMessageSource()
+    private val messageSource: SecurityMessageSource
 ) {
 
     @GetMapping("/list")

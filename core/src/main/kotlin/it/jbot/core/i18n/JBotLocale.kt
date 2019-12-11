@@ -17,7 +17,7 @@ class JBotLocale {
 
     @Bean
     fun localeResolver(): LocaleResolver = SessionLocaleResolver().apply {
-        setDefaultLocale(Locale.US)
+        setDefaultLocale(Locale.ENGLISH)
     }
 
     /**

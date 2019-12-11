@@ -20,6 +20,7 @@ class CoreMessageSource : JBotMessageSource {
 
     companion object {
         const val localeLang = "locale.lang"
+        const val errorUnknownProperty = "error.unknown.property"
     }
 
 }

@@ -24,27 +24,29 @@ import org.springframework.security.config.http.SessionCreationPolicy
 class WebSecurityConf(
     private val environment: Environment
 ) : WebSecurityConfigurerAdapter() {
-    
+
     @Value("\${security.type: basic}")
     private lateinit var securityType: SpringProperty
 
     private val log: Logger = LoggerFactory.getLogger(WebSecurityConf::class.java)
 
     override fun configure(http: HttpSecurity) {
-        
+
         log.info("Security type: $securityType")
-        
+
         require(environment.activeProfiles.isNotEmpty()) {
             "At least one Spring profile must be active!"
         }
-        
-        environment.activeProfiles.find { it == SpringProfile.DEVELOPMENT.label }?.let {
-            configureDevelopmentSecurity(http)
-        } ?: environment.activeProfiles.find { it == SpringProfile.PRODUCTION.label }?.let {
-            configureProdSecurity(http)
-        } ?: unreachableCode() // there must always be a profile active (development or production)!
+
+        environment.activeProfiles.map { profile ->
+            when (profile) {
+                SpringProfile.DEVELOPMENT -> configureDevelopmentSecurity(http)
+                SpringProfile.PRODUCTION -> configureProdSecurity(http)
+                else -> unreachableCode() // there must always be a profile active (development or production)!
+            }
+        }
     }
-    
+
     //TODO need to check for client resources antMatchers!
     private fun configureDevelopmentSecurity(http: HttpSecurity) {
         http
@@ -57,7 +59,7 @@ class WebSecurityConf(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
-    
+
     private fun configureProdSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
@@ -66,7 +68,6 @@ class WebSecurityConf(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
-    
 }
 
 

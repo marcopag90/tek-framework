@@ -11,7 +11,7 @@ import javax.persistence.*
 @Entity
 @EntityListeners(AuditingEntityListener::class)
 @JsonIgnoreProperties(
-    "requestedAt", "servedAt",
+    "requested_at", "served_at",
     allowGetters = true
 )
 class WebAudit(
@@ -37,10 +37,12 @@ class WebAudit(
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @Column(name = "requested_at")
     var requestedAt: Date? = null
 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
+    @Column(name = "served_at")
     var servedAt: Date? = null
 }
 

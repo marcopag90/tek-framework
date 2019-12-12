@@ -15,17 +15,17 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "users")
-class User(
+class JBotUser(
 
     @field:NotBlank
     @field:Size(min = 3, max = 20)
     @Column(name = "username", unique = true, nullable = false)
-    var userName: String,
+    var username: String,
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @field:NotBlank
     @Column(name = "password", nullable = false)
-    var passWord: String,
+    var password: String,
 
     @field:Email
     @field:NotBlank
@@ -33,20 +33,6 @@ class User(
     var email: String
 
 ) : UserActivityAudit() {
-
-    //Mandatory User fields
-    constructor(user: User) : this(
-        userName = user.userName,
-        passWord = user.passWord,
-        email = user.email
-    ) {
-        this.id = user.id
-        this.userName = user.userName
-        this.passWord = user.passWord
-        this.email = user.email
-        this.enabled = user.enabled
-        this.roles = user.roles
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +45,7 @@ class User(
      *
      * Sets a User expiration date
      */
-    @Column(name = "userExpireAt")
+    @Column(name = "expiration")
     @Temporal(TemporalType.TIMESTAMP)
     var userExpireAt: Date? = null
 
@@ -69,7 +55,7 @@ class User(
      * Sets a User password expiration date
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(name = "password_expiration", nullable = false)
     var pwdExpireAt: Date? = null
 
     /**
@@ -78,6 +64,7 @@ class User(
      * Sets a User last login date
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_login")
     var lastLogin: Date? = null
 
     /**
@@ -89,13 +76,11 @@ class User(
      */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_roles",
+        name = "users_roles",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     var roles: MutableSet<Role> = mutableSetOf()
-
-    /*##################### Account Management #####################*/
 
     //TODO decide user registration path (email with confirm activation, credentials etc..) to enable it
     /**
@@ -106,18 +91,16 @@ class User(
      * Usually some action is required to release it (Server or Client side)
      */
     @Column(length = 1)
-    @Convert(converter = ItalianBoolean::class)
     var enabled: Boolean = true
 
     /**
      * Condition: _OPTIONAL_
      *
-     * Checked by [User.userExpireAt].
+     * Checked by [JBotUser.userExpireAt].
      *
-     * If you don't need your User to expire, you just have to leave [User.userExpireAt] = **null**
+     * If you don't need your User to expire, you just have to leave [JBotUser.userExpireAt] = **null**
      */
-    @Column(length = 1)
-    @Convert(converter = ItalianBoolean::class)
+    @Column(name = "expired", length = 1)
     var accountExpired: Boolean = false
 
     //TODO check how to implement login attempts
@@ -130,18 +113,16 @@ class User(
      * 1) too many login attempts (not yet implemented)
      * 2) has been offline for more than 6 months (standard implementation)
      */
-    @Column(length = 1)
-    @Convert(converter = ItalianBoolean::class)
+    @Column(name = "locked", length = 1)
     var accountLocked: Boolean = false
 
     /**
      * Condition: _REQUIRED_
-     * Checked by [User.pwdExpireAt]
+     * Checked by [JBotUser.pwdExpireAt]
      *
      * A User with credentials expired has to change password, due to **GDPR** policy
      */
-    @Column(length = 1)
-    @Convert(converter = ItalianBoolean::class)
+    @Column(name = "credentials_expired", length = 1)
     var credentialsExpired: Boolean = false
 
     /**
@@ -163,8 +144,6 @@ class User(
      */
     fun isCredentialsExpired(passwordExpireAt: Date): Boolean =
         passwordExpireAt < Date()
-
-    /*##################### Account Management #####################*/
 }
 
 

@@ -29,6 +29,7 @@ class SecurityMessageSource : JBotMessageSource {
 
         const val errorConflictUsername = "error.conflict.username"
         const val errorConflictEmail = "error.conflict.email"
+        const val errorConflictPassword = "error.conflict.password"
         const val errorEmptyRole = "error.empty.role"
         const val errorNotValidPassword = "error.notvalid.password"
         const val errorRoleNotFound = "error.notfound.role"

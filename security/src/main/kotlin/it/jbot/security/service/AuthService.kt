@@ -17,6 +17,8 @@ interface AuthService : UserDetailsService {
     fun getAuthentication(): Authentication?
 
     fun getCurrentUser(): JBotUserDetails?
+
+    fun checkPasswordConstraints(username: String, email: String, password: String): Boolean
 }
 
 

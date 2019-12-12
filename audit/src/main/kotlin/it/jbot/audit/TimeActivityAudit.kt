@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component
 import java.io.Serializable
 import java.time.LocalDateTime
 import java.util.*
-import javax.persistence.EntityListeners
-import javax.persistence.MappedSuperclass
-import javax.persistence.Temporal
-import javax.persistence.TemporalType
+import javax.persistence.*
 
 /**
  * Class extended by Entities to audit create/update time on Entity
@@ -24,17 +21,19 @@ import javax.persistence.TemporalType
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 @JsonIgnoreProperties(
-    "createdAt", "updatedAt",
+    "created_at", "updated_at",
     allowGetters = true
 )
 class TimeActivityAudit : Serializable {
-    
+
     @CreatedDate
     @DiffIgnore
+    @Column(name = "created_at")
     var createdAt: LocalDateTime? = null
-    
+
     @LastModifiedDate
     @DiffIgnore
+    @Column(name = "updated_at")
     var updatedAt: LocalDateTime? = null
-    
+
 }

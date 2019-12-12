@@ -2,10 +2,10 @@ package it.jbot.security.service
 
 import it.jbot.core.service.CrudService
 import it.jbot.security.form.RegisterForm
-import it.jbot.security.model.User
+import it.jbot.security.model.JBotUser
 
-interface UserService : CrudService<User, Long> {
+interface UserService : CrudService<JBotUser, Long> {
 
-    fun register(registerForm: RegisterForm): User
+    fun register(registerForm: RegisterForm): JBotUser
 
 }

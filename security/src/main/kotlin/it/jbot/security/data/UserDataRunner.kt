@@ -2,7 +2,7 @@ package it.jbot.security.data
 
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.model.Role
-import it.jbot.security.model.User
+import it.jbot.security.model.JBotUser
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
@@ -20,7 +20,7 @@ class UserDataRunner(
 
     override fun run(vararg args: String?) {
 
-        userRepository.findByUserName("admin").ifNull {
+        userRepository.findByUsername("admin").ifNull {
             createUser(
                 username = "admin",
                 password = "admin",
@@ -36,7 +36,7 @@ class UserDataRunner(
             )
         }
 
-        userRepository.findByUserName("test").ifNull {
+        userRepository.findByUsername("test").ifNull {
             createUser(
                 username = "test",
                 password = "test",
@@ -61,7 +61,7 @@ class UserDataRunner(
         userExpireAt: Date? = null,
         pwdExpireAt: Date,
         lastLogin: Date? = null
-    ): User {
+    ): JBotUser {
 
         val userRoles = mutableSetOf<Role>()
         for (role in roles)
@@ -69,7 +69,7 @@ class UserDataRunner(
                 userRoles.add(it)
             }
 
-        return User(
+        return JBotUser(
             username,
             jBotPasswordEncoder.bcryptEncoder().encode(password),
             email

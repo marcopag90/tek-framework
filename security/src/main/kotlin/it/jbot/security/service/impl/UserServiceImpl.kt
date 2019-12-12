@@ -10,7 +10,7 @@ import it.jbot.core.util.isFalse
 import it.jbot.core.util.isTrue
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
-import it.jbot.security.model.User
+import it.jbot.security.model.JBotUser
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
@@ -31,7 +31,7 @@ class UserServiceImpl(
 ) : UserService {
 
     @Transactional
-    override fun register(registerForm: RegisterForm): User {
+    override fun register(registerForm: RegisterForm): JBotUser {
 
         authService.isValidPassword(registerForm.password).isFalse {
             throw JBotServiceException(
@@ -43,7 +43,7 @@ class UserServiceImpl(
             )
         }
 
-        userRepository.existsByUserName(registerForm.username).isTrue {
+        userRepository.existsByUsername(registerForm.username).isTrue {
             throw JBotServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
@@ -65,11 +65,22 @@ class UserServiceImpl(
             )
         }
 
+        authService.checkPasswordConstraints(registerForm.username, registerForm.email, registerForm.password).isFalse {
+            throw JBotServiceException(
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = SecurityMessageSource.errorConflictPassword,
+                    parameters = arrayOf(registerForm.email)
+                ),
+                httpStatus = HttpStatus.BAD_REQUEST
+            )
+        }
+
         roleRepository.findByName(RoleName.ROLE_USER)?.let { role ->
             return userRepository.save(
-                User(
-                    userName = registerForm.username,
-                    passWord = authService.passwordEncoder().encode(registerForm.password),
+                JBotUser(
+                    username = registerForm.username,
+                    password = authService.passwordEncoder().encode(registerForm.password),
                     email = registerForm.email
                 ).apply {
                     this.pwdExpireAt = addMonthsFromNow(3)
@@ -87,15 +98,15 @@ class UserServiceImpl(
     }
 
     //TODO update service
-    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<User>> {
+    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<JBotUser>> {
 
-        val user = User("", "", "")
+        val user = JBotUser("", "", "")
         return ResponseEntity(
             JBotEntityResponse(HttpStatus.OK, user), HttpStatus.OK
         )
     }
 
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<User>> {
+    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<JBotUser>> {
 
         predicate?.let {
             return ResponseEntity(

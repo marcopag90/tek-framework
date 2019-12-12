@@ -14,7 +14,7 @@ import java.util.*
 class SecurityAuditorAware(
     private val authService: AuthService
 ) : AuditorAware<Any> {
-    
+
     override fun getCurrentAuditor(): Optional<Any> =
         Optional.ofNullable(authService.getCurrentUser()?.id)
 }

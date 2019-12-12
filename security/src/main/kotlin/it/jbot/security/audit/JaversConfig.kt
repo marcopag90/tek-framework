@@ -1,6 +1,5 @@
 package it.jbot.security.audit
 
-import org.javers.spring.auditable.AuthorProvider
 import org.javers.spring.auditable.CommitPropertiesProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,31 +19,43 @@ class ServletRequestHolder {
 }
 
 @Configuration
-class JaversConf(
-    private val securityAuditorAware: SecurityAuditorAware,
+class JaversAuthorConf(
+    private val auditorAware: SecurityAuditorAware,
     private val servletRequestHolder: ServletRequestHolder
 ) {
 
-    @Bean
-    fun provideJaversAuthor(): AuthorProvider =
-        SecurityAuthorProvider(securityAuditorAware)
+    companion object {
+        const val REMOTE_ADDRESS = "remote-address"
+        const val AUTHOR_ID = "author-id"
+    }
 
     @Bean
     fun commitPropertiesProvider(): CommitPropertiesProvider {
 
         return object : CommitPropertiesProvider {
 
+            //TODO i18n Javers properties
             override fun provideForCommittedObject(domainObject: Any?): MutableMap<String, String> {
 
-                val additionalInfo = mutableMapOf<String, String>()
-
-                val requestAttributes =
-                    servletRequestHolder.getRequestAttributes() as ServletRequestAttributes?
-                requestAttributes?.let {
-                    additionalInfo["remote-address"] = it.request.remoteAddr
+                return mutableMapOf<String, String>().apply {
+                    this[REMOTE_ADDRESS] = getRemoteAddress()
+                    this[AUTHOR_ID] = getAuthorId()
                 }
+            }
 
-                return additionalInfo
+            private fun getRemoteAddress(): String {
+                val requestAttributes = servletRequestHolder.getRequestAttributes() as ServletRequestAttributes?
+                var remoteAddress = "unavailable"
+                if (requestAttributes?.request?.remoteAddr != null)
+                    remoteAddress = requestAttributes.request.remoteAddr
+                return remoteAddress
+            }
+
+            private fun getAuthorId(): String {
+                var authorId = "unauthenticated"
+                if (auditorAware.currentAuditor.isPresent)
+                    authorId = auditorAware.currentAuditor.get().toString()
+                return authorId
             }
         }
     }

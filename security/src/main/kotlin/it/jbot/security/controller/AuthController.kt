@@ -16,7 +16,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(SecurityPattern.REGISTER_PATTERN)
 class AuthController(
-    private val userService: UserService<User>
+    private val userService: UserService
 ) {
 
     @PostMapping

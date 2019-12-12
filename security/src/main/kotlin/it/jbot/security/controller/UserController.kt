@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/user")
 class UserController(
-    override val service: UserService<User>
-) : CrudController<User>(service) {
+    override val service: UserService
+) : CrudController<User, Long>(service) {
 
     override fun listResolve(
         pageable: Pageable, @QuerydslPredicate predicate: Predicate?

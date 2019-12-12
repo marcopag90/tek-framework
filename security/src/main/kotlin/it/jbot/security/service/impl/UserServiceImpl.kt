@@ -28,7 +28,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val messageSource: SecurityMessageSource
-) : UserService<User> {
+) : UserService {
 
     @Transactional
     override fun register(registerForm: RegisterForm): User {
@@ -87,7 +87,7 @@ class UserServiceImpl(
     }
 
     //TODO update service
-    override fun update(properties: Map<String, Any?>): ResponseEntity<JBotEntityResponse<User>> {
+    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<User>> {
 
         val user = User("", "", "")
         return ResponseEntity(

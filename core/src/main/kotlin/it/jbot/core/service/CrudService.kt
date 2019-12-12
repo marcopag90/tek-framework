@@ -1,9 +1,8 @@
 package it.jbot.core.service
 
 import com.querydsl.core.types.Predicate
-import it.jbot.core.JBotPageResponse
-import it.jbot.core.JBotBaseResponse
 import it.jbot.core.JBotEntityResponse
+import it.jbot.core.JBotPageResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 
@@ -16,9 +15,9 @@ import org.springframework.http.ResponseEntity
  * 3) Cloud Service
  * 4) etc...
  */
-interface CrudService<Entity> {
+interface CrudService<Entity, Id> {
 
     fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>>
 
-    fun update(properties: Map<String, Any?>): ResponseEntity<JBotEntityResponse<Entity>>
+    fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>>
 }

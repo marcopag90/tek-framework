@@ -51,3 +51,10 @@ fun unreachableCode(): Nothing = throw NotReachableCode()
 
 class NotReachableCode(message: String = "This line should be unreachable.") : Error(message)
 
+/**
+ * Utility function with _development purpose_ to state that this part of code is not supported
+ */
+fun notSupported(): Nothing = throw NotSupported()
+
+class NotSupported(message: String = "This method is not supported.") : Error(message)
+

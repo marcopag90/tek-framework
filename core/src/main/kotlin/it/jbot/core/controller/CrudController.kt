@@ -8,10 +8,11 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 
-abstract class CrudController<Entity>(
-    open val service: CrudService<Entity>
-) : CrudService<Entity> {
+abstract class CrudController<Entity, Id>(
+    open val service: CrudService<Entity, Id>
+) : CrudService<Entity, Id> {
 
     /**
      * Function that _MUST_ be implemented in order to allow [org.springframework.data.querydsl.binding.QuerydslPredicate]
@@ -24,9 +25,9 @@ abstract class CrudController<Entity>(
     /**
      * Function to update an [Entity] provided in a [CrudService].
      */
-    @PatchMapping("/update")
-    override fun update(properties: Map<String, Any?>): ResponseEntity<JBotEntityResponse<Entity>> =
-        service.update(properties)
+    @PatchMapping("/update/{id}")
+    override fun update(properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> =
+        service.update(properties, id)
 
     /**
      * Function to query an [Entity] provided in a [CrudService].

@@ -8,9 +8,9 @@ import java.util.*
 /**
  * Extension for [org.springframework.http.ResponseEntity]
  *
- * This _MUST_ be returned to client only with ResponseEntity [HttpStatus] between 200 and 299
+ * This _MUST_ be sent to client only with ResponseEntity [HttpStatus] between 200 and 299
  */
-class JBotResponse(
+class JBotBaseResponse(
     httpStatus: HttpStatus
 ) {
 
@@ -23,16 +23,42 @@ class JBotResponse(
     var result: Any? = null
 }
 
-class JBotPageEntityResponse<T>(
+/**
+ * Extension for [org.springframework.http.ResponseEntity].
+ *
+ * Returns a specific [Entity]
+ *
+ * This _MUST_ be sent to client only with ResponseEntity [HttpStatus] between 200 and 299
+ */
+class JBotEntityResponse<Entity>(
     httpStatus: HttpStatus
 ) {
-    constructor(httpStatus: HttpStatus, result: Page<T>) : this(httpStatus) {
+    constructor(httpStatus: HttpStatus, result: Entity) : this(httpStatus) {
         this.result = result
     }
 
     val timestamp: Date = Date().jbotTimestamp()
     val status: Int = httpStatus.value()
-    var result: Page<T>? = null
+    var result: Entity? = null
+}
+
+/**
+ * Extension for [org.springframework.http.ResponseEntity].
+ *
+ * Returns a specific [org.springframework.data.domain.Page] of type [Entity]
+ *
+ * This _MUST_ be sent to client only with ResponseEntity [HttpStatus] between 200 and 299
+ */
+class JBotPageResponse<Entity>(
+    httpStatus: HttpStatus
+) {
+    constructor(httpStatus: HttpStatus, result: Page<Entity>) : this(httpStatus) {
+        this.result = result
+    }
+
+    val timestamp: Date = Date().jbotTimestamp()
+    val status: Int = httpStatus.value()
+    var result: Page<Entity>? = null
 }
 
 /**

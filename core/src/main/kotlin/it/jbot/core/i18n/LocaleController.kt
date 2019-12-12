@@ -1,6 +1,6 @@
 package it.jbot.core.i18n
 
-import it.jbot.core.JBotResponse
+import it.jbot.core.JBotBaseResponse
 import it.jbot.core.i18n.CoreMessageSource.Companion.localeLang
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
@@ -18,9 +18,9 @@ class LocaleController(
 ) {
 
     @GetMapping
-    fun getCurrentLocale(): ResponseEntity<JBotResponse> =
+    fun getCurrentLocale(): ResponseEntity<JBotBaseResponse> =
         ResponseEntity(
-            JBotResponse(
+            JBotBaseResponse(
                 HttpStatus.OK,
                 messageSource.getCoreMessageSource().getMessage(localeLang, null, LocaleContextHolder.getLocale())
             ),

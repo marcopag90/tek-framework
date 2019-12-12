@@ -1,6 +1,6 @@
 package it.jbot.security.controller
 
-import it.jbot.core.JBotResponse
+import it.jbot.core.JBotBaseResponse
 import it.jbot.security.SecurityPattern
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.model.User
@@ -20,9 +20,9 @@ class AuthController(
 ) {
 
     @PostMapping
-    fun register(@Valid @RequestBody registerForm: RegisterForm): ResponseEntity<JBotResponse> {
+    fun register(@Valid @RequestBody registerForm: RegisterForm): ResponseEntity<JBotBaseResponse> {
         return ResponseEntity(
-            JBotResponse(HttpStatus.OK, userService.register(registerForm)),
+            JBotBaseResponse(HttpStatus.OK, userService.register(registerForm)),
             HttpStatus.OK
         )
     }

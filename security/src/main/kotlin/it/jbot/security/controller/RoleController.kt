@@ -1,6 +1,6 @@
 package it.jbot.security.controller
 
-import it.jbot.core.JBotResponse
+import it.jbot.core.JBotBaseResponse
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
 import it.jbot.security.i18n.SecurityMessageSource
@@ -25,19 +25,19 @@ class RoleController(
 ) {
 
     @GetMapping("/list")
-    fun list(pageable: Pageable): ResponseEntity<JBotResponse> {
+    fun list(pageable: Pageable): ResponseEntity<JBotBaseResponse> {
         return ResponseEntity(
-            JBotResponse(HttpStatus.OK, roleRepository.findAll(pageable)),
+            JBotBaseResponse(HttpStatus.OK, roleRepository.findAll(pageable)),
             HttpStatus.OK
         )
     }
 
     @GetMapping
-    fun read(@RequestParam("name") name: String): ResponseEntity<JBotResponse> {
+    fun read(@RequestParam("name") name: String): ResponseEntity<JBotBaseResponse> {
 
         roleRepository.findByName(RoleName.fromString(name))?.let {
             return ResponseEntity(
-                JBotResponse(HttpStatus.OK, it),
+                JBotBaseResponse(HttpStatus.OK, it),
                 HttpStatus.OK
             )
         } ?: throw JBotServiceException(

@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -25,7 +27,8 @@ class UserController(
     ): ResponseEntity<JBotPageResponse<JBotUser>> = list(pageable, predicate)
 
     @PreAuthorize("hasAuthority('USER_UPDATE')")
-    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<JBotUser>> {
+    @PatchMapping("/update/{id}")
+    override fun update(properties: Map<String, Any?>, @PathVariable("id") id: Long): ResponseEntity<JBotEntityResponse<JBotUser>> {
         return super.update(properties, id)
     }
 

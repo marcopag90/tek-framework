@@ -77,11 +77,10 @@ class JBotUserDataRunner(
                 userRoles.add(it)
             }
 
-        return JBotUser(
-            username,
-            jBotPasswordEncoder.bcryptEncoder().encode(password),
-            email
-        ).apply {
+        return JBotUser().apply {
+            this.username = username
+            this.password = jBotPasswordEncoder.bcryptEncoder().encode(password)
+            this.email = email
             this.roles = userRoles
             this.enabled = enabled
             this.userExpireAt = userExpireAt

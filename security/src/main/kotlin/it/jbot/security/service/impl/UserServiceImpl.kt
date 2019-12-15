@@ -8,6 +8,7 @@ import it.jbot.core.exception.ServiceExceptionData
 import it.jbot.core.util.addMonthsFromNow
 import it.jbot.core.util.isFalse
 import it.jbot.core.util.isTrue
+import it.jbot.core.validation.EntityValidator
 import it.jbot.security.form.RegisterForm
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.JBotUser
@@ -27,7 +28,8 @@ class UserServiceImpl(
     private val authService: AuthService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val messageSource: SecurityMessageSource
+    private val messageSource: SecurityMessageSource,
+    private val validator: EntityValidator
 ) : UserService {
 
     @Transactional
@@ -78,11 +80,10 @@ class UserServiceImpl(
 
         roleRepository.findByName(RoleName.USER)?.let { role ->
             return userRepository.save(
-                JBotUser(
-                    username = registerForm.username,
-                    password = authService.passwordEncoder().encode(registerForm.password),
+                JBotUser().apply {
+                    username = registerForm.username
+                    password = authService.passwordEncoder().encode(registerForm.password)
                     email = registerForm.email
-                ).apply {
                     this.pwdExpireAt = addMonthsFromNow(3)
                     this.roles.add(role)
                 }
@@ -100,9 +101,12 @@ class UserServiceImpl(
     //TODO update service
     override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<JBotUser>> {
 
-        val user = JBotUser("", "", "")
+        val userToUpdate = validator.getUpdatableEntity(properties, JBotUser())
+
         return ResponseEntity(
-            JBotEntityResponse(HttpStatus.OK, user), HttpStatus.OK
+            JBotEntityResponse(
+                HttpStatus.OK, userRepository.save(JBotUser())
+            ), HttpStatus.OK
         )
     }
 

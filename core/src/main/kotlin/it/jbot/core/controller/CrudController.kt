@@ -25,8 +25,7 @@ abstract class CrudController<Entity, Id>(
     /**
      * Function to update an [Entity] provided in a [CrudService].
      */
-    @PatchMapping("/update/{id}")
-    override fun update(properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> =
+    override fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>> =
         service.update(properties, id)
 
     /**

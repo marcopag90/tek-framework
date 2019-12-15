@@ -62,9 +62,9 @@ class AuthServiceImpl(
 
     fun buildUserDetails(user: JBotUser) = JBotUserDetails(
         id = user.id,
-        username = user.username,
-        email = user.email,
-        password = user.password,
+        username = user.username!!,
+        email = user.email!!,
+        password = user.password!!,
         enabled = user.enabled,
         accountNonExpired = !user.accountExpired,
         credentialsNonExpired = !user.credentialsExpired,

@@ -15,28 +15,26 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "users")
-class JBotUser(
-
-    @field:NotBlank
-    @field:Size(min = 3, max = 20)
-    @Column(name = "username", unique = true, nullable = false)
-    var username: String,
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @field:NotBlank
-    @Column(name = "password", nullable = false)
-    var password: String,
-
-    @field:Email
-    @field:NotBlank
-    @Column(unique = true, nullable = false)
-    var email: String
-
-) : UserActivityAudit() {
+class JBotUser : UserActivityAudit() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @field:NotBlank
+    @field:Size(min = 3, max = 20)
+    @Column(name = "username", unique = true, nullable = false)
+    var username: String? = null
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @field:NotBlank
+    @Column(name = "password", nullable = false)
+    var password: String? = null
+
+    @field:Email
+    @field:NotBlank
+    @Column(unique = true, nullable = false)
+    var email: String? = null
 
     //TODO Check from REST service if user activity and javers works (all crud operations)
 

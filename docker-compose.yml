@@ -1,14 +1,14 @@
 version: '3.5'
 volumes:
-    db:
+    postgres_db:
 services:
-    db:
+    postgres_db:
         build:
-            context: db
+            context: postgres_db
         ports:
             - '5432:5432'
         volumes:
-            - db:/var/lib/postgresql/data
+            - postgres_db:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: jbot
             POSTGRES_PASSWORD: jbot

@@ -1,18 +1,22 @@
 package it.jbot.security.data
 
+import it.jbot.core.util.ifNull
 import it.jbot.security.JBotPasswordEncoder
-import it.jbot.security.model.Role
 import it.jbot.security.model.JBotUser
+import it.jbot.security.model.Privilege
+import it.jbot.security.model.Role
+import it.jbot.security.model.enums.PrivilegeName
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
-import it.jbot.core.util.ifNull
 import org.springframework.boot.CommandLineRunner
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import java.util.*
 
+@Order(DataOrder.user)
 @Component
-class UserDataRunner(
+class JBotUserDataRunner(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val jBotPasswordEncoder: JBotPasswordEncoder
@@ -26,8 +30,12 @@ class UserDataRunner(
                 password = "admin",
                 email = "admin@gmail.com",
                 roles = mutableSetOf(
-                    Role(name = RoleName.ROLE_ADMIN),
-                    Role(name = RoleName.ROLE_USER)
+                    Role(name = RoleName.ADMIN).apply {
+                        this.privileges = mutableSetOf(
+                            Privilege(name = PrivilegeName.MENU)
+                        )
+                    },
+                    Role(name = RoleName.USER)
                 ),
                 enabled = true,
                 pwdExpireAt = GregorianCalendar().apply {
@@ -42,7 +50,7 @@ class UserDataRunner(
                 password = "test",
                 email = "test@gmail.com",
                 roles = mutableSetOf(
-                    Role(name = RoleName.ROLE_USER)
+                    Role(name = RoleName.USER)
                 ),
                 enabled = true,
                 pwdExpireAt = GregorianCalendar().apply {

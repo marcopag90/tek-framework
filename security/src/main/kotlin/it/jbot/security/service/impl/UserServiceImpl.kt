@@ -76,7 +76,7 @@ class UserServiceImpl(
             )
         }
 
-        roleRepository.findByName(RoleName.ROLE_USER)?.let { role ->
+        roleRepository.findByName(RoleName.USER)?.let { role ->
             return userRepository.save(
                 JBotUser(
                     username = registerForm.username,
@@ -91,7 +91,7 @@ class UserServiceImpl(
             data = ServiceExceptionData(
                 source = messageSource,
                 message = SecurityMessageSource.errorRoleNotFound,
-                parameters = arrayOf(RoleName.ROLE_USER.name)
+                parameters = arrayOf(RoleName.USER.name)
             ),
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
         )

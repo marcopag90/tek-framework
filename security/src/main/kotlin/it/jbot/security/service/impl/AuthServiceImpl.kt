@@ -4,6 +4,7 @@ import it.jbot.core.util.isFalse
 import it.jbot.security.JBotPasswordEncoder
 import it.jbot.security.JBotUserDetails
 import it.jbot.security.model.JBotUser
+import it.jbot.security.model.Privilege
 import it.jbot.security.model.Role
 import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.AuthService
@@ -68,9 +69,16 @@ class AuthServiceImpl(
         accountNonExpired = !user.accountExpired,
         credentialsNonExpired = !user.credentialsExpired,
         accountNonLocked = !user.accountLocked,
-        authorities = user.roles.buildAuthorities()
+        authorities = user.roles.getAuthorities()
     )
 
-    fun MutableSet<Role>.buildAuthorities(): Set<GrantedAuthority> =
-        this.map { role -> SimpleGrantedAuthority(role.name.name) }.toSet()
+    fun MutableSet<Role>.getAuthorities(): Set<GrantedAuthority> {
+
+        val privileges = mutableSetOf<Privilege>()
+        for (role in this)
+            for (privilege in role.privileges)
+                privileges.add(privilege)
+
+        return privileges.map { privilege -> SimpleGrantedAuthority(privilege.name.name) }.toSet()
+    }
 }

@@ -6,6 +6,6 @@ enum class RoleName(
     override val label: String
 ) : LabelEnum {
 
-    ROLE_ADMIN("Administrator"),
-    ROLE_USER("User");
+    ADMIN("Administrator"),
+    USER("User")
 }

@@ -1,10 +1,8 @@
 package it.jbot.core.exception
 
 import it.jbot.core.JBotErrorResponse
-import it.jbot.core.i18n.CoreMessageSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.util.*
 
 /**
  * [org.springframework.web.bind.annotation.RestController] exception handler
@@ -78,14 +75,14 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
         log.warn(ex.message)
 
-        val status = HttpStatus.NOT_ACCEPTABLE
+        val httpStatus = HttpStatus.NOT_ACCEPTABLE
 
         return ResponseEntity(
-            JBotErrorResponse(status).apply {
+            JBotErrorResponse(httpStatus).apply {
                 this.errors = ex.errors
                 this.path = (request as ServletWebRequest).request.servletPath
             },
-            status
+            httpStatus
         )
     }
 
@@ -101,17 +98,17 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
 
         log.warn(ex.message)
 
-        val status = HttpStatus.NOT_ACCEPTABLE
+        val httpStatus = HttpStatus.NOT_ACCEPTABLE
 
         return ResponseEntity(
-            JBotErrorResponse(status).apply {
+            JBotErrorResponse(httpStatus).apply {
                 this.errors = ex.bindingResult.allErrors.associate {
                     (it as FieldError).field to it.defaultMessage
                 }
                 this.path = (request as ServletWebRequest).request.servletPath
             },
             headers,
-            status
+            httpStatus
         )
     }
 }

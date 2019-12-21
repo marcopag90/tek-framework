@@ -1,7 +1,6 @@
 package it.jbot.security.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import it.jbot.core.converter.ItalianBoolean
 import it.jbot.core.util.isDateExpired
 import it.jbot.security.audit.UserActivityAudit
 import java.util.*

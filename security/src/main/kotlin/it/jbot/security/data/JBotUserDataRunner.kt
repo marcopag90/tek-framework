@@ -27,7 +27,7 @@ class JBotUserDataRunner(
         userRepository.findByUsername("admin").ifNull {
             createUser(
                 username = "admin",
-                password = "admin",
+                password = "Administrator1!*",
                 email = "admin@gmail.com",
                 roles = mutableSetOf(
                     Role(name = RoleName.ADMIN).apply {
@@ -46,9 +46,9 @@ class JBotUserDataRunner(
 
         userRepository.findByUsername("test").ifNull {
             createUser(
-                username = "test",
-                password = "test",
-                email = "test@gmail.com",
+                username = "user",
+                password = "User1!*",
+                email = "user@gmail.com",
                 roles = mutableSetOf(
                     Role(name = RoleName.USER)
                 ),

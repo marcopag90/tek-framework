@@ -15,6 +15,15 @@ abstract class CrudController<Entity, Id>(
 ) : CrudService<Entity, Id> {
 
     /**
+     * Function to query an [Entity] provided in a [CrudService].
+     *
+     * Given a [Pageable] and a [Predicate] binded from client calls,
+     * it returns a [org.springframework.data.domain.Page] of [Entity] type.
+     */
+    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> =
+        service.list(pageable, predicate)
+
+    /**
      * Function that _MUST_ be implemented in order to allow [org.springframework.data.querydsl.binding.QuerydslPredicate]
      * to dynamically resolve the root of the entity, since the generic representation is just Object.class (due to Querydsl limitation).
      * In the implementation, add the annotation to predicate parameter and just call [list].
@@ -28,12 +37,5 @@ abstract class CrudController<Entity, Id>(
     override fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>> =
         service.update(properties, id)
 
-    /**
-     * Function to query an [Entity] provided in a [CrudService].
-     *
-     * Given a [Pageable] and a [Predicate] binded from client calls,
-     * it returns a [org.springframework.data.domain.Page] of [Entity] type.
-     */
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> =
-        service.list(pageable, predicate)
+
 }

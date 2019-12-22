@@ -1,4 +1,4 @@
-package it.jbot.core.web
+package it.jbot.core.i18n
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module
 import it.jbot.core.i18n.JBotLocale
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class JBotWebMvcConfigurer(
+class JBotLocaleChangeConf(
     private val locale: JBotLocale
 ) : WebMvcConfigurer {
 

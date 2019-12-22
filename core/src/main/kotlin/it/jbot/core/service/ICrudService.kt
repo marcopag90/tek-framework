@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity
  * 3) Cloud Service
  * 4) etc...
  */
-interface CrudService<Entity, Id> {
+interface ICrudService<Entity, Id> {
 
     fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>>
 

@@ -4,8 +4,9 @@ import com.querydsl.core.types.Predicate
 import it.jbot.core.JBotBaseResponse
 import it.jbot.core.JBotEntityResponse
 import it.jbot.core.JBotPageResponse
+import it.jbot.core.service.JBotCrudService
 import it.jbot.core.util.notSupported
-import it.jbot.security.i18n.SecurityMessageSource
+import it.jbot.core.validation.EntityValidator
 import it.jbot.security.model.Role
 import it.jbot.security.model.enums.RoleName
 import it.jbot.security.repository.RoleRepository
@@ -16,9 +17,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class RoleServiceImpl(
-    private val roleRepository: RoleRepository
-) : RoleService {
+class RoleCrudService(
+    private val roleRepository: RoleRepository,
+    validator: EntityValidator
+) : RoleService, JBotCrudService<Role, Long, RoleRepository>(roleRepository, validator) {
 
     override fun read(name: String): ResponseEntity<JBotBaseResponse> {
         return ResponseEntity(

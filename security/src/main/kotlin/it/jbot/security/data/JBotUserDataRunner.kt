@@ -44,7 +44,7 @@ class JBotUserDataRunner(
             )
         }
 
-        userRepository.findByUsername("test").ifNull {
+        userRepository.findByUsername("user").ifNull {
             createUser(
                 username = "user",
                 password = "User1!*",

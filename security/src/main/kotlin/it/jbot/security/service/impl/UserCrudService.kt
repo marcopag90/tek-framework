@@ -1,10 +1,8 @@
 package it.jbot.security.service.impl
 
-import com.querydsl.core.types.Predicate
-import it.jbot.core.JBotEntityResponse
-import it.jbot.core.JBotPageResponse
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
+import it.jbot.core.service.JBotCrudService
 import it.jbot.core.util.addMonthsFromNow
 import it.jbot.core.util.isFalse
 import it.jbot.core.util.isTrue
@@ -17,20 +15,18 @@ import it.jbot.security.repository.RoleRepository
 import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.AuthService
 import it.jbot.security.service.UserService
-import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserServiceImpl(
+class UserCrudService(
     private val authService: AuthService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val messageSource: SecurityMessageSource,
-    private val validator: EntityValidator
-) : UserService {
+    validator: EntityValidator
+) : UserService, JBotCrudService<JBotUser, Long, UserRepository>(userRepository, validator) {
 
     @Transactional
     override fun register(registerForm: RegisterForm): JBotUser {
@@ -96,27 +92,5 @@ class UserServiceImpl(
             ),
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
         )
-    }
-
-    //TODO update service
-    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<JBotEntityResponse<JBotUser>> {
-
-        val userToUpdate = validator.getUpdatableEntity(properties, JBotUser())
-
-        return ResponseEntity(
-            JBotEntityResponse(
-                HttpStatus.OK, userRepository.save(JBotUser())
-            ), HttpStatus.OK
-        )
-    }
-
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<JBotUser>> {
-
-        predicate?.let {
-            return ResponseEntity(
-                JBotPageResponse(HttpStatus.OK, userRepository.findAll(predicate, pageable)),
-                HttpStatus.OK
-            )
-        } ?: return ResponseEntity(JBotPageResponse(HttpStatus.OK, userRepository.findAll(pageable)), HttpStatus.OK)
     }
 }

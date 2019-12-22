@@ -11,6 +11,7 @@ enum class PrivilegeName(
 
     ROLE_READ("privilege_role_read"),
 
+    USER_CREATE("privilege_user_create"),
     USER_READ("privilege_user_read"),
     USER_UPDATE("privilege_user_update"),
     USER_DELETE("privilege_user_delete")

@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
+/**
+ * Service to provide bean validations and access to [JBotRepository] to execute _CRUD_ operations over a given [Entity].
+ */
 abstract class JBotCrudService<Entity, Id, Repository : JBotRepository<Entity, Id>>(
     open val repository: Repository,
     open val validator: EntityValidator

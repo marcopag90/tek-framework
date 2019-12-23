@@ -73,10 +73,7 @@ class JBotExceptionHandler : ResponseEntityExceptionHandler() {
         request: WebRequest
     ): ResponseEntity<JBotErrorResponse> {
 
-        log.warn(ex.message)
-
         val httpStatus = HttpStatus.NOT_ACCEPTABLE
-
         return ResponseEntity(
             JBotErrorResponse(httpStatus).apply {
                 this.errors = ex.errors

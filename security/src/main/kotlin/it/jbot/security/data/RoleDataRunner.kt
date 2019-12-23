@@ -34,7 +34,6 @@ class RoleDataRunner(
                             }
                         }
                     ))
-                    else -> roleRepository.save(roleName.createRole(mutableSetOf()))
                 }
             }
     }

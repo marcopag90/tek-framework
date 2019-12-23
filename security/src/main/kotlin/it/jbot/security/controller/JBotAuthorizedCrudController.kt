@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Extension of [JBotCrudController] to provide security at method access level
@@ -18,12 +21,14 @@ abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudServi
 ) : JBotCrudController<Entity, Id, CrudService>(crudService) {
 
     @PreAuthorize("this.readAuthorized()")
+    @GetMapping("/list")
     override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> {
         return super.list(pageable, predicate)
     }
 
     @PreAuthorize("this.updateAuthorized()")
-    override fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    @PatchMapping("/update/{id}")
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
         return super.update(properties, id)
     }
 

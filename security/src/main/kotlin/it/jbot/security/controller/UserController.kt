@@ -1,6 +1,7 @@
 package it.jbot.security.controller
 
 import com.querydsl.core.types.Predicate
+import it.jbot.core.JBotEntityResponse
 import it.jbot.core.JBotPageResponse
 import it.jbot.security.model.JBotUser
 import it.jbot.security.model.enums.PrivilegeName
@@ -9,8 +10,7 @@ import it.jbot.security.util.hasPrivilege
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")

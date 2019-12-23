@@ -8,6 +8,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Generic _REST_ Controller to provide common JPA standard _CRUD_ operations for a given [Entity] with a specific [Id].
@@ -19,7 +23,7 @@ import org.springframework.http.ResponseEntity
 //TODO crudService to be private? need to refactor all common methods here!
 abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity, Id>>(
     protected val crudService: CrudService
-) : ICrudController<Entity, Id> {
+) : ICrudService<Entity, Id> {
 
     companion object {
         protected val log: Logger = LoggerFactory.getLogger(JBotCrudController::class.java)
@@ -31,6 +35,7 @@ abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity,
      * Given a [Pageable] and a [Predicate] binded from client calls,
      * it returns a [org.springframework.data.domain.Page] of [Entity] type.
      */
+    @GetMapping("/list")
     override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> {
         log.debug("Executing [list] method")
         return crudService.list(pageable, predicate)
@@ -39,8 +44,8 @@ abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity,
     /**
      * Function to update an [Entity] via [ICrudService].
      */
-
-    override fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    @PatchMapping("/update/{id}")
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
         log.debug("Executing [update] method")
         return crudService.update(properties, id)
     }

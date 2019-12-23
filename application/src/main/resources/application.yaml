@@ -45,7 +45,7 @@ spring:
     #                trace: false
     #                web-allow-others: false
 
-    #     Database PostgreSQL
+    # Database PostgreSQL
     datasource:
         url: jdbc:postgresql://${POSTGRES_HOST:localhost}/jbot
         driverClassName: org.postgresql.Driver
@@ -60,10 +60,12 @@ javers:
 
 logging:
     level:
+        root: INFO
+        it.jbot: DEBUG
         org.hibernate:
             tool.hbm2ddl: DEBUG
             SQL: DEBUG
-            type: TRACE
+            type: INFO #TRACE
             type.EnumType: INFO
             type.BasicTypeRegistry: INFO
             descriptor:

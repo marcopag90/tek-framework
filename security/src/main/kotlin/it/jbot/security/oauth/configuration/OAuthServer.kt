@@ -1,12 +1,11 @@
 package it.jbot.security.oauth.configuration
 
-import it.jbot.security.oauth.exception.JBotOAuth2Exception
-import it.jbot.security.service.AuthService
-import it.jbot.core.util.or
+import it.jbot.core.util.LoggerDelegate
 import it.jbot.core.util.hasAuthority
 import it.jbot.core.util.isAnonymous
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import it.jbot.core.util.or
+import it.jbot.security.oauth.exception.JBotOAuth2Exception
+import it.jbot.security.service.AuthService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -42,7 +41,7 @@ class OAuthServer(
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
-    private val log: Logger = LoggerFactory.getLogger(OAuthServer::class.java)
+    private val log by LoggerDelegate()
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/privilege")
 class PrivilegeController(
     service: PrivilegeCrudService
-) : JBotCrudController<Privilege, Long, PrivilegeCrudService>(service) {
+) : JBotCrudController<Privilege, Long, PrivilegeCrudService, Nothing>(service) {
 
     @GetMapping
     fun read(@RequestParam("name") name: String): ResponseEntity<JBotBaseResponse> =

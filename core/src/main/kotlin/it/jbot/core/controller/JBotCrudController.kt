@@ -3,15 +3,14 @@ package it.jbot.core.controller
 import com.querydsl.core.types.Predicate
 import it.jbot.core.JBotEntityResponse
 import it.jbot.core.JBotPageResponse
+import it.jbot.core.form.AbstractDTO
 import it.jbot.core.service.ICrudService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 /**
  * Generic _REST_ Controller to provide common JPA standard _CRUD_ operations for a given [Entity] with a specific [Id].
@@ -21,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody
  * 3) extend the [JBotCrudController] in a [org.springframework.web.bind.annotation.RestController] for the given entity
  */
 //TODO crudService to be private? need to refactor all common methods here!
-abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity, Id>>(
+abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity, Id, DTO>, DTO : AbstractDTO>(
     protected val crudService: CrudService
-) : ICrudService<Entity, Id> {
+) : ICrudController<Entity, Id, DTO> {
 
     companion object {
         protected val log: Logger = LoggerFactory.getLogger(JBotCrudController::class.java)
@@ -37,16 +36,26 @@ abstract class JBotCrudController<Entity, Id, CrudService : ICrudService<Entity,
      */
     @GetMapping("/list")
     override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> {
-        log.debug("Executing [list] method")
+        log.debug("Executing [GET] method")
         return crudService.list(pageable, predicate)
     }
 
     /**
-     * Function to update an [Entity] via [ICrudService].
+     * Function to execute a _PATCH_ request for the given [Entity] via [ICrudService].
      */
     @PatchMapping("/update/{id}")
     override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
-        log.debug("Executing [update] method")
+        log.debug("Executing [PATCH] method")
         return crudService.update(properties, id)
     }
+
+    /**
+     * Function to execute a _PUT_ request for the given [Entity] via [ICrudService].
+     */
+    @PutMapping("/update/{id}")
+    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+        log.debug("Executing [PUT] method")
+        return crudService.update(dto, id)
+    }
+
 }

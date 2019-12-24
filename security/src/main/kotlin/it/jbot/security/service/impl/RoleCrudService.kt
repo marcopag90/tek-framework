@@ -20,7 +20,7 @@ import javax.validation.Validator
 class RoleCrudService(
     private val roleRepository: RoleRepository,
     validator: Validator
-) : RoleService, JBotCrudService<Role, Long, RoleRepository>(Role::class.java, roleRepository, validator) {
+) : RoleService, JBotCrudService<Role, Long, RoleRepository, Nothing>(Role::class.java, roleRepository, validator) {
 
     override fun read(name: String): ResponseEntity<JBotBaseResponse> {
         return ResponseEntity(

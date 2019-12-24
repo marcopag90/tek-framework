@@ -3,6 +3,7 @@ package it.jbot.security.controller
 import com.querydsl.core.types.Predicate
 import it.jbot.core.JBotEntityResponse
 import it.jbot.core.JBotPageResponse
+import it.jbot.security.form.UserForm
 import it.jbot.security.model.JBotUser
 import it.jbot.security.model.enums.PrivilegeName
 import it.jbot.security.service.impl.UserCrudService
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/user")
 class UserController(
     service: UserCrudService
-) : JBotAuthorizedCrudController<JBotUser, Long, UserCrudService>(service) {
+) : JBotAuthorizedCrudController<JBotUser, Long, UserCrudService, UserForm>(service) {
 
     override fun list(pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<JBotPageResponse<JBotUser>> {
         return super.list(pageable, predicate)

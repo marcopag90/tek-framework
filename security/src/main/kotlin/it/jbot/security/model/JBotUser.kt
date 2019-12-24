@@ -32,7 +32,7 @@ class JBotUser : UserActivityAudit() {
 
     @field:Email
     @field:NotBlank
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     var email: String? = null
 
     //TODO Check from REST service if user activity and javers works (all crud operations)
@@ -87,7 +87,7 @@ class JBotUser : UserActivityAudit() {
      *
      * Usually some action is required to release it (Server or Client side)
      */
-    @Column(length = 1)
+    @Column(name = "enabled", length = 1)
     var enabled: Boolean = true
 
     /**

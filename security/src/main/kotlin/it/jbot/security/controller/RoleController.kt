@@ -19,6 +19,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/role")
 class RoleController(
     service: RoleCrudService
-) : JBotCrudController<Role, Long, RoleCrudService>(service) {
+) : JBotCrudController<Role, Long, RoleCrudService, Nothing>(service) {
 
 }

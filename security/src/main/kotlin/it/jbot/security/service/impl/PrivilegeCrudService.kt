@@ -17,7 +17,7 @@ import javax.validation.Validator
 class PrivilegeCrudService(
     private val privilegeRepository: PrivilegeRepository,
     validator: Validator
-) : PrivilegeService, JBotCrudService<Privilege, Long, PrivilegeRepository>(Privilege::class.java, privilegeRepository, validator) {
+) : PrivilegeService, JBotCrudService<Privilege, Long, PrivilegeRepository, Nothing>(Privilege::class.java, privilegeRepository, validator) {
 
     override fun read(name: String): ResponseEntity<JBotBaseResponse> {
         return ResponseEntity(

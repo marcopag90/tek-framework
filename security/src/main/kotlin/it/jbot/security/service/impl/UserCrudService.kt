@@ -1,5 +1,6 @@
 package it.jbot.security.service.impl
 
+import it.jbot.core.JBotEntityResponse
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.ServiceExceptionData
 import it.jbot.core.service.JBotCrudService
@@ -7,6 +8,7 @@ import it.jbot.core.util.addMonthsFromNow
 import it.jbot.core.util.isFalse
 import it.jbot.core.util.isTrue
 import it.jbot.security.form.RegisterForm
+import it.jbot.security.form.UserForm
 import it.jbot.security.i18n.SecurityMessageSource
 import it.jbot.security.model.JBotUser
 import it.jbot.security.model.enums.RoleName
@@ -15,6 +17,7 @@ import it.jbot.security.repository.UserRepository
 import it.jbot.security.service.AuthService
 import it.jbot.security.service.UserService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import javax.validation.Validator
@@ -26,7 +29,8 @@ class UserCrudService(
     private val roleRepository: RoleRepository,
     private val messageSource: SecurityMessageSource,
     validator: Validator
-    ) : UserService, JBotCrudService<JBotUser, Long, UserRepository>(JBotUser::class.java, userRepository, validator) {
+) : UserService,
+    JBotCrudService<JBotUser, Long, UserRepository, UserForm>(JBotUser::class.java, userRepository, validator) {
 
     @Transactional
     override fun register(registerForm: RegisterForm): JBotUser {

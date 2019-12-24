@@ -4,21 +4,20 @@ import com.querydsl.core.types.Predicate
 import it.jbot.core.JBotEntityResponse
 import it.jbot.core.JBotPageResponse
 import it.jbot.core.controller.JBotCrudController
+import it.jbot.core.form.AbstractDTO
 import it.jbot.core.service.ICrudService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 /**
  * Extension of [JBotCrudController] to provide security at method access level
  */
-abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudService<Entity, Id>>(
+abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudService<Entity, Id, DTO>, DTO : AbstractDTO>(
     crudService: CrudService
-) : JBotCrudController<Entity, Id, CrudService>(crudService) {
+) : JBotCrudController<Entity, Id, CrudService, DTO>(crudService) {
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/list")
@@ -30,6 +29,12 @@ abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudServi
     @PatchMapping("/update/{id}")
     override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
         return super.update(properties, id)
+    }
+
+    @PreAuthorize("this.updateAuthorized()")
+    @PutMapping("/update/{id}")
+    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+        return super.update(dto, id)
     }
 
     /**

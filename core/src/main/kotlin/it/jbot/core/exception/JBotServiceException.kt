@@ -1,6 +1,6 @@
 package it.jbot.core.exception
 
-import it.jbot.core.JBotMessageSource
+import it.jbot.core.i18n.JBotMessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import java.lang.RuntimeException

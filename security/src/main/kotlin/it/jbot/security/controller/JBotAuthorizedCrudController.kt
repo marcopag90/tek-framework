@@ -1,7 +1,7 @@
 package it.jbot.security.controller
 
 import com.querydsl.core.types.Predicate
-import it.jbot.core.JBotEntityResponse
+import it.jbot.core.JBotResponseEntity
 import it.jbot.core.JBotPageResponse
 import it.jbot.core.controller.JBotCrudController
 import it.jbot.core.form.AbstractDTO
@@ -27,13 +27,13 @@ abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudServi
 
     @PreAuthorize("this.updateAuthorized()")
     @PatchMapping("/update/{id}")
-    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotResponseEntity<Entity>> {
         return super.update(properties, id)
     }
 
     @PreAuthorize("this.updateAuthorized()")
     @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: Id): ResponseEntity<JBotResponseEntity<Entity>> {
         return super.update(dto, id)
     }
 

@@ -1,18 +1,19 @@
-package it.jbot.security.form
+package it.jbot.security.form.auth
 
-import it.jbot.core.form.AbstractDTO
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-data class UserForm(
+data class RegisterForm(
 
     @field:NotBlank
     @field:Size(min = 3, max = 20)
-    val username: String?,
+    val username: String,
+
+    @field:NotBlank
+    val password: String,
 
     @field:NotBlank
     @field:Email
-    val email: String?
-
-) : AbstractDTO()
+    val email: String
+)

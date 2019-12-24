@@ -2,7 +2,7 @@ package it.jbot.security.controller
 
 import it.jbot.core.JBotBaseResponse
 import it.jbot.security.SecurityPattern
-import it.jbot.security.form.RegisterForm
+import it.jbot.security.form.auth.RegisterForm
 import it.jbot.security.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

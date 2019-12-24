@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository
 interface PrivilegeRepository : JBotRepository<Privilege, Long> {
 
     fun findByName(name: PrivilegeName): Privilege?
-
 }

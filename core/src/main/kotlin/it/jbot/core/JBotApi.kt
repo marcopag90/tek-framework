@@ -30,7 +30,7 @@ class JBotBaseResponse(
  *
  * This _MUST_ be sent to client only with ResponseEntity [HttpStatus] between 200 and 299
  */
-class JBotEntityResponse<Entity>(
+class JBotResponseEntity<Entity>(
     httpStatus: HttpStatus
 ) {
     constructor(httpStatus: HttpStatus, result: Entity) : this(httpStatus) {

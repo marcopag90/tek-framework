@@ -33,5 +33,6 @@ class SecurityMessageSource : JBotMessageSource {
         const val errorEmptyRole = "error.empty.role"
         const val errorNotValidPassword = "error.notvalid.password"
         const val errorRoleNotFound = "error.notfound.role"
+        const val errorPrivilegeNotFound = "error.notfound.privilege"
     }
 }

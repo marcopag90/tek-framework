@@ -1,7 +1,7 @@
 package it.jbot.core.service
 
 import com.querydsl.core.types.Predicate
-import it.jbot.core.JBotEntityResponse
+import it.jbot.core.JBotResponseEntity
 import it.jbot.core.JBotPageResponse
 import it.jbot.core.exception.JBotServiceException
 import it.jbot.core.exception.JBotValidationException
@@ -16,17 +16,17 @@ import org.springframework.http.ResponseEntity
 import javax.validation.Validator
 
 /**
- * Service to provide bean validations and access to [JBotRepository] to execute _CRUD_ operations over a given [Entity].
+ * Service to provide bean validations and access to [JBotRepository] to execute _CRUD_ operations over a given [E].
  */
-abstract class JBotCrudService<Entity, Id, Repository : JBotRepository<Entity, Id>, DTO : AbstractDTO>(
-    protected val entityClass: Class<Entity>,
-    protected val repository: Repository,
+abstract class JBotCrudService<E, ID, R : JBotRepository<E, ID>, DTO : AbstractDTO>(
+    protected val entityClass: Class<E>,
+    protected val repository: R,
     protected val validator: Validator
-) : ICrudService<Entity, Id, DTO> {
+) : ICrudService<E, ID, DTO> {
 
     protected val log by LoggerDelegate()
 
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> {
+    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
 
         log.debug("Fetching data from repository: $repository")
         predicate?.let {
@@ -37,7 +37,7 @@ abstract class JBotCrudService<Entity, Id, Repository : JBotRepository<Entity, I
         } ?: return ResponseEntity(JBotPageResponse(HttpStatus.OK, repository.findAll(pageable)), HttpStatus.OK)
     }
 
-    override fun update(properties: Map<String, Any?>, id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    override fun update(properties: Map<String, Any?>, id: ID): ResponseEntity<JBotResponseEntity<E>> {
 
         log.debug("Initializing properties lookup for : $properties")
         if (properties.isNullOrEmpty()) throw JBotServiceException(
@@ -73,10 +73,10 @@ abstract class JBotCrudService<Entity, Id, Repository : JBotRepository<Entity, I
         val updatedEntity = repository.save(instance)
         log.debug("Update success!")
 
-        return ResponseEntity(JBotEntityResponse(HttpStatus.OK, updatedEntity), HttpStatus.OK)
+        return ResponseEntity(JBotResponseEntity(HttpStatus.OK, updatedEntity), HttpStatus.OK)
     }
 
-    override fun update(dto: DTO, id: Id): ResponseEntity<JBotEntityResponse<Entity>> {
+    override fun update(dto: DTO, id: ID): ResponseEntity<JBotResponseEntity<E>> {
 
         log.debug("Accessing $repository for entity: $entityClass with id:$id")
         val optional = repository.findById(id)
@@ -93,6 +93,6 @@ abstract class JBotCrudService<Entity, Id, Repository : JBotRepository<Entity, I
         val updatedEntity = repository.save(entityToUpdate)
         log.debug("Update success for entity: $updatedEntity")
 
-        return ResponseEntity(JBotEntityResponse(HttpStatus.OK, updatedEntity), HttpStatus.OK)
+        return ResponseEntity(JBotResponseEntity(HttpStatus.OK, updatedEntity), HttpStatus.OK)
     }
 }

@@ -5,8 +5,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor
 import org.springframework.data.repository.NoRepositoryBean
 
 /**
- * Jpa Repository for common _CRUD_ operations
+ * JBot Repository for common _CRUD_ operations
  */
 @NoRepositoryBean
-interface JBotRepository<Entity, Id> : JpaRepository<Entity, Id>, QuerydslPredicateExecutor<Entity> {
+interface JBotRepository<E, ID> : JpaRepository<E, ID>, QuerydslPredicateExecutor<E> {
 }

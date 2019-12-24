@@ -5,7 +5,6 @@ import it.jbot.core.JBotPageResponse
 import it.jbot.core.JBotResponseEntity
 import it.jbot.core.util.LoggerDelegate
 import it.jbot.security.model.Privilege
-import it.jbot.security.model.Role
 import it.jbot.security.model.enums.PrivilegeName
 import it.jbot.security.service.PrivilegeService
 import it.jbot.security.util.hasPrivilege

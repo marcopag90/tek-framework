@@ -1,9 +1,9 @@
 package it.jbot.audit.repository
 
 import it.jbot.audit.model.WebAudit
-import org.springframework.data.jpa.repository.JpaRepository
+import it.jbot.core.repository.JBotRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface WebAuditRepository : JpaRepository<WebAudit, Long> {
+interface WebAuditRepository : JBotRepository<WebAudit, Long> {
 }

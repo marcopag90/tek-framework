@@ -122,10 +122,12 @@ class UserServiceImpl(
         return ResponseEntity(JBotResponseEntity(HttpStatus.OK, optional.get()), HttpStatus.OK)
     }
 
+    @Transactional
     override fun update() {
         TODO("Update user to be decided!")
     }
 
+    @Transactional
     override fun delete(id: Long): ResponseEntity<JBotResponseEntity<Long>> {
         log.debug("Accessing $userRepository for entity: ${JBotUser::class.java.name} with id:$id")
 

@@ -15,25 +15,25 @@ import javax.validation.Valid
 /**
  * Extension of [JBotCrudController] to provide security at method access level
  */
-abstract class JBotAuthorizedCrudController<Entity, Id, CrudService : ICrudService<Entity, Id, DTO>, DTO : AbstractDTO>(
-    crudService: CrudService
-) : JBotCrudController<Entity, Id, CrudService, DTO>(crudService) {
+abstract class JBotAuthorizedCrudController<E, ID, S : ICrudService<E, ID, DTO>, DTO : AbstractDTO>(
+    crudService: S
+) : JBotCrudController<E, ID, S, DTO>(crudService) {
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/list")
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<Entity>> {
+    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
         return super.list(pageable, predicate)
     }
 
     @PreAuthorize("this.updateAuthorized()")
     @PatchMapping("/update/{id}")
-    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Id): ResponseEntity<JBotResponseEntity<Entity>> {
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<JBotResponseEntity<E>> {
         return super.update(properties, id)
     }
 
     @PreAuthorize("this.updateAuthorized()")
     @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: Id): ResponseEntity<JBotResponseEntity<Entity>> {
+    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: ID): ResponseEntity<JBotResponseEntity<E>> {
         return super.update(dto, id)
     }
 

@@ -1,11 +1,10 @@
 package it.jbot.security.web
 
-import it.jbot.security.oauth.configuration.OAuthWebSecurity
 import it.jbot.core.SpringProfile
+import it.jbot.core.util.LoggerDelegate
 import it.jbot.core.util.SpringProperty
 import it.jbot.core.util.unreachableCode
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import it.jbot.security.oauth.configuration.OAuthWebSecurity
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -28,7 +27,7 @@ class WebSecurityConf(
     @Value("\${security.type: basic}")
     private lateinit var securityType: SpringProperty
 
-    private val log: Logger = LoggerFactory.getLogger(WebSecurityConf::class.java)
+    private val log by LoggerDelegate()
 
     override fun configure(http: HttpSecurity) {
 

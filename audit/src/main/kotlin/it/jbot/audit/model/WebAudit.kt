@@ -14,6 +14,7 @@ import javax.persistence.*
     "requested_at", "served_at",
     allowGetters = true
 )
+@Table(name = "web_audit")
 class WebAudit(
 
     @Id

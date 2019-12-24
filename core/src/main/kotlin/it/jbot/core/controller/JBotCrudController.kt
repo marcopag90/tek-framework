@@ -18,7 +18,6 @@ import javax.validation.Valid
  * 2) provide a [org.springframework.stereotype.Service] extending [it.jbot.core.service.JBotCrudService]
  * 3) extend the [JBotCrudController] in a [org.springframework.web.bind.annotation.RestController] for the given entity
  */
-//TODO crudService to be private? need to refactor all common methods here!
 abstract class JBotCrudController<E, ID, S : ICrudService<E, ID, DTO>, DTO : AbstractDTO>(
     protected val crudService: S
 ) : ICrudController<E, ID, DTO> {

@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import it.jbot.audit.model.WebAudit
 import it.jbot.audit.repository.WebAuditRepository
 import it.jbot.audit.service.AuditService
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import it.jbot.core.util.LoggerDelegate
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -24,7 +23,7 @@ class AuditServiceImpl(
     private val objectMapper: ObjectMapper
 ) : AuditService {
 
-    private val logger: Logger = LoggerFactory.getLogger(AuditServiceImpl::class.java)
+    private val log by LoggerDelegate()
 
     override fun logRequest(
         httpServletRequest: HttpServletRequest,
@@ -47,9 +46,9 @@ class AuditServiceImpl(
             jsonRequestMap["body"] = it
         }
 
-        logger.info(sb.toString())
+        log.info(sb.toString())
 
-        httpServletRequest.setAttribute("audit",  WebAudit(
+        httpServletRequest.setAttribute("audit", WebAudit(
             request = objectMapper.writeValueAsString(jsonRequestMap),
             initTime = System.nanoTime(),
             initTimeMillis = System.currentTimeMillis()
@@ -76,7 +75,7 @@ class AuditServiceImpl(
             jsonResponseMap["body"] = it
         }
 
-        logger.info(sb.toString())
+        log.info(sb.toString())
 
         httpServletRequest.getAttribute("audit")?.let {
             (it as WebAudit).apply {

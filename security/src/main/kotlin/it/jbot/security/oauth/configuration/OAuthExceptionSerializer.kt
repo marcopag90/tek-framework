@@ -1,4 +1,4 @@
-package it.jbot.security.exception
+package it.jbot.security.oauth.configuration
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider

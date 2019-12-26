@@ -31,7 +31,12 @@ object SecurityPattern {
 
     fun swaggerResources(): Array<String> {
         return arrayOf(
-            "/v2/api-docs", "/component/**", "/swagger*/**"
+            "/v2/api-docs",
+            "/configuration/ui/**",
+            "/swagger-resources/**",
+            "/configuration/security/**",
+            "/swagger-ui.html",
+            "/webjars/**"
         )
     }
 }

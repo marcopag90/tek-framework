@@ -1,26 +1,31 @@
-package it.jbot.security.web
+package it.jbot.security.configuration
 
 import it.jbot.core.SpringProfile
 import it.jbot.core.util.LoggerDelegate
 import it.jbot.core.util.SpringProperty
 import it.jbot.core.util.unreachableCode
-import it.jbot.security.oauth.configuration.OAuthWebSecurity
+import it.jbot.security.SecurityPattern
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 
-@ConditionalOnMissingBean(OAuthWebSecurity::class)
 @Configuration
+@ConditionalOnProperty(
+    prefix = "security",
+    name = ["type"],
+    havingValue = "basic"
+)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class WebSecurityConf(
+class BasicWebSecurity(
     private val environment: Environment
 ) : WebSecurityConfigurerAdapter() {
 
@@ -28,6 +33,12 @@ class WebSecurityConf(
     private lateinit var securityType: SpringProperty
 
     private val log by LoggerDelegate()
+
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers(
+            *SecurityPattern.swaggerResources()
+        )
+    }
 
     override fun configure(http: HttpSecurity) {
 

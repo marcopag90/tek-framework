@@ -1,12 +1,12 @@
 package it.jbot.security.oauth.configuration
 
+import it.jbot.core.SpringProfile
+import it.jbot.core.i18n.LOCALE_PATTERN
+import it.jbot.core.util.unreachableCode
+import it.jbot.security.SecurityPattern.clientResources
+import it.jbot.security.SecurityPattern.nebularResources
 import it.jbot.security.SecurityPattern.unauthenticatedPatterns
 import it.jbot.security.oauth.exception.OAuth2AccessDeniedHandler
-import it.jbot.core.SpringProfile
-import it.jbot.core.util.unreachableCode
-import it.jbot.security.SecurityPattern.nebularResources
-import it.jbot.security.SecurityPattern.clientResources
-import it.jbot.core.i18n.LOCALE_PATTERN
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -58,7 +58,7 @@ class OAuthResourceServer(
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()
-            .antMatchers(LOCALE_PATTERN).permitAll() // to test locale changes
+            .antMatchers(LOCALE_PATTERN).permitAll()
             .and()
             .authorizeRequests()
             .requestMatchers(PathRequest.toH2Console())
@@ -69,6 +69,8 @@ class OAuthResourceServer(
             .access("#oauth2.hasScope('write')")
             .antMatchers(HttpMethod.PATCH, "/**")
             .access("#oauth2.hasScope('write')")
+            .antMatchers(HttpMethod.PUT, "/**")
+            .access("#oauth2.hasScope('write')")
             .antMatchers(HttpMethod.DELETE, "/**")
             .access("#oauth2.hasScope('write')")
             .anyRequest().authenticated()
@@ -76,7 +78,6 @@ class OAuthResourceServer(
             .headers().frameOptions().sameOrigin() // allow frame for h2-console
     }
 
-    //TODO need to check for client resources antMatchers!
     fun configureProdSecurity(http: HttpSecurity) {
         http
             .authorizeRequests()
@@ -91,6 +92,8 @@ class OAuthResourceServer(
             .antMatchers(HttpMethod.POST, "/**")
             .access("#oauth2.hasScope('write')")
             .antMatchers(HttpMethod.PATCH, "/**")
+            .access("#oauth2.hasScope('write')")
+            .antMatchers(HttpMethod.PUT, "/**")
             .access("#oauth2.hasScope('write')")
             .antMatchers(HttpMethod.DELETE, "/**")
             .access("#oauth2.hasScope('write')")

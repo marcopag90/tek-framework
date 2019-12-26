@@ -1,4 +1,4 @@
-package it.jbot.security.web
+package it.jbot.security.configuration
 
 import it.jbot.core.SpringProfile
 import org.springframework.context.annotation.Profile
@@ -22,7 +22,7 @@ class JBotCorsFilter : Filter {
         val response = res as HttpServletResponse
 
         response.setHeader("Access-Control-Allow-Origin", "*")
-        response.setHeader("Access-Control-Allow-Methods", "PATCH,POST,GET,OPTIONS,DELETE")
+        response.setHeader("Access-Control-Allow-Methods", "PATCH,PUT,POST,GET,OPTIONS,DELETE")
         response.setHeader(
             "Access-Control-Allow-Headers",
             "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN"

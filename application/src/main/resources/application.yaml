@@ -73,13 +73,16 @@ logging:
                 sql.BasicExtractor: DEBUG
 
 security:
-    # oauth2, basic (se mancante fallback a basic automaticamente)
+    # basic, oauth2
     type: oauth2
     # Workaround. Vedi:
     # https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/
     # 2.7.2 Changing the Filter Order
     oauth2:
         resource.filter-order: 3
+        # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
+        # Default: http://localhost:8080
+        accessTokenHost: http://localhost:8080
 
         # ClientDetailsProperties
         client:
@@ -91,5 +94,7 @@ security:
             scope: read,write
             accessTokenValidity: 1800
             refreshTokenValidity: 3600
+
+
 
 

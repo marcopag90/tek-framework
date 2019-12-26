@@ -1,5 +1,25 @@
 package it.jbot.core.util
 
+import org.springframework.context.annotation.Condition
+import org.springframework.context.annotation.ConditionContext
+import org.springframework.context.annotation.Conditional
+import org.springframework.core.type.AnnotatedTypeMetadata
+
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+@Conditional(ConditionalOnMissingProperty.OnNullProperty::class)
+annotation class ConditionalOnMissingProperty(
+    val value: String
+) {
+    class OnNullProperty : Condition {
+        override fun matches(context: ConditionContext, metadata: AnnotatedTypeMetadata): Boolean {
+            val attributes = metadata.getAnnotationAttributes(ConditionalOnMissingProperty::class.java.name)!!
+            val value: String? = context.environment.getProperty(attributes["value"] as String)
+            return (value == null)
+        }
+    }
+}
+
 fun hasAuthority(authority: String): String = "hasAuthority('$authority')"
 
 fun isAnonymous(): String = "isAnonymous()"

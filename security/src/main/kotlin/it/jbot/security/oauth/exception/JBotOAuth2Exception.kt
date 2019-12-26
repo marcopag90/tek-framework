@@ -1,7 +1,7 @@
 package it.jbot.security.oauth.exception
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import it.jbot.security.exception.OAuthExceptionSerializer
+import it.jbot.security.oauth.configuration.OAuthExceptionSerializer
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception
 
 /**

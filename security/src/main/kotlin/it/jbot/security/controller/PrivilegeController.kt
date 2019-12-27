@@ -3,6 +3,7 @@ package it.jbot.security.controller
 import com.querydsl.core.types.Predicate
 import it.jbot.core.JBotPageResponse
 import it.jbot.core.JBotResponseEntity
+import it.jbot.core.swagger.ApiPageable
 import it.jbot.core.util.LoggerDelegate
 import it.jbot.security.model.Privilege
 import it.jbot.security.model.enums.PrivilegeName
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import springfox.documentation.annotations.ApiIgnore
 
 @RestController
 @RequestMapping("/privilege")
@@ -29,7 +31,8 @@ class PrivilegeController(
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/list")
-    fun list(pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<JBotPageResponse<Privilege>> {
+    @ApiPageable
+    fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<JBotPageResponse<Privilege>> {
         log.debug("Executing [GET] method")
         return service.list(pageable, predicate)
     }
@@ -38,5 +41,4 @@ class PrivilegeController(
     @GetMapping("/read")
     fun read(@RequestParam("name") name: String): ResponseEntity<JBotResponseEntity<Privilege>> =
         service.read(name)
-
 }

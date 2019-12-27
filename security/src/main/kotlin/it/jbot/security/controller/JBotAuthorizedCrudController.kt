@@ -6,10 +6,12 @@ import it.jbot.core.JBotPageResponse
 import it.jbot.core.controller.JBotCrudController
 import it.jbot.core.form.AbstractDTO
 import it.jbot.core.service.ICrudService
+import it.jbot.core.swagger.ApiPageable
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import springfox.documentation.annotations.ApiIgnore
 import javax.validation.Valid
 
 /**
@@ -21,7 +23,8 @@ abstract class JBotAuthorizedCrudController<E, ID, S : ICrudService<E, ID, DTO>,
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/list")
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
+    @ApiPageable
+    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
         return super.list(pageable, predicate)
     }
 

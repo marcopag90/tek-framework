@@ -5,10 +5,12 @@ import it.jbot.core.JBotResponseEntity
 import it.jbot.core.JBotPageResponse
 import it.jbot.core.form.AbstractDTO
 import it.jbot.core.service.ICrudService
+import it.jbot.core.swagger.ApiPageable
 import it.jbot.core.util.LoggerDelegate
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import springfox.documentation.annotations.ApiIgnore
 import javax.validation.Valid
 
 /**
@@ -31,7 +33,8 @@ abstract class JBotCrudController<E, ID, S : ICrudService<E, ID, DTO>, DTO : Abs
      * it returns a [org.springframework.data.domain.Page] of [E] type.
      */
     @GetMapping("/list")
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
+    @ApiPageable
+    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<JBotPageResponse<E>> {
         log.debug("Executing [GET] method")
         return crudService.list(pageable, predicate)
     }

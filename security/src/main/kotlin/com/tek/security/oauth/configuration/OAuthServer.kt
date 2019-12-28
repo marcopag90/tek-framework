@@ -37,7 +37,7 @@ class OAuthServer(
     private val datasource: DataSource,
     private val context: ApplicationContext,
     private val authenticationManager: AuthenticationManager,
-    private val jBotAuthService: AuthService,
+    private val authService: AuthService,
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
@@ -65,7 +65,7 @@ class OAuthServer(
             .tokenKeyAccess(isAnonymous().or(hasAuthority(clientDetailsProperties.authority)))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(hasAuthority(clientDetailsProperties.authority))
-            .passwordEncoder(jBotAuthService.passwordEncoder())
+            .passwordEncoder(authService.passwordEncoder())
             .tokenEndpointAuthenticationFilters(corsFilter())
     }
 
@@ -74,7 +74,7 @@ class OAuthServer(
         endpoints
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
-            .userDetailsService(jBotAuthService)
+            .userDetailsService(authService)
             .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
                 if (it is OAuth2Exception) {
                     return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(

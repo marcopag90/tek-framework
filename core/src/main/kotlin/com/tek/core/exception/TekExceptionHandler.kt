@@ -45,11 +45,11 @@ class TekExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     /**
-     * Function to give a standard response for a [JBotServiceException]
+     * Function to give a standard response for a [TekServiceException]
      */
-    @ExceptionHandler(JBotServiceException::class)
+    @ExceptionHandler(TekServiceException::class)
     fun handleServiceException(
-        ex: JBotServiceException,
+        ex: TekServiceException,
         request: WebRequest
     ): ResponseEntity<TekErrorResponse> {
 

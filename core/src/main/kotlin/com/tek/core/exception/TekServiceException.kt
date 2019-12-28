@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 /**
  * Custom Exception that _MUST_ be thrown only in Business Logic failures
  */
-class JBotServiceException : RuntimeException {
+class TekServiceException : RuntimeException {
 
     constructor(
         message: String,

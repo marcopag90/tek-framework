@@ -3,7 +3,7 @@ package com.tek.security.service.impl
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.core.exception.JBotServiceException
+import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.addMonthsFromNow
@@ -39,7 +39,7 @@ class UserServiceImpl(
         log.debug("Processing user form validation with data: $registerForm")
 
         authService.isValidPassword(registerForm.password).isFalse {
-            throw JBotServiceException(
+            throw TekServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorNotValidPassword
@@ -49,7 +49,7 @@ class UserServiceImpl(
         }
 
         userRepository.existsByUsername(registerForm.username).isTrue {
-            throw JBotServiceException(
+            throw TekServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorConflictUsername,
@@ -60,7 +60,7 @@ class UserServiceImpl(
         }
 
         userRepository.existsByEmail(registerForm.email).isTrue {
-            throw JBotServiceException(
+            throw TekServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorConflictEmail,
@@ -71,7 +71,7 @@ class UserServiceImpl(
         }
 
         authService.checkPasswordConstraints(registerForm.username, registerForm.email, registerForm.password).isFalse {
-            throw JBotServiceException(
+            throw TekServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorConflictPassword,
@@ -91,7 +91,7 @@ class UserServiceImpl(
                     this.roles.add(role)
                 }
             )
-        } ?: throw JBotServiceException(
+        } ?: throw TekServiceException(
             data = ServiceExceptionData(
                 source = messageSource,
                 message = SecurityMessageSource.errorRoleNotFound,
@@ -122,7 +122,7 @@ class UserServiceImpl(
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
-        if (!optional.isPresent) throw JBotServiceException(
+        if (!optional.isPresent) throw TekServiceException(
             "Entity ${TekUser::class.java.name} with id:$id not found",
             HttpStatus.NOT_FOUND
         )
@@ -139,7 +139,7 @@ class UserServiceImpl(
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
-        if (!optional.isPresent) throw JBotServiceException(
+        if (!optional.isPresent) throw TekServiceException(
             "Entity ${TekUser::class.java.name} with id:$id not found",
             HttpStatus.NOT_FOUND
         )

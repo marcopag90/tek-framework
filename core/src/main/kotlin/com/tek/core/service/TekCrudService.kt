@@ -3,7 +3,7 @@ package com.tek.core.service
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.core.exception.JBotServiceException
+import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
 import com.tek.core.form.AbstractDTO
 import com.tek.core.repository.TekRepository
@@ -47,7 +47,7 @@ abstract class TekCrudService<E, ID, R : TekRepository<E, ID>, DTO : AbstractDTO
     override fun update(properties: Map<String, Any?>, id: ID): ResponseEntity<TekResponseEntity<E>> {
 
         log.debug("Initializing properties lookup for : $properties")
-        if (properties.isNullOrEmpty()) throw JBotServiceException(
+        if (properties.isNullOrEmpty()) throw TekServiceException(
             "At least one property must be set in properties: $properties",
             HttpStatus.NOT_ACCEPTABLE
         )
@@ -55,7 +55,7 @@ abstract class TekCrudService<E, ID, R : TekRepository<E, ID>, DTO : AbstractDTO
         log.debug("Accessing $repository for entity: $entityClass with id:$id")
         val optional = repository.findById(id)
         if (!optional.isPresent)
-            throw JBotServiceException(
+            throw TekServiceException(
                 "Entity $entityClass with id:$id not found",
                 HttpStatus.NOT_FOUND
             )
@@ -63,7 +63,7 @@ abstract class TekCrudService<E, ID, R : TekRepository<E, ID>, DTO : AbstractDTO
         val instance = optional.get()
         val entityProps = PropertyUtilsBean().describe(instance)
         properties.forEach { (k, _) ->
-            if (!entityProps.containsKey(k)) throw JBotServiceException(
+            if (!entityProps.containsKey(k)) throw TekServiceException(
                 "property: $k not found in entity $instance",
                 HttpStatus.NOT_ACCEPTABLE
             )
@@ -90,7 +90,7 @@ abstract class TekCrudService<E, ID, R : TekRepository<E, ID>, DTO : AbstractDTO
 
         log.debug("Accessing $repository for entity: $entityClass with id:$id")
         val optional = repository.findById(id)
-        if (!optional.isPresent) throw JBotServiceException(
+        if (!optional.isPresent) throw TekServiceException(
             "Entity $entityClass with id:$id not found",
             HttpStatus.NOT_FOUND
         )

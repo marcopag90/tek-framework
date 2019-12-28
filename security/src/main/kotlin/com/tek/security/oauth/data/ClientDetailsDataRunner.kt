@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class ClientDetailsDataRunner(
     private val properties: ClientDetailsProperties,
     private val oAuth2ClientRepository: ClientDetailsRepository,
-    private val jBotPasswordEncoder: TekPasswordEncoder
+    private val pswEncoder: TekPasswordEncoder
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
@@ -24,7 +24,7 @@ class ClientDetailsDataRunner(
             oAuth2ClientRepository.save(ClientDetails().apply {
 
                 this.clientId = properties.clientId
-                this.clientSecret = jBotPasswordEncoder.bcryptEncoder().encode(properties.clientSecret)
+                this.clientSecret = pswEncoder.bcryptEncoder().encode(properties.clientSecret)
                 this.resourceId = properties.resourceId
                 this.scope = properties.scope
                 this.authorizedGrantTypes = properties.grants

@@ -21,7 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class OAuthWebSecurity(
-    private val jBotAuthService: AuthService
+    private val authService: AuthService
 ) : WebSecurityConfigurerAdapter() {
 
     @Bean
@@ -35,7 +35,7 @@ class OAuthWebSecurity(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(jBotAuthService)
-            .passwordEncoder(jBotAuthService.passwordEncoder())
+        auth.userDetailsService(authService)
+            .passwordEncoder(authService.passwordEncoder())
     }
 }

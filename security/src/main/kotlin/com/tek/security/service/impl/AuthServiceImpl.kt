@@ -25,14 +25,14 @@ import java.util.*
 @Service
 class AuthServiceImpl(
     private val userRepository: UserRepository,
-    private val jBotPasswordEncoder: TekPasswordEncoder
+    private val pswEncoder: TekPasswordEncoder
 ) : AuthService {
 
     private val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
 
-    override fun passwordEncoder() = jBotPasswordEncoder.bcryptEncoder()
+    override fun passwordEncoder() = pswEncoder.bcryptEncoder()
 
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {

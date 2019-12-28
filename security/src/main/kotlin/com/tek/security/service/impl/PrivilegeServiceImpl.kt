@@ -3,7 +3,7 @@ package com.tek.security.service.impl
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.core.exception.JBotServiceException
+import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.i18n.SecurityMessageSource
@@ -49,7 +49,7 @@ class PrivilegeServiceImpl(
                 TekResponseEntity(HttpStatus.OK, it),
                 HttpStatus.OK
             )
-        } ?: throw JBotServiceException(
+        } ?: throw TekServiceException(
             data = ServiceExceptionData(
                 source = messageSource,
                 message = SecurityMessageSource.errorPrivilegeNotFound,

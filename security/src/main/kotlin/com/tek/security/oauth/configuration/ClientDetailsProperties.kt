@@ -19,17 +19,17 @@ import java.time.temporal.ChronoUnit
 class ClientDetailsProperties {
     
     /**
-     * Matching oauth_client_details.client_id to authorize a _jbot client_
+     * Matching oauth_client_details.client_id to authorize a _tek client_
      */
     var clientId: String = "tekClientId"
     
     /**
-     * Matching oauth_client_details.client_secret to authorize access to a resource for a _jbot client_ with given _secret_
+     * Matching oauth_client_details.client_secret to authorize access to a resource for a _tek client_ with given _secret_
      */
     var clientSecret: String = "tekSecret"
     
     /**
-     * Matching oauth_client_details.resource_ids to authorize access to a resource for a _jbot client_
+     * Matching oauth_client_details.resource_ids to authorize access to a resource for a _tek client_
      */
     var resourceId: String = "tekResourceId"
     

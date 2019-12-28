@@ -15,7 +15,7 @@ object SecurityPattern {
 
     fun clientResources(): Array<String> {
         return arrayOf(
-            "/*jpg", "/*png", "/*css", "/*js", "/*ico", "/webjars/**"
+            "/*jpg", "/*png", "/*css", "/*js", "/*ico", "/webjars/**", "/assets/**"
         )
     }
 

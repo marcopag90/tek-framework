@@ -17,7 +17,7 @@ class JAXBAuthConfiguration {
     }
 
     @Bean
-    fun getPrivilgesUnmarshaller(): Unmarshaller {
+    fun getPrivilegesUnmarshaller(): Unmarshaller {
         val context = JAXBContext.newInstance(Privileges::class.java)
         return context.createUnmarshaller()
     }

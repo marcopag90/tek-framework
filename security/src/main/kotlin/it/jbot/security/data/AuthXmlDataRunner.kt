@@ -1,6 +1,8 @@
 package it.jbot.security.data
 
 import it.jbot.core.util.LoggerDelegate
+import it.jbot.security.repository.PrivilegeRepository
+import it.jbot.security.repository.RoleRepository
 import it.jbot.security.xml.JAXBAuthConfiguration
 import it.jbot.security.xml.model.Privilege
 import it.jbot.security.xml.model.Privileges
@@ -17,7 +19,9 @@ import org.springframework.stereotype.Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class AuthXmlDataRunner(
     private val jaxbConfiguration: JAXBAuthConfiguration,
-    private val resourceLoader: ResourceLoader
+    private val resourceLoader: ResourceLoader,
+    private val privilegeRepository: PrivilegeRepository,
+    private val roleRepository: RoleRepository
 ) : CommandLineRunner {
 
     private val log by LoggerDelegate()
@@ -44,7 +48,7 @@ class AuthXmlDataRunner(
 
             log.info("Loading resource [${resource.filename}]")
 
-            val unmarshaller = jaxbConfiguration.getPrivilgesUnmarshaller()
+            val unmarshaller = jaxbConfiguration.getPrivilegesUnmarshaller()
             val privilegesStream = resource.inputStream
             privilegesStream.use {
                 val privileges = unmarshaller.unmarshal(resource.inputStream) as Privileges

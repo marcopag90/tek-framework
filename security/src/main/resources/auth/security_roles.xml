@@ -11,4 +11,10 @@
     <role name="user">
         <description>Profilo per utenti base</description>
     </role>
+    <role name="audit">
+        <description>Profilo per utenti di auditing</description>
+        <privileges>
+            <privilege name="web_audit"/>
+        </privileges>
+    </role>
 </roles>

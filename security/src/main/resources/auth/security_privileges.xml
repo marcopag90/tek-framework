@@ -10,4 +10,7 @@
     <privilege type="crud" name="privilege">
         <description>Operazione di crud su tabella privilegi</description>
     </privilege>
+    <privilege type="crud" name="web_audit">
+        <description>Operazione di crud su tabella auditing</description>
+    </privilege>
 </privileges>

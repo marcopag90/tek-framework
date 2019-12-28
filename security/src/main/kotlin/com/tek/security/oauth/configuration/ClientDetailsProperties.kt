@@ -21,17 +21,17 @@ class ClientDetailsProperties {
     /**
      * Matching oauth_client_details.client_id to authorize a _jbot client_
      */
-    var clientId: String = "jBotClientId"
+    var clientId: String = "tekClientId"
     
     /**
      * Matching oauth_client_details.client_secret to authorize access to a resource for a _jbot client_ with given _secret_
      */
-    var clientSecret: String = "jBotSecret"
+    var clientSecret: String = "tekSecret"
     
     /**
      * Matching oauth_client_details.resource_ids to authorize access to a resource for a _jbot client_
      */
-    var resourceId: String = "jBotResourceId"
+    var resourceId: String = "tekResourceId"
     
     /**
      * Matching oauth_client_details.authorities to let client inquiry the following paths:

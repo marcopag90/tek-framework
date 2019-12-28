@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roles>
+    <role name="audit">
+        <description>Profilo per utenti di auditing</description>
+        <privileges>
+            <privilege name="web_audit"/>
+        </privileges>
+    </role>
+</roles>

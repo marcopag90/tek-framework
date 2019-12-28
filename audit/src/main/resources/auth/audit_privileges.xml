@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<privileges>
+    <!-- Crud -->
+    <privilege type="crud" name="web_audit">
+        <description>Operazione di crud su tabella auditing</description>
+    </privilege>
+</privileges>

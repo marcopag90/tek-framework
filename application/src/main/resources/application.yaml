@@ -21,6 +21,7 @@ spring:
         open-in-view: false
         properties:
             hibernate:
+                #dialect: org.hibernate.dialect.MySQL5Dialect
                 current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
                 # Workaround. Vedi:
                 # https://github.com/pgjdbc/pgjdbc/issues/1102
@@ -31,19 +32,6 @@ spring:
             # Configurazione creazione tabelle Hibernate
             ddl-auto: update
             naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    #     Database settings
-    #        datasource:
-    #            url: jdbc:h2:mem:testdb
-    #            driverClassName: org.h2.Driver
-    #            username: admin
-    #            password: admin
-    #
-    #        # H2 Settings
-    #        h2.console:
-    #            enabled: true
-    #            settings:
-    #                trace: false
-    #                web-allow-others: false
 
     # Database PostgreSQL
     datasource:
@@ -51,6 +39,10 @@ spring:
         driverClassName: org.postgresql.Driver
         username: ${POSTGRES_USER:jbot}
         password: ${POSTGRES_PASSWORD:jbot}
+#        url: jdbc:mysql://${MYSQL_HOST:localhost}/jbot
+#            driverClassName: com.mysql.cj.jdbc.Driver
+#            username: ${MYSQL_USER:root}
+#            password: ${MYSQL_ROOT_PASSWORD:jbot}
 
     # Schema
     jpa.properties.hibernate.default_schema: jbot

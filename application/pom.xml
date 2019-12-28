@@ -4,20 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>it.jbot</groupId>
+        <groupId>com.tek</groupId>
         <artifactId>framework</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>application</artifactId>
-    <name>jbot-application</name>
-    <description>jbot test application module</description>
+    <name>tek-application</name>
+    <description>tek test application module</description>
 
     <dependencies>
         <dependency>
-            <groupId>it.jbot</groupId>
+            <groupId>com.tek</groupId>
             <artifactId>security</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>it.jbot</groupId>
+        <groupId>com.tek</groupId>
         <artifactId>framework</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>core</artifactId>
-    <name>jbot-core</name>
-    <description>jbot core module</description>
+    <name>tek-core</name>
+    <description>tek core module</description>
 
     <dependencies>
         <!-- Utility -->

@@ -10,5 +10,5 @@ services:
         volumes:
             - postgres_db:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: jbot
-            POSTGRES_PASSWORD: jbot
+            POSTGRES_USER: tek
+            POSTGRES_PASSWORD: tek

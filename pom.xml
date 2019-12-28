@@ -10,13 +10,13 @@
         <relativePath/>
     </parent>
 
-    <groupId>it.jbot</groupId>
+    <groupId>com.tek</groupId>
     <artifactId>framework</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
-    <name>jbot-framework</name>
-    <description>jbot framework module</description>
+    <name>tek-framework</name>
+    <description>tek framework module</description>
 
     <properties>
         <java.version>1.8</java.version>

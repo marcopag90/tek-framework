@@ -4,21 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>it.jbot</groupId>
+        <groupId>com.tek</groupId>
         <artifactId>framework</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>security</artifactId>
-    <name>jbot-security</name>
-    <description>jbot security module</description>
+    <name>tek-security</name>
+    <description>tek security module</description>
 
     <dependencies>
         <!-- Framework -->
         <dependency>
-            <groupId>it.jbot</groupId>
+            <groupId>com.tek</groupId>
             <artifactId>audit</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.3</version>
         </dependency>
         <!-- Spring security -->
         <dependency>

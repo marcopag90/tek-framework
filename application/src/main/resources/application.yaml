@@ -35,17 +35,17 @@ spring:
 
     # Database PostgreSQL
     datasource:
-        url: jdbc:postgresql://${POSTGRES_HOST:localhost}/jbot
+        url: jdbc:postgresql://${POSTGRES_HOST:localhost}/tek
         driverClassName: org.postgresql.Driver
-        username: ${POSTGRES_USER:jbot}
-        password: ${POSTGRES_PASSWORD:jbot}
-#        url: jdbc:mysql://${MYSQL_HOST:localhost}/jbot
+        username: ${POSTGRES_USER:tek}
+        password: ${POSTGRES_PASSWORD:tek}
+#        url: jdbc:mysql://${MYSQL_HOST:localhost}/tek
 #            driverClassName: com.mysql.cj.jdbc.Driver
 #            username: ${MYSQL_USER:root}
-#            password: ${MYSQL_ROOT_PASSWORD:jbot}
+#            password: ${MYSQL_ROOT_PASSWORD:tek}
 
     # Schema
-    jpa.properties.hibernate.default_schema: jbot
+    jpa.properties.hibernate.default_schema: tek
 
 javers:
     sqlSchema: audit
@@ -53,7 +53,7 @@ javers:
 logging:
     level:
         root: INFO
-        it.jbot: DEBUG
+        com.tek: DEBUG
         org.hibernate:
             tool.hbm2ddl: DEBUG
             SQL: DEBUG
@@ -78,14 +78,16 @@ security:
 
         # ClientDetailsProperties
         client:
-            clientId: jBotClientId
-            clientSecret: jBotSecret
-            resourceId: jBotResourceId
+            clientId: tekClientId
+            clientSecret: tekSecret
+            resourceId: tekResourceId
             authority: ROLE_CLIENT
             grants: password,refresh_token,client_credentials
             scope: read,write
             accessTokenValidity: 1800
             refreshTokenValidity: 3600
+
+
 
 
 

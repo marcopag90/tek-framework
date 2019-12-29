@@ -1,5 +1,6 @@
 package com.tek.security.oauth.model
 
+import org.hibernate.annotations.Type
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
@@ -17,9 +18,10 @@ class AccessToken {
     @field:Size(max = 256)
     @Column(name = "token_id", nullable = false)
     var tokenId: String? = null
-    
+
     @Lob
-    @Column(name = "token", columnDefinition = "bytea not null")
+    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "token")
     var token: ByteArray? = null
     
     @field:NotBlank
@@ -31,9 +33,10 @@ class AccessToken {
     @field:Size(max = 256)
     @Column(name = " client_id", nullable = false)
     var clientId: String? = null
-    
+
     @Lob
-    @Column(name = "authentication", columnDefinition = "bytea not null")
+    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "authentication")
     var authentication: ByteArray? = null
     
     @field:Size(max = 255)

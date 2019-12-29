@@ -1,7 +1,5 @@
 package com.tek.security.configuration
 
-import com.tek.core.SpringProfile
-import org.springframework.context.annotation.Profile
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -10,7 +8,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-@Profile(SpringProfile.DEVELOPMENT)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class TekCorsFilter : Filter {
 

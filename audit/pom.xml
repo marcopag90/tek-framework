@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.tek</groupId>
 		<artifactId>framework</artifactId>
-		<version>1.0.4</version>
+		<version>1.0.5</version>
 	</parent>
 
 	<artifactId>audit</artifactId>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>com.tek</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.4</version>
+			<version>1.0.5</version>
 		</dependency>
 		<!--Auditing-->
 		<dependency>

@@ -1,6 +1,7 @@
 package com.tek.security.oauth.configuration
 
 import com.tek.security.SecurityPattern
+import com.tek.security.SecurityPattern.swaggerResources
 import com.tek.security.service.AuthService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -30,7 +31,7 @@ class OAuthWebSecurity(
 
     override fun configure(web: WebSecurity) {
         web.ignoring().antMatchers(
-            *SecurityPattern.swaggerResources()
+            *swaggerResources()
         )
     }
 

@@ -32,10 +32,12 @@ object SecurityPattern {
     fun swaggerResources(): Array<String> {
         return arrayOf(
             "/v2/api-docs",
+            "/v3/**",
             "/configuration/ui/**",
             "/swagger-resources/**",
             "/configuration/security/**",
             "/swagger-ui.html",
+            "/swagger-ui/**",
             "/webjars/**"
         )
     }

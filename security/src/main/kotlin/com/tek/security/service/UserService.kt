@@ -16,7 +16,7 @@ interface UserService {
 
     fun readOne(id: Long): ResponseEntity<TekResponseEntity<TekUser>>
 
-    fun update()
+    fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<TekResponseEntity<TekUser>>
 
     fun delete(id: Long): ResponseEntity<TekResponseEntity<Long>>
 

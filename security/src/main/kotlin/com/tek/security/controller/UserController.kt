@@ -47,6 +47,13 @@ class UserController(
         return userService.readOne(id)
     }
 
+    @PreAuthorize("this.updateAuthorized()")
+    @PatchMapping("/update/{id}")
+    fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
+        log.debug("Executing [PUT] method")
+        return userService.update(properties, id)
+    }
+
     @PreAuthorize("this.deleteAuthorized()")
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Long>> {

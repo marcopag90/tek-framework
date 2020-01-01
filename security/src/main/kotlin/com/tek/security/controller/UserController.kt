@@ -11,6 +11,7 @@ import com.tek.security.service.UserService
 import com.tek.security.util.hasPrivilege
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -37,28 +38,36 @@ class UserController(
     @ApiPageable
     fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<TekUser>> {
         log.debug("Executing [GET] method")
-        return userService.list(pageable, predicate)
+        return ResponseEntity(
+            TekPageResponse(HttpStatus.OK, userService.list(pageable, predicate)), HttpStatus.OK
+        )
     }
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/read/{id}")
     fun readOne(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
         log.debug("Executing [GET] method")
-        return userService.readOne(id)
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, userService.readOne(id)), HttpStatus.OK
+        )
     }
 
     @PreAuthorize("this.updateAuthorized()")
     @PatchMapping("/update/{id}")
     fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
-        log.debug("Executing [PUT] method")
-        return userService.update(properties, id)
+        log.debug("Executing [PATCH] method")
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, userService.update(properties, id)), HttpStatus.OK
+        )
     }
 
     @PreAuthorize("this.deleteAuthorized()")
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Long>> {
         log.debug("Executing [DELETE] method")
-        return userService.delete(id)
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, userService.delete(id)), HttpStatus.OK
+        )
     }
 }
 

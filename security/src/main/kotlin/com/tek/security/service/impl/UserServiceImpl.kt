@@ -1,7 +1,6 @@
 package com.tek.security.service.impl
 
 import com.querydsl.core.types.Predicate
-import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.exception.TekServiceException
@@ -20,9 +19,9 @@ import com.tek.security.repository.UserRepository
 import com.tek.security.service.AuthService
 import com.tek.security.service.RoleService
 import com.tek.security.service.UserService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -76,13 +75,15 @@ class UserServiceImpl(
                 httpStatus = HttpStatus.CONFLICT
             )
         }
-
-        authService.checkPasswordConstraints(registerForm.username, registerForm.email, registerForm.password).isFalse {
+        val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
+            registerForm.username, registerForm.email, registerForm.password
+        )
+        if (!isAcceptable) {
             throw TekServiceException(
                 data = ServiceExceptionData(
                     source = messageSource,
                     message = SecurityMessageSource.errorConflictPassword,
-                    parameters = arrayOf(registerForm.email)
+                    parameters = arrayOf(constraintMessage!!)
                 ),
                 httpStatus = HttpStatus.BAD_REQUEST
             )
@@ -108,25 +109,14 @@ class UserServiceImpl(
         )
     }
 
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<TekUser>> {
+    override fun list(pageable: Pageable, predicate: Predicate?): Page<TekUser> {
         log.debug("Fetching data from repository: $userRepository")
         predicate?.let {
-            return ResponseEntity(
-                TekPageResponse(
-                    HttpStatus.OK,
-                    userRepository.findAll(predicate, pageable)
-                ),
-                HttpStatus.OK
-            )
-        } ?: return ResponseEntity(
-            TekPageResponse(
-                HttpStatus.OK,
-                userRepository.findAll(pageable)
-            ), HttpStatus.OK
-        )
+            return userRepository.findAll(predicate, pageable)
+        } ?: return userRepository.findAll(pageable)
     }
 
-    override fun readOne(id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
+    override fun readOne(id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
@@ -134,11 +124,11 @@ class UserServiceImpl(
             "Entity ${TekUser::class.java.name} with id:$id not found",
             HttpStatus.NOT_FOUND
         )
-        return ResponseEntity(TekResponseEntity(HttpStatus.OK, optional.get()), HttpStatus.OK)
+        return optional.get()
     }
 
     @Transactional
-    override fun update(properties: Map<String, Any?>, id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
+    override fun update(properties: Map<String, Any?>, id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
@@ -251,24 +241,25 @@ class UserServiceImpl(
             userToUpdate.roles = mutableSetOf()
             val roles = properties[TekUser::roles.name] as MutableList<*>
             for (role in roles) {
-                val response = roleService.read(role as String)
-                val body = response.body as TekResponseEntity<Role>
-                userToUpdate.roles.add(body.result!!)
+                userToUpdate.roles.add(roleService.read(role as String))
             }
         }
 
-        authService.checkPasswordConstraints(userToUpdate.username!!, userToUpdate.email!!, userToUpdate.password!!)
-            .isFalse {
-                throw TekServiceException(
-                    data = ServiceExceptionData(
-                        source = messageSource,
-                        message = SecurityMessageSource.errorConflictPassword,
-                        parameters = arrayOf(userToUpdate.email!!)
-                    ),
-                    httpStatus = HttpStatus.BAD_REQUEST
-                )
-            }
-
+        val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
+            userToUpdate.username!!,
+            userToUpdate.email!!,
+            userToUpdate.password!!
+        )
+        if (!isAcceptable) {
+            throw TekServiceException(
+                data = ServiceExceptionData(
+                    source = messageSource,
+                    message = SecurityMessageSource.errorConflictPassword,
+                    parameters = arrayOf(constraintMessage!!)
+                ),
+                httpStatus = HttpStatus.BAD_REQUEST
+            )
+        }
         val violations = validator.validate(userToUpdate)
         if (violations.isNotEmpty()) {
             val violationMap = mutableMapOf<String, String>()
@@ -276,12 +267,11 @@ class UserServiceImpl(
                 violationMap[v.propertyPath.toList()[0].name] = v.message
             throw TekValidationException(violationMap)
         }
-
-        return ResponseEntity(TekResponseEntity(HttpStatus.OK, userRepository.save(userToUpdate)), HttpStatus.OK)
+        return userRepository.save(userToUpdate)
     }
 
     @Transactional
-    override fun delete(id: Long): ResponseEntity<TekResponseEntity<Long>> {
+    override fun delete(id: Long): Long {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
@@ -291,6 +281,6 @@ class UserServiceImpl(
         )
         userRepository.deleteById(id)
         log.debug("Delete success!")
-        return ResponseEntity(TekResponseEntity(HttpStatus.OK, id), HttpStatus.OK)
+        return id
     }
 }

@@ -54,8 +54,14 @@ class AuthServiceImpl(
             else -> null
         }
 
-    override fun checkPasswordConstraints(username: String, email: String, password: String): Boolean =
-        password != username && password != email
+    override fun checkPasswordConstraints(username: String, email: String, password: String): Pair<Boolean, String?> {
+
+        if (password == username)
+            return Pair(false, username)
+        if (password == email)
+            return Pair(false, email)
+        return Pair(true, null)
+    }
 
     override fun getAuthentication(): Authentication? =
         SecurityContextHolder.getContext().authentication

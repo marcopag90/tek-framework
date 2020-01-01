@@ -11,6 +11,7 @@ import com.tek.security.service.RoleService
 import com.tek.security.util.hasPrivilege
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -34,14 +35,18 @@ class RoleController(
     @ApiPageable
     fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<Role>> {
         log.debug("Executing [GET] method")
-        return service.list(pageable, predicate)
+        return ResponseEntity(
+            TekPageResponse(HttpStatus.OK, service.list(pageable, predicate)), HttpStatus.OK
+        )
     }
 
     @PreAuthorize("this.readAuthorized()")
     @GetMapping("/read")
     fun readOne(@RequestParam("name") name: String): ResponseEntity<TekResponseEntity<Role>> {
         log.debug("Executing [GET] method")
-        return service.read(name)
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, service.read(name)), HttpStatus.OK
+        )
     }
 
 

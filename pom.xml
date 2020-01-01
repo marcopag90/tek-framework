@@ -84,7 +84,7 @@
 
             <repositories>
                 <repository>
-                    <id>repo_read</id>
+                    <id>repoReadUrl</id>
                     <url>${repoReadUrl}</url>
                 </repository>
             </repositories>

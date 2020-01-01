@@ -132,6 +132,7 @@ class UserServiceImpl(
         return optional.get()
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")

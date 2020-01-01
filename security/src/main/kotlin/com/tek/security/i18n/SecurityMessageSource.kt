@@ -27,13 +27,9 @@ class SecurityMessageSource : TekMessageSource {
 
     companion object {
 
-        const val errorEmptyField = "error.empty.field"
-
         const val errorConflictUsername = "error.conflict.username"
         const val errorConflictEmail = "error.conflict.email"
         const val errorConflictPassword = "error.conflict.password"
         const val errorNotValidPassword = "error.notvalid.password"
-        const val errorRoleNotFound = "error.notfound.role"
-        const val errorPrivilegeNotFound = "error.notfound.privilege"
     }
 }

@@ -45,11 +45,57 @@ class TekExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     /**
+     * Function to give a standard response for [MethodArgumentNotValidException]
+     */
+    override fun handleMethodArgumentNotValid(
+        ex: MethodArgumentNotValidException,
+        headers: HttpHeaders,
+        status: HttpStatus,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+
+        log.warn(ex.message)
+
+        val httpStatus = HttpStatus.NOT_ACCEPTABLE
+
+        return ResponseEntity(
+            TekErrorResponse(httpStatus).apply {
+                this.errors = ex.bindingResult.allErrors.associate {
+                    (it as FieldError).field to it.defaultMessage
+                }
+                this.path = (request as ServletWebRequest).request.servletPath
+            },
+            headers,
+            httpStatus
+        )
+    }
+
+    /**
      * Function to give a standard response for a [TekServiceException]
      */
     @ExceptionHandler(TekServiceException::class)
     fun handleServiceException(
         ex: TekServiceException,
+        request: WebRequest
+    ): ResponseEntity<TekErrorResponse> {
+
+        log.warn(ex.message)
+
+        return ResponseEntity(
+            TekErrorResponse(ex.httpStatus).apply {
+                this.errors = mapOf("error" to ex.message)
+                this.path = (request as ServletWebRequest).request.servletPath
+            },
+            ex.httpStatus
+        )
+    }
+
+    /**
+     * Function to give a standard response for a [TekResourceNotFoundException]
+     */
+    @ExceptionHandler(TekResourceNotFoundException::class)
+    fun handleServiceException(
+        ex: TekResourceNotFoundException,
         request: WebRequest
     ): ResponseEntity<TekErrorResponse> {
 
@@ -79,32 +125,6 @@ class TekExceptionHandler : ResponseEntityExceptionHandler() {
                 this.errors = ex.errors
                 this.path = (request as ServletWebRequest).request.servletPath
             },
-            httpStatus
-        )
-    }
-
-    /**
-     * Function to give a standard response for [MethodArgumentNotValidException]
-     */
-    override fun handleMethodArgumentNotValid(
-        ex: MethodArgumentNotValidException,
-        headers: HttpHeaders,
-        status: HttpStatus,
-        request: WebRequest
-    ): ResponseEntity<Any> {
-
-        log.warn(ex.message)
-
-        val httpStatus = HttpStatus.NOT_ACCEPTABLE
-
-        return ResponseEntity(
-            TekErrorResponse(httpStatus).apply {
-                this.errors = ex.bindingResult.allErrors.associate {
-                    (it as FieldError).field to it.defaultMessage
-                }
-                this.path = (request as ServletWebRequest).request.servletPath
-            },
-            headers,
             httpStatus
         )
     }

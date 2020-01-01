@@ -42,6 +42,7 @@ class TekResponseEntity<E>(
     var result: E? = null
 }
 
+
 /**
  * Extension for [org.springframework.http.ResponseEntity].
  *
@@ -49,16 +50,21 @@ class TekResponseEntity<E>(
  *
  * This _MUST_ be sent to client only with ResponseEntity [HttpStatus] between 200 and 299
  */
-class TekPageResponse<E>(
-    httpStatus: HttpStatus
-) {
-    constructor(httpStatus: HttpStatus, result: Page<E>) : this(httpStatus) {
-        this.result = result
-    }
 
+class TekPageResponse<E>(
+    httpStatus: HttpStatus,
+    page: Page<E>
+) {
+
+    data class TekPageResult<E>(
+        val content: List<E>,
+        val totalElements: Long,
+        val totalPages: Int
+    )
+
+    val result: TekPageResult<E> = TekPageResult(page.content, page.totalElements, page.totalPages)
     val timestamp: Date = Date().tekTimestamp()
     val status: Int = httpStatus.value()
-    var result: Page<E>? = null
 }
 
 /**

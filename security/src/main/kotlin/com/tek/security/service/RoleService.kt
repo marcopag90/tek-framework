@@ -9,5 +9,5 @@ interface RoleService {
 
     fun list(pageable: Pageable, predicate: Predicate?): Page<Role>
 
-    fun read(name: String): Role
+    fun readOne(id: Long): Role
 }

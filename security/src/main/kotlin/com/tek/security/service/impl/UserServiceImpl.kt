@@ -1,17 +1,17 @@
 package com.tek.security.service.impl
 
 import com.querydsl.core.types.Predicate
-import com.tek.core.TekResponseEntity
 import com.tek.core.exception.ServiceExceptionData
+import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
+import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.addMonthsFromNow
 import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
 import com.tek.security.form.auth.RegisterForm
 import com.tek.security.i18n.SecurityMessageSource
-import com.tek.security.model.Role
 import com.tek.security.model.TekUser
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import javax.validation.Validator
 
+@Suppress("unused")
 @Service
 class UserServiceImpl(
     private val authService: AuthService,
@@ -34,7 +35,8 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val validator: Validator,
-    private val messageSource: SecurityMessageSource
+    private val coreMessageSource: CoreMessageSource,
+    private val securityMessageSource: SecurityMessageSource
 ) : UserService {
 
     private val log by LoggerDelegate()
@@ -47,7 +49,7 @@ class UserServiceImpl(
         authService.isValidPassword(registerForm.password).isFalse {
             throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = messageSource,
+                    source = securityMessageSource,
                     message = SecurityMessageSource.errorNotValidPassword
                 ),
                 httpStatus = HttpStatus.BAD_REQUEST
@@ -57,7 +59,7 @@ class UserServiceImpl(
         userRepository.existsByUsername(registerForm.username).isTrue {
             throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = messageSource,
+                    source = securityMessageSource,
                     message = SecurityMessageSource.errorConflictUsername,
                     parameters = arrayOf(registerForm.username)
                 ),
@@ -68,7 +70,7 @@ class UserServiceImpl(
         userRepository.existsByEmail(registerForm.email).isTrue {
             throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = messageSource,
+                    source = securityMessageSource,
                     message = SecurityMessageSource.errorConflictEmail,
                     parameters = arrayOf(registerForm.email)
                 ),
@@ -81,7 +83,7 @@ class UserServiceImpl(
         if (!isAcceptable) {
             throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = messageSource,
+                    source = securityMessageSource,
                     message = SecurityMessageSource.errorConflictPassword,
                     parameters = arrayOf(constraintMessage!!)
                 ),
@@ -99,13 +101,12 @@ class UserServiceImpl(
                     this.roles.add(role)
                 }
             )
-        } ?: throw TekServiceException(
+        } ?: throw TekResourceNotFoundException(
             data = ServiceExceptionData(
-                source = messageSource,
-                message = SecurityMessageSource.errorRoleNotFound,
+                source = coreMessageSource,
+                message = CoreMessageSource.errorNotFoundResource,
                 parameters = arrayOf(RoleName.USER.name)
-            ),
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+            )
         )
     }
 
@@ -120,10 +121,14 @@ class UserServiceImpl(
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
-        if (!optional.isPresent) throw TekServiceException(
-            "Entity ${TekUser::class.java.name} with id:$id not found",
-            HttpStatus.NOT_FOUND
-        )
+        if (!optional.isPresent)
+            throw TekResourceNotFoundException(
+                data = ServiceExceptionData(
+                    source = coreMessageSource,
+                    message = CoreMessageSource.errorNotFoundResource,
+                    parameters = arrayOf(id.toString())
+                )
+            )
         return optional.get()
     }
 
@@ -132,10 +137,14 @@ class UserServiceImpl(
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
-        if (!optional.isPresent) throw TekServiceException(
-            "Entity ${TekUser::class.java.name} with id:$id not found",
-            HttpStatus.NOT_FOUND
-        )
+        if (!optional.isPresent)
+            throw TekResourceNotFoundException(
+                data = ServiceExceptionData(
+                    source = coreMessageSource,
+                    message = CoreMessageSource.errorNotFoundResource,
+                    parameters = arrayOf(id.toString())
+                )
+            )
         val userToUpdate = optional.get()
         /*
         Updatable user parameters by administrator:
@@ -148,8 +157,8 @@ class UserServiceImpl(
             if (username.isNullOrBlank()) {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
-                        message = SecurityMessageSource.errorEmptyField,
+                        source = coreMessageSource,
+                        message = CoreMessageSource.errorEmptyField,
                         parameters = arrayOf(TekUser::username.name)
                     ),
                     httpStatus = HttpStatus.CONFLICT
@@ -158,7 +167,7 @@ class UserServiceImpl(
             userRepository.existsByUsername(username).isTrue {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
+                        source = securityMessageSource,
                         message = SecurityMessageSource.errorConflictUsername,
                         parameters = arrayOf(username)
                     ),
@@ -174,8 +183,8 @@ class UserServiceImpl(
             if (password.isNullOrBlank()) {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
-                        message = SecurityMessageSource.errorEmptyField,
+                        source = coreMessageSource,
+                        message = CoreMessageSource.errorEmptyField,
                         parameters = arrayOf(TekUser::password.name)
                     ),
                     httpStatus = HttpStatus.BAD_REQUEST
@@ -184,7 +193,7 @@ class UserServiceImpl(
             authService.isValidPassword(password).isFalse {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
+                        source = securityMessageSource,
                         message = SecurityMessageSource.errorNotValidPassword
                     ),
                     httpStatus = HttpStatus.BAD_REQUEST
@@ -199,8 +208,8 @@ class UserServiceImpl(
             if (email.isNullOrBlank()) {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
-                        message = SecurityMessageSource.errorEmptyField,
+                        source = coreMessageSource,
+                        message = CoreMessageSource.errorEmptyField,
                         parameters = arrayOf(TekUser::email.name)
                     ),
                     httpStatus = HttpStatus.BAD_REQUEST
@@ -209,7 +218,7 @@ class UserServiceImpl(
             userRepository.existsByEmail(email).isTrue {
                 throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
+                        source = securityMessageSource,
                         message = SecurityMessageSource.errorConflictEmail,
                         parameters = arrayOf(email)
                     ),
@@ -228,8 +237,8 @@ class UserServiceImpl(
             val enabled = properties[TekUser::enabled.name] as Boolean?
                 ?: throw TekServiceException(
                     data = ServiceExceptionData(
-                        source = messageSource,
-                        message = SecurityMessageSource.errorEmptyField,
+                        source = coreMessageSource,
+                        message = CoreMessageSource.errorEmptyField,
                         parameters = arrayOf(TekUser::enabled.name)
                     ),
                     httpStatus = HttpStatus.BAD_REQUEST
@@ -239,9 +248,9 @@ class UserServiceImpl(
 
         if (properties.containsKey(TekUser::roles.name)) {
             userToUpdate.roles = mutableSetOf()
-            val roles = properties[TekUser::roles.name] as MutableList<*>
+            val roles = properties[TekUser::roles.name] as MutableList<String>
             for (role in roles) {
-                userToUpdate.roles.add(roleService.read(role as String))
+                userToUpdate.roles.add(roleService.readOne(role.toLong()))
             }
         }
 
@@ -253,7 +262,7 @@ class UserServiceImpl(
         if (!isAcceptable) {
             throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = messageSource,
+                    source = securityMessageSource,
                     message = SecurityMessageSource.errorConflictPassword,
                     parameters = arrayOf(constraintMessage!!)
                 ),
@@ -275,12 +284,15 @@ class UserServiceImpl(
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
-        if (!optional.isPresent) throw TekServiceException(
-            "Entity ${TekUser::class.java.name} with id:$id not found",
-            HttpStatus.NOT_FOUND
-        )
+        if (!optional.isPresent)
+            throw TekResourceNotFoundException(
+                data = ServiceExceptionData(
+                    source = coreMessageSource,
+                    message = CoreMessageSource.errorNotFoundResource,
+                    parameters = arrayOf(id.toString())
+                )
+            )
         userRepository.deleteById(id)
-        log.debug("Delete success!")
         return id
     }
 }

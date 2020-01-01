@@ -17,47 +17,58 @@ import javax.validation.Valid
 /**
  * Extension of [TekCrudController] to provide security at method access level
  */
-abstract class TekAuthorizedCrudController<E, ID, S : ICrudService<E, ID, DTO>, DTO : AbstractDTO>(
-    crudService: S
-) : TekCrudController<E, ID, S, DTO>(crudService) {
+abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<Entity, ID, DTO>, DTO : AbstractDTO>(
+    crudService: Service
+) : TekCrudController<Entity, ID, Service, DTO>(crudService) {
 
-    @PreAuthorize("this.readAuthorized()")
+    @PreAuthorize("this.createAuthorized")
     @GetMapping("/list")
     @ApiPageable
-    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<E>> {
+    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<Entity>> {
         return super.list(pageable, predicate)
     }
 
-    @PreAuthorize("this.updateAuthorized()")
+    @PreAuthorize("this.readAuthorized")
+    @GetMapping("/read/{id}")
+    override fun read(id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+        return super.read(id)
+    }
+
+    @PreAuthorize("this.updateAuthorized")
     @PatchMapping("/update/{id}")
-    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
         return super.update(properties, id)
     }
 
-    @PreAuthorize("this.updateAuthorized()")
+    @PreAuthorize("this.updateAuthorized")
     @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
+    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
         return super.update(dto, id)
+    }
+
+    @PreAuthorize("this.deleteAuthorized")
+    @DeleteMapping("/delete/{id}")
+    override fun delete(id: ID): ResponseEntity<TekResponseEntity<ID>> {
+        return super.delete(id)
     }
 
     /**
      * Check if the user in session has a [org.springframework.security.core.GrantedAuthority] for the _CREATE_ method
      */
-    abstract fun createAuthorized(): Boolean
+    abstract val createAuthorized: Boolean
 
     /**
      * Check if the user in session has a [org.springframework.security.core.GrantedAuthority] for the _READ_ method
      */
-    abstract fun readAuthorized(): Boolean
+    abstract val readAuthorized: Boolean
 
     /**
      * Check if the user in session has a [org.springframework.security.core.GrantedAuthority] for the _UPDATE_ method
      */
-    abstract fun updateAuthorized(): Boolean
+    abstract val updateAuthorized: Boolean
 
     /**
      * Check if the user in session has a [org.springframework.security.core.GrantedAuthority] for the _DELETE_ method
      */
-    abstract fun deleteAuthorized(): Boolean
-
+    abstract val deleteAuthorized: Boolean
 }

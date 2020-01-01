@@ -19,6 +19,9 @@ class CoreMessageSource : TekMessageSource {
 
     companion object {
         const val localeLang = "locale.lang"
+
+        const val errorEmptyField = "error.empty.field"
+        const val errorNotFoundResource = "error.notfound.resource"
         const val errorUnknownProperty = "error.unknown.property"
     }
 

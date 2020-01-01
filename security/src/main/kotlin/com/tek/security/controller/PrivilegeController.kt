@@ -11,34 +11,39 @@ import com.tek.security.service.PrivilegeService
 import com.tek.security.util.hasPrivilege
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
 @RestController
-@RequestMapping("/privilege")
+@RequestMapping(path = ["/privilege"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class PrivilegeController(
-    private val service: PrivilegeService
+    private val privilegeService: PrivilegeService
 ) {
 
     private val log by LoggerDelegate()
 
-    fun readAuthorized() = hasPrivilege(PrivilegeName.ROLE_READ)
+    val readAuthorized get() = hasPrivilege(PrivilegeName.ROLE_READ)
 
-    @PreAuthorize("this.readAuthorized()")
+    @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")
     @ApiPageable
     fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<Privilege>> {
         log.debug("Executing [GET] method")
-        return service.list(pageable, predicate)
+        return ResponseEntity.ok(
+            TekPageResponse(HttpStatus.OK, privilegeService.list(pageable, predicate))
+        )
     }
 
-    @PreAuthorize("this.readAuthorized()")
-    @GetMapping("/read")
-    fun read(@RequestParam("name") name: String): ResponseEntity<TekResponseEntity<Privilege>> =
-        service.read(name)
+    @PreAuthorize("this.readAuthorized")
+    @GetMapping("/read/{id}")
+    fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Privilege>> {
+        log.debug("Executing [GET] method")
+        return ResponseEntity.ok(
+            TekResponseEntity(HttpStatus.OK, privilegeService.readOne(id))
+        )
+    }
 }

@@ -1,61 +1,45 @@
 package com.tek.security.service.impl
 
 import com.querydsl.core.types.Predicate
-import com.tek.core.TekPageResponse
-import com.tek.core.TekResponseEntity
-import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.ServiceExceptionData
+import com.tek.core.exception.TekResourceNotFoundException
+import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.i18n.SecurityMessageSource
 import com.tek.security.model.Privilege
-import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.repository.PrivilegeRepository
 import com.tek.security.service.PrivilegeService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
+@Suppress("unused")
 @Service
 class PrivilegeServiceImpl(
     private val privilegeRepository: PrivilegeRepository,
-    private val messageSource: SecurityMessageSource
+    private val coreMessageSource: CoreMessageSource
 ) : PrivilegeService {
 
     private val log by LoggerDelegate()
 
-    override fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<Privilege>> {
+    override fun list(pageable: Pageable, predicate: Predicate?): Page<Privilege> {
         log.debug("Fetching data from repository: $privilegeRepository")
-
         predicate?.let {
-            return ResponseEntity(
-                TekPageResponse(
-                    HttpStatus.OK,
-                    privilegeRepository.findAll(predicate, pageable)
-                ),
-                HttpStatus.OK
-            )
-        } ?: return ResponseEntity(
-            TekPageResponse(HttpStatus.OK, privilegeRepository.findAll(pageable)),
-            HttpStatus.OK
-        )
+            return privilegeRepository.findAll(predicate, pageable)
+        } ?: return privilegeRepository.findAll(pageable)
     }
 
-    override fun read(name: String): ResponseEntity<TekResponseEntity<Privilege>> {
-        log.debug("Fetching data from repository: $privilegeRepository")
+    override fun readOne(id: Long): Privilege {
+        log.debug("Accessing $privilegeRepository for entity: ${Privilege::class.java.name} with id:$id")
 
-        privilegeRepository.findByName(PrivilegeName.valueOf(name))?.let {
-            return ResponseEntity(
-                TekResponseEntity(HttpStatus.OK, it),
-                HttpStatus.OK
+        val optional = privilegeRepository.findById(id)
+        if (!optional.isPresent)
+            throw TekResourceNotFoundException(
+                data = ServiceExceptionData(
+                    source = coreMessageSource,
+                    message = CoreMessageSource.errorNotFoundResource,
+                    parameters = arrayOf(id.toString())
+                )
             )
-        } ?: throw TekServiceException(
-            data = ServiceExceptionData(
-                source = messageSource,
-                message = SecurityMessageSource.errorPrivilegeNotFound,
-                parameters = arrayOf(name)
-            ),
-            httpStatus = HttpStatus.NOT_FOUND
-        )
+        return optional.get()
     }
 }

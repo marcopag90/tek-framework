@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import javax.validation.Validator
 
-@Suppress("unused")
+@Suppress("UNUSED")
 @Service
 class UserServiceImpl(
     private val authService: AuthService,

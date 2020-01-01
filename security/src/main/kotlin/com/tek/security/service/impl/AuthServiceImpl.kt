@@ -22,6 +22,7 @@ import java.util.*
 /**
  * Implementation of [AuthService] to get User information and [GrantedAuthority]
  */
+@Suppress("UNUSED")
 @Service
 class AuthServiceImpl(
     private val userRepository: UserRepository,

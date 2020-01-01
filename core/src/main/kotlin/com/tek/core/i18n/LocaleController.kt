@@ -3,9 +3,9 @@ package com.tek.core.i18n
 import com.tek.core.TekBaseResponse
 import com.tek.core.i18n.CoreMessageSource.Companion.localeLang
 import io.swagger.annotations.ApiImplicitParam
-import io.swagger.annotations.ApiParam
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 
 const val LOCALE_PATTERN = "/locale"
 
+@Suppress("UNUSED")
 @RestController
-@RequestMapping(LOCALE_PATTERN)
+@RequestMapping(path = [LOCALE_PATTERN], produces = [MediaType.APPLICATION_JSON_VALUE])
 class LocaleController(
     private val messageSource: CoreMessageSource
 ) {
@@ -29,12 +30,11 @@ class LocaleController(
         value = "Value of the locale to set."
     )
     fun getCurrentLocale(): ResponseEntity<TekBaseResponse> =
-        ResponseEntity(
+        ResponseEntity.ok(
             TekBaseResponse(
                 HttpStatus.OK,
                 messageSource.getCoreMessageSource().getMessage(localeLang, null, LocaleContextHolder.getLocale())
-            ),
-            HttpStatus.OK
+            )
         )
 }
 

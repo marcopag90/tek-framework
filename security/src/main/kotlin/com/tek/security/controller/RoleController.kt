@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
+@Suppress("UNUSED")
 @RestController
 @RequestMapping(path = ["/role"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class RoleController(

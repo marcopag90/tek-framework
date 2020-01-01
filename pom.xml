@@ -84,21 +84,22 @@
 
             <repositories>
                 <repository>
-                    <id>myMavenRepoRead</id>
-                    <url>${myMavenRepoReadUrl}</url>
+                    <id>repo_read</id>
+                    <url>${repoReadUrl}</url>
                 </repository>
             </repositories>
 
             <distributionManagement>
                 <repository>
-                    <id>myMavenRepoWrite</id>
-                    <url>${myMavenRepoWriteUrl}</url>
+                    <id>repoReadUrl</id>
+                    <url>${repoWriteUrl}</url>
                 </repository>
                 <snapshotRepository>
-                    <id>myMavenRepoWrite</id>
-                    <url>${myMavenRepoWriteUrl}</url>
+                    <id>repoWriteUrl</id>
+                    <url>${repoWriteUrl}</url>
                 </snapshotRepository>
             </distributionManagement>
+
             <build>
                 <plugins>
                     <plugin>

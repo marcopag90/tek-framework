@@ -1,3 +1,4 @@
+<!-- File to put under .m2 directory to allow repository jar managements-->
 <settings>
     <profiles>
         <profile>
@@ -8,7 +9,7 @@
                 </property>
             </activation>
             <properties>
-                <myMavenRepoReadUrl>https://mymavenrepo.com/repo/8lJ7RC5bzCV925tRO1LV/</myMavenRepoReadUrl>
+                <repoReadUrl>https://mymavenrepo.com/repo/8lJ7RC5bzCV925tRO1LV/</repoReadUrl>
             </properties>
         </profile>
         <profile>
@@ -19,18 +20,18 @@
                 </property>
             </activation>
             <properties>
-                <myMavenRepoWriteUrl>https://mymavenrepo.com/repo/kvrygerMv0rP2Y3hUevF/</myMavenRepoWriteUrl>
+                <repoWriteUrl>https://mymavenrepo.com/repo/kvrygerMv0rP2Y3hUevF/</repoWriteUrl>
             </properties>
         </profile>
     </profiles>
     <servers>
         <server>
-            <id>myMavenRepoRead</id>
+            <id>repoReadUrl</id>
             <username>myMavenRepo</username>
             <password>123Stella</password>
         </server>
         <server>
-            <id>myMavenRepoWrite</id>
+            <id>repoWriteUrl</id>
             <username>myMavenRepo</username>
             <password>123Stella</password>
         </server>

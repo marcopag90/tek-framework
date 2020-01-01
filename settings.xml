@@ -1,11 +1,10 @@
-<!-- File to put under .m2 directory to allow repository jar managements-->
 <settings>
     <profiles>
         <profile>
-            <id>myMavenRepoRead</id>
+            <id>repo_read</id>
             <activation>
                 <property>
-                    <name>!doNotUseMyMavenRepo</name>
+                    <name>!dev</name>
                 </property>
             </activation>
             <properties>
@@ -13,10 +12,10 @@
             </properties>
         </profile>
         <profile>
-            <id>myMavenRepoWrite</id>
+            <id>repo_write</id>
             <activation>
                 <property>
-                    <name>!doNotUseMyMavenRepo</name>
+                    <name>!dev</name>
                 </property>
             </activation>
             <properties>

@@ -1,4 +1,4 @@
-package com.tek.security.service.impl
+package com.tek.security.javers
 
 import com.tek.audit.javers.*
 import com.tek.audit.service.JaversService

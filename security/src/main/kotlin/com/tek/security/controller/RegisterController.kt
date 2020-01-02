@@ -4,6 +4,7 @@ import com.tek.core.TekBaseResponse
 import com.tek.security.SecurityPattern
 import com.tek.security.form.auth.RegisterForm
 import com.tek.security.service.UserService
+import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @Suppress("UNUSED")
+@Api(tags = ["Register"])
 @RestController
-@RequestMapping(path = [SecurityPattern.REGISTER_PATTERN], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(path = [SecurityPattern.REGISTER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class RegisterController(
     private val userService: UserService
 ) {

@@ -42,7 +42,7 @@ enum class QueryDslOperator(
         /**
          * Get the expression operator of the specified queryDSL operator
          *
-         * @param op the queryDSL operator
+         * @request op the queryDSL operator
          * @return the expression operator
          */
         fun getFromDsl(op: Operator): QueryDslOperator {
@@ -57,7 +57,7 @@ enum class QueryDslOperator(
         /**
          * get the expression operator from the json
          *
-         * @param jsonValue the json value of the operator
+         * @request jsonValue the json value of the operator
          * @return the expression operator
          */
         fun getFromJson(jsonValue: String): QueryDslOperator {

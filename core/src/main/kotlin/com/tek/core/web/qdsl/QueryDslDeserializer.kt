@@ -19,8 +19,8 @@ class QueryDslDeserializer(
     /**
      * Create a queryDSL predicate from the specified json
      *
-     * @param json        the json predicate
-     * @param entityClass the root entity class
+     * @request json        the json predicate
+     * @request entityClass the root entity class
      * @return the queryDSL predicate
      */
     fun deserializePredicate(json: String, entityClass: Class<*>): Predicate {
@@ -38,8 +38,8 @@ class QueryDslDeserializer(
     /**
      * Create a collection of queryDSL order bys from the specified json
      *
-     * @param json        the json order bys
-     * @param entityClass the root entity class
+     * @request json        the json order bys
+     * @request entityClass the root entity class
      * @return the collection of queryDSL order bys
      */
     fun deserializeOrderBys(json: String, entityClass: Class<*>): List<OrderSpecifier<*>> {
@@ -183,8 +183,8 @@ class QueryDslDeserializer(
     /**
      * Cast the json string value into an object of the associated field type
      *
-     * @param value the string value
-     * @param type  the field type
+     * @request value the string value
+     * @request type  the field type
      * @return the value transformed into the associated field type
      */
     protected fun <T> convert(value: String, type: Class<T>): T = converter.convert(value, type)
@@ -193,8 +193,8 @@ class QueryDslDeserializer(
     /**
      * Build a queryDSL path from the specified string path
      *
-     * @param path        the string path. ex : content.product.packaging
-     * @param entityClass the entity root class
+     * @request path        the string path. ex : content.product.packaging
+     * @request entityClass the entity root class
      * @return the queryDSL path
      */
     protected fun buildPath(path: String, entityClass: Class<*>): EntityPath<*> {
@@ -213,7 +213,7 @@ class QueryDslDeserializer(
     /**
      * Get the JSONOperator from the json value
      *
-     * @param operator the json operator value
+     * @request operator the json operator value
      * @return optional operator
      */
     protected fun getOperator(operator: String): QueryDslOperator? {

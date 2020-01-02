@@ -5,10 +5,12 @@ import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
+import com.tek.security.SecurityPattern.USER_PATH
 import com.tek.security.model.TekUser
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.service.UserService
 import com.tek.security.util.hasPrivilege
+import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
 import org.springframework.http.HttpStatus
@@ -18,8 +20,10 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
+@Suppress("UNUSED")
+@Api(tags = ["Users"])
 @RestController
-@RequestMapping(path = ["/user"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(path = [USER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class UserController(
     private val userService: UserService
 ) {

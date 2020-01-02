@@ -16,8 +16,8 @@ class JsonTypeConverter(
     /**
      * Convert the specified string into the specified type
      *
-     * @param value the string value
-     * @param type expected type
+     * @request value the string value
+     * @request type expected type
      * @return the converted object
      */
     fun <T> convert(value: String, type: Class<T>): T {
@@ -27,8 +27,8 @@ class JsonTypeConverter(
     /**
      * Convert the specified integer into the specified type
      *
-     * @param value the integer value
-     * @param type expected type
+     * @request value the integer value
+     * @request type expected type
      * @return the converted object
      */
     fun <T> convert(value: Int, type: Class<T>): T {
@@ -38,8 +38,8 @@ class JsonTypeConverter(
     /**
      * Convert the specified object into the specified type
      *
-     * @param value the object value
-     * @param type expected type
+     * @request value the object value
+     * @request type expected type
      * @return the converted object
      */
     private fun <T> doConvert(value: Any, type: Class<T>): T { // nothing to do - it is the good type

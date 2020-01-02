@@ -7,5 +7,6 @@ enum class RoleName(
 ) : LabelEnum {
 
     ADMIN("Administrator"),
+    AUDIT("Auditor"),
     USER("User")
 }

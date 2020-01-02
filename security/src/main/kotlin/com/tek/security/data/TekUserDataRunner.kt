@@ -14,6 +14,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import java.util.*
 
+@Suppress("UNUSED")
 @Order(DataOrder.user)
 @Component
 class TekUserDataRunner(
@@ -30,11 +31,8 @@ class TekUserDataRunner(
                 password = "Administrator1!*",
                 email = "admin@gmail.com",
                 roles = mutableSetOf(
-                    Role(name = RoleName.ADMIN).apply {
-                        this.privileges = mutableSetOf(
-                            Privilege(name = PrivilegeName.MENU)
-                        )
-                    },
+                    Role(name = RoleName.ADMIN),
+                    Role(name = RoleName.AUDIT),
                     Role(name = RoleName.USER)
                 ),
                 enabled = true,

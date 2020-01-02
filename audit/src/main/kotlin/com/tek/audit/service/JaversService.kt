@@ -1,20 +1,19 @@
 package com.tek.audit.service
 
-import com.tek.audit.javers.JaversCommitChanges
-import com.tek.audit.javers.JaversQParam
-import kotlin.reflect.KClass
+import com.tek.audit.javers.request.JaversQEntityParam
+import com.tek.audit.javers.response.JaversCommitChanges
+import com.tek.audit.javers.request.JaversQParam
 
 /**
  * Interface to implement business logic for Javers Api Query Language
  */
 interface JaversService {
 
-    fun listByCommit(
-        id: String,
-        kClass: KClass<*>,
-        skip: Int,
-        limit: Int,
-        filters: JaversQParam
+    fun queryByEntity(
+        entityName: String,
+        skip: Int?,
+        limit: Int?,
+        params: JaversQEntityParam
     ): List<JaversCommitChanges>
 
     /**

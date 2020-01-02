@@ -15,7 +15,7 @@ class QueryDslSerializer(
     /**
      * Serialize the specified list of orderBys
      *
-     * @param orderBys collection of orderBys
+     * @request orderBys collection of orderBys
      * @return the json of the queryDSl orders
      */
     fun serializeAsNode(orderBys: List<OrderSpecifier<*>>): JsonNode? {
@@ -30,7 +30,7 @@ class QueryDslSerializer(
     /**
      * Serialize the specified expression in the json object representation
      *
-     * @param expression the queryDSL expression
+     * @request expression the queryDSL expression
      * @return a expressions object (the json object representation)
      */
     fun serializeAsNode(expression: Expression<*>): JsonNode? {

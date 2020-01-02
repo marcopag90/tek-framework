@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
+@Suppress("UNUSED")
 @Order(DataOrder.privilege)
 @Component
 class PrivilegeDataRunner(

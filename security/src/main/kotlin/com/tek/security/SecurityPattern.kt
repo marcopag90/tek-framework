@@ -3,13 +3,18 @@ package com.tek.security
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityPattern {
 
-    const val BASE_PATTERN = "/"
-    const val REGISTER_PATTERN = "/register"
+    const val BASE_PATH = "/"
+    const val REGISTER_PATH = "/register"
+    const val ROLE_PATH = "/role"
+    const val PRIVILEGE_PATH = "/privilege"
+    const val USER_PATH = "/user"
+    const val JAVERS_PATH = "/javers"
+    const val WEBAUDIT_PATH = "/webaudit" //TODO web audit controller
 
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(
-            BASE_PATTERN,
-            REGISTER_PATTERN
+            BASE_PATH,
+            REGISTER_PATH
         )
     }
 

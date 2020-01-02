@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
+@Suppress("UNUSED")
 @Order(DataOrder.role)
 @Component
 class RoleDataRunner(
@@ -25,6 +26,13 @@ class RoleDataRunner(
                     RoleName.ADMIN -> roleRepository.save(RoleName.ADMIN.createRole(
                         mutableSetOf<Privilege>().apply {
                             this.addAll(privilegeRepository.findAll().toSet())
+                        }
+                    ))
+                    RoleName.AUDIT -> roleRepository.save(RoleName.AUDIT.createRole(
+                        mutableSetOf<Privilege>().apply {
+                            privilegeRepository.findByName(PrivilegeName.AUDIT_READ)?.let {
+                                this.add(it)
+                            }
                         }
                     ))
                     RoleName.USER -> roleRepository.save(RoleName.USER.createRole(

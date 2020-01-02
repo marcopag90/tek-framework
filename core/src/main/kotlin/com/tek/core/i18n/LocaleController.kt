@@ -2,6 +2,7 @@ package com.tek.core.i18n
 
 import com.tek.core.TekBaseResponse
 import com.tek.core.i18n.CoreMessageSource.Companion.localeLang
+import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-const val LOCALE_PATTERN = "/locale"
+const val LOCALE_PATH = "/locale"
 
 @Suppress("UNUSED")
+@Api(tags = ["Locale"])
 @RestController
-@RequestMapping(path = [LOCALE_PATTERN], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(path = [LOCALE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class LocaleController(
     private val messageSource: CoreMessageSource
 ) {

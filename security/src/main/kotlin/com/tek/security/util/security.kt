@@ -10,3 +10,5 @@ fun hasPrivilege(privilegeName: PrivilegeName): Boolean {
         else -> true
     }
 }
+
+fun String.antPath() = "$this/**"

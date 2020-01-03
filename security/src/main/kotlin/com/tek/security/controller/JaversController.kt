@@ -1,7 +1,8 @@
 package com.tek.security.controller
 
 import com.tek.audit.javers.request.JaversQEntityParam
-import com.tek.audit.javers.response.JaversCommitChanges
+import com.tek.audit.javers.response.JaversEntityChanges
+import com.tek.audit.javers.response.JaversEntityListChanges
 import com.tek.audit.service.JaversService
 import com.tek.core.TekResponseEntity
 import com.tek.core.util.LoggerDelegate
@@ -9,19 +10,19 @@ import com.tek.security.SecurityPattern.JAVERS_PATH
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.util.hasPrivilege
 import io.swagger.annotations.Api
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 
 @Suppress("UNUSED")
 @Api(tags = ["Javers Audit"])
 @RestController
 @RequestMapping(path = [JAVERS_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class JaversController(
-    @Qualifier(JaversService.security) private val javersService: JaversService
+    private val javersService: JaversService
 ) {
 
     private val log by LoggerDelegate()
@@ -35,10 +36,22 @@ class JaversController(
         @RequestParam("skip", required = false) skip: Int?,
         @RequestParam("limit", required = false) limit: Int?,
         params: JaversQEntityParam
-    ): ResponseEntity<TekResponseEntity<List<JaversCommitChanges>>> {
+    ): ResponseEntity<TekResponseEntity<List<JaversEntityListChanges>>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, javersService.queryByEntity(entity, skip, limit, params))
+            TekResponseEntity(HttpStatus.OK, javersService.queryChangesByEntity(entity, skip, limit, params))
+        )
+    }
+
+    @PreAuthorize("this.readAuthorized")
+    @GetMapping("/read/{entity}/{id}")
+    fun readByCommit(
+        @PathVariable("entity") entity: String,
+        @PathVariable("id") id: BigDecimal
+    ): ResponseEntity<TekResponseEntity<List<JaversEntityChanges>>> {
+        log.debug("Executing [GET] method")
+        return ResponseEntity.ok(
+            TekResponseEntity(HttpStatus.OK, javersService.queryChangesByCommit(entity, id))
         )
     }
 }

@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse
 class AuditWebConfig(
     private val auditInterceptor: AuditInterceptor
 ) : WebMvcConfigurer {
-    
+
     override fun addInterceptors(registry: InterceptorRegistry) {
-        
+
         registry.addInterceptor(auditInterceptor)
         super.addInterceptors(registry)
     }
@@ -36,19 +36,19 @@ class AuditWebConfig(
 class AuditInterceptor(
     private val auditService: AuditService
 ) : HandlerInterceptor {
-    
+
     override fun preHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-        
+
         if (DispatcherType.REQUEST.name == request.dispatcherType.name && request.method == HttpMethod.GET.name)
             auditService.logRequest(request, null)
-        
+
         return true
     }
-    
+
     override fun postHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -56,7 +56,7 @@ class AuditInterceptor(
         modelAndView: ModelAndView?
     ) {
     }
-    
+
     override fun afterCompletion(
         request: HttpServletRequest,
         response: HttpServletResponse,

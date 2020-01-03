@@ -31,6 +31,7 @@ class JsonTypeConverter(
      * @request type expected type
      * @return the converted object
      */
+    @Suppress("UNUSED")
     fun <T> convert(value: Int, type: Class<T>): T {
         return doConvert(value, type)
     }
@@ -42,6 +43,7 @@ class JsonTypeConverter(
      * @request type expected type
      * @return the converted object
      */
+    @Suppress("UNCHECKED_CAST")
     private fun <T> doConvert(value: Any, type: Class<T>): T { // nothing to do - it is the good type
         if (value.javaClass == type) {
             return value as T
@@ -53,7 +55,7 @@ class JsonTypeConverter(
                 LocalDate::class.java -> LocalDate.parse(value) as T
                 LocalDateTime::class.java -> LocalDateTime.parse(value) as T
                 UUID::class.java -> UUID.fromString(value.toString()) as T
-                else -> TODO()
+                else -> throw NotImplementedError("Missing type implementation")
             }
         }
         return objectMapper.convertValue(value, type)

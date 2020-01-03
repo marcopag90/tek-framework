@@ -45,4 +45,10 @@ class TekEntityManager(
             else -> TODO("Missing type implementation")
         }
     }
+
+    fun getEntityIdName(clazz: Class<*>): Any {
+        return (clazz.kotlin.memberProperties.single {
+            it.allAnnotations.findInstanceOrNull<Id>() != null
+        }.name)
+    }
 }

@@ -3,6 +3,7 @@ package com.tek.security.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tek.core.util.isDateExpired
 import com.tek.security.audit.UserActivityAudit
+import org.javers.core.metamodel.annotation.DiffIgnore
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -28,6 +29,7 @@ class TekUser : UserActivityAudit() {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @field:NotBlank
     @Column(name = "password", nullable = false)
+    @DiffIgnore
     var password: String? = null
 
     @field:Email

@@ -1,6 +1,6 @@
 package com.tek.audit.javers.request
 
-import com.tek.audit.javers.JaversAction
+import com.tek.audit.javers.CrudAction
 import org.javers.repository.jql.QueryBuilder
 import java.time.LocalDate
 
@@ -11,5 +11,5 @@ data class JaversQEntityParam(
     var author: String? = null,
     var from: LocalDate? = null,
     var to: LocalDate? = null,
-    var action: JaversAction? = null
+    var crudAction: CrudAction? = null
 )

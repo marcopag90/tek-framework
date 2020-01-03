@@ -19,7 +19,7 @@ class SecurityMessageSource : TekMessageSource {
             setDefaultEncoding("UTF-8")
         }
 
-    @Bean
+    @Bean(name = ["security_validator"])
     fun securityValidator(): LocalValidatorFactoryBean =
         LocalValidatorFactoryBean().apply {
             setValidationMessageSource(getSecuritySource())

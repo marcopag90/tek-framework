@@ -19,6 +19,7 @@ import com.tek.security.repository.UserRepository
 import com.tek.security.service.AuthService
 import com.tek.security.service.RoleService
 import com.tek.security.service.UserService
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -34,7 +35,7 @@ class UserServiceImpl(
     private val roleService: RoleService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val validator: Validator,
+    @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,
     private val securityMessageSource: SecurityMessageSource
 ) : UserService {
@@ -249,9 +250,9 @@ class UserServiceImpl(
 
         if (properties.containsKey(TekUser::roles.name)) {
             userToUpdate.roles = mutableSetOf()
-            val roles = properties[TekUser::roles.name] as MutableList<String>
+            val roles = properties[TekUser::roles.name] as MutableList<Long>
             for (role in roles) {
-                userToUpdate.roles.add(roleService.readOne(role.toLong()))
+                userToUpdate.roles.add(roleService.readOne(role))
             }
         }
 

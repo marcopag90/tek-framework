@@ -30,6 +30,7 @@ spring:
 
         hibernate:
             # Configurazione creazione tabelle Hibernate
+            #create, update
             ddl-auto: update
             naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 

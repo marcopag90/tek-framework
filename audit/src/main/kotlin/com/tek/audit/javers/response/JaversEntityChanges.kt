@@ -20,5 +20,3 @@ data class EntityValues(
     val typeName: String? = null,
     val value: Any? = null
 )
-
-

@@ -1,7 +1,6 @@
 package com.tek.audit.service.impl
 
 import com.tek.audit.i18n.AuditMessageSource
-import com.tek.audit.i18n.AuditMessageSource.Companion.javersEntityInserted
 import com.tek.audit.i18n.AuditMessageSource.Companion.javersEntityRemoved
 import com.tek.audit.i18n.AuditMessageSource.Companion.javersPropertyAdded
 import com.tek.audit.i18n.AuditMessageSource.Companion.javersPropertyRemoved
@@ -14,6 +13,7 @@ import com.tek.audit.javers.response.JaversEntityListChanges
 import com.tek.audit.service.JaversService
 import com.tek.core.repository.TekEntityManager
 import com.tek.core.util.LoggerDelegate
+import com.tek.core.util.doNothing
 import org.javers.core.Javers
 import org.javers.core.diff.changetype.NewObject
 import org.javers.core.diff.changetype.ObjectRemoved
@@ -111,15 +111,7 @@ class JaversServiceImpl(
                                 toValue = change.right
                             )
                         )
-                        is NewObject -> changes.add(
-                            JaversEntityChanges(
-                                changeType = auditMessageSource.getAuditSource().getMessage(
-                                    javersEntityInserted, null, LocaleContextHolder.getLocale()
-                                ),
-                                entityName = change.affectedGlobalId.typeName,
-                                entityId = (change.affectedGlobalId as InstanceId).cdoId
-                            )
-                        )
+                        is NewObject -> doNothing()
                         is ObjectRemoved -> changes.add(
                             JaversEntityChanges(
                                 changeType = auditMessageSource.getAuditSource().getMessage(

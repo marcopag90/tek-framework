@@ -78,3 +78,8 @@ fun notSupported(): Nothing = throw NotSupported()
 
 class NotSupported(message: String = "This method is not supported.") : Error(message)
 
+/**
+ * Utility function to act like nothing happened
+ */
+fun doNothing() = Unit
+

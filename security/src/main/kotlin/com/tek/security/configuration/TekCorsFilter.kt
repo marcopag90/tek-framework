@@ -10,7 +10,16 @@ import javax.servlet.http.HttpServletResponse
 @Suppress("UNUSED")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class TekCorsFilter : Filter {
+/**
+ * CORS Policy
+ * 1) _Access-Control-Allow-Origin_ can't accept wildcard * if the requesting client sends _withCredentials header_: true
+ * 2) _Access-Control-Allow-Origin_ can't send multiple origins (except using the widlcard *)
+ * 3) _Access-Control-Allow-Headers_ OPTIONS must return [HttpServletResponse.SC_OK] to avoid 401 status code with authorization header
+ * 4) _Access-Control-Allow-Credentials_ must be true if the requesting client sends _withCredentials header_: true
+ */
+class TekCorsFilter(
+    private val corsProperties: TekCorsProperties
+) : Filter {
 
     override fun init(filterConfig: FilterConfig?) {}
 
@@ -19,12 +28,10 @@ class TekCorsFilter : Filter {
         val request = req as HttpServletRequest
         val response = res as HttpServletResponse
 
-        response.setHeader("Access-Control-Allow-Origin", "*")
-        response.setHeader("Access-Control-Allow-Methods", "PATCH,PUT,POST,GET,OPTIONS,DELETE")
-        response.setHeader(
-            "Access-Control-Allow-Headers",
-            "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN"
-        )
+        response.setHeader("Access-Control-Allow-Origin", corsProperties.allowedOrigin)
+        response.setHeader("Access-Control-Allow-Credentials", corsProperties.allowedCredentials)
+        response.setHeader("Access-Control-Allow-Methods", corsProperties.allowedMethods.joinToString())
+        response.setHeader("Access-Control-Allow-Headers", corsProperties.allowedHeaders.joinToString())
 
         if ("OPTIONS" == request.method) {
             response.status = HttpServletResponse.SC_OK

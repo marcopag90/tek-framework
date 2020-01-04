@@ -40,10 +40,10 @@ spring:
         driverClassName: org.postgresql.Driver
         username: ${POSTGRES_USER:tek}
         password: ${POSTGRES_PASSWORD:tek}
-#        url: jdbc:mysql://${MYSQL_HOST:localhost}/tek
-#            driverClassName: com.mysql.cj.jdbc.Driver
-#            username: ${MYSQL_USER:root}
-#            password: ${MYSQL_ROOT_PASSWORD:tek}
+    #        url: jdbc:mysql://${MYSQL_HOST:localhost}/tek
+    #            driverClassName: com.mysql.cj.jdbc.Driver
+    #            username: ${MYSQL_USER:root}
+    #            password: ${MYSQL_ROOT_PASSWORD:tek}
 
     # Schema
     jpa.properties.hibernate.default_schema: tek
@@ -87,6 +87,18 @@ security:
             scope: read,write
             accessTokenValidity: 1800
             refreshTokenValidity: 3600
+
+        # Cors Configuration
+        cors:
+            # Non si puo' utilizzare la wildcard * altrimenti la request withCredentials a true non rispetta le CORS Policy
+            # Inoltre, per CORS Policy non e' possibile inviare come header di risposta piu' di una origine (a meno della *)
+            allowedOrigin: http://localhost:4200
+            allowedCredentials: true
+            # Rest Methods
+            # OPTIONS : necessaria per OAuth2
+            allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
+            # Headers
+            allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
 
 
 

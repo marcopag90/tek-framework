@@ -10,29 +10,28 @@ import java.time.temporal.ChronoUnit
 /**
  * Configuration lookup for oauth_client_details table.
  *
- * Client Properties variables in application.yaml _MUST_ start with _client_ prefix (eg. client.clientId)
- *
+ * Default configuration is provided if none is found (development purpose only)
  */
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @ConfigurationProperties(prefix = "security.oauth2.client")
 class ClientDetailsProperties {
-    
+
     /**
      * Matching oauth_client_details.client_id to authorize a _tek client_
      */
     var clientId: String = "tekClientId"
-    
+
     /**
      * Matching oauth_client_details.client_secret to authorize access to a resource for a _tek client_ with given _secret_
      */
     var clientSecret: String = "tekSecret"
-    
+
     /**
      * Matching oauth_client_details.resource_ids to authorize access to a resource for a _tek client_
      */
     var resourceId: String = "tekResourceId"
-    
+
     /**
      * Matching oauth_client_details.authorities to let client inquiry the following paths:
      *
@@ -41,23 +40,23 @@ class ClientDetailsProperties {
      * _oauth/token_key_ (if public key is available)
      */
     var authority: String = "ROLE_CLIENT"
-    
+
     /**
      * Matching oauth_client_details.authorized_grant_types
      */
     var grants: String = "password,refresh_token,client_credentials"
-    
+
     /**
      * Matching oauth_client_details.scope
      */
     var scope: String = "read,write"
-    
+
     /**
      * Access Token Validity in _seconds_
      */
     @DurationUnit(ChronoUnit.SECONDS)
     var accessTokenValidity: Duration = Duration.ofSeconds(300)
-    
+
     /**
      * Refresh Token Validity in _seconds_
      */

@@ -133,6 +133,7 @@ class UserServiceImpl(
         return optional.get()
     }
 
+    //TODO check if there's a parameter not matching TekUser model
     @Suppress("UNCHECKED_CAST")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
@@ -163,19 +164,20 @@ class UserServiceImpl(
                         message = CoreMessageSource.errorEmptyField,
                         parameters = arrayOf(TekUser::username.name)
                     ),
-                    httpStatus = HttpStatus.CONFLICT
+                    httpStatus = HttpStatus.BAD_REQUEST
                 )
             }
-            userRepository.existsByUsername(username).isTrue {
-                throw TekServiceException(
-                    data = ServiceExceptionData(
-                        source = securityMessageSource,
-                        message = SecurityMessageSource.errorConflictUsername,
-                        parameters = arrayOf(username)
-                    ),
-                    httpStatus = HttpStatus.CONFLICT
-                )
-            }
+            if (userToUpdate.username != username)
+                userRepository.existsByUsername(username).isTrue {
+                    throw TekServiceException(
+                        data = ServiceExceptionData(
+                            source = securityMessageSource,
+                            message = SecurityMessageSource.errorConflictUsername,
+                            parameters = arrayOf(username)
+                        ),
+                        httpStatus = HttpStatus.CONFLICT
+                    )
+                }
             userToUpdate.username = username
         }
 
@@ -217,16 +219,17 @@ class UserServiceImpl(
                     httpStatus = HttpStatus.BAD_REQUEST
                 )
             }
-            userRepository.existsByEmail(email).isTrue {
-                throw TekServiceException(
-                    data = ServiceExceptionData(
-                        source = securityMessageSource,
-                        message = SecurityMessageSource.errorConflictEmail,
-                        parameters = arrayOf(email)
-                    ),
-                    httpStatus = HttpStatus.CONFLICT
-                )
-            }
+            if (userToUpdate.email != email)
+                userRepository.existsByEmail(email).isTrue {
+                    throw TekServiceException(
+                        data = ServiceExceptionData(
+                            source = securityMessageSource,
+                            message = SecurityMessageSource.errorConflictEmail,
+                            parameters = arrayOf(email)
+                        ),
+                        httpStatus = HttpStatus.CONFLICT
+                    )
+                }
             userToUpdate.email = email
         }
 

@@ -79,9 +79,9 @@ security:
 
         # ClientDetailsProperties
         client:
-            clientId: tekClientId
-            clientSecret: tekSecret
-            resourceId: tekResourceId
+            clientId: tekVetrina01
+            clientSecret: Ygsethoh90*
+            resourceId: tekVetrinaShowcase
             authority: ROLE_CLIENT
             grants: password,refresh_token,client_credentials
             scope: read,write

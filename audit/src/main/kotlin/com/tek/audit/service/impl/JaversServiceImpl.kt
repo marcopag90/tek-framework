@@ -148,7 +148,7 @@ class JaversServiceImpl(
                     }
                 }
             } catch (ex: Exception) {
-                throw NotImplementedError("Missin type implementation")
+                throw NotImplementedError("Missing type implementation")
             }
         }
         return changes

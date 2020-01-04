@@ -5,6 +5,7 @@ import com.tek.core.i18n.LOCALE_PATH
 import com.tek.core.util.unreachableCode
 import com.tek.security.SecurityPattern.clientResources
 import com.tek.security.SecurityPattern.nebularResources
+import com.tek.security.SecurityPattern.swaggerResources
 import com.tek.security.SecurityPattern.unauthenticatedPatterns
 import com.tek.security.oauth.exception.OAuth2AccessDeniedHandler
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -58,6 +59,7 @@ class OAuthResourceServer(
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()
+            .antMatchers(*swaggerResources()).permitAll()
             .antMatchers(LOCALE_PATH).permitAll()
             .and()
             .authorizeRequests()
@@ -82,6 +84,7 @@ class OAuthResourceServer(
             .antMatchers(*unauthenticatedPatterns()).permitAll()
             .antMatchers(*clientResources()).permitAll()
             .antMatchers(*nebularResources()).permitAll()
+            .antMatchers(*swaggerResources()).permitAll()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .and()
             .authorizeRequests()

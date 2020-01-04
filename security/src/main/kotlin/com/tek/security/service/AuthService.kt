@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 
-/** JBot extension of [UserDetailsService].
+/** Tek extension of [UserDetailsService].
  * Use this interface to create custom implementations
  **/
 interface AuthService : UserDetailsService {

@@ -21,9 +21,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter
 import javax.sql.DataSource
 
 /**OAuth2 Authorization Server Configuration
@@ -46,12 +43,6 @@ class OAuthServer(
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
 
-    @Bean
-    fun corsFilter(): List<CorsFilter> =
-        listOf(CorsFilter(UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/oauth/token", CorsConfiguration().applyPermitDefaultValues())
-        }))
-
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(datasource)
     }
@@ -66,7 +57,6 @@ class OAuthServer(
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(hasAuthority(clientDetailsProperties.authority))
             .passwordEncoder(authService.passwordEncoder())
-            .tokenEndpointAuthenticationFilters(corsFilter())
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {

@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest
 class AuditResponseBodyAdviceAdapter(
     private val auditService: AuditService
 ) : ResponseBodyAdvice<Any> {
-    
+
     override fun supports(
-        returnType: MethodParameter,
-        converterType: Class<out HttpMessageConverter<*>>
-    ): Boolean {
-        return true
-    }
-    
+        returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>
+    ): Boolean = true
+
+
     override fun beforeBodyWrite(
         body: Any?,
         returnType: MethodParameter,
@@ -35,14 +33,10 @@ class AuditResponseBodyAdviceAdapter(
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any? {
-        
+
         if (request is ServletServerHttpRequest && response is ServletServerHttpResponse)
-            auditService.logResponse(
-                request.servletRequest,
-                response.servletResponse,
-                body
-            )
-        
+            auditService.logResponse(request.servletRequest, response.servletResponse, body)
+
         return body
     }
 }
@@ -52,16 +46,14 @@ class AuditRequestBodyAdviceAdapter(
     private val auditService: AuditService,
     private val httpServletRequest: HttpServletRequest
 ) : RequestBodyAdviceAdapter() {
-    
+
     override fun supports(
         methodParameter: MethodParameter,
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
-    ): Boolean {
-        
-        return true
-    }
-    
+    ): Boolean = true
+
+
     override fun afterBodyRead(
         body: Any,
         inputMessage: HttpInputMessage,
@@ -69,9 +61,9 @@ class AuditRequestBodyAdviceAdapter(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): Any {
-        
+
         auditService.logRequest(httpServletRequest, body)
-        
+
         return super.afterBodyRead(
             body,
             inputMessage,

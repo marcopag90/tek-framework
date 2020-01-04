@@ -7,6 +7,7 @@ import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+@Suppress("UNUSED")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class TekCorsFilter : Filter {

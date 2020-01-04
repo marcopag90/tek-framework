@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 @Suppress("UNUSED")
-@Api(tags = ["Javers Audit"])
+@Api(tags = ["Entity Audit"])
 @RestController
 @RequestMapping(path = [JAVERS_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class JaversController(
@@ -28,6 +28,15 @@ class JaversController(
     private val log by LoggerDelegate()
 
     val readAuthorized get() = hasPrivilege(PrivilegeName.AUDIT_READ)
+
+    @PreAuthorize("this.readAuthorized")
+    @GetMapping("/list/entities")
+    fun getAuditableEntities(): ResponseEntity<TekResponseEntity<List<String>>> {
+        log.debug("Executing [GET] method")
+        return ResponseEntity.ok(
+            TekResponseEntity(HttpStatus.OK, javersService.getAuditableEntities())
+        )
+    }
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list/{entity}")

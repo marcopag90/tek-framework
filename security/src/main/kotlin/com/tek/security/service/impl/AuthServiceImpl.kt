@@ -6,7 +6,7 @@ import com.tek.security.TekUserDetails
 import com.tek.security.model.TekUser
 import com.tek.security.model.Privilege
 import com.tek.security.model.Role
-import com.tek.security.repository.UserRepository
+import com.tek.security.repository.TekUserRepository
 import com.tek.security.service.AuthService
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -25,7 +25,7 @@ import java.util.*
 @Suppress("UNUSED")
 @Service
 class AuthServiceImpl(
-    private val userRepository: UserRepository,
+    private val userRepository: TekUserRepository,
     private val pswEncoder: TekPasswordEncoder
 ) : AuthService {
 

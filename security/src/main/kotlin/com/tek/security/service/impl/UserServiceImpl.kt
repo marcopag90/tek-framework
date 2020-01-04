@@ -15,7 +15,7 @@ import com.tek.security.i18n.SecurityMessageSource
 import com.tek.security.model.TekUser
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
-import com.tek.security.repository.UserRepository
+import com.tek.security.repository.TekUserRepository
 import com.tek.security.service.AuthService
 import com.tek.security.service.RoleService
 import com.tek.security.service.UserService
@@ -33,7 +33,7 @@ import javax.validation.Validator
 class UserServiceImpl(
     private val authService: AuthService,
     private val roleService: RoleService,
-    private val userRepository: UserRepository,
+    private val userRepository: TekUserRepository,
     private val roleRepository: RoleRepository,
     @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,

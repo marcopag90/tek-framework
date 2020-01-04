@@ -8,7 +8,6 @@ import java.math.BigDecimal
 import javax.persistence.EntityManager
 import javax.persistence.Id
 import javax.persistence.metamodel.EntityType
-import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.jvmErasure
 
@@ -17,10 +16,12 @@ import kotlin.reflect.jvm.jvmErasure
  */
 @Service
 class TekEntityManager(
-    private val entityManager: EntityManager
+    val entityManager: EntityManager
 ) {
 
     private val log by LoggerDelegate()
+
+    fun getEntities(): Set<EntityType<*>> = entityManager.metamodel.entities
 
     fun getEntity(entityName: String): Class<*> {
         log.debug("Trying to load entity: $entityName")

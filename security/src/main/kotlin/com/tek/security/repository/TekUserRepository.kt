@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 @Transactional
 @JaversSpringDataAuditable
-interface UserRepository : TekRepository<TekUser, Long> {
+interface TekUserRepository : TekRepository<TekUser, Long> {
 
     fun findByUsername(username: String): TekUser?
 

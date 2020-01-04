@@ -10,6 +10,8 @@ import java.math.BigDecimal
  */
 interface JaversService {
 
+    fun getAuditableEntities(): List<String>
+
     fun queryChangesByEntity(
         entityName: String,
         skip: Int?,

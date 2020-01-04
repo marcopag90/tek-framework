@@ -23,7 +23,12 @@ import org.javers.core.diff.changetype.container.SetChange
 import org.javers.core.metamodel.`object`.InstanceId
 import org.javers.repository.jql.JqlQuery
 import org.javers.repository.jql.QueryBuilder
+import org.javers.spring.annotation.JaversSpringDataAuditable
+import org.springframework.context.ApplicationContext
 import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.support.Repositories
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -32,10 +37,26 @@ import java.math.BigDecimal
 class JaversServiceImpl(
     private val javers: Javers,
     private val tekEntityManager: TekEntityManager,
+    private val appContext: ApplicationContext,
+    private val repositories: Repositories = Repositories(appContext),
     private val auditMessageSource: AuditMessageSource
 ) : JaversService {
 
     private val log by LoggerDelegate()
+
+    override fun getAuditableEntities(): List<String> {
+
+        val entities = tekEntityManager.getEntities()
+        val javersEntities = mutableListOf<String>()
+        entities.forEach { type ->
+            val clazz = type.javaType
+            val repoClass = (repositories.getRepositoryFor(clazz).get() as JpaRepository<*, *>)::class.java
+            AnnotationUtils.findAnnotation(repoClass, JaversSpringDataAuditable::class.java)?.let {
+                javersEntities.add(clazz.simpleName)
+            }
+        }
+        return javersEntities
+    }
 
     override fun queryChangesByEntity(
         entityName: String,
@@ -45,12 +66,14 @@ class JaversServiceImpl(
     ): List<JaversEntityListChanges> {
 
         val cr = System.lineSeparator()
-        val inputString = StringBuilder("$cr Performing [queryChangesByEntity] with the following parameters: $cr")
+        val inputString = StringBuilder("Performing [queryChangesByEntity] with the following parameters: $cr")
         inputString.append("entityName: $entityName $cr")
         inputString.append("skip: $skip $cr")
         inputString.append("limit: $limit $cr")
         inputString.append("params: $params $cr")
         log.debug(inputString.toString())
+
+        getAuditableEntities()
 
         val clazz = tekEntityManager.getEntity(entityName)
         val qb: QueryBuilder = QueryBuilder.byClass(clazz)
@@ -81,9 +104,9 @@ class JaversServiceImpl(
             QueryBuilder.byClass(clazz).withCommitId(id)
                 .withNewObjectChanges().build()
 
-        val changes = mutableListOf<JaversEntityChanges>()
         val result = javers.findChanges(jqlQuery).groupByCommit()
 
+        val changes = mutableListOf<JaversEntityChanges>()
         result.takeIf { result.size > 0 }?.let {
             val obj = it[0].get()
             try {

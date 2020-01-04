@@ -3,12 +3,10 @@ package com.tek.security.data
 import com.tek.core.util.ifNull
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.model.TekUser
-import com.tek.security.model.Privilege
 import com.tek.security.model.Role
-import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
-import com.tek.security.repository.UserRepository
+import com.tek.security.repository.TekUserRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -18,7 +16,7 @@ import java.util.*
 @Order(DataOrder.user)
 @Component
 class TekUserDataRunner(
-    private val userRepository: UserRepository,
+    private val userRepository: TekUserRepository,
     private val roleRepository: RoleRepository,
     private val pswEncoder: TekPasswordEncoder
 ) : CommandLineRunner {

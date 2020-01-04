@@ -1,4 +1,4 @@
-package com.tek.security.configuration
+package com.tek.core.configuration
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
  *
  */
 @Configuration
-@ConfigurationProperties(prefix = "security.oauth2.cors")
+@ConfigurationProperties(prefix = "security.cors")
 @EnableConfigurationProperties(SecurityProperties::class)
 class TekCorsProperties {
 

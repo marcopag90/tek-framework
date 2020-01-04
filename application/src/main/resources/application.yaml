@@ -88,17 +88,19 @@ security:
             accessTokenValidity: 1800
             refreshTokenValidity: 3600
 
-        # Cors Configuration
-        cors:
-            # Non si puo' utilizzare la wildcard * altrimenti la request withCredentials a true non rispetta le CORS Policy
-            # Inoltre, per CORS Policy non e' possibile inviare come header di risposta piu' di una origine (a meno della *)
-            allowedOrigin: http://localhost:4200
-            allowedCredentials: true
-            # Rest Methods
-            # OPTIONS : necessaria per OAuth2
-            allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
-            # Headers
-            allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
+    # Cors Configuration
+    cors:
+        # Non si puo' utilizzare la wildcard * altrimenti la request withCredentials a true non rispetta le CORS Policy
+        # Inoltre, per CORS Policy non e' possibile inviare come header di risposta piu' di una origine (a meno della *)
+        allowedOrigin: http://localhost:4200
+        allowedCredentials: true
+        # Rest Methods
+        # OPTIONS : necessaria per OAuth2
+        allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
+        # Headers
+        allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
+
+
 
 
 

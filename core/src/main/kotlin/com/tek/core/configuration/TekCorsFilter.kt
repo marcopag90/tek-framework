@@ -1,4 +1,4 @@
-package com.tek.security.configuration
+package com.tek.core.configuration
 
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order

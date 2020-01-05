@@ -6,7 +6,7 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.i18n.CoreMessageSource.Companion.errorNotFoundResource
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.model.Role
+import com.tek.security.model.auth.Role
 import com.tek.security.repository.RoleRepository
 import com.tek.security.service.RoleService
 import org.springframework.data.domain.Page

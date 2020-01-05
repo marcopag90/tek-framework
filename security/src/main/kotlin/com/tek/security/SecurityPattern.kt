@@ -10,11 +10,14 @@ object SecurityPattern {
     const val USER_PATH = "/user"
     const val JAVERS_PATH = "/javers"
     const val WEBAUDIT_PATH = "/webaudit" //TODO web audit controller
+    const val NOTIFICATION_PATH = "/notification"
+    const val CONTACT_PATH = "/notification/contact"
 
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(
             BASE_PATH,
-            REGISTER_PATH
+            REGISTER_PATH,
+            CONTACT_PATH
         )
     }
 

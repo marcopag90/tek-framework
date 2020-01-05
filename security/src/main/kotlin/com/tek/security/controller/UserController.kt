@@ -6,7 +6,7 @@ import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.USER_PATH
-import com.tek.security.model.TekUser
+import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.service.UserService
 import com.tek.security.util.hasPrivilege

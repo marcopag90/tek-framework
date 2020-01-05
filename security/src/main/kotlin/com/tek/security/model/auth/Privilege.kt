@@ -1,4 +1,4 @@
-package com.tek.security.model
+package com.tek.security.model.auth
 
 import com.tek.security.model.enums.PrivilegeName
 import org.hibernate.annotations.NaturalId

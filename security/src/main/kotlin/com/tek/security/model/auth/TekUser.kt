@@ -1,4 +1,4 @@
-package com.tek.security.model
+package com.tek.security.model.auth
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tek.core.util.isDateExpired

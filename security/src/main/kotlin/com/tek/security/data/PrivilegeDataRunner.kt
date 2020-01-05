@@ -1,7 +1,7 @@
 package com.tek.security.data
 
 import com.tek.core.util.ifNull
-import com.tek.security.model.Privilege
+import com.tek.security.model.auth.Privilege
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.repository.PrivilegeRepository
 import org.springframework.boot.CommandLineRunner

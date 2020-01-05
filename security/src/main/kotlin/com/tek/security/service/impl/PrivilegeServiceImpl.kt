@@ -5,7 +5,7 @@ import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.model.Privilege
+import com.tek.security.model.auth.Privilege
 import com.tek.security.repository.PrivilegeRepository
 import com.tek.security.service.PrivilegeService
 import org.springframework.data.domain.Page

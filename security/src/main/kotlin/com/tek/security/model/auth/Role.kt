@@ -1,5 +1,6 @@
-package com.tek.security.model
+package com.tek.security.model.auth
 
+import com.tek.security.model.auth.Privilege
 import com.tek.security.model.enums.RoleName
 import org.hibernate.annotations.NaturalId
 import java.io.Serializable

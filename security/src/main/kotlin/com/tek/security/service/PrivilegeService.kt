@@ -1,7 +1,7 @@
 package com.tek.security.service
 
 import com.querydsl.core.types.Predicate
-import com.tek.security.model.Privilege
+import com.tek.security.model.auth.Privilege
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

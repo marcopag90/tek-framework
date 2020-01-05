@@ -12,7 +12,7 @@ import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
 import com.tek.security.form.auth.RegisterForm
 import com.tek.security.i18n.SecurityMessageSource
-import com.tek.security.model.TekUser
+import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
 import com.tek.security.repository.TekUserRepository

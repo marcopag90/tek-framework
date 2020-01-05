@@ -31,5 +31,7 @@ class SecurityMessageSource : TekMessageSource {
         const val errorConflictEmail = "error.conflict.email"
         const val errorConflictPassword = "error.conflict.password"
         const val errorNotValidPassword = "error.notvalid.password"
+
+        const val messageNotificationSent = "message.notification.sent"
     }
 }

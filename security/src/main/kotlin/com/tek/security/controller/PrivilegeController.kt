@@ -6,7 +6,7 @@ import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.PRIVILEGE_PATH
-import com.tek.security.model.Privilege
+import com.tek.security.model.auth.Privilege
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.service.PrivilegeService
 import com.tek.security.util.hasPrivilege

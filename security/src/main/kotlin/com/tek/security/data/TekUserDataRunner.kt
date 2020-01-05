@@ -2,8 +2,8 @@ package com.tek.security.data
 
 import com.tek.core.util.ifNull
 import com.tek.security.TekPasswordEncoder
-import com.tek.security.model.TekUser
-import com.tek.security.model.Role
+import com.tek.security.model.auth.TekUser
+import com.tek.security.model.auth.Role
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
 import com.tek.security.repository.TekUserRepository

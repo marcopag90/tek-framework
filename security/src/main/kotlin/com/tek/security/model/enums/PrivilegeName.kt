@@ -22,5 +22,7 @@ enum class PrivilegeName(
     USER_UPDATE("privilege_user_update"),
     USER_DELETE("privilege_user_delete"),
 
-    AUDIT_READ("privilege_audit_read")
+    AUDIT_READ("privilege_audit_read"),
+
+    NOTIFICATION_READ("privilege_notification_read")
 }

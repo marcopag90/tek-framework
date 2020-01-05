@@ -1,7 +1,7 @@
 package com.tek.security.data
 
-import com.tek.security.model.Privilege
-import com.tek.security.model.Role
+import com.tek.security.model.auth.Privilege
+import com.tek.security.model.auth.Role
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.PrivilegeRepository

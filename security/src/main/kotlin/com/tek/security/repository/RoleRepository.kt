@@ -1,7 +1,7 @@
 package com.tek.security.repository
 
 import com.tek.core.repository.TekRepository
-import com.tek.security.model.Role
+import com.tek.security.model.auth.Role
 import com.tek.security.model.enums.RoleName
 import org.javers.spring.annotation.JaversSpringDataAuditable
 import org.springframework.stereotype.Repository

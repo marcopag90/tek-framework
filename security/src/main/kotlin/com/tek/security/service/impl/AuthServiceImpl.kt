@@ -3,9 +3,9 @@ package com.tek.security.service.impl
 import com.tek.core.util.isFalse
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.TekUserDetails
-import com.tek.security.model.TekUser
-import com.tek.security.model.Privilege
-import com.tek.security.model.Role
+import com.tek.security.model.auth.TekUser
+import com.tek.security.model.auth.Privilege
+import com.tek.security.model.auth.Role
 import com.tek.security.repository.TekUserRepository
 import com.tek.security.service.AuthService
 import org.springframework.security.core.Authentication

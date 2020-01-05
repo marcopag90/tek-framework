@@ -33,5 +33,6 @@ class SecurityMessageSource : TekMessageSource {
         const val errorNotValidPassword = "error.notvalid.password"
 
         const val messageNotificationSent = "message.notification.sent"
+        const val messageContactUs = "message.contact.us"
     }
 }

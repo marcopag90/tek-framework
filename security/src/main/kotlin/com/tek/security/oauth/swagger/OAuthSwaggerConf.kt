@@ -51,8 +51,7 @@ class OAuthSwaggerConf(
                 Predicates.or(
                     PathSelectors.ant(ROLE_PATH.antPath()),
                     PathSelectors.ant(PRIVILEGE_PATH.antPath()),
-                    PathSelectors.ant(USER_PATH.antPath()),
-                    PathSelectors.ant(LOCALE_PATH.antPath())
+                    PathSelectors.ant(USER_PATH.antPath())
                 )
             )
             .build()
@@ -96,7 +95,6 @@ class OAuthSwaggerConf(
                     Predicates.not(PathSelectors.ant(ROLE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(PRIVILEGE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(USER_PATH.antPath())),
-                    Predicates.not(PathSelectors.ant(LOCALE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(JAVERS_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(WEBAUDIT_PATH.antPath()))
                 )

@@ -48,6 +48,22 @@ spring:
     # Schema
     jpa.properties.hibernate.default_schema: tek
 
+    # SMTP
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: marcopag90@gmail.com
+        password: Thohs1qu90
+        properties.mail.smtp:
+            auth: true
+            connectiontimeout: 5000
+            timeout: 5000
+            writetimeout: 5000
+            starttls.enable: true
+
+
+
+
 javers:
     sqlSchema: audit
 
@@ -99,7 +115,6 @@ security:
         allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
         # Headers
         allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
-
 
 
 

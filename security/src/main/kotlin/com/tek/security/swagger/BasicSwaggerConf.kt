@@ -1,7 +1,6 @@
 package com.tek.security.swagger
 
 import com.google.common.base.Predicates
-import com.tek.core.i18n.LOCALE_PATH
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern
@@ -45,8 +44,7 @@ class BasicSwaggerConf {
                 Predicates.or(
                     PathSelectors.ant(ROLE_PATH.antPath()),
                     PathSelectors.ant(PRIVILEGE_PATH.antPath()),
-                    PathSelectors.ant(USER_PATH.antPath()),
-                    PathSelectors.ant(LOCALE_PATH.antPath())
+                    PathSelectors.ant(USER_PATH.antPath())
                 )
             )
             .build()
@@ -86,7 +84,6 @@ class BasicSwaggerConf {
                     Predicates.not(PathSelectors.ant(ROLE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(PRIVILEGE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(USER_PATH.antPath())),
-                    Predicates.not(PathSelectors.ant(LOCALE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(SecurityPattern.JAVERS_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(SecurityPattern.WEBAUDIT_PATH.antPath()))
                 )

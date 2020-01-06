@@ -61,9 +61,6 @@ spring:
             writetimeout: 5000
             starttls.enable: true
 
-
-
-
 javers:
     sqlSchema: audit
 

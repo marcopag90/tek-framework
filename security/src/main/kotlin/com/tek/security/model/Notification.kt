@@ -23,6 +23,6 @@ class Notification {
     @Column(name = "created_at")
     var createdAt: LocalDateTime? = null
 
-    @Column(name = "read")
+    @Column(name = "read", length = 1)
     var read: Boolean = false
 }

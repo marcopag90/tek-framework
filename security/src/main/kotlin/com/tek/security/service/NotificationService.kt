@@ -10,4 +10,6 @@ interface NotificationService {
     fun saveContactUsNotification(contactForm: ContactForm): String
 
     fun listNotificationsByPrivilege(pageable: Pageable): Page<Notification>
+
+    fun setNotificationRead(id: Long): Boolean
 }

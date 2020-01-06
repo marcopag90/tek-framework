@@ -1,6 +1,7 @@
 package com.tek.security.swagger
 
 import com.google.common.base.Predicates
+import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern
@@ -27,7 +28,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @Configuration
 @EnableSwagger2
 @ConditionalOnBean(BasicWebSecurity::class)
-class BasicSwaggerConf {
+class BasicSwaggerConf(
+    private val swaggerApiInfo: SwaggerApiInfo
+) {
 
     private val log by LoggerDelegate()
 
@@ -48,6 +51,7 @@ class BasicSwaggerConf {
                 )
             )
             .build()
+            .apiInfo(swaggerApiInfo.tekApiInfo())
             .ignoredParameterTypes(*ignoredParameters())
     }
 

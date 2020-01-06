@@ -31,6 +31,7 @@ class NotificationController(
     private val log by LoggerDelegate()
 
     val readAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_READ)
+    val updateAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_UPDATE)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")
@@ -47,6 +48,15 @@ class NotificationController(
         log.debug("Executing [POST] method")
         return ResponseEntity.ok(
             TekBaseResponse(HttpStatus.OK, notificationService.saveContactUsNotification(contactForm))
+        )
+    }
+
+    @PreAuthorize("this.updateAuthorized")
+    @PostMapping("/isRead/{id}")
+    fun setNotificationRead(@PathVariable("id") id: Long): ResponseEntity<TekBaseResponse> {
+        log.debug("Executing [POST] method")
+        return ResponseEntity.ok(
+            TekBaseResponse(HttpStatus.OK, notificationService.setNotificationRead(id))
         )
     }
 }

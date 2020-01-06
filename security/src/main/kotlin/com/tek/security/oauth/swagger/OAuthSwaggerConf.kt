@@ -3,6 +3,7 @@ package com.tek.security.oauth.swagger
 import com.google.common.base.Predicates
 import com.google.common.collect.Lists
 import com.tek.core.i18n.LOCALE_PATH
+import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.JAVERS_PATH
@@ -33,7 +34,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @ConditionalOnBean(OAuthWebSecurity::class)
 class OAuthSwaggerConf(
     private val securityScheme: SecurityScheme,
-    private val securityContext: SecurityContext
+    private val securityContext: SecurityContext,
+    private val swaggerApiInfo: SwaggerApiInfo
 ) {
 
     private val log by LoggerDelegate()
@@ -55,6 +57,7 @@ class OAuthSwaggerConf(
                 )
             )
             .build()
+            .apiInfo(swaggerApiInfo.tekApiInfo())
             .securitySchemes(Lists.newArrayList(securityScheme))
             .securityContexts(Lists.newArrayList(securityContext))
             .ignoredParameterTypes(*ignoredParameters())
@@ -76,6 +79,7 @@ class OAuthSwaggerConf(
                 )
             )
             .build()
+            .apiInfo(swaggerApiInfo.tekApiInfo())
             .securitySchemes(Lists.newArrayList(securityScheme))
             .securityContexts(Lists.newArrayList(securityContext))
             .ignoredParameterTypes(*ignoredParameters())
@@ -98,7 +102,9 @@ class OAuthSwaggerConf(
                     Predicates.not(PathSelectors.ant(JAVERS_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(WEBAUDIT_PATH.antPath()))
                 )
-            ).build()
+            )
+            .build()
+            .apiInfo(swaggerApiInfo.tekApiInfo())
             .securitySchemes(Lists.newArrayList(securityScheme))
             .securityContexts(Lists.newArrayList(securityContext))
             .ignoredParameterTypes(*ignoredParameters())

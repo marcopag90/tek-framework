@@ -1,8 +1,14 @@
 package com.tek.core.exception
 
 import com.tek.core.TekErrorResponse
+import com.tek.core.i18n.CoreMessageSource
+import com.tek.core.i18n.CoreMessageSource.Companion.messageInternalServerError
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,12 +20,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.io.StringWriter
+import kotlin.reflect.jvm.internal.impl.utils.ExceptionUtilsKt
 
 /**
  * [org.springframework.web.bind.annotation.RestController] exception handler
  */
 @ControllerAdvice
-class TekExceptionHandler : ResponseEntityExceptionHandler() {
+class TekExceptionHandler(
+    private val coreMessageSource: CoreMessageSource
+) : ResponseEntityExceptionHandler() {
 
     private val log: Logger = LoggerFactory.getLogger(TekExceptionHandler::class.java)
 
@@ -123,6 +133,28 @@ class TekExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity(
             TekErrorResponse(httpStatus).apply {
                 this.errors = ex.errors
+                this.path = (request as ServletWebRequest).request.servletPath
+            },
+            httpStatus
+        )
+    }
+
+    @ExceptionHandler(Exception::class)
+    @Order(Ordered.LOWEST_PRECEDENCE)
+    fun handleGenericException(
+        ex: Exception,
+        request: WebRequest
+    ): ResponseEntity<TekErrorResponse> {
+
+        log.error(ExceptionUtils.getStackTrace(ex))
+
+        val error = coreMessageSource.getCoreMessageSource()
+            .getMessage(messageInternalServerError, null, LocaleContextHolder.getLocale())
+
+        val httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+        return ResponseEntity(
+            TekErrorResponse(httpStatus).apply {
+                this.errors = mapOf("error" to error)
                 this.path = (request as ServletWebRequest).request.servletPath
             },
             httpStatus

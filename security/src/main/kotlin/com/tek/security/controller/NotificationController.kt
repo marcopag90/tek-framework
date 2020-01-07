@@ -4,8 +4,7 @@ import com.tek.core.TekBaseResponse
 import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.SecurityPattern
-import com.tek.security.form.ContactForm
+import com.tek.security.SecurityPattern.NOTIFICATION_PATH
 import com.tek.security.model.Notification
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.service.NotificationService
@@ -18,12 +17,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
-import javax.validation.Valid
 
 @Suppress("UNUSED")
-@Api(tags = ["Notifications"])
+@Api(tags = ["Notification"])
 @RestController
-@RequestMapping(path = [SecurityPattern.NOTIFICATION_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(path = [NOTIFICATION_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class NotificationController(
     private val notificationService: NotificationService
 ) {
@@ -40,14 +38,6 @@ class NotificationController(
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
             TekPageResponse(HttpStatus.OK, notificationService.listNotificationsByPrivilege(pageable))
-        )
-    }
-
-    @PostMapping("/contact")
-    fun contactUs(@Valid @RequestBody contactForm: ContactForm): ResponseEntity<TekBaseResponse> {
-        log.debug("Executing [POST] method")
-        return ResponseEntity.ok(
-            TekBaseResponse(HttpStatus.OK, notificationService.saveContactUsNotification(contactForm))
         )
     }
 

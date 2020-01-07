@@ -23,6 +23,8 @@ class CoreMessageSource : TekMessageSource {
         const val errorEmptyField = "error.empty.field"
         const val errorNotFoundResource = "error.notfound.resource"
         const val errorUnknownProperty = "error.unknown.property"
+
+        const val messageInternalServerError = "message.internal.server.error"
     }
 
 }

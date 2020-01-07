@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.tek</groupId>
         <artifactId>framework</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9</version>
     </parent>
 
     <artifactId>security</artifactId>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.tek</groupId>
             <artifactId>audit</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.9</version>
         </dependency>
         <!-- Spring security -->
         <dependency>

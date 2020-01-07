@@ -49,12 +49,12 @@ spring:
     jpa.properties.hibernate.default_schema: tek
 
     # SMTP
-    # Controllare accesso app non sicure a gmail e blocco antivirus in caso di certificato non riconosciuto a runtime
+    # Configurazione: inoltro IMAP, consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
     mail:
         host: smtp.gmail.com
         port: 587
         username: marcopag90@gmail.com
-        password: Thohs1qu9094
+        password: Thohs1qu9094*
         properties.mail.smtp:
             auth: true
             connectiontimeout: 5000

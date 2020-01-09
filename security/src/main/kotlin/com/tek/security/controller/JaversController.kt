@@ -1,9 +1,10 @@
 package com.tek.security.controller
 
-import com.tek.audit.javers.request.JaversQEntityParam
-import com.tek.audit.javers.response.JaversEntityChanges
-import com.tek.audit.javers.response.JaversEntityListChanges
-import com.tek.audit.service.JaversService
+import com.tek.audit.javers.JaversEntityChanges
+import com.tek.audit.javers.JaversEntityListChanges
+import com.tek.audit.javers.JaversQEntityParam
+import com.tek.audit.javers.JaversQPage
+import com.tek.audit.service.JaversQService
 import com.tek.core.TekResponseEntity
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.JAVERS_PATH
@@ -22,7 +23,7 @@ import java.math.BigDecimal
 @RestController
 @RequestMapping(path = [JAVERS_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class JaversController(
-    private val javersService: JaversService
+    private val javersService: JaversQService
 ) {
 
     private val log by LoggerDelegate()
@@ -48,7 +49,10 @@ class JaversController(
     ): ResponseEntity<TekResponseEntity<List<JaversEntityListChanges>>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, javersService.queryChangesByEntity(entity, skip, limit, params))
+            TekResponseEntity(
+                HttpStatus.OK,
+                javersService.queryChangesByEntity(entity, JaversQPage(skip, limit), params)
+            )
         )
     }
 

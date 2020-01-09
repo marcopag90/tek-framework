@@ -32,3 +32,12 @@ fun QueryBuilder.setDeletedSnapshot() {
  * Extension function to set time limit to 23:59:59 (Javers default sets 00:00:00, making upper date bound useless)
  */
 fun QueryBuilder.toMax(date: LocalDate): QueryBuilder = this.to(date.atTime(LocalTime.MAX))
+
+/**
+ * Extension function to set pagination for Javers query
+ */
+fun QueryBuilder.withPagination(page: JaversQPage): QueryBuilder {
+    page.skip?.let { this.skip(it) } ?: this.skip(0)
+    page.limit?.let { this.limit(it) } ?: this.limit(20)
+    return this
+}

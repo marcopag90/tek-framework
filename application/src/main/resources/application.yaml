@@ -102,6 +102,10 @@ security:
             accessTokenValidity: 1800
             refreshTokenValidity: 3600
 
+tek:
+    # Data Runner Configuration
+    runner.action: CREATE
+
     # Cors Configuration
     cors:
         # Non si puo' utilizzare la wildcard * altrimenti la request withCredentials a true non rispetta le CORS Policy
@@ -113,6 +117,3 @@ security:
         allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
         # Headers
         allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
-
-
-

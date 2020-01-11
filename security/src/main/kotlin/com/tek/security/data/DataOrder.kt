@@ -2,8 +2,7 @@ package com.tek.security.data
 
 object DataOrder {
 
-    const val privilege = 1
-    const val role = 2
-    const val user = 3
-
+    const val privilege = 10
+    const val role = 20
+    const val user = 30
 }

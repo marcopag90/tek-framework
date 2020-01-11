@@ -2,12 +2,12 @@ package com.tek.security.configuration
 
 import com.tek.core.SpringProfile
 import com.tek.core.util.LoggerDelegate
-import com.tek.core.util.SpringProperty
+import com.tek.core.util.TekProperty
 import com.tek.core.util.unreachableCode
 import com.tek.security.SecurityPattern
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -30,9 +30,9 @@ class BasicWebSecurity(
 ) : WebSecurityConfigurerAdapter() {
 
     @Value("\${security.type: basic}")
-    private lateinit var securityType: SpringProperty
+    private lateinit var securityType: TekProperty
 
-    private val log by LoggerDelegate()
+    private val log = LoggerFactory.getLogger(BasicWebSecurity::class.java)
 
     override fun configure(web: WebSecurity) {
         web.ignoring().antMatchers(

@@ -13,6 +13,7 @@ import com.tek.security.SecurityPattern.USER_PATH
 import com.tek.security.SecurityPattern.WEBAUDIT_PATH
 import com.tek.security.oauth.configuration.OAuthWebSecurity
 import com.tek.security.util.antPath
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -38,7 +39,7 @@ class OAuthSwaggerConf(
     private val swaggerApiInfo: SwaggerApiInfo
 ) {
 
-    private val log by LoggerDelegate()
+    private val log = LoggerFactory.getLogger(OAuthSwaggerConf::class.java)
 
     @Bean
     fun adminApi(): Docket {

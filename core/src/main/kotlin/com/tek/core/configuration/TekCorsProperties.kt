@@ -1,9 +1,6 @@
 package com.tek.core.configuration
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.context.annotation.Configuration
+import com.tek.core.util.TekProperty
 
 /**
  * Configuration lookup for [TekCorsFilter].
@@ -11,17 +8,15 @@ import org.springframework.context.annotation.Configuration
  * Default configuration is provided if none is found (development purpose only)
  *
  */
-@Configuration
-@ConfigurationProperties(prefix = "security.cors")
-@EnableConfigurationProperties(SecurityProperties::class)
 class TekCorsProperties {
 
-    var allowedOrigin: String = "http://localhost:4200"
+    var allowedOrigin: TekProperty = "http://localhost:4200"
 
-    var allowedCredentials: String = "true"
+    var allowedCredentials: TekProperty = "true"
 
-    var allowedMethods: Array<String> = arrayOf("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
+    var allowedMethods: Array<TekProperty> = arrayOf("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
 
-    var allowedHeaders: Array<String> =
+    var allowedHeaders: Array<TekProperty> =
         arrayOf("x-requested-with", "authorization", "Content-Type", "Authorization", "credential", "X-XSRF-TOKEN")
 }
+

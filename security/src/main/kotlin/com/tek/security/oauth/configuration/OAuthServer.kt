@@ -6,6 +6,7 @@ import com.tek.core.util.isAnonymous
 import com.tek.core.util.or
 import com.tek.security.oauth.exception.TekOAuth2Exception
 import com.tek.security.service.AuthService
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -39,7 +40,7 @@ class OAuthServer(
     private val clientDetailsProperties: ClientDetailsProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
-    private val log by LoggerDelegate()
+    private val log = LoggerFactory.getLogger(OAuthServer::class.java)
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)

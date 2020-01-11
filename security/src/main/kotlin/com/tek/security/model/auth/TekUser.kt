@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tek.core.util.isDateExpired
 import com.tek.security.audit.UserActivityAudit
 import org.javers.core.metamodel.annotation.DiffIgnore
+import org.javers.core.metamodel.annotation.TypeName
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size
  * Persistable User for Authentication purpose
  */
 @Entity
+@TypeName("users")
 @Table(name = "users")
 class TekUser : UserActivityAudit() {
 
@@ -73,7 +75,7 @@ class TekUser : UserActivityAudit() {
      *
      * Implementations of authorities are tied to Business Logic requirements.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
         name = "users_roles",
         joinColumns = [JoinColumn(name = "user_id")],

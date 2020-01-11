@@ -1,14 +1,17 @@
-package com.tek.security.data
+package com.tek.security.data.runner
 
+import com.tek.core.TekProperties
 import com.tek.core.util.ifNull
 import com.tek.security.TekPasswordEncoder
-import com.tek.security.model.auth.TekUser
+import com.tek.security.data.DataOrder
+import com.tek.security.data.TekSecurityDataRunner
 import com.tek.security.model.auth.Role
+import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.RoleName
 import com.tek.security.repository.RoleRepository
 import com.tek.security.repository.TekUserRepository
-import org.springframework.boot.CommandLineRunner
 import org.springframework.core.annotation.Order
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -18,21 +21,44 @@ import java.util.*
 class TekUserDataRunner(
     private val userRepository: TekUserRepository,
     private val roleRepository: RoleRepository,
-    private val pswEncoder: TekPasswordEncoder
-) : CommandLineRunner {
+    private val pswEncoder: TekPasswordEncoder,
+    properties: TekProperties,
+    environment: Environment
+) : TekSecurityDataRunner(environment, properties) {
 
-    override fun run(vararg args: String?) {
+    override fun runDevelopmentMode() {
 
-        userRepository.findByUsername("admin").ifNull {
+        createUser(
+            username = "admin",
+            password = "admin",
+            email = "admin@gmail.com",
+            roles = roleRepository.findAll().toMutableSet(),
+            enabled = true,
+            pwdExpireAt = GregorianCalendar().apply {
+                this.set(2099, GregorianCalendar.DECEMBER, 31)
+            }.time
+        )
+
+        createUser(
+            username = "user",
+            password = "user",
+            email = "user@gmail.com",
+            roles = mutableSetOf(Role(name = RoleName.USER)),
+            enabled = true,
+            pwdExpireAt = GregorianCalendar().apply {
+                this.set(2099, GregorianCalendar.DECEMBER, 31)
+            }.time
+        )
+    }
+
+    override fun runProductionMode() {
+
+        userRepository.existsByEmailAndUsername(email = "admin@gmail.com", username = "admin").ifNull {
             createUser(
                 username = "admin",
                 password = "Administrator1!*",
                 email = "admin@gmail.com",
-                roles = mutableSetOf(
-                    Role(name = RoleName.ADMIN),
-                    Role(name = RoleName.AUDIT),
-                    Role(name = RoleName.USER)
-                ),
+                roles = roleRepository.findAll().toMutableSet(),
                 enabled = true,
                 pwdExpireAt = GregorianCalendar().apply {
                     this.set(2099, GregorianCalendar.DECEMBER, 31)
@@ -40,7 +66,7 @@ class TekUserDataRunner(
             )
         }
 
-        userRepository.findByUsername("user").ifNull {
+        userRepository.existsByEmailAndUsername(email = "user@gmail.com", username = "user").ifNull {
             createUser(
                 username = "user",
                 password = "User1!*",

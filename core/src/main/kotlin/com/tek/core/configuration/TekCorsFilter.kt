@@ -1,5 +1,6 @@
 package com.tek.core.configuration
 
+import com.tek.core.TekProperties
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -18,12 +19,14 @@ import javax.servlet.http.HttpServletResponse
  * 4) _Access-Control-Allow-Credentials_ must be true if the requesting client sends _withCredentials header_: true
  */
 class TekCorsFilter(
-    private val corsProperties: TekCorsProperties
+    private val properties: TekProperties
 ) : Filter {
 
     override fun init(filterConfig: FilterConfig?) {}
 
     override fun doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain) {
+
+        val corsProperties = properties.cors!!
 
         val request = req as HttpServletRequest
         val response = res as HttpServletResponse

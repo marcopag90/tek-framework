@@ -1,7 +1,7 @@
 package com.tek.security.repository
 
 import com.tek.core.repository.TekRepository
-import com.tek.security.model.Notification
+import com.tek.security.model.business.Notification
 import org.javers.spring.annotation.JaversSpringDataAuditable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

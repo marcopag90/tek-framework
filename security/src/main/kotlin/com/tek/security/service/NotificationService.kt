@@ -1,6 +1,6 @@
 package com.tek.security.service
 
-import com.tek.security.model.Notification
+import com.tek.security.model.business.Notification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

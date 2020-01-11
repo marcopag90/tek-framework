@@ -11,8 +11,8 @@
     </parent>
 
     <groupId>com.tek</groupId>
-    <artifactId>framework</artifactId>
-    <version>1.0.9</version>
+    <artifactId>tek-framework</artifactId>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <name>tek-framework</name>

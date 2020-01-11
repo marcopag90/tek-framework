@@ -1,4 +1,4 @@
-package com.tek.security.data
+package com.tek.security.data.runner
 
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.repository.PrivilegeRepository

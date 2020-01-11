@@ -3,6 +3,7 @@ package com.tek.core.swagger
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.ConditionalOnMissingProperty
 import com.tek.core.util.LoggerDelegate
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.bind.annotation.RestController
@@ -24,7 +25,7 @@ class SwaggerConf(
     private val swaggerApiInfo: SwaggerApiInfo
 ) {
 
-    private val log by LoggerDelegate()
+    private val log = LoggerFactory.getLogger(SwaggerConf::class.java)
 
     @Bean
     fun api(): Docket {

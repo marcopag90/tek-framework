@@ -5,7 +5,7 @@ import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.NOTIFICATION_PATH
-import com.tek.security.model.Notification
+import com.tek.security.model.business.Notification
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.service.NotificationService
 import com.tek.security.util.hasPrivilege

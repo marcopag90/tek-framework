@@ -5,11 +5,11 @@
 
 	<parent>
 		<groupId>com.tek</groupId>
-		<artifactId>framework</artifactId>
-		<version>1.0.9</version>
+		<artifactId>tek-framework</artifactId>
+		<version>1.1.0</version>
 	</parent>
 
-	<artifactId>audit</artifactId>
+	<artifactId>tek-audit</artifactId>
 	<name>tek-audit</name>
 	<description>tek audit module</description>
 
@@ -17,8 +17,8 @@
 		<!-- Framework -->
 		<dependency>
 			<groupId>com.tek</groupId>
-			<artifactId>core</artifactId>
-			<version>1.0.9</version>
+			<artifactId>tek-core</artifactId>
+			<version>1.1.0</version>
 		</dependency>
 		<!--Auditing-->
 		<dependency>

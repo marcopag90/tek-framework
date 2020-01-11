@@ -16,4 +16,6 @@ interface TekUserRepository : TekRepository<TekUser, Long> {
     fun existsByUsername(username: String): Boolean
 
     fun existsByEmail(email: String): Boolean
+
+    fun existsByEmailAndUsername(email: String, username: String): Boolean
 }

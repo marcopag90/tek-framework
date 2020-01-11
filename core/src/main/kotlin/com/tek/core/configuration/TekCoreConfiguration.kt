@@ -1,8 +1,9 @@
-package com.tek.core
+package com.tek.core.configuration
 
 import com.tek.core.SpringProfile.DEVELOPMENT
 import com.tek.core.SpringProfile.PRODUCTION
 import com.tek.core.util.LoggerDelegate
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.ConfigurableEnvironment
 import javax.annotation.PostConstruct
@@ -17,7 +18,7 @@ class TekCoreConfiguration(
     private val env: ConfigurableEnvironment
 ) {
 
-    private val log by LoggerDelegate()
+    private val log = LoggerFactory.getLogger(TekCoreConfiguration::class.java)
 
     @PostConstruct
     fun checkActiveProfile() {
@@ -27,7 +28,7 @@ class TekCoreConfiguration(
             env.setActiveProfiles(DEVELOPMENT)
         } else {
             val activeProfiles = env.activeProfiles
-            log.info("Running with Spring profile(s) : ${activeProfiles.contentToString()}")
+            log.info("Running with Spring profile(s): ${activeProfiles.contentToString()}")
             if (activeProfiles.contains(DEVELOPMENT) && activeProfiles.contains(PRODUCTION)) {
                 log.error("You have misconfigured your application! It should not run with both $DEVELOPMENT and $PRODUCTION profiles at the same time!")
             }

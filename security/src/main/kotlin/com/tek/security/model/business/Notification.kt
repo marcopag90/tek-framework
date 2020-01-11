@@ -1,6 +1,7 @@
-package com.tek.security.model
+package com.tek.security.model.business
 
 import org.javers.core.metamodel.annotation.DiffIgnore
+import org.javers.core.metamodel.annotation.TypeName
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -9,6 +10,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
+@TypeName("notification")
 @Table(name = "notification")
 @EntityListeners(AuditingEntityListener::class)
 class Notification(

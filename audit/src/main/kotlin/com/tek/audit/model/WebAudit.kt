@@ -1,6 +1,7 @@
 package com.tek.audit.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import org.javers.core.metamodel.annotation.TypeName
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -8,6 +9,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
+@TypeName("web_audit")
 @EntityListeners(AuditingEntityListener::class)
 @JsonIgnoreProperties(
     "requested_at", "served_at",

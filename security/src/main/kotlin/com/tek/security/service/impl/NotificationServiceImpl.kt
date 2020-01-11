@@ -6,7 +6,7 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.i18n.SecurityMessageSource
-import com.tek.security.model.Notification
+import com.tek.security.model.business.Notification
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.repository.NotificationRepository
 import com.tek.security.service.AuthService

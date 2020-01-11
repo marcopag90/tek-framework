@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>com.tek</groupId>
-        <artifactId>framework</artifactId>
-        <version>1.0.9</version>
+        <artifactId>tek-framework</artifactId>
+        <version>1.1.0</version>
     </parent>
 
-    <artifactId>security</artifactId>
+    <artifactId>tek-security</artifactId>
     <name>tek-security</name>
     <description>tek security module</description>
 
@@ -17,8 +17,8 @@
         <!-- Framework -->
         <dependency>
             <groupId>com.tek</groupId>
-            <artifactId>audit</artifactId>
-            <version>1.0.9</version>
+            <artifactId>tek-audit</artifactId>
+            <version>1.1.0</version>
         </dependency>
         <!-- Spring security -->
         <dependency>

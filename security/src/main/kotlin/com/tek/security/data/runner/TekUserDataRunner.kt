@@ -2,6 +2,7 @@ package com.tek.security.data.runner
 
 import com.tek.core.TekProperties
 import com.tek.core.util.ifNull
+import com.tek.core.util.isFalse
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.data.DataOrder
 import com.tek.security.data.TekSecurityDataRunner
@@ -53,7 +54,7 @@ class TekUserDataRunner(
 
     override fun runProductionMode() {
 
-        userRepository.existsByEmailAndUsername(email = "admin@gmail.com", username = "admin").ifNull {
+        userRepository.existsByEmailAndUsername(email = "admin@gmail.com", username = "admin").isFalse {
             createUser(
                 username = "admin",
                 password = "Administrator1!*",
@@ -66,7 +67,7 @@ class TekUserDataRunner(
             )
         }
 
-        userRepository.existsByEmailAndUsername(email = "user@gmail.com", username = "user").ifNull {
+        userRepository.existsByEmailAndUsername(email = "user@gmail.com", username = "user").isFalse {
             createUser(
                 username = "user",
                 password = "User1!*",

@@ -26,7 +26,7 @@ class TekCorsFilter(
 
     override fun doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain) {
 
-        val corsProperties = properties.cors!!
+        val corsProperties = properties.cors
 
         val request = req as HttpServletRequest
         val response = res as HttpServletResponse

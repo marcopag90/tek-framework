@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "tek")
 class TekProperties {
-    var cors: TekCorsProperties? = null
-    var runner: TekRunnerProperties? = null
+    val cors: TekCorsProperties = TekCorsProperties()
+    val runner: TekRunnerProperties = TekRunnerProperties()
 }
 
 

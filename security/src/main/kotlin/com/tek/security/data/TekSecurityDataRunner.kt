@@ -18,7 +18,7 @@ abstract class TekSecurityDataRunner(
 
     private val log by LoggerDelegate()
 
-    private val action = properties.runner!!.action
+    private val action = properties.runner.action
 
     abstract fun runDevelopmentMode()
 

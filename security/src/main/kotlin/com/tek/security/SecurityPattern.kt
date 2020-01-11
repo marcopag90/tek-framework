@@ -1,5 +1,7 @@
 package com.tek.security
 
+import com.tek.core.i18n.LOCALE_PATH
+
 /**Class sharing constants among all Spring Security configurations*/
 object SecurityPattern {
 
@@ -17,7 +19,8 @@ object SecurityPattern {
         return arrayOf(
             BASE_PATH,
             REGISTER_PATH,
-            CONTACT_PATH
+            CONTACT_PATH,
+            LOCALE_PATH
         )
     }
 

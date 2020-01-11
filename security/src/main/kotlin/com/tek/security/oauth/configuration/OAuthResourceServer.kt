@@ -60,7 +60,6 @@ class OAuthResourceServer(
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()
             .antMatchers(*swaggerResources()).permitAll()
-            .antMatchers(LOCALE_PATH).permitAll()
             .and()
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, "/**")

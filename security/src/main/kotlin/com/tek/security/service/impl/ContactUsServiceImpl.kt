@@ -27,13 +27,16 @@ class ContactUsServiceImpl(
     @Transactional
     override fun sendContactUsNotification(contactForm: ContactForm): String {
 
-        notificationService.saveNotification(contactForm.email)
-
-        mailService.sendSimpleMessage(
-            to = arrayOf(targetEmailHost),
-            subject = createContactUsSubject(contactForm),
-            text = contactForm.message
-        )
+        try {
+            notificationService.saveNotification(contactForm.email)
+            mailService.sendSimpleMessage(
+                to = arrayOf(targetEmailHost),
+                subject = createContactUsSubject(contactForm),
+                text = contactForm.message
+            )
+        } catch (ex: Exception) {
+            throw ex
+        }
 
         return securityMessageSource.getSecuritySource()
             .getMessage(SecurityMessageSource.messageEmailSent, null, LocaleContextHolder.getLocale())

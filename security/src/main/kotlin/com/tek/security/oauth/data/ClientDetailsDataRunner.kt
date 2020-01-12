@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.stereotype.Component
 
+@Suppress("UNUSED")
 @Component
 @ConditionalOnBean(OAuthWebSecurity::class)
 class ClientDetailsDataRunner(

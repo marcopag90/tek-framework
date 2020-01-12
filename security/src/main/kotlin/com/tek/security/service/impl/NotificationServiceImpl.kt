@@ -36,7 +36,7 @@ class NotificationServiceImpl(
         return notificationRepository.save(Notification(content))
     }
 
-    override fun listNotificationsByPrivilege(pageable: Pageable): Page<Notification> {
+    override fun listNotificationsByPrivilege(pageable: Pageable, isRead: Boolean?): Page<Notification> {
         log.debug("Retrieving current user authentication")
 
         authService.getCurrentUser()?.let { userDetails ->
@@ -45,7 +45,8 @@ class NotificationServiceImpl(
             userDetails.authorities.singleOrNull() { it.authority == PrivilegeName.NOTIFICATION_READ.name }
                 ?: return Page.empty()
 
-            return notificationRepository.findAllByIsRead(pageable, false)
+            isRead?.let { return notificationRepository.findAllByIsRead(pageable, isRead) }
+                ?: return notificationRepository.findAll(pageable)
         }
         return Page.empty()
     }

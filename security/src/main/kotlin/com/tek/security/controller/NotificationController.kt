@@ -34,10 +34,13 @@ class NotificationController(
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")
     @ApiPageable
-    fun read(@ApiIgnore pageable: Pageable): ResponseEntity<TekPageResponse<Notification>> {
+    fun list(
+        @ApiIgnore pageable: Pageable,
+        @RequestParam("isRead", required = false) isRead: Boolean?
+    ): ResponseEntity<TekPageResponse<Notification>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekPageResponse(HttpStatus.OK, notificationService.listNotificationsByPrivilege(pageable))
+            TekPageResponse(HttpStatus.OK, notificationService.listNotificationsByPrivilege(pageable, isRead))
         )
     }
 

@@ -30,6 +30,7 @@ class NotificationController(
 
     val readAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_READ)
     val updateAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_UPDATE)
+    val deleteAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_DELETE)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")
@@ -50,6 +51,15 @@ class NotificationController(
         log.debug("Executing [POST] method")
         return ResponseEntity.ok(
             TekBaseResponse(HttpStatus.OK, notificationService.setNotificationRead(id))
+        )
+    }
+
+    @PreAuthorize("this.deleteAuthorized")
+    @DeleteMapping("/delete/{id}")
+    fun delete(@PathVariable("id") id: Long): ResponseEntity<TekBaseResponse> {
+        log.debug("Executing [DELETE] method")
+        return ResponseEntity.ok(
+            TekBaseResponse(HttpStatus.OK, notificationService.delete(id))
         )
     }
 }

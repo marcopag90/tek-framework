@@ -67,4 +67,22 @@ class NotificationServiceImpl(
             )
         return optional.get().apply { this.isRead = true }.isRead
     }
+
+    @Transactional
+    override fun delete(id: Long): Long {
+
+        log.debug("Accessing $notificationRepository for entity: ${Notification::class.java.name} with id: $id")
+
+        val optional = notificationRepository.findById(id)
+        if (!optional.isPresent)
+            throw TekResourceNotFoundException(
+                data = ServiceExceptionData(
+                    source = coreMessageSource,
+                    message = CoreMessageSource.errorNotFoundResource,
+                    parameters = arrayOf(id.toString())
+                )
+            )
+        notificationRepository.deleteById(id)
+        return id
+    }
 }

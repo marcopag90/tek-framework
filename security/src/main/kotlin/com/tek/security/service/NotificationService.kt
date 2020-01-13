@@ -11,4 +11,6 @@ interface NotificationService {
     fun listNotificationsByPrivilege(pageable: Pageable, isRead: Boolean?): Page<Notification>
 
     fun setNotificationRead(id: Long): Boolean
+
+    fun delete(id: Long): Long
 }

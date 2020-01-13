@@ -25,5 +25,6 @@ enum class PrivilegeName(
     AUDIT_READ("privilege_audit_read"),
 
     NOTIFICATION_READ("privilege_notification_read"),
-    NOTIFICATION_UPDATE("privilege_notification_update")
+    NOTIFICATION_UPDATE("privilege_notification_update"),
+    NOTIFICATION_DELETE("privilege_notification_delete")
 }

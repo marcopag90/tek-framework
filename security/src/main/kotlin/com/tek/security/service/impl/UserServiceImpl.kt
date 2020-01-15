@@ -20,6 +20,7 @@ import com.tek.security.service.AuthService
 import com.tek.security.service.RoleService
 import com.tek.security.service.UserService
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -47,14 +48,14 @@ class UserServiceImpl(
 
         log.debug("Processing user form validation with data: $registerForm")
 
-        authService.isValidPassword(registerForm.password).isFalse {
-            throw TekServiceException(
-                data = ServiceExceptionData(
-                    source = securityMessageSource,
-                    message = SecurityMessageSource.errorNotValidPassword
-                ),
-                httpStatus = HttpStatus.UNPROCESSABLE_ENTITY
+        val message = securityMessageSource.getSecuritySource()
+            .getMessage(
+                SecurityMessageSource.errorNotValidPassword,
+                null,
+                LocaleContextHolder.getLocale()
             )
+        authService.isValidPassword(registerForm.password).isFalse {
+            throw TekValidationException(mutableMapOf(RegisterForm::password.name to message))
         }
 
         userRepository.existsByUsername(registerForm.username).isTrue {

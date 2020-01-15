@@ -12,7 +12,7 @@
 
     <groupId>com.tek</groupId>
     <artifactId>tek-framework</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>pom</packaging>
 
     <name>tek-framework</name>

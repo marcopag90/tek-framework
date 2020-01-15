@@ -53,7 +53,7 @@ class UserServiceImpl(
                     source = securityMessageSource,
                     message = SecurityMessageSource.errorNotValidPassword
                 ),
-                httpStatus = HttpStatus.BAD_REQUEST
+                httpStatus = HttpStatus.UNPROCESSABLE_ENTITY
             )
         }
 

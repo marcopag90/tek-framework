@@ -66,7 +66,7 @@ class TekExceptionHandler(
 
         log.warn(ex.message)
 
-        val httpStatus = HttpStatus.NOT_ACCEPTABLE
+        val httpStatus = HttpStatus.UNPROCESSABLE_ENTITY
 
         return ResponseEntity(
             TekErrorResponse(httpStatus).apply {
@@ -129,7 +129,7 @@ class TekExceptionHandler(
         request: WebRequest
     ): ResponseEntity<TekErrorResponse> {
 
-        val httpStatus = HttpStatus.NOT_ACCEPTABLE
+        val httpStatus = HttpStatus.UNPROCESSABLE_ENTITY
         return ResponseEntity(
             TekErrorResponse(httpStatus).apply {
                 this.errors = ex.errors

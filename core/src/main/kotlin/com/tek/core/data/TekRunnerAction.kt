@@ -4,6 +4,6 @@ import com.tek.core.util.LabelEnum
 
 enum class TekRunnerAction(override val label: String) : LabelEnum {
 
-    CREATE("Execute data data every time"),
+    CREATE("Execute data runner every time"),
     NONE("No action is taken")
 }

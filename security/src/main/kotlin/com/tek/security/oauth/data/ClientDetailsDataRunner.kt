@@ -1,7 +1,7 @@
 package com.tek.security.oauth.data
 
 import com.tek.security.TekPasswordEncoder
-import com.tek.security.oauth.configuration.ClientDetailsProperties
+import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.oauth.configuration.OAuthWebSecurity
 import com.tek.security.oauth.model.ClientDetails
 import com.tek.security.oauth.repository.ClientDetailsRepository
@@ -13,25 +13,26 @@ import org.springframework.stereotype.Component
 @Component
 @ConditionalOnBean(OAuthWebSecurity::class)
 class ClientDetailsDataRunner(
-    private val properties: ClientDetailsProperties,
+    private val properties: TekOAuthProperties,
     private val oAuth2ClientRepository: ClientDetailsRepository,
     private val pswEncoder: TekPasswordEncoder
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
 
-        if (!oAuth2ClientRepository.findById(properties.clientId).isPresent) {
+        if (!oAuth2ClientRepository.findById(properties.client.clientId).isPresent) {
 
             oAuth2ClientRepository.save(ClientDetails().apply {
 
-                this.clientId = properties.clientId
-                this.clientSecret = pswEncoder.bcryptEncoder().encode(properties.clientSecret)
-                this.resourceId = properties.resourceId
-                this.scope = properties.scope
-                this.authorizedGrantTypes = properties.grants
-                this.authorities = properties.authority
-                this.accessTokenValidity = properties.accessTokenValidity.seconds.toInt()
-                this.refreshTokenValidity = properties.refreshTokenValidity.seconds.toInt()
+                this.clientId = properties.client.clientId
+                this.clientSecret =
+                    pswEncoder.bcryptEncoder().encode(properties.client.clientSecret)
+                this.resourceId = properties.client.resourceId
+                this.scope = properties.client.scope
+                this.authorizedGrantTypes = properties.client.grants
+                this.authorities = properties.client.authority
+                this.accessTokenValidity = properties.client.accessTokenValidity?.seconds?.toInt()
+                this.refreshTokenValidity = properties.client.refreshTokenValidity?.seconds?.toInt()
             })
         }
     }

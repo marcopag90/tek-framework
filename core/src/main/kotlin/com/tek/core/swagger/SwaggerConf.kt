@@ -2,7 +2,6 @@ package com.tek.core.swagger
 
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.ConditionalOnMissingProperty
-import com.tek.core.util.LoggerDelegate
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,9 +17,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 /**
  * Configuration for Swagger without security module
  */
+@Suppress("UNUSED")
 @Configuration
 @EnableSwagger2
-@ConditionalOnMissingProperty(value = "security.type")
+@ConditionalOnMissingProperty(value = "tek.security.module.type")
 class SwaggerConf(
     private val swaggerApiInfo: SwaggerApiInfo
 ) {
@@ -67,6 +67,5 @@ class SwaggerApiInfo(
     private fun resolveVersion(): String? {
         return null
     }
-
 }
 

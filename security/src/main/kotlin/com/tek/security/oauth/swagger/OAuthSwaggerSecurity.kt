@@ -2,10 +2,9 @@ package com.tek.security.oauth.swagger
 
 import com.google.common.base.Predicates
 import com.google.common.collect.Lists
-import com.tek.security.oauth.configuration.ClientDetailsProperties
+import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.oauth.configuration.OAuthWebSecurity
 import com.tek.security.oauth.swagger.OAuthSwaggerSecurity.Parameters.SECURITY_SCHEME_NAME
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,21 +17,18 @@ import springfox.documentation.swagger.web.SecurityConfigurationBuilder
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 class OAuthSwaggerSecurity(
-    private val clientDetailsProperties: ClientDetailsProperties
+    private val properties: TekOAuthProperties
 ) {
 
     object Parameters {
         const val SECURITY_SCHEME_NAME = "Spring_OAuth2"
     }
 
-    @Value("\${security.oauth2.accessTokenHost:http://localhost:8080}")
-    lateinit var accessTokenHost: String
-
     @Bean
     fun securityInfo(): SecurityConfiguration =
         SecurityConfigurationBuilder.builder()
-            .clientId(clientDetailsProperties.clientId)
-            .clientSecret(clientDetailsProperties.clientSecret)
+            .clientId(properties.client.clientId)
+            .clientSecret(properties.client.clientSecret)
             .scopeSeparator(" ")
             .useBasicAuthenticationWithAccessCodeGrant(true)
             .build()
@@ -48,10 +44,10 @@ class OAuthSwaggerSecurity(
     @Bean
     fun securityScheme(): SecurityScheme {
 
+        val accessTokenHost = properties.accessTokenHost
         val grantType: List<GrantType> = arrayListOf(
             ResourceOwnerPasswordCredentialsGrant("$accessTokenHost/oauth/token")
         )
-
         return OAuthBuilder()
             .name(SECURITY_SCHEME_NAME)
             .grantTypes(grantType)

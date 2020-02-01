@@ -1,6 +1,6 @@
 package com.tek.security.data.runner
 
-import com.tek.core.TekProperties
+import com.tek.core.TekCoreProperties
 import com.tek.security.data.DataOrder
 import com.tek.security.data.TekSecurityDataRunner
 import com.tek.security.model.auth.Privilege
@@ -19,9 +19,9 @@ import org.springframework.stereotype.Component
 class RoleDataRunner(
     private val roleRepository: RoleRepository,
     private val privilegeRepository: PrivilegeRepository,
-    properties: TekProperties,
+    coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, properties) {
+) : TekSecurityDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
         insertRoles()

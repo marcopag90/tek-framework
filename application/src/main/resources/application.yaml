@@ -49,7 +49,8 @@ spring:
     jpa.properties.hibernate.default_schema: tek
 
     # SMTP
-    # Configurazione: inoltro IMAP, consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
+    # Inoltro IMAP:
+    # consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
     mail:
         host: smtp.gmail.com
         port: 587
@@ -80,28 +81,37 @@ logging:
                 sql.BasicExtractor: DEBUG
 
 security:
-    # basic, oauth2
-    type: oauth2
     # Workaround. Vedi:
     # https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/
     # 2.7.2 Changing the Filter Order
     oauth2:
         resource.filter-order: 3
-        # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
-        # Default: http://localhost:8080
-        accessTokenHost: http://localhost:8080
 
-        # ClientDetailsProperties
-        client:
-            clientId: tekVetrina01
-            clientSecret: Ygsethoh90*
-            resourceId: tekVetrinaShowcase
-            authority: ROLE_CLIENT
-            grants: password,refresh_token,client_credentials
-            scope: read,write
-            accessTokenValidity: 1800
-            refreshTokenValidity: 3600
-
+# Tek Modules Configurations
 tek:
-    # Data Runner Configuration
-    runner.action: CREATE
+    # Tek-Core
+    core.module:
+        # Data Runner Configuration
+        runner.action: CREATE
+        cors:
+            allowedOrigin: http://localhost:4200
+            allowedCredentials: true
+            allowedMethods: GET, POST, PATCH, PUT, DELETE, OPTIONS
+            allowedHeaders: x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN
+    # Tek-Security
+    security.module:
+        # basic, oauth2
+        type: oauth2
+        oauth2:
+            # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
+            accessTokenHost: http://localhost:8080
+            client:
+                clientId: tekClientId
+                clientSecret: tekSecret
+                resourceId: tekResourceId
+                authority: ROLE_CLIENT
+                grants: password, refresh_token, client_credentials
+                scope: read, write
+                accessTokenValidity: 1800
+                refreshTokenValidity: 3600
+

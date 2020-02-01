@@ -1,9 +1,9 @@
 package com.tek.security.oauth.configuration
 
-import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.hasAuthority
 import com.tek.core.util.isAnonymous
 import com.tek.core.util.or
+import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.oauth.exception.TekOAuth2Exception
 import com.tek.security.service.AuthService
 import org.slf4j.LoggerFactory
@@ -37,7 +37,7 @@ class OAuthServer(
     private val context: ApplicationContext,
     private val authenticationManager: AuthenticationManager,
     private val authService: AuthService,
-    private val clientDetailsProperties: ClientDetailsProperties
+    private val properties: TekOAuthProperties
 ) : AuthorizationServerConfigurerAdapter() {
 
     private val log = LoggerFactory.getLogger(OAuthServer::class.java)
@@ -55,9 +55,9 @@ class OAuthServer(
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
-            .tokenKeyAccess(isAnonymous().or(hasAuthority(clientDetailsProperties.authority)))
+            .tokenKeyAccess(isAnonymous().or(hasAuthority(properties.client.authority)))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
-            .checkTokenAccess(hasAuthority(clientDetailsProperties.authority))
+            .checkTokenAccess(hasAuthority(properties.client.authority))
             .passwordEncoder(authService.passwordEncoder())
     }
 

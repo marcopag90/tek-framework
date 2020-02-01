@@ -1,8 +1,8 @@
 package com.tek.security.data
 
 import com.tek.core.SpringProfile
-import com.tek.core.TekProperties
-import com.tek.core.data.TekRunnerAction
+import com.tek.core.TekCoreProperties
+import com.tek.core.TekRunnerAction
 import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.unreachableCode
 import org.springframework.boot.CommandLineRunner
@@ -13,12 +13,12 @@ import org.springframework.core.env.Environment
  */
 abstract class TekSecurityDataRunner(
     private val environment: Environment,
-    properties: TekProperties
+    coreProperties: TekCoreProperties
 ) : CommandLineRunner {
 
     private val log by LoggerDelegate()
 
-    private val action = properties.runner.action
+    private val action = coreProperties.runner.action
 
     abstract fun runDevelopmentMode()
 

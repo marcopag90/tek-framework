@@ -1,7 +1,6 @@
 package com.tek.security.data.runner
 
-import com.tek.core.TekProperties
-import com.tek.core.util.ifNull
+import com.tek.core.TekCoreProperties
 import com.tek.core.util.isFalse
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.data.DataOrder
@@ -23,9 +22,9 @@ class TekUserDataRunner(
     private val userRepository: TekUserRepository,
     private val roleRepository: RoleRepository,
     private val pswEncoder: TekPasswordEncoder,
-    properties: TekProperties,
+    coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, properties) {
+) : TekSecurityDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
 

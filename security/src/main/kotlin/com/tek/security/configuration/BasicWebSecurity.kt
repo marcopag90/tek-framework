@@ -1,7 +1,6 @@
 package com.tek.security.configuration
 
 import com.tek.core.SpringProfile
-import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.TekProperty
 import com.tek.core.util.unreachableCode
 import com.tek.security.SecurityPattern
@@ -19,7 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 
 @Configuration
 @ConditionalOnProperty(
-    prefix = "security",
+    prefix = "tek.security.module",
     name = ["type"],
     havingValue = "basic"
 )

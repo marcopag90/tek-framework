@@ -1,6 +1,6 @@
 package com.tek.security.data.runner
 
-import com.tek.core.TekProperties
+import com.tek.core.TekCoreProperties
 import com.tek.core.util.ifNull
 import com.tek.security.data.DataOrder
 import com.tek.security.data.TekSecurityDataRunner
@@ -20,9 +20,9 @@ class PrivilegeDataRunner(
     private val privilegeRepository: PrivilegeRepository,
     private val userRepository: TekUserRepository,
     private val roleRepository: RoleRepository,
-    properties: TekProperties,
+    coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, properties) {
+) : TekSecurityDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
 

@@ -1,36 +1,43 @@
-package com.tek.security.oauth.configuration
+package com.tek.security.oauth
 
+import com.tek.core.util.TekDurationProperty
+import com.tek.core.util.TekProperty
+import com.tek.security.oauth.configuration.OAuthWebSecurity
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.convert.DurationUnit
 import org.springframework.context.annotation.Configuration
-import java.time.Duration
 import java.time.temporal.ChronoUnit
+import kotlin.properties.Delegates
+
+@Suppress("UNUSED")
+@Configuration
+@ConditionalOnBean(OAuthWebSecurity::class)
+@ConfigurationProperties(prefix = "tek.security.module.oauth2")
+class TekOAuthProperties {
+    val client = ClientDetailsProperties()
+    var accessTokenHost: TekProperty by Delegates.notNull()
+}
 
 /**
  * Configuration lookup for oauth_client_details table.
- *
- * Default configuration is provided if none is found (development purpose only)
  */
-@Configuration
-@ConditionalOnBean(OAuthWebSecurity::class)
-@ConfigurationProperties(prefix = "security.oauth2.client")
 class ClientDetailsProperties {
 
     /**
      * Matching oauth_client_details.client_id to authorize a _tek client_
      */
-    var clientId: String = "tekClientId"
+    var clientId: TekProperty by Delegates.notNull()
 
     /**
      * Matching oauth_client_details.client_secret to authorize access to a resource for a _tek client_ with given _secret_
      */
-    var clientSecret: String = "tekSecret"
+    var clientSecret: TekProperty by Delegates.notNull()
 
     /**
      * Matching oauth_client_details.resource_ids to authorize access to a resource for a _tek client_
      */
-    var resourceId: String = "tekResourceId"
+    var resourceId: TekProperty by Delegates.notNull()
 
     /**
      * Matching oauth_client_details.authorities to let client inquiry the following paths:
@@ -39,27 +46,27 @@ class ClientDetailsProperties {
      *
      * _oauth/token_key_ (if public key is available)
      */
-    var authority: String = "ROLE_CLIENT"
+    var authority: TekProperty by Delegates.notNull()
 
     /**
      * Matching oauth_client_details.authorized_grant_types
      */
-    var grants: String = "password,refresh_token,client_credentials"
+    var grants: TekProperty by Delegates.notNull()
 
     /**
      * Matching oauth_client_details.scope
      */
-    var scope: String = "read,write"
+    var scope: TekProperty by Delegates.notNull()
 
     /**
      * Access Token Validity in _seconds_
      */
     @DurationUnit(ChronoUnit.SECONDS)
-    var accessTokenValidity: Duration = Duration.ofSeconds(300)
+    var accessTokenValidity: TekDurationProperty? = null
 
     /**
      * Refresh Token Validity in _seconds_
      */
     @DurationUnit(ChronoUnit.SECONDS)
-    var refreshTokenValidity: Duration = Duration.ofSeconds(600)
+    var refreshTokenValidity: TekDurationProperty? = null
 }

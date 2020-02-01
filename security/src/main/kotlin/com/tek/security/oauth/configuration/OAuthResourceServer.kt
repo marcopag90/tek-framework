@@ -1,12 +1,12 @@
 package com.tek.security.oauth.configuration
 
 import com.tek.core.SpringProfile
-import com.tek.core.i18n.LOCALE_PATH
 import com.tek.core.util.unreachableCode
 import com.tek.security.SecurityPattern.clientResources
 import com.tek.security.SecurityPattern.nebularResources
 import com.tek.security.SecurityPattern.swaggerResources
 import com.tek.security.SecurityPattern.unauthenticatedPatterns
+import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.oauth.exception.OAuth2AccessDeniedHandler
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
@@ -29,14 +29,14 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 @EnableConfigurationProperties(SecurityProperties::class)
 class OAuthResourceServer(
-    private val clientDetailsProperties: ClientDetailsProperties,
+    private val properties: TekOAuthProperties,
     private val accessDeniedHandler: OAuth2AccessDeniedHandler,
     private val environment: Environment
 ) : ResourceServerConfigurerAdapter() {
 
     override fun configure(resources: ResourceServerSecurityConfigurer) {
         resources
-            .resourceId(clientDetailsProperties.resourceId)
+            .resourceId(properties.client.resourceId)
             .accessDeniedHandler(accessDeniedHandler)
     }
 

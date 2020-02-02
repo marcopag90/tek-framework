@@ -28,7 +28,7 @@ class BasicWebSecurity(
     private val environment: Environment
 ) : WebSecurityConfigurerAdapter() {
 
-    @Value("\${security.type: basic}")
+    @Value("\${tek.security.module.type}")
     private lateinit var securityType: TekProperty
 
     private val log = LoggerFactory.getLogger(BasicWebSecurity::class.java)

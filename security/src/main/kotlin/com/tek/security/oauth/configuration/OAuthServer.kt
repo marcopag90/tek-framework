@@ -1,5 +1,6 @@
 package com.tek.security.oauth.configuration
 
+import com.tek.core.util.TekProperty
 import com.tek.core.util.hasAuthority
 import com.tek.core.util.isAnonymous
 import com.tek.core.util.or
@@ -7,6 +8,7 @@ import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.oauth.exception.TekOAuth2Exception
 import com.tek.security.service.AuthService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -23,6 +25,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import javax.sql.DataSource
+import kotlin.properties.Delegates
 
 /**OAuth2 Authorization Server Configuration
  *
@@ -42,6 +45,9 @@ class OAuthServer(
 
     private val log = LoggerFactory.getLogger(OAuthServer::class.java)
 
+    @Value("\${tek.security.module.type}")
+    private lateinit var securityType: TekProperty
+
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
 
@@ -51,7 +57,7 @@ class OAuthServer(
 
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
 
-        log.info("Security type: ${context.environment.getProperty("security.type")}")
+        log.info("Security type: $securityType")
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token

@@ -25,7 +25,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import javax.sql.DataSource
-import kotlin.properties.Delegates
 
 /**OAuth2 Authorization Server Configuration
  *

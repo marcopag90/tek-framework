@@ -4,7 +4,8 @@ import com.tek.core.TekCoreProperties
 import com.tek.core.util.isFalse
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.data.DataOrder
-import com.tek.security.data.TekSecurityDataRunner
+import com.tek.core.data.TekDataRunner
+import com.tek.core.util.doNothing
 import com.tek.security.model.auth.Role
 import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.RoleName
@@ -24,7 +25,7 @@ class TekUserDataRunner(
     private val pswEncoder: TekPasswordEncoder,
     coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, coreProperties) {
+) : TekDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
 
@@ -51,36 +52,7 @@ class TekUserDataRunner(
         )
     }
 
-    override fun runProductionMode() {
-
-        userRepository.existsByEmailAndUsername(email = "admin@gmail.com", username = "admin").isFalse {
-            createUser(
-                username = "admin",
-                password = "Administrator1!*",
-                email = "admin@gmail.com",
-                roles = roleRepository.findAll().toMutableSet(),
-                enabled = true,
-                pwdExpireAt = GregorianCalendar().apply {
-                    this.set(2099, GregorianCalendar.DECEMBER, 31)
-                }.time
-            )
-        }
-
-        userRepository.existsByEmailAndUsername(email = "user@gmail.com", username = "user").isFalse {
-            createUser(
-                username = "user",
-                password = "User1!*",
-                email = "user@gmail.com",
-                roles = mutableSetOf(
-                    Role(name = RoleName.USER)
-                ),
-                enabled = true,
-                pwdExpireAt = GregorianCalendar().apply {
-                    this.set(2099, GregorianCalendar.DECEMBER, 31)
-                }.time
-            )
-        }
-    }
+    override fun runProductionMode() = doNothing()
 
     private fun createUser(
         username: String,

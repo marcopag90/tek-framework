@@ -51,17 +51,15 @@ class TekCorsProperties {
  * Configuration for Tek Data Runners.
  */
 class TekRunnerProperties {
-    var action: TekRunnerAction? = TekRunnerAction.NONE
+    var action: TekRunnerAction = TekRunnerAction.NONE
 
     override fun toString(): String = """
             action: $action
     """.trimIndent()
 }
 
-enum class TekRunnerAction(override val label: String) : LabelEnum {
-
-    CREATE("Execute data runner every time"),
-    NONE("No action is taken")
+enum class TekRunnerAction {
+    CREATE, NONE
 }
 
 

@@ -1,8 +1,9 @@
 package com.tek.security.data.runner
 
 import com.tek.core.TekCoreProperties
+import com.tek.core.data.TekDataRunner
+import com.tek.core.util.doNothing
 import com.tek.security.data.DataOrder
-import com.tek.security.data.TekSecurityDataRunner
 import com.tek.security.model.auth.Privilege
 import com.tek.security.model.auth.Role
 import com.tek.security.model.enums.PrivilegeName
@@ -21,17 +22,13 @@ class RoleDataRunner(
     private val privilegeRepository: PrivilegeRepository,
     coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, coreProperties) {
+) : TekDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
         insertRoles()
     }
 
-    //TODO controllare versione ruoli uno a uno rispetto alla configurazione ed effettuare gli eventuali merge
-    override fun runProductionMode() {
-        if (roleRepository.count() == 0L)
-            insertRoles()
-    }
+    override fun runProductionMode() = doNothing()
 
     private fun insertRoles() {
 

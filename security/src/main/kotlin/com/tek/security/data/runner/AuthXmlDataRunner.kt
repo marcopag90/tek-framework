@@ -58,8 +58,6 @@ class AuthXmlDataRunner(
 
         log.info("Privileges loaded: [$privilegesList]")
         log.info("Executing database insert...")
-
-
     }
 
     private fun processRoles() {

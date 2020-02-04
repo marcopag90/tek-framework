@@ -1,9 +1,9 @@
 package com.tek.security.data.runner
 
 import com.tek.core.TekCoreProperties
-import com.tek.core.util.ifNull
+import com.tek.core.data.TekDataRunner
+import com.tek.core.util.doNothing
 import com.tek.security.data.DataOrder
-import com.tek.security.data.TekSecurityDataRunner
 import com.tek.security.model.auth.Privilege
 import com.tek.security.model.enums.PrivilegeName
 import com.tek.security.repository.PrivilegeRepository
@@ -22,7 +22,7 @@ class PrivilegeDataRunner(
     private val roleRepository: RoleRepository,
     coreProperties: TekCoreProperties,
     environment: Environment
-) : TekSecurityDataRunner(environment, coreProperties) {
+) : TekDataRunner(environment, coreProperties) {
 
     override fun runDevelopmentMode() {
 
@@ -34,11 +34,5 @@ class PrivilegeDataRunner(
             privilegeRepository.save(Privilege(privilegeName))
     }
 
-    override fun runProductionMode() {
-        for (privilegeName in PrivilegeName.values())
-            privilegeRepository.findByName(privilegeName).ifNull {
-                privilegeRepository.save(Privilege(privilegeName))
-            }
-    }
-
+    override fun runProductionMode() = doNothing()
 }

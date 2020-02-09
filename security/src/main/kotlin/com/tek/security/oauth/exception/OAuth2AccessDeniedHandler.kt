@@ -2,12 +2,11 @@ package com.tek.security.oauth.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tek.core.TekErrorResponse
-import com.tek.core.util.tekTimestamp
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
-import java.util.*
+import java.time.Instant
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -32,7 +31,7 @@ class OAuth2AccessDeniedHandler(
             objectMapper.writeValueAsString(
                 hashMapOf(
                     TekErrorResponse::errors.name to accessDeniedException?.message,
-                    "timestamp" to Date().tekTimestamp(),
+                    "timestamp" to Instant.now(),
                     "status" to HttpStatus.UNAUTHORIZED.value(),
                     "path" to request.servletPath
                 )

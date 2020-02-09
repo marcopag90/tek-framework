@@ -7,7 +7,6 @@ import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
-import com.tek.core.util.addMonthsFromNow
 import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
 import com.tek.security.form.auth.RegisterForm
@@ -26,7 +25,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.time.LocalDate
 import javax.validation.Validator
 
 @Suppress("UNUSED")
@@ -42,6 +41,10 @@ class UserServiceImpl(
 ) : UserService {
 
     private val log by LoggerDelegate()
+
+    companion object {
+        const val REFRESH_PASSWORD_EXPIRATION = 3L
+    }
 
     @Transactional
     override fun register(registerForm: RegisterForm): TekUser {
@@ -99,7 +102,7 @@ class UserServiceImpl(
                     username = registerForm.username
                     password = authService.passwordEncoder().encode(registerForm.password)
                     email = registerForm.email
-                    this.pwdExpireAt = addMonthsFromNow(3)
+                    this.pwdExpireAt = LocalDate.now().plusMonths(REFRESH_PASSWORD_EXPIRATION)
                     this.roles.add(role)
                 }
             )
@@ -235,7 +238,7 @@ class UserServiceImpl(
         }
 
         if (properties.containsKey(TekUser::userExpireAt.name)) {
-            val userExpireAt = properties[TekUser::userExpireAt.name] as Date?
+            val userExpireAt = properties[TekUser::userExpireAt.name] as LocalDate?
             userToUpdate.userExpireAt = userExpireAt
         }
 

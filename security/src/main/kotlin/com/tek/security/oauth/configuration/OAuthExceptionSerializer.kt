@@ -3,9 +3,8 @@ package com.tek.security.oauth.configuration
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.tek.core.util.tekTimestamp
 import com.tek.security.oauth.exception.TekOAuth2Exception
-import java.util.*
+import java.time.Instant
 
 /**
  * JBot Serializer for {@link JBotOAuthException}
@@ -25,7 +24,7 @@ class OAuthExceptionSerializer : StdSerializer<TekOAuth2Exception>(TekOAuth2Exce
         generator.apply {
 
             writeStartObject()
-            writeObjectField("timestamp", Date().tekTimestamp())
+            writeObjectField("timestamp", Instant.now())
             writeNumberField("status", value.httpErrorCode)
             writeObjectField("errors", listOf(value.message))
             value.additionalInformation?.let {

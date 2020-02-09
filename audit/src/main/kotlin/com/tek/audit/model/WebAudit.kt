@@ -5,6 +5,7 @@ import org.javers.core.metamodel.annotation.TypeName
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.Instant
 import java.util.*
 import javax.persistence.*
 
@@ -37,15 +38,13 @@ class WebAudit(
     val initTimeMillis: Long
 ) {
 
-    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(name = "requested_at")
-    var requestedAt: Date? = null
+    var requestedAt: Instant? = null
 
-    @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "served_at")
-    var servedAt: Date? = null
+    var servedAt: Instant? = null
 }
 
 

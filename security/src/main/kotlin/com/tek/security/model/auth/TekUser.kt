@@ -1,11 +1,13 @@
 package com.tek.security.model.auth
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.tek.core.util.isDateExpired
 import com.tek.security.audit.UserActivityAudit
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.TypeName
-import java.util.*
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -47,26 +49,23 @@ class TekUser : UserActivityAudit() {
      * Sets a User expiration date
      */
     @Column(name = "expiration")
-    @Temporal(TemporalType.TIMESTAMP)
-    var userExpireAt: Date? = null
+    var userExpireAt: LocalDate? = null
 
     /**
      * Condition: _REQUIRED_
      *
      * Sets a User password expiration date
      */
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "password_expiration", nullable = false)
-    var pwdExpireAt: Date? = null
+    var pwdExpireAt: LocalDate? = null
 
     /**
      * Condition: _REQUIRED_
      *
      * Sets a User last login date
      */
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login")
-    var lastLogin: Date? = null
+    var lastLogin: Instant? = null
 
     /**
      * Condition: _REQUIRED_
@@ -82,6 +81,13 @@ class TekUser : UserActivityAudit() {
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
     var roles: MutableSet<Role> = mutableSetOf()
+
+
+    /*--------------------------------- Account Management ---------------------------------------*/
+
+    companion object {
+        const val EXPIRATION_MONTHS = 6L
+    }
 
     //TODO decide user registration path (email with confirm activation, credentials etc..) to enable it
     /**
@@ -129,22 +135,25 @@ class TekUser : UserActivityAudit() {
     /**
      * Check if User account has expired
      */
-    fun isAccountExpired(userExpireAt: Date?): Boolean = userExpireAt?.let {
-        userExpireAt < Date()
+    fun isAccountExpired(userExpireAt: LocalDate?): Boolean = userExpireAt?.let {
+        userExpireAt < LocalDate.now()
     } ?: false
 
     /**
      * Check if User account has to become locked
      */
-    fun isAccountLocked(lastLogin: Date?): Boolean = lastLogin?.let {
-        isDateExpired(it, 6)
+    fun isAccountLocked(lastLogin: Instant?): Boolean = lastLogin?.let { it ->
+        val today = LocalDateTime.now()
+        today.minusMonths(EXPIRATION_MONTHS)
+            .isAfter(it.atZone(ZoneId.systemDefault()).toLocalDateTime())
     } ?: false
 
     /**
      * Check if User password has expired
      */
-    fun isCredentialsExpired(passwordExpireAt: Date): Boolean =
-        passwordExpireAt < Date()
+    fun isCredentialsExpired(passwordExpireAt: LocalDate): Boolean =
+        passwordExpireAt < LocalDate.now()
+
 }
 
 

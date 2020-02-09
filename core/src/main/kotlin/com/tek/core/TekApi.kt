@@ -1,9 +1,8 @@
 package com.tek.core
 
-import com.tek.core.util.tekTimestamp
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
-import java.util.*
+import java.time.Instant
 
 /**
  * Extension for [org.springframework.http.ResponseEntity]
@@ -18,7 +17,7 @@ class TekBaseResponse(
         this.result = result
     }
 
-    val timestamp: Date = Date().tekTimestamp()
+    val timestamp: Instant = Instant.now()
     val status: Int = httpStatus.value()
     var result: Any? = null
 }
@@ -37,7 +36,7 @@ class TekResponseEntity<E>(
         this.result = result
     }
 
-    val timestamp: Date = Date().tekTimestamp()
+    val timestamp: Instant = Instant.now()
     val status: Int = httpStatus.value()
     var result: E? = null
 }
@@ -63,7 +62,7 @@ class TekPageResponse<E>(
     )
 
     val result: TekPageResult<E> = TekPageResult(page.content, page.totalElements, page.totalPages)
-    val timestamp: Date = Date().tekTimestamp()
+    val timestamp: Instant = Instant.now()
     val status: Int = httpStatus.value()
 }
 
@@ -76,7 +75,7 @@ class TekErrorResponse(
     httpStatus: HttpStatus
 ) {
 
-    val timestamp: Date = Date().tekTimestamp()
+    val timestamp: Instant = Instant.now()
     val status: Int = httpStatus.value()
     var errors: Map<String, String?> = mutableMapOf()
     var path: String? = null

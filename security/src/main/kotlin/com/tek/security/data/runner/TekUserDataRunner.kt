@@ -1,11 +1,10 @@
 package com.tek.security.data.runner
 
 import com.tek.core.TekCoreProperties
-import com.tek.core.util.isFalse
-import com.tek.security.TekPasswordEncoder
-import com.tek.security.data.DataOrder
 import com.tek.core.data.TekDataRunner
 import com.tek.core.util.doNothing
+import com.tek.security.TekPasswordEncoder
+import com.tek.security.data.DataOrder
 import com.tek.security.model.auth.Role
 import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.RoleName
@@ -14,7 +13,8 @@ import com.tek.security.repository.TekUserRepository
 import org.springframework.core.annotation.Order
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
-import java.util.*
+import java.time.Instant
+import java.time.LocalDate
 
 @Suppress("UNUSED")
 @Order(DataOrder.user)
@@ -35,9 +35,7 @@ class TekUserDataRunner(
             email = "admin@gmail.com",
             roles = roleRepository.findAll().toMutableSet(),
             enabled = true,
-            pwdExpireAt = GregorianCalendar().apply {
-                this.set(2099, GregorianCalendar.DECEMBER, 31)
-            }.time
+            pwdExpireAt = LocalDate.of(2099,12,31)
         )
 
         createUser(
@@ -46,9 +44,7 @@ class TekUserDataRunner(
             email = "user@gmail.com",
             roles = mutableSetOf(Role(name = RoleName.USER)),
             enabled = true,
-            pwdExpireAt = GregorianCalendar().apply {
-                this.set(2099, GregorianCalendar.DECEMBER, 31)
-            }.time
+            pwdExpireAt = LocalDate.of(2099,12,31)
         )
     }
 
@@ -60,9 +56,9 @@ class TekUserDataRunner(
         email: String,
         roles: MutableSet<Role>,
         enabled: Boolean,
-        userExpireAt: Date? = null,
-        pwdExpireAt: Date,
-        lastLogin: Date? = null
+        userExpireAt: LocalDate? = null,
+        pwdExpireAt: LocalDate,
+        lastLogin: Instant? = null
     ): TekUser {
 
         val userRoles = mutableSetOf<Role>()

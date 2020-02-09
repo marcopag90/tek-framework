@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
+import java.time.Instant
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.EntityListeners
@@ -25,11 +26,11 @@ class TimeActivityAudit : Serializable {
     @CreatedDate
     @DiffIgnore
     @Column(name = "created_at")
-    var createdAt: LocalDateTime? = null
+    var createdAt: Instant? = null
 
     @LastModifiedDate
     @DiffIgnore
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime? = null
+    var updatedAt: Instant? = null
 
 }

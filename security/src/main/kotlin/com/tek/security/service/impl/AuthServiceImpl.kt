@@ -3,9 +3,9 @@ package com.tek.security.service.impl
 import com.tek.core.util.isFalse
 import com.tek.security.TekPasswordEncoder
 import com.tek.security.TekUserDetails
-import com.tek.security.model.auth.TekUser
 import com.tek.security.model.auth.Privilege
 import com.tek.security.model.auth.Role
+import com.tek.security.model.auth.TekUser
 import com.tek.security.repository.TekUserRepository
 import com.tek.security.service.AuthService
 import org.springframework.security.core.Authentication
@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.time.Instant
 
 /**
  * Implementation of [AuthService] to get User information and [GrantedAuthority]
@@ -42,7 +42,7 @@ class AuthServiceImpl(
             this.accountExpired = isAccountExpired(this.userExpireAt)
             this.accountLocked = isAccountLocked(this.lastLogin)
             this.credentialsExpired = isCredentialsExpired(this.pwdExpireAt!!)
-            this.accountLocked.isFalse { this.lastLogin = Date() }
+            this.accountLocked.isFalse { this.lastLogin = Instant.now() }
         } ?: throw UsernameNotFoundException("User $username not found!")
 
         return buildUserDetails(user)

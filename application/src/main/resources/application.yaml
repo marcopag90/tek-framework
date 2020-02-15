@@ -21,7 +21,7 @@ spring:
         open-in-view: false
         properties:
             hibernate:
-                #dialect: org.hibernate.dialect.MySQL5Dialect
+                dialect: ${HIB_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
                 current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
                 # Workaround. Vedi:
                 # https://github.com/pgjdbc/pgjdbc/issues/1102
@@ -31,19 +31,15 @@ spring:
         hibernate:
             # Configurazione creazione tabelle Hibernate
             #create, update
-            ddl-auto: update
+            ddl-auto: ${DDL_AUTO:update}
             naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
     # Database PostgreSQL
     datasource:
-        url: jdbc:postgresql://${POSTGRES_HOST:localhost}/tek
-        driverClassName: org.postgresql.Driver
-        username: ${POSTGRES_USER:tek}
-        password: ${POSTGRES_PASSWORD:tek}
-    #        url: jdbc:mysql://${MYSQL_HOST:localhost}/tek
-    #            driverClassName: com.mysql.cj.jdbc.Driver
-    #            username: ${MYSQL_USER:root}
-    #            password: ${MYSQL_ROOT_PASSWORD:tek}
+        url: ${DS_JDBC_URL:jdbc:postgresql://localhost/tek}
+        driverClassName: ${DS_DRIVER_CLASS:org.postgresql.Driver}
+        username: ${DS_USER:tek}
+        password: ${DS_PASSWORD:tek}
 
     # Schema
     jpa.properties.hibernate.default_schema: tek
@@ -64,7 +60,7 @@ spring:
             starttls.enable: true
 
 javers:
-    sqlSchema: audit
+    sqlSchema: ${JAVERS_SCHEMA:audit}
 
 logging:
     level:
@@ -108,9 +104,9 @@ tek:
             # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
             accessTokenHost: http://localhost:8080
             client:
-                clientId: tekClientId
-                clientSecret: tekSecret
-                resourceId: tekResourceId
+                clientId: ${CLIENT_ID:tekClientId}
+                clientSecret: ${CLIENT_SECRET:tekSecret}
+                resourceId: ${RESOURCE_ID:tekResourceId}
                 authority: ROLE_CLIENT
                 grants: password,refresh_token,client_credentials
                 scope: read,write

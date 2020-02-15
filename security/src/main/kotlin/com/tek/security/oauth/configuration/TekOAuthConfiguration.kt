@@ -16,11 +16,5 @@ class TekOAuthConfiguration(
     private val log = LoggerFactory.getLogger(TekOAuthConfiguration::class.java)
 
     override fun checkModuleConfiguration() {
-        checkOAuthProperties()
-    }
-
-    private fun checkOAuthProperties() {
-        log.info("Checking properties from ${TekOAuthProperties::class}...")
-        log.info(properties.toString())
     }
 }

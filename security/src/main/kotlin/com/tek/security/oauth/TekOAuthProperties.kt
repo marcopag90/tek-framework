@@ -17,14 +17,6 @@ import kotlin.properties.Delegates
 class TekOAuthProperties {
     val client = ClientDetailsProperties()
     var accessTokenHost: TekProperty by Delegates.notNull()
-
-    override fun toString(): String = """TekOAuthProperties:
-tek.security.module:
-    client:
-        $client,
-    accessTokenHost: 
-        $accessTokenHost
-    """.trimIndent()
 }
 
 /**
@@ -77,15 +69,4 @@ class ClientDetailsProperties {
      */
     @DurationUnit(ChronoUnit.SECONDS)
     var refreshTokenValidity: TekDurationProperty? = null
-
-    override fun toString(): String = """clientId: $clientId,
-        clientSecret: $clientSecret,
-        resourceId: $resourceId,
-        authority: $authority,
-        grants: $grants,
-        scope: $scope,
-        accessTokenValidity: $accessTokenValidity,
-        refreshTokenValidity: $refreshTokenValidity
-    """.trimIndent()
-
 }

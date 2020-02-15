@@ -98,6 +98,8 @@ tek:
             allowedCredentials: true
             allowedMethods: GET,POST,PATCH,PUT,DELETE,OPTIONS
             allowedHeaders: x-requested-with,authorization,Content-Type,Authorization,credential,X-XSRF-TOKEN
+        locale:
+            type: SESSION
     # Tek-Security
     security.module:
         # basic, oauth2

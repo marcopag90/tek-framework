@@ -32,8 +32,6 @@ class TekCoreConfiguration(
 
     override fun checkModuleConfiguration() {
         checkActiveProfiles()
-        checkTekProperties()
-        checkSwaggerProperties()
     }
 
     private fun checkActiveProfiles() {
@@ -58,15 +56,4 @@ class TekCoreConfiguration(
                 """.trimIndent()
             )
     }
-
-    private fun checkTekProperties() {
-        log.info("Checking properties from ${TekCoreProperties::class}...")
-        log.info(properties.toString())
-    }
-
-    private fun checkSwaggerProperties() {
-        log.info("Checking properties from ${SwaggerApiInfo::class}...")
-        log.info(swaggerProperties.toString())
-    }
-
 }

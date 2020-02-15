@@ -2,10 +2,8 @@ package com.tek.security.oauth.swagger
 
 import com.google.common.base.Predicates
 import com.google.common.collect.Lists
-import com.tek.core.i18n.LOCALE_PATH
 import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
-import com.tek.core.util.LoggerDelegate
 import com.tek.security.SecurityPattern.JAVERS_PATH
 import com.tek.security.SecurityPattern.PRIVILEGE_PATH
 import com.tek.security.SecurityPattern.ROLE_PATH

@@ -1,7 +1,6 @@
 package com.tek.core
 
 import com.tek.core.configuration.TekCorsFilter
-import com.tek.core.util.LabelEnum
 import com.tek.core.util.TekProperty
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
@@ -13,14 +12,7 @@ import kotlin.properties.Delegates
 class TekCoreProperties {
     val cors: TekCorsProperties = TekCorsProperties()
     val runner: TekRunnerProperties = TekRunnerProperties()
-
-    override fun toString(): String = """TekCoreProperties:
-tek.core.module:
-    cors:
-        $cors, 
-    runner:
-        $runner
-""".trimIndent()
+    val locale: TekLocaleProperties = TekLocaleProperties()
 }
 
 
@@ -39,12 +31,6 @@ class TekCorsProperties {
     var allowedMethods: Array<TekProperty> by Delegates.notNull()
 
     var allowedHeaders: Array<TekProperty> by Delegates.notNull()
-
-    override fun toString(): String = """allowedOrigin: $allowedOrigin,
-        allowedCredentials: $allowedCredentials,
-        allowedMethods: ${allowedMethods.toList()},
-        allowedHeaders: ${allowedHeaders.toList()}
-    """.trimIndent()
 }
 
 /**
@@ -52,10 +38,17 @@ class TekCorsProperties {
  */
 class TekRunnerProperties {
     var action: TekRunnerAction = TekRunnerAction.NONE
+}
 
-    override fun toString(): String = """
-            action: $action
-    """.trimIndent()
+class TekLocaleProperties {
+    var type: TekLocaleType by Delegates.notNull()
+}
+
+/**
+ * Configuration for TekLocale management
+ */
+enum class TekLocaleType {
+    SESSION, COOKIE, ACCEPT_HEADER
 }
 
 enum class TekRunnerAction {

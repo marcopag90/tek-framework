@@ -5,7 +5,6 @@ import com.tek.core.util.hasAuthority
 import com.tek.core.util.isAnonymous
 import com.tek.core.util.or
 import com.tek.security.oauth.TekOAuthProperties
-import com.tek.security.oauth.exception.TekOAuth2Exception
 import com.tek.security.service.AuthService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -13,16 +12,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import javax.sql.DataSource
@@ -77,19 +72,9 @@ class OAuthServer(
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
-
         endpoints
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
             .userDetailsService(authService)
-//            .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
-//                if (it is OAuth2Exception) {
-//                    return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(
-//                        TekOAuth2Exception(it.message),
-//                        HttpStatus.BAD_REQUEST
-//                    )
-//                } else
-//                    throw it
-//            })
     }
 }

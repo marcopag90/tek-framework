@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface AccessTokenRepository : JpaRepository<AccessToken, String> {
+
+    fun findByUsername(username: String): AccessToken?
+
 }

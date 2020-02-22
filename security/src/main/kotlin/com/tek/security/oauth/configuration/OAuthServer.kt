@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import javax.sql.DataSource
 
@@ -50,6 +51,15 @@ class OAuthServer(
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
 
+    /**
+     * Token Service to allow management of user token
+     */
+    @Bean
+    fun tokenServices(): DefaultTokenServices = DefaultTokenServices().apply {
+        this.setTokenStore(tokenStore())
+        this.setSupportRefreshToken(true)
+    }
+
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(datasource)
     }
@@ -72,14 +82,14 @@ class OAuthServer(
             .tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
             .userDetailsService(authService)
-            .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
-                if (it is OAuth2Exception) {
-                    return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(
-                        TekOAuth2Exception(it.message),
-                        HttpStatus.BAD_REQUEST
-                    )
-                } else
-                    throw it
-            })
+//            .exceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> {
+//                if (it is OAuth2Exception) {
+//                    return@WebResponseExceptionTranslator ResponseEntity<OAuth2Exception>(
+//                        TekOAuth2Exception(it.message),
+//                        HttpStatus.BAD_REQUEST
+//                    )
+//                } else
+//                    throw it
+//            })
     }
 }

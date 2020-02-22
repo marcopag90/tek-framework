@@ -2,6 +2,9 @@ package com.tek.security.model.auth
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tek.security.audit.UserActivityAudit
+import com.tek.security.model.business.Preferences
+import org.hibernate.annotations.LazyToOne
+import org.hibernate.annotations.LazyToOneOption
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.TypeName
 import java.time.Instant
@@ -13,12 +16,26 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
+const val AUTH_USER = "auth-user"
+
 /**
  * Persistable User for Authentication purpose
  */
 @Entity
 @TypeName("users")
 @Table(name = "users")
+@NamedEntityGraphs(
+    NamedEntityGraph(
+        name = AUTH_USER,
+        attributeNodes = [NamedAttributeNode(value = "roles", subgraph = "roles-privileges")],
+        subgraphs = [
+            NamedSubgraph(
+                name = "roles-privileges",
+                attributeNodes = [NamedAttributeNode(value = "privileges")]
+            )
+        ]
+    )
+)
 class TekUser : UserActivityAudit() {
 
     @Id
@@ -74,7 +91,7 @@ class TekUser : UserActivityAudit() {
      *
      * Implementations of authorities are tied to Business Logic requirements.
      */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
         name = "users_roles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -82,6 +99,11 @@ class TekUser : UserActivityAudit() {
     )
     var roles: MutableSet<Role> = mutableSetOf()
 
+    @OneToOne(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL]
+    )
+    var preferences: Preferences? = null
 
     /*--------------------------------- Account Management ---------------------------------------*/
 

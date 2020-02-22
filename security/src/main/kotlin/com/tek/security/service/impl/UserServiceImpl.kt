@@ -13,6 +13,7 @@ import com.tek.security.form.auth.RegisterForm
 import com.tek.security.i18n.SecurityMessageSource
 import com.tek.security.model.auth.TekUser
 import com.tek.security.model.enums.RoleName
+import com.tek.security.oauth.service.OAuthTokenService
 import com.tek.security.repository.RoleRepository
 import com.tek.security.repository.TekUserRepository
 import com.tek.security.service.AuthService
@@ -37,7 +38,8 @@ class UserServiceImpl(
     private val roleRepository: RoleRepository,
     @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,
-    private val securityMessageSource: SecurityMessageSource
+    private val securityMessageSource: SecurityMessageSource,
+    private val oAuthTokenService: OAuthTokenService
 ) : UserService {
 
     private val log by LoggerDelegate()
@@ -261,6 +263,8 @@ class UserServiceImpl(
             for (role in roles) {
                 userToUpdate.roles.add(roleService.readOne(role))
             }
+            log.info("User roles have changed! Searching for user oauth tokens...")
+            oAuthTokenService.invalidateUserTokens(optional.get().username!!)
         }
 
         val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
@@ -302,6 +306,8 @@ class UserServiceImpl(
                 )
             )
         userRepository.deleteById(id)
+        log.info("User deleted! Deleting user oauth tokens...")
+        oAuthTokenService.invalidateUserTokens(optional.get().username!!)
         return id
     }
 }

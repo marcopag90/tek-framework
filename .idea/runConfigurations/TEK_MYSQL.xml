@@ -18,6 +18,7 @@
       <env name="CLIENT_ID" value="tekVetrina01" />
       <env name="CLIENT_SECRET" value="Ygsethoh90*" />
       <env name="RESOURCE_ID" value="tekVetrinaShowcase" />
+      <env name="DDL_AUTO" value="update" />
     </envs>
     <method v="2">
       <option name="Make" enabled="true" />

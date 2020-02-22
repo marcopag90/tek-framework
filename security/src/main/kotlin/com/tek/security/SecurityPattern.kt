@@ -10,6 +10,7 @@ object SecurityPattern {
     const val ROLE_PATH = "/role"
     const val PRIVILEGE_PATH = "/privilege"
     const val USER_PATH = "/user"
+    const val PREFERENCES_PATH = "/preferences"
     const val JAVERS_PATH = "/javers"
     const val WEBAUDIT_PATH = "/webaudit" //TODO web audit controller
     const val NOTIFICATION_PATH = "/notification"

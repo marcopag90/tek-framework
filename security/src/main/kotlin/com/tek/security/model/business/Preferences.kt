@@ -1,5 +1,6 @@
 package com.tek.security.model.business
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.tek.core.converter.HashMapConverter
 import com.tek.security.model.auth.TekUser
 import javax.persistence.*
@@ -18,5 +19,6 @@ class Preferences {
 
     @OneToOne
     @MapsId
+    @JsonBackReference
     var user: TekUser? = null
 }

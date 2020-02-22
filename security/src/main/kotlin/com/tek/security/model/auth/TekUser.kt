@@ -1,5 +1,6 @@
 package com.tek.security.model.auth
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tek.security.audit.UserActivityAudit
 import com.tek.security.model.business.Preferences
@@ -103,6 +104,7 @@ class TekUser : UserActivityAudit() {
         mappedBy = "user",
         cascade = [CascadeType.ALL]
     )
+    @JsonManagedReference
     var preferences: Preferences? = null
 
     /*--------------------------------- Account Management ---------------------------------------*/

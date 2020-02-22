@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TEK_MYSQL" type="JetRunConfigurationType" factoryName="Kotlin">
+    <module name="application" />
+    <option name="VM_PARAMETERS" value="" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.tek.TekApplicationKt" />
+    <option name="WORKING_DIRECTORY" value="" />
+    <envs>
+      <env name="DS_JDBC_URL" value="jdbc:mysql://localhost/tek?useSSL=false" />
+      <env name="DS_DRIVER_CLASS" value="com.mysql.jdbc.Driver" />
+      <env name="DS_USER" value="root" />
+      <env name="DS_PASSWORD" value="tek" />
+      <env name="HIB_DIALECT" value="org.hibernate.dialect.MySQL5Dialect" />
+      <env name="JAVERS_SCHEMA" value="tek" />
+      <env name="CLIENT_ID" value="tekVetrina01" />
+      <env name="CLIENT_SECRET" value="Ygsethoh90*" />
+      <env name="RESOURCE_ID" value="tekVetrinaShowcase" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,6 +1,6 @@
 package com.tek.security.common
 
-object SecurityDataOrder {
+object TekSecurityDataOrder {
 
     const val privilege = 10
     const val role = 20

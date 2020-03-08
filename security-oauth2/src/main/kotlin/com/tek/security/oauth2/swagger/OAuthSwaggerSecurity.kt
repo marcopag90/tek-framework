@@ -14,7 +14,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.swagger.web.SecurityConfiguration
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 class OAuthSwaggerSecurity(

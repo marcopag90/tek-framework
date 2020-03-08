@@ -4,7 +4,7 @@ import com.tek.core.TekBaseResponse
 import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.SecurityPattern.NOTIFICATION_PATH
+import com.tek.security.common.TekSecurityPattern.NOTIFICATION_PATH
 import com.tek.security.common.model.TekNotification
 import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.service.TekNotificationService
@@ -18,11 +18,11 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Api(tags = ["Notification"])
 @RestController
 @RequestMapping(path = [NOTIFICATION_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
-class NotificationController(
+class TekNotificationController(
     private val tekNotificationService: TekNotificationService
 ) {
 

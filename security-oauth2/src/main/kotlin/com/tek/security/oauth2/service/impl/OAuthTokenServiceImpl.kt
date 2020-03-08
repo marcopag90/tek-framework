@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.provider.token.ConsumerTokenServices
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore
 import org.springframework.stereotype.Service
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class OAuthTokenServiceImpl(
     private val tekAuthService: TekAuthService,

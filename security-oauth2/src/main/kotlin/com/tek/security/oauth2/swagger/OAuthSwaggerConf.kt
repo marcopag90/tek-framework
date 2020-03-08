@@ -4,11 +4,11 @@ import com.google.common.base.Predicates
 import com.google.common.collect.Lists
 import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
-import com.tek.security.common.SecurityPattern.JAVERS_PATH
-import com.tek.security.common.SecurityPattern.PRIVILEGE_PATH
-import com.tek.security.common.SecurityPattern.ROLE_PATH
-import com.tek.security.common.SecurityPattern.USER_PATH
-import com.tek.security.common.SecurityPattern.WEBAUDIT_PATH
+import com.tek.security.common.TekSecurityPattern.JAVERS_PATH
+import com.tek.security.common.TekSecurityPattern.PRIVILEGE_PATH
+import com.tek.security.common.TekSecurityPattern.ROLE_PATH
+import com.tek.security.common.TekSecurityPattern.USER_PATH
+import com.tek.security.common.TekSecurityPattern.WEBAUDIT_PATH
 import com.tek.security.common.util.antPath
 import com.tek.security.oauth2.configuration.OAuthWebSecurity
 import org.slf4j.LoggerFactory
@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 /**
  * Configuration for Swagger with OAuth2 Authentication
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @EnableSwagger2
 @ConditionalOnBean(OAuthWebSecurity::class)

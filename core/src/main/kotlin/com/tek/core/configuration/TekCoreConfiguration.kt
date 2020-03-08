@@ -20,9 +20,8 @@ const val TEK_CORE_CONFIGURATION = "TekCoreConfiguration"
  * - Active Profile at runtime, after enviroment has been injected
  * - [TekCoreProperties] properties
  * - [SwaggerApiInfo] properties
- *
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration(TEK_CORE_CONFIGURATION)
 class TekCoreConfiguration(
     private val properties: TekCoreProperties,

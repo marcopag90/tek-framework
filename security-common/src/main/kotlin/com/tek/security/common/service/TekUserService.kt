@@ -12,7 +12,7 @@ interface TekUserService {
 
     fun list(pageable: Pageable, predicate: Predicate?): Page<TekUser>
 
-    fun readOne(id: Long): TekUser
+    fun findById(id: Long): TekUser
 
     fun update(properties: Map<String, Any?>, id: Long): TekUser
 

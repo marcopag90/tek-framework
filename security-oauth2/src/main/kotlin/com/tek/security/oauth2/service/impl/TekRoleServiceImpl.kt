@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class TekRoleServiceImpl(
     private val tekRoleRepository: TekRoleRepository,

@@ -24,7 +24,7 @@ import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class JaversQServiceImpl(
     private val javers: Javers,

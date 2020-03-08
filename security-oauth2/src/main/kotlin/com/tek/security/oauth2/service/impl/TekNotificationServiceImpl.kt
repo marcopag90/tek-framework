@@ -17,7 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class TekNotificationServiceImpl(
     private val tekNotificationRepository: TekNotificationRepository,

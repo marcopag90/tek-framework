@@ -7,7 +7,7 @@ import com.tek.audit.javers.JaversQPage
 import com.tek.audit.service.JaversQService
 import com.tek.core.TekResponseEntity
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.SecurityPattern.JAVERS_PATH
+import com.tek.security.common.TekSecurityPattern.JAVERS_PATH
 import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.util.hasPrivilege
 import io.swagger.annotations.Api
@@ -18,7 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Api(tags = ["Entity Audit"])
 @RestController
 @RequestMapping(path = [JAVERS_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])

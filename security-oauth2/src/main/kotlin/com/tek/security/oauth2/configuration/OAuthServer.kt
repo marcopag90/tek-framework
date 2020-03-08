@@ -26,7 +26,7 @@ import javax.sql.DataSource
  *
  * to manage clientId and token validation
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @EnableAuthorizationServer

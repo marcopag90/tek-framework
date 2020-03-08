@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 const val LOCALE_PATH = "/locale"
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Api(tags = ["Locale"])
 @RestController
 @RequestMapping(path = [LOCALE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])

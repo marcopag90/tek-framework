@@ -1,4 +1,4 @@
-package com.tek.security.oauth.exception
+package com.tek.security.oauth2.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tek.core.TekErrorResponse
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
- * Component providing a custom message handling for [com.tek.security.oauth.configuration.OAuthResourceServer]
+ * Component providing a custom message handling for [com.tek.security.oauth2.configuration.OAuthResourceServer]
  */
 @Component
 class OAuth2AccessDeniedHandler(

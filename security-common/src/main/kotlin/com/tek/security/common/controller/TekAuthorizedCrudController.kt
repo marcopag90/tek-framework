@@ -17,7 +17,7 @@ import javax.validation.Valid
 /**
  * Extension of [TekCrudController] to provide security at method access level
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<Entity, ID, Form>, Form : AbstractForm>(
     crudService: Service
 ) : TekCrudController<Entity, ID, Service, Form>(crudService) {

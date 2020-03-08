@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import kotlin.properties.Delegates
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @ConfigurationProperties(prefix = "tek.core.module")
 class TekCoreProperties {

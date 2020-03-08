@@ -5,7 +5,7 @@ import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.SecurityPattern.USER_PATH
+import com.tek.security.common.TekSecurityPattern.USER_PATH
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.service.TekUserService
@@ -20,11 +20,11 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Api(tags = ["Users"])
 @RestController
 @RequestMapping(path = [USER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
-class UserController(
+class TekUserController(
     private val tekUserService: TekUserService
 ) {
 
@@ -53,7 +53,7 @@ class UserController(
     fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, tekUserService.readOne(id))
+            TekResponseEntity(HttpStatus.OK, tekUserService.findById(id))
         )
     }
 

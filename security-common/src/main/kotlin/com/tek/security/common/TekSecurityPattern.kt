@@ -3,7 +3,7 @@ package com.tek.security.common
 import com.tek.core.i18n.LOCALE_PATH
 
 /**Class sharing constants among all Spring Security configurations*/
-object SecurityPattern {
+object TekSecurityPattern {
 
     const val BASE_PATH = "/"
     const val REGISTER_PATH = "/register"

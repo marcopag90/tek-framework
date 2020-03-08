@@ -31,7 +31,7 @@ class JsonTypeConverter(
      * @request type expected type
      * @return the converted object
      */
-    @Suppress("UNUSED")
+    @Suppress("unused")
     fun <T> convert(value: Int, type: Class<T>): T {
         return doConvert(value, type)
     }

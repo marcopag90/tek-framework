@@ -2,12 +2,12 @@ package com.tek.security.oauth2.configuration
 
 import com.tek.core.SpringProfile
 import com.tek.core.util.unreachableCode
-import com.tek.security.common.SecurityPattern.clientResources
-import com.tek.security.common.SecurityPattern.nebularResources
-import com.tek.security.common.SecurityPattern.swaggerResources
-import com.tek.security.common.SecurityPattern.unauthenticatedPatterns
-import com.tek.security.oauth.exception.OAuth2AccessDeniedHandler
+import com.tek.security.common.TekSecurityPattern.clientResources
+import com.tek.security.common.TekSecurityPattern.nebularResources
+import com.tek.security.common.TekSecurityPattern.swaggerResources
+import com.tek.security.common.TekSecurityPattern.unauthenticatedPatterns
 import com.tek.security.oauth2.TekOAuthProperties
+import com.tek.security.oauth2.exception.OAuth2AccessDeniedHandler
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  *
  * to manage access to server resources
  */
+@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @EnableResourceServer

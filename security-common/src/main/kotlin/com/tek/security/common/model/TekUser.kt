@@ -22,17 +22,16 @@ const val TEK_USER_FULL = "TekUser.full"
 @Entity
 @TypeName("users")
 @Table(name = "users")
-@NamedEntityGraphs(
-    NamedEntityGraph(
-        name = TEK_USER_FULL,
-        attributeNodes = [NamedAttributeNode(value = "roles", subgraph = "roles-privileges")],
-        subgraphs = [
-            NamedSubgraph(
-                name = "roles-privileges",
-                attributeNodes = [NamedAttributeNode(value = "privileges")]
-            )
-        ]
-    )
+@NamedEntityGraph(
+    name = TEK_USER_FULL,
+    includeAllAttributes = true,
+    attributeNodes = [NamedAttributeNode(value = "roles", subgraph = "roles.privileges")],
+    subgraphs = [
+        NamedSubgraph(
+            name = "roles.privileges",
+            attributeNodes = [NamedAttributeNode(value = "privileges")]
+        )
+    ]
 )
 class TekUser : UserActivityAudit() {
 
@@ -55,8 +54,6 @@ class TekUser : UserActivityAudit() {
     @field:NotBlank
     @Column(name = "email", unique = true, nullable = false)
     var email: String? = null
-
-    //TODO Check from REST service if user activity and javers works (all crud operations)
 
     /**
      * Condition: _OPTIONAL_

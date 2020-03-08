@@ -2,30 +2,27 @@ package com.tek.security.oauth2.data
 
 import com.tek.core.TekCoreProperties
 import com.tek.core.data.TekDataRunner
-import com.tek.core.util.doNothing
-import com.tek.security.common.SecurityDataOrder
 import com.tek.security.common.TekPasswordEncoder
+import com.tek.security.common.TekSecurityDataOrder
 import com.tek.security.common.model.TekRole
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.model.enums.RoleName
 import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.repository.TekUserRepository
 import org.springframework.core.annotation.Order
-import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDate
 
-@Suppress("UNUSED")
-@Order(SecurityDataOrder.user)
+@Suppress("unused")
+@Order(TekSecurityDataOrder.user)
 @Component
-class TekUserDataRunner(
+class OAuthUserDataRunner(
     private val userRepository: TekUserRepository,
     private val tekRoleRepository: TekRoleRepository,
     private val pswEncoder: TekPasswordEncoder,
-    coreProperties: TekCoreProperties,
-    environment: Environment
-) : TekDataRunner(environment, coreProperties) {
+    coreProperties: TekCoreProperties
+) : TekDataRunner<OAuthUserDataRunner>(coreProperties, OAuthUserDataRunner::class.java) {
 
     override fun runDevelopmentMode() {
 
@@ -47,8 +44,6 @@ class TekUserDataRunner(
             pwdExpireAt = LocalDate.of(2099, 12, 31)
         )
     }
-
-    override fun runProductionMode() = doNothing()
 
     private fun createUser(
         username: String,

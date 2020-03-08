@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 import java.time.temporal.ChronoUnit
 import kotlin.properties.Delegates
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @ConfigurationProperties(prefix = "tek.security.module.oauth2")

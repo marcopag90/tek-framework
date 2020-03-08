@@ -6,7 +6,7 @@ import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.util.ClassUtils
 import javax.annotation.PostConstruct
 
-@Suppress("UNUSED")
+@Suppress("unused")
 abstract class TekModuleConfiguration<Configuration>(
     private val configuration: Class<Configuration>
 ) {

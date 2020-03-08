@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 /**
  * Configuration for Swagger without security module
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @EnableSwagger2
 @ConditionalOnMissingProperty(value = "tek.security.module.type")

@@ -8,7 +8,7 @@ import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 /**

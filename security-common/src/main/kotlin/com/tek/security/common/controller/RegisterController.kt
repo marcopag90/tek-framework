@@ -1,7 +1,7 @@
 package com.tek.security.common.controller
 
 import com.tek.core.TekBaseResponse
-import com.tek.security.common.SecurityPattern
+import com.tek.security.common.TekSecurityPattern
 import com.tek.security.common.form.RegisterForm
 import com.tek.security.common.service.TekUserService
 import io.swagger.annotations.Api
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Api(tags = ["Register"])
 @RestController
-@RequestMapping(path = [SecurityPattern.REGISTER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(path = [TekSecurityPattern.REGISTER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class RegisterController(
     private val tekUserService: TekUserService
 ) {

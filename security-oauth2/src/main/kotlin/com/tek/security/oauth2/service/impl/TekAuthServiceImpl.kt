@@ -22,7 +22,7 @@ import java.time.Instant
 /**
  * Implementation of [TekAuthService] to get User information and [GrantedAuthority]
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class TekAuthServiceImpl(
     private val userRepository: TekUserRepository,

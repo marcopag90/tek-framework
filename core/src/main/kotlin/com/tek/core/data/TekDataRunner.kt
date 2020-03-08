@@ -5,19 +5,21 @@ import com.tek.core.TekCoreProperties
 import com.tek.core.TekRunnerAction
 import com.tek.core.util.LabelEnum
 import com.tek.core.util.LoggerDelegate
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.env.Environment
 import javax.naming.ConfigurationException
 
 /**
  * Tek implementation of [CommandLineRunner].
- *
- * Extend this class if you need to provide a custom behaviour for a production environment.
  */
-abstract class TekDataRunner(
-    private val environment: Environment,
-    coreProperties: TekCoreProperties
+abstract class TekDataRunner<Runner>(
+    coreProperties: TekCoreProperties,
+    private val runner: Class<Runner>
 ) : CommandLineRunner {
+
+    @Autowired
+    lateinit var environment: Environment
 
     private enum class Profile(override val label: String) : LabelEnum {
         DEVELOPMENT(SpringProfile.DEVELOPMENT),
@@ -29,30 +31,34 @@ abstract class TekDataRunner(
     private val action = coreProperties.runner.action
 
     override fun run(vararg args: String?) {
-
         environment.activeProfiles.map { profile ->
             when (profile) {
                 SpringProfile.DEVELOPMENT -> logAndAct(Profile.DEVELOPMENT)
                 SpringProfile.PRODUCTION -> logAndAct(Profile.PRODUCTION)
-                else -> ConfigurationException("There must be a profile: ${SpringProfile.DEVELOPMENT} or ${SpringProfile.PRODUCTION} active to execute this data runner!")
+                else -> ConfigurationException(
+                    """
+                        There must be a profile ${SpringProfile.DEVELOPMENT} or ${SpringProfile.PRODUCTION} active
+                        to execute [${runner.simpleName}]!
+                    """.trimIndent()
+                )
             }
         }
     }
 
     private fun logAndAct(profile: Profile) {
-        log.info("Executing data runner with profile: [${profile.name}] and action: [$action]")
+        log.info("Executing [${runner.simpleName}] with profile: [${profile.name}] and action: [$action]")
         return when (action) {
             TekRunnerAction.CREATE -> when (profile) {
                 Profile.DEVELOPMENT -> runDevelopmentMode()
                 Profile.PRODUCTION -> runProductionMode()
             }
-            TekRunnerAction.NONE -> log.info("${TekRunnerAction.NONE.name} found. Skipping $this!")
+            TekRunnerAction.NONE -> log.info("Skipping [${runner.simpleName}]!")
         }
     }
 
     abstract fun runDevelopmentMode()
 
     protected open fun runProductionMode() {
-        log.info("No com.tek.security.oauth2.configuration provided for ${Profile.PRODUCTION.name}. Skipping $this!")
+        log.info("No configuration provided for profile [${Profile.PRODUCTION}]. Skipping ${runner.simpleName}!")
     }
 }

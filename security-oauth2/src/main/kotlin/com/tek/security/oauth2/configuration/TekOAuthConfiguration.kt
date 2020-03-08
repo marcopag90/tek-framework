@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.DependsOn
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Configuration
 @DependsOn(TEK_CORE_CONFIGURATION)
 @ConditionalOnBean(TekCoreConfiguration::class)

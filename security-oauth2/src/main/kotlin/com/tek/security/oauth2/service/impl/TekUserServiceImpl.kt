@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import javax.validation.Validator
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class TekUserServiceImpl(
     private val tekAuthService: TekAuthService,
@@ -124,7 +124,7 @@ class TekUserServiceImpl(
         } ?: return userRepository.findAll(pageable)
     }
 
-    override fun readOne(id: Long): TekUser {
+    override fun findById(id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
 
         val optional = userRepository.findById(id)
@@ -139,8 +139,7 @@ class TekUserServiceImpl(
         return optional.get()
     }
 
-    //TODO check if there's a parameter not matching TekUser model
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("unchecked_cast")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")

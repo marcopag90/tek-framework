@@ -7,7 +7,7 @@ import com.tek.security.common.service.TekPreferenceService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Suppress("UNUSED")
+@Suppress("unused")
 @Service
 class TekPreferenceServiceImpl(
     private val userRepository: TekUserRepository,

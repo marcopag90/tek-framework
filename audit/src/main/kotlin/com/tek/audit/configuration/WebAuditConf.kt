@@ -29,8 +29,6 @@ class AuditWebConfig(
 
 /**
  * Component to intercept GET requests for auditing purpose
- * @author PaganM
- *
  */
 @Component
 class AuditInterceptor(

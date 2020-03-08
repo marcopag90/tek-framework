@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable
  * 3) Cloud Service
  * 4) etc...
  */
-interface ICrudService<Entity, ID, DTO> {
+interface ICrudService<Entity, ID, Form> {
 
     fun list(pageable: Pageable, predicate: Predicate?): Page<Entity>
 
@@ -21,7 +21,7 @@ interface ICrudService<Entity, ID, DTO> {
 
     fun update(properties: Map<String, Any?>, id: ID): Entity
 
-    fun update(dto: DTO, id: ID): Entity
+    fun update(form: Form, id: ID): Entity
 
     fun delete(id: ID): ID
 }

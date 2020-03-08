@@ -10,7 +10,9 @@ import org.springframework.core.env.Environment
 import javax.naming.ConfigurationException
 
 /**
- * Tek implementation of [CommandLineRunner]
+ * Tek implementation of [CommandLineRunner].
+ *
+ * Extend this class if you need to provide a custom behaviour for a production environment.
  */
 abstract class TekDataRunner(
     private val environment: Environment,
@@ -44,11 +46,13 @@ abstract class TekDataRunner(
                 Profile.DEVELOPMENT -> runDevelopmentMode()
                 Profile.PRODUCTION -> runProductionMode()
             }
-            TekRunnerAction.NONE -> log.info("Skipping data runner!")
+            TekRunnerAction.NONE -> log.info("${TekRunnerAction.NONE.name} found. Skipping $this!")
         }
     }
 
     abstract fun runDevelopmentMode()
 
-    abstract fun runProductionMode()
+    protected open fun runProductionMode() {
+        log.info("No configuration provided for ${Profile.PRODUCTION.name}. Skipping $this!")
+    }
 }

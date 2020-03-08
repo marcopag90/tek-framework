@@ -24,7 +24,6 @@ class AuditResponseBodyAdviceAdapter(
         returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>
     ): Boolean = true
 
-
     override fun beforeBodyWrite(
         body: Any?,
         returnType: MethodParameter,
@@ -52,7 +51,6 @@ class AuditRequestBodyAdviceAdapter(
         targetType: Type,
         converterType: Class<out HttpMessageConverter<*>>
     ): Boolean = true
-
 
     override fun afterBodyRead(
         body: Any,

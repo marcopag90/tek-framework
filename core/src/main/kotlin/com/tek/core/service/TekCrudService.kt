@@ -5,7 +5,7 @@ import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
-import com.tek.core.form.AbstractDTO
+import com.tek.core.form.AbstractForm
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.repository.TekRepository
 import com.tek.core.util.LoggerDelegate
@@ -19,7 +19,7 @@ import javax.validation.Validator
 /**
  * Service to provide bean validations and access to [TekRepository] to execute _CRUD_ operations over a given [Entity].
  */
-abstract class TekCrudService<Entity, ID, Repository : TekRepository<Entity, ID>, DTO : AbstractDTO>(
+abstract class TekCrudService<Entity, ID, Repository : TekRepository<Entity, ID>, DTO : AbstractForm>(
     protected open val entityClass: Class<Entity>,
     protected open val repository: Repository,
     protected open val validator: Validator,
@@ -94,7 +94,7 @@ abstract class TekCrudService<Entity, ID, Repository : TekRepository<Entity, ID>
         return repository.save(instance)
     }
 
-    override fun update(dto: DTO, id: ID): Entity {
+    override fun update(form: DTO, id: ID): Entity {
         log.debug("Accessing $repository for entity: $entityClass with id:$id")
 
         val optional = repository.findById(id)
@@ -108,8 +108,8 @@ abstract class TekCrudService<Entity, ID, Repository : TekRepository<Entity, ID>
             )
         val entityToUpdate = optional.get()
 
-        log.debug("Filling properties:$dto in class instance:$entityToUpdate")
-        BeanUtils.copyProperties(entityToUpdate, dto)
+        log.debug("Filling properties:$form in class instance:$entityToUpdate")
+        BeanUtils.copyProperties(entityToUpdate, form)
         log.debug("Properties successfully loaded in class instance.")
 
         return repository.save(entityToUpdate)

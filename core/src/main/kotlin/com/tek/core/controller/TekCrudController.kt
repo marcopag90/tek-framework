@@ -3,7 +3,7 @@ package com.tek.core.controller
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.core.form.AbstractDTO
+import com.tek.core.form.AbstractForm
 import com.tek.core.service.ICrudService
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
@@ -21,9 +21,9 @@ import javax.validation.Valid
  * 2) provide a [org.springframework.stereotype.Service] extending [com.tek.core.service.TekCrudService]
  * 3) extend the [TekCrudController] in a [org.springframework.web.bind.annotation.RestController] for the given entity
  */
-abstract class TekCrudController<Entity, ID, Service : ICrudService<Entity, ID, DTO>, DTO : AbstractDTO>(
+abstract class TekCrudController<Entity, ID, Service : ICrudService<Entity, ID, Form>, Form : AbstractForm>(
     protected open val crudService: Service
-) : ICrudController<Entity, ID, DTO> {
+) : ICrudController<Entity, ID, Form> {
 
     protected val log by LoggerDelegate()
 
@@ -68,10 +68,10 @@ abstract class TekCrudController<Entity, ID, Service : ICrudService<Entity, ID, 
      * Function to execute a _PUT_ request for the given [Entity] via [ICrudService].
      */
     @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+    override fun update(@RequestBody @Valid form: Form, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
         log.debug("Executing [PUT] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, crudService.update(dto, id))
+            TekResponseEntity(HttpStatus.OK, crudService.update(form, id))
         )
     }
 

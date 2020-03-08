@@ -5,6 +5,13 @@ import org.slf4j.LoggerFactory
 import java.lang.Exception
 import javax.persistence.AttributeConverter
 
+/**
+ * Hashmap String Type Conversion.
+ *
+ *
+ * This implementation converts a string representation of a map in a database (like plain JSON objects)
+ * to a more friendly user HashMap java type.
+ */
 class HashMapConverter : AttributeConverter<HashMap<String, Any>, String> {
 
     companion object {

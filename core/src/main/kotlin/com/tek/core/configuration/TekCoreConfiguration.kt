@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.ConfigurableEnvironment
 import javax.naming.ConfigurationException
 
+const val TEK_CORE_CONFIGURATION = "TekCoreConfiguration"
+
 /**
  * Core Module Configuration to check
  *
@@ -21,12 +23,11 @@ import javax.naming.ConfigurationException
  *
  */
 @Suppress("UNUSED")
-@Configuration
+@Configuration(TEK_CORE_CONFIGURATION)
 class TekCoreConfiguration(
-    environment: ConfigurableEnvironment,
     private val properties: TekCoreProperties,
     private val swaggerProperties: SwaggerApiInfoProperties
-) : TekModuleConfiguration(environment) {
+) : TekModuleConfiguration<TekCoreConfiguration>(TekCoreConfiguration::class.java) {
 
     private val log = LoggerFactory.getLogger(TekCoreConfiguration::class.java)
 

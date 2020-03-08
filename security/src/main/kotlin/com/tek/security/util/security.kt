@@ -11,4 +11,8 @@ fun hasPrivilege(privilegeName: PrivilegeName): Boolean {
     }
 }
 
+fun hasAuthority(authority: String): String = "hasAuthority('$authority')"
+
+fun isAnonymous(): String = "isAnonymous()"
+
 fun String.antPath() = "$this/**"

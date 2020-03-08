@@ -4,7 +4,7 @@ import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.controller.TekCrudController
-import com.tek.core.form.AbstractDTO
+import com.tek.core.form.AbstractForm
 import com.tek.core.service.ICrudService
 import com.tek.core.swagger.ApiPageable
 import org.springframework.data.domain.Pageable
@@ -18,9 +18,9 @@ import javax.validation.Valid
  * Extension of [TekCrudController] to provide security at method access level
  */
 @Suppress("UNUSED")
-abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<Entity, ID, DTO>, DTO : AbstractDTO>(
+abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<Entity, ID, Form>, Form : AbstractForm>(
     crudService: Service
-) : TekCrudController<Entity, ID, Service, DTO>(crudService) {
+) : TekCrudController<Entity, ID, Service, Form>(crudService) {
 
     @PreAuthorize("this.createAuthorized")
     @GetMapping("/list")
@@ -43,8 +43,8 @@ abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<En
 
     @PreAuthorize("this.updateAuthorized")
     @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid dto: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
-        return super.update(dto, id)
+    override fun update(@RequestBody @Valid form: Form, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+        return super.update(form, id)
     }
 
     @PreAuthorize("this.deleteAuthorized")

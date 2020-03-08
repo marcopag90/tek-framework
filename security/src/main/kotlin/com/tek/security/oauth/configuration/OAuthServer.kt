@@ -1,11 +1,11 @@
 package com.tek.security.oauth.configuration
 
 import com.tek.core.util.TekProperty
-import com.tek.core.util.hasAuthority
-import com.tek.core.util.isAnonymous
 import com.tek.core.util.or
 import com.tek.security.oauth.TekOAuthProperties
 import com.tek.security.service.AuthService
+import com.tek.security.util.hasAuthority
+import com.tek.security.util.isAnonymous
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean

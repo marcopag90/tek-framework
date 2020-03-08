@@ -20,10 +20,6 @@ annotation class ConditionalOnMissingProperty(
     }
 }
 
-fun hasAuthority(authority: String): String = "hasAuthority('$authority')"
-
-fun isAnonymous(): String = "isAnonymous()"
-
 /**
  * Extension function to concat a logical OR condition on the called object, with the given _parameter_
  */

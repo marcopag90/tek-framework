@@ -53,6 +53,6 @@ abstract class TekDataRunner(
     abstract fun runDevelopmentMode()
 
     protected open fun runProductionMode() {
-        log.info("No configuration provided for ${Profile.PRODUCTION.name}. Skipping $this!")
+        log.info("No com.tek.security.oauth2.configuration provided for ${Profile.PRODUCTION.name}. Skipping $this!")
     }
 }

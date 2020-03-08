@@ -19,7 +19,7 @@ class TekCoreProperties {
 /**
  * Configuration lookup for [TekCorsFilter].
  *
- * Default configuration is provided if none is found (development purpose only)
+ * Default com.tek.security.oauth2.configuration is provided if none is found (development purpose only)
  *
  */
 class TekCorsProperties {

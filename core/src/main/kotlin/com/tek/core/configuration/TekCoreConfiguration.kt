@@ -41,7 +41,7 @@ class TekCoreConfiguration(
                 """
                 Spring active profile NOT FOUND!
                 Evaluate the property [profiles.active: <some-profile>] in your application.yaml/properties file.
-                If the property is evaluated, check your classpath configuration or Maven pom.xml (if you are using resource filtering)
+                If the property is evaluated, check your classpath com.tek.security.oauth2.configuration or Maven pom.xml (if you are using resource filtering)
                 and try to re-build your project or run Maven with the following goals: clean, compile.
             """.trimIndent()
             )

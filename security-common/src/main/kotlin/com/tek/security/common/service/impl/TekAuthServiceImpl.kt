@@ -1,4 +1,4 @@
-package com.tek.security.oauth2.service.impl
+package com.tek.security.common.service.impl
 
 import com.tek.core.util.isFalse
 import com.tek.security.common.TekPasswordEncoder
@@ -14,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -24,12 +23,13 @@ import java.time.Instant
  */
 @Suppress("unused")
 @Service
-class OAuthServiceImpl(
+class TekAuthServiceImpl(
     private val userRepository: TekUserRepository,
     private val pswEncoder: TekPasswordEncoder
 ) : TekAuthService {
 
-    private val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
+    private val passwordRegex =
+        Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
 
@@ -49,12 +49,13 @@ class OAuthServiceImpl(
     }
 
     override fun getCurrentUser(): TekUserDetails? =
-        when (val auth: Authentication? = getAuthentication()) {
-            is OAuth2Authentication -> auth.principal as TekUserDetails?
-            else -> null
-        }
+        getAuthentication()?.principal as? TekUserDetails
 
-    override fun checkPasswordConstraints(username: String, email: String, password: String): Pair<Boolean, String?> {
+    override fun checkPasswordConstraints(
+        username: String,
+        email: String,
+        password: String
+    ): Pair<Boolean, String?> {
 
         if (password == username)
             return Pair(false, username)

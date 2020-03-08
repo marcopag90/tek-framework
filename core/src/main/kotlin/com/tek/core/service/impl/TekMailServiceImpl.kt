@@ -1,7 +1,7 @@
-package com.tek.security.oauth2.service.impl
+package com.tek.core.service.impl
 
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.service.TekMailService
+import com.tek.core.service.TekMailService
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service

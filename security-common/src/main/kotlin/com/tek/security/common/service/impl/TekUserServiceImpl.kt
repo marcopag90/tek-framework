@@ -1,4 +1,4 @@
-package com.tek.security.oauth2.service.impl
+package com.tek.security.common.service.impl
 
 import com.querydsl.core.types.Predicate
 import com.tek.core.exception.ServiceExceptionData

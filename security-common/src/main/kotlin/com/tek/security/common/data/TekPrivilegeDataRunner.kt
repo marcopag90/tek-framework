@@ -1,4 +1,4 @@
-package com.tek.security.oauth2.data
+package com.tek.security.common.data
 
 import com.tek.core.TekCoreProperties
 import com.tek.core.data.TekDataRunner
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component
 @Suppress("unused")
 @Order(TekSecurityDataOrder.privilege)
 @Component
-class OAuthPrivilegeDataRunner(
+class TekPrivilegeDataRunner(
     private val tekPrivilegeRepository: TekPrivilegeRepository,
     private val userRepository: TekUserRepository,
     private val tekRoleRepository: TekRoleRepository,
     coreProperties: TekCoreProperties
-) : TekDataRunner<OAuthPrivilegeDataRunner>(coreProperties, OAuthPrivilegeDataRunner::class.java) {
+) : TekDataRunner<TekPrivilegeDataRunner>(coreProperties, TekPrivilegeDataRunner::class.java) {
 
     override fun runDevelopmentMode() {
 

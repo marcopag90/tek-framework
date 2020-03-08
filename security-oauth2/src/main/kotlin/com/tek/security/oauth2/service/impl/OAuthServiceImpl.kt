@@ -24,7 +24,7 @@ import java.time.Instant
  */
 @Suppress("unused")
 @Service
-class TekAuthServiceImpl(
+class OAuthServiceImpl(
     private val userRepository: TekUserRepository,
     private val pswEncoder: TekPasswordEncoder
 ) : TekAuthService {

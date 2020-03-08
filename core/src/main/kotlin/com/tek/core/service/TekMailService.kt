@@ -1,4 +1,4 @@
-package com.tek.security.common.service
+package com.tek.core.service
 
 interface TekMailService {
 

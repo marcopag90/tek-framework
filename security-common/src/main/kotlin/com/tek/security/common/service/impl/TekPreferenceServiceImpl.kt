@@ -1,4 +1,4 @@
-package com.tek.security.oauth2.service.impl
+package com.tek.security.common.service.impl
 
 import com.tek.security.common.model.TekPreference
 import com.tek.security.common.repository.TekPreferencesRepository

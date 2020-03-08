@@ -1,4 +1,4 @@
-package com.tek.security.oauth2.data
+package com.tek.security.common.data
 
 import com.tek.core.TekCoreProperties
 import com.tek.core.data.TekDataRunner
@@ -17,12 +17,12 @@ import java.time.LocalDate
 @Suppress("unused")
 @Order(TekSecurityDataOrder.user)
 @Component
-class OAuthUserDataRunner(
+class TekUserDataRunner(
     private val userRepository: TekUserRepository,
     private val tekRoleRepository: TekRoleRepository,
     private val pswEncoder: TekPasswordEncoder,
     coreProperties: TekCoreProperties
-) : TekDataRunner<OAuthUserDataRunner>(coreProperties, OAuthUserDataRunner::class.java) {
+) : TekDataRunner<TekUserDataRunner>(coreProperties, TekUserDataRunner::class.java) {
 
     override fun runDevelopmentMode() {
 

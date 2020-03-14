@@ -49,19 +49,13 @@ class TekProfileDataRunner(
                         }
                     }
                 ))
-                ProfileName.USER -> tekProfileRepository.save(ProfileName.USER.createRole(
-                    mutableSetOf<TekRole>().apply {
-                        tekRoleRepository.findByName(RoleName.MENU)?.let {
-                            this.add(it)
-                        }
-                    }
-                ))
+                ProfileName.USER -> tekProfileRepository.save(
+                    ProfileName.USER.createRole(mutableSetOf())
+                )
             }
         }
     }
 
-    private fun ProfileName.createRole(tekPrivileges: MutableSet<TekRole>): TekProfile =
-        TekProfile(this.name).apply {
-            this.roles = tekPrivileges
-        }
+    private fun ProfileName.createRole(roles: MutableSet<TekRole>): TekProfile =
+        TekProfile(this.name).apply { this.roles = roles }
 }

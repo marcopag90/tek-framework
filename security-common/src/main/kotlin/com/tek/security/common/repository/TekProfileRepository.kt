@@ -1,7 +1,7 @@
 package com.tek.security.common.repository
 
 import com.querydsl.core.types.Predicate
-import com.tek.core.repository.TekRepository
+import com.tek.core.repository.TekEntityRepository
 import com.tek.security.common.model.TEK_PROFILE_FULL
 import com.tek.security.common.model.TekProfile
 import org.javers.spring.annotation.JaversSpringDataAuditable
@@ -11,7 +11,7 @@ import java.util.*
 
 @Repository
 @JaversSpringDataAuditable
-interface TekProfileRepository : TekRepository<TekProfile, Long> {
+interface TekProfileRepository : TekEntityRepository<TekProfile, Long> {
 
     @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
     fun findByName(name: String): Optional<TekProfile>

@@ -8,4 +8,5 @@ import org.springframework.data.repository.NoRepositoryBean
  * JBot Repository for common _CRUD_ operations
  */
 @NoRepositoryBean
-interface TekRepository<Entity, ID> : JpaRepository<Entity, ID>, QuerydslPredicateExecutor<Entity>
+interface TekEntityRepository<Entity, ID> : JpaRepository<Entity, ID>,
+    QuerydslPredicateExecutor<Entity>

@@ -6,7 +6,7 @@ import com.tek.core.TekPageResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 
-interface ICrudController<Entity, ID, Form> {
+interface ICrudEntityController<Entity, ID, Form> {
 
     fun list(pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<Entity>>
 
@@ -16,5 +16,5 @@ interface ICrudController<Entity, ID, Form> {
 
     fun update(form: Form, id: ID): ResponseEntity<TekResponseEntity<Entity>>
 
-    fun delete(id: ID): ResponseEntity<TekResponseEntity<ID>>
+    fun delete(id: ID): ResponseEntity<TekResponseEntity<Unit>>
 }

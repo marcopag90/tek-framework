@@ -52,7 +52,7 @@ class TekEntityManager(
         }.name)
 
     fun getTekRepository(entityName: String): Class<out JpaRepository<*, *>> {
-        log.debug("Trying to load ${TekRepository::class.java} for entity: $entityName")
+        log.debug("Trying to load ${TekEntityRepository::class.java} for entity: $entityName")
         return (repositories.getRepositoryFor(getEntity(entityName)!!.javaType).get() as JpaRepository<*, *>)::class.java
     }
 

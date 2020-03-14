@@ -33,7 +33,7 @@ class TekProfileController(
 
     private val log by LoggerDelegate()
 
-    val readAuthorized get() = hasRole(RoleName.ROLE_READ)
+    val readAuthorized get() = hasRole(RoleName.PROFILE_READ)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")

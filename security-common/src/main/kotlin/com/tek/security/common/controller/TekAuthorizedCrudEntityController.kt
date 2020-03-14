@@ -3,9 +3,9 @@ package com.tek.security.common.controller
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.core.controller.TekCrudController
+import com.tek.core.controller.TekCrudEntityController
 import com.tek.core.form.AbstractForm
-import com.tek.core.service.ICrudService
+import com.tek.core.service.ICrudEntityService
 import com.tek.core.swagger.ApiPageable
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -15,12 +15,12 @@ import springfox.documentation.annotations.ApiIgnore
 import javax.validation.Valid
 
 /**
- * Extension of [TekCrudController] to provide security at method access level
+ * Extension of [TekCrudEntityController] to provide security at method access level
  */
 @Suppress("unused")
-abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<Entity, ID, Form>, Form : AbstractForm>(
+abstract class TekAuthorizedCrudEntityController<Entity, ID, Service : ICrudEntityService<Entity, ID, Form>, Form : AbstractForm>(
     crudService: Service
-) : TekCrudController<Entity, ID, Service, Form>(crudService) {
+) : TekCrudEntityController<Entity, ID, Service, Form>(crudService) {
 
     @PreAuthorize("this.createAuthorized")
     @GetMapping("/list")
@@ -49,7 +49,7 @@ abstract class TekAuthorizedCrudController<Entity, ID, Service : ICrudService<En
 
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
-    override fun delete(id: ID): ResponseEntity<TekResponseEntity<ID>> {
+    override fun delete(id: ID): ResponseEntity<TekResponseEntity<Unit>> {
         return super.delete(id)
     }
 

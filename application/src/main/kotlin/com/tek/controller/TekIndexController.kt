@@ -1,4 +1,4 @@
-package com.tek.security.common.controller
+package com.tek.controller
 
 import com.tek.security.common.TekSecurityPattern.BASE_PATH
 import org.springframework.stereotype.Controller

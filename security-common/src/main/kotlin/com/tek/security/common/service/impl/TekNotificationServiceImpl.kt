@@ -6,8 +6,8 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.i18n.SecurityMessageSource
+import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekNotification
-import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.repository.TekNotificationRepository
 import com.tek.security.common.service.TekAuthService
 import com.tek.security.common.service.TekNotificationService
@@ -20,8 +20,8 @@ import javax.transaction.Transactional
 @Suppress("unused")
 @Service
 class TekNotificationServiceImpl(
-    private val tekNotificationRepository: TekNotificationRepository,
-    private val tekAuthService: TekAuthService,
+    private val notificationRepository: TekNotificationRepository,
+    private val authService: TekAuthService,
     private val coreMessageSource: CoreMessageSource,
     private val securityMessageSource: SecurityMessageSource,
     private val objectMapper: ObjectMapper,
@@ -32,8 +32,8 @@ class TekNotificationServiceImpl(
 
     @Transactional
     override fun saveNotification(content: String): TekNotification {
-        log.debug("Accessing $tekNotificationRepository for entity: ${TekNotification::class.java.name} with content: $content")
-        return tekNotificationRepository.save(TekNotification(content))
+        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with content: $content")
+        return notificationRepository.save(TekNotification(content))
     }
 
     override fun listNotificationsByPrivilege(
@@ -41,25 +41,22 @@ class TekNotificationServiceImpl(
         isRead: Boolean?
     ): Page<TekNotification> {
         log.debug("Retrieving current user authentication")
-
-        tekAuthService.getCurrentUser()?.let { userDetails ->
+        authService.getCurrentUser()?.let { userDetails ->
             log.debug("User found: ${userDetails.username}")
 
-            userDetails.authorities.singleOrNull() { it.authority == PrivilegeName.NOTIFICATION_READ.name }
+            userDetails.authorities.singleOrNull() { it.authority == RoleName.NOTIFICATION_READ.name }
                 ?: return Page.empty()
 
-            isRead?.let { return tekNotificationRepository.findAllByIsRead(pageable, isRead) }
-                ?: return tekNotificationRepository.findAll(pageable)
+            isRead?.let { return notificationRepository.findAllByIsRead(pageable, isRead) }
+                ?: return notificationRepository.findAll(pageable)
         }
         return Page.empty()
     }
 
     @Transactional
     override fun setNotificationRead(id: Long): Boolean {
-
-        log.debug("Accessing $tekNotificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
-
-        val optional = tekNotificationRepository.findById(id)
+        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
+        val optional = notificationRepository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -73,10 +70,8 @@ class TekNotificationServiceImpl(
 
     @Transactional
     override fun delete(id: Long): Long {
-
-        log.debug("Accessing $tekNotificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
-
-        val optional = tekNotificationRepository.findById(id)
+        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
+        val optional = notificationRepository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -85,7 +80,7 @@ class TekNotificationServiceImpl(
                     parameters = arrayOf(id.toString())
                 )
             )
-        tekNotificationRepository.deleteById(id)
+        notificationRepository.deleteById(id)
         return id
     }
 }

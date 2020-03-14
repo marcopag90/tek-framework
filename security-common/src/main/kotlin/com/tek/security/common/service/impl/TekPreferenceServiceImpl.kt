@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TekPreferenceServiceImpl(
     private val userRepository: TekUserRepository,
-    private val tekPreferencesRepository: TekPreferencesRepository
+    private val preferenceRepository: TekPreferencesRepository
 ) : TekPreferenceService {
 
     override fun getUserPreferences(userId: Long): MutableMap<String, Any>? =
@@ -23,15 +23,15 @@ class TekPreferenceServiceImpl(
         preferences: MutableMap<String, Any>
     ): MutableMap<String, Any> {
 
-        val userPreferences = tekPreferencesRepository.findByUserId(userId)
+        val userPreferences = preferenceRepository.findByUserId(userId)
 
         return if (userPreferences.isPresent) {
             for (p in preferences) {
                 userPreferences.get().jsonPreferences[p.key] = p.value
             }
-            tekPreferencesRepository.save(userPreferences.get()).jsonPreferences
+            preferenceRepository.save(userPreferences.get()).jsonPreferences
         } else {
-            tekPreferencesRepository.save(TekPreference().apply {
+            preferenceRepository.save(TekPreference().apply {
                 this.user = userRepository.findById(userId).get()
                 this.jsonPreferences = preferences
             }).jsonPreferences

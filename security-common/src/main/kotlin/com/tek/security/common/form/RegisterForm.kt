@@ -15,5 +15,9 @@ data class RegisterForm(
 
     @field:NotBlank
     @field:Email
-    val email: String
+    val email: String,
+
+    @field:NotBlank
+    @field:Size(min = 1, max = 10)
+    val profileName: String
 )

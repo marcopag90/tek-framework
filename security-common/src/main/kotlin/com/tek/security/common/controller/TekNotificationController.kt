@@ -5,10 +5,10 @@ import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.TekSecurityPattern.NOTIFICATION_PATH
+import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekNotification
-import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.service.TekNotificationService
-import com.tek.security.common.util.hasPrivilege
+import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -28,9 +28,9 @@ class TekNotificationController(
 
     private val log by LoggerDelegate()
 
-    val readAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_READ)
-    val updateAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_UPDATE)
-    val deleteAuthorized get() = hasPrivilege(PrivilegeName.NOTIFICATION_DELETE)
+    val readAuthorized get() = hasRole(RoleName.NOTIFICATION_READ)
+    val updateAuthorized get() = hasRole(RoleName.NOTIFICATION_UPDATE)
+    val deleteAuthorized get() = hasRole(RoleName.NOTIFICATION_DELETE)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")

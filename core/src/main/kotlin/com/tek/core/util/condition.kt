@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Condition
 import org.springframework.context.annotation.ConditionContext
 import org.springframework.context.annotation.Conditional
 import org.springframework.core.type.AnnotatedTypeMetadata
+import java.util.*
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
@@ -13,7 +14,8 @@ annotation class ConditionalOnMissingProperty(
 ) {
     class OnNullProperty : Condition {
         override fun matches(context: ConditionContext, metadata: AnnotatedTypeMetadata): Boolean {
-            val attributes = metadata.getAnnotationAttributes(ConditionalOnMissingProperty::class.java.name)!!
+            val attributes =
+                metadata.getAnnotationAttributes(ConditionalOnMissingProperty::class.java.name)!!
             val value: String? = context.environment.getProperty(attributes["value"] as String)
             return (value == null)
         }
@@ -50,6 +52,12 @@ infix fun Boolean.isTrue(block: () -> Unit) {
 infix fun Any?.ifNull(block: () -> Unit) {
     if (this == null) block()
 }
+
+/**
+ * Shorthand to convert an Optional to a nullable type.
+ */
+fun <T> Optional<T>.orNull(): T? = orElse(null)
+
 
 /**
  * Infix operator analogous to Kotlin's `takeIf` extension function

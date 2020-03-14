@@ -6,10 +6,10 @@ import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.TekSecurityPattern.USER_PATH
+import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekUser
-import com.tek.security.common.model.enums.PrivilegeName
 import com.tek.security.common.service.TekUserService
-import com.tek.security.common.util.hasPrivilege
+import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
@@ -30,13 +30,13 @@ class TekUserController(
 
     private val log by LoggerDelegate()
 
-    val createAuthorized get() = hasPrivilege(PrivilegeName.USER_CREATE)
+    val createAuthorized get() = hasRole(RoleName.USER_CREATE)
 
-    val readAuthorized get() = hasPrivilege(PrivilegeName.USER_READ)
+    val readAuthorized get() = hasRole(RoleName.USER_READ)
 
-    val updateAuthorized get() = hasPrivilege(PrivilegeName.USER_UPDATE)
+    val updateAuthorized get() = hasRole(RoleName.USER_UPDATE)
 
-    val deleteAuthorized get() = hasPrivilege(PrivilegeName.USER_DELETE)
+    val deleteAuthorized get() = hasRole(RoleName.USER_DELETE)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")

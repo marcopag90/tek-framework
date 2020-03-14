@@ -5,8 +5,8 @@ import com.google.common.collect.Lists
 import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.security.common.TekSecurityPattern.JAVERS_PATH
-import com.tek.security.common.TekSecurityPattern.PRIVILEGE_PATH
 import com.tek.security.common.TekSecurityPattern.ROLE_PATH
+import com.tek.security.common.TekSecurityPattern.PROFILE_PATH
 import com.tek.security.common.TekSecurityPattern.USER_PATH
 import com.tek.security.common.TekSecurityPattern.WEBAUDIT_PATH
 import com.tek.security.common.util.antPath
@@ -50,8 +50,8 @@ class OAuthSwaggerConf(
             .apis(RequestHandlerSelectors.withClassAnnotation(RestController::class.java))
             .paths(
                 Predicates.or(
+                    PathSelectors.ant(PROFILE_PATH.antPath()),
                     PathSelectors.ant(ROLE_PATH.antPath()),
-                    PathSelectors.ant(PRIVILEGE_PATH.antPath()),
                     PathSelectors.ant(USER_PATH.antPath())
                 )
             )
@@ -95,8 +95,8 @@ class OAuthSwaggerConf(
             .apis(RequestHandlerSelectors.withClassAnnotation(RestController::class.java))
             .paths(
                 Predicates.and(
+                    Predicates.not(PathSelectors.ant(PROFILE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(ROLE_PATH.antPath())),
-                    Predicates.not(PathSelectors.ant(PRIVILEGE_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(USER_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(JAVERS_PATH.antPath())),
                     Predicates.not(PathSelectors.ant(WEBAUDIT_PATH.antPath()))

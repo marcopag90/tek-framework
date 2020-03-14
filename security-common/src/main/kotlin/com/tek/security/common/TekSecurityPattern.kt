@@ -7,8 +7,8 @@ object TekSecurityPattern {
 
     const val BASE_PATH = "/"
     const val REGISTER_PATH = "/register"
+    const val PROFILE_PATH = "/profile"
     const val ROLE_PATH = "/role"
-    const val PRIVILEGE_PATH = "/privilege"
     const val USER_PATH = "/user"
     const val PREFERENCES_PATH = "/preferences"
     const val JAVERS_PATH = "/javers"

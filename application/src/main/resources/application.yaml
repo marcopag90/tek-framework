@@ -88,7 +88,7 @@ tek:
     # Tek-Core
     core.module:
         # Data Runner Configuration
-        runner.action: CREATE
+        runner.action: ${RUNNER_ACTION:CREATE}
         cors:
             allowedOrigin: http://localhost:4200
             allowedCredentials: true

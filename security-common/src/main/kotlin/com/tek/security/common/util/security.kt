@@ -1,11 +1,11 @@
 package com.tek.security.common.util
 
-import com.tek.security.common.model.enums.PrivilegeName
+import com.tek.security.common.model.RoleName
 import org.springframework.security.core.context.SecurityContextHolder
 
-fun hasPrivilege(privilegeName: PrivilegeName): Boolean {
+fun hasRole(roleName: RoleName): Boolean {
     val authentication = SecurityContextHolder.getContext().authentication
-    return when (authentication.authorities.find { it.authority == privilegeName.name }) {
+    return when (authentication.authorities.find { it.authority == roleName.name }) {
         null -> false
         else -> true
     }

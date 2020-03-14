@@ -3,8 +3,8 @@ package com.tek.security.common.service.impl
 import com.tek.core.util.isFalse
 import com.tek.security.common.TekPasswordEncoder
 import com.tek.security.common.TekUserDetails
-import com.tek.security.common.model.TekPrivilege
 import com.tek.security.common.model.TekRole
+import com.tek.security.common.model.TekProfile
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
@@ -76,14 +76,14 @@ class TekAuthServiceImpl(
         accountNonExpired = !user.accountExpired,
         credentialsNonExpired = !user.credentialsExpired,
         accountNonLocked = !user.accountLocked,
-        authorities = user.roles.getAuthorities()
+        authorities = user.profiles.getAuthorities()
     )
 
-    fun MutableSet<TekRole>.getAuthorities(): Set<GrantedAuthority> {
+    fun MutableSet<TekProfile>.getAuthorities(): Set<GrantedAuthority> {
 
-        val privileges = mutableSetOf<TekPrivilege>()
+        val privileges = mutableSetOf<TekRole>()
         for (role in this)
-            for (privilege in role.privileges)
+            for (privilege in role.roles)
                 privileges.add(privilege)
 
         return privileges.map { privilege -> SimpleGrantedAuthority(privilege.name.name) }.toSet()

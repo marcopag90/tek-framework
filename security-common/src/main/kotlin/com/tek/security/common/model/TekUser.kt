@@ -25,11 +25,11 @@ const val TEK_USER_FULL = "TekUser.full"
 @NamedEntityGraph(
     name = TEK_USER_FULL,
     includeAllAttributes = true,
-    attributeNodes = [NamedAttributeNode(value = "roles", subgraph = "roles.privileges")],
+    attributeNodes = [NamedAttributeNode(value = "profiles", subgraph = "profiles.roles")],
     subgraphs = [
         NamedSubgraph(
-            name = "roles.privileges",
-            attributeNodes = [NamedAttributeNode(value = "privileges")]
+            name = "profiles.roles",
+            attributeNodes = [NamedAttributeNode(value = "roles")]
         )
     ]
 )
@@ -88,11 +88,11 @@ class TekUser : UserActivityAudit() {
      */
     @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
-        name = "users_roles",
+        name = "users_profiles",
         joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "role_id")]
+        inverseJoinColumns = [JoinColumn(name = "profile_id")]
     )
-    var roles: MutableSet<TekRole> = mutableSetOf()
+    var profiles: MutableSet<TekProfile> = mutableSetOf()
 
     @OneToOne(
         mappedBy = "user",

@@ -19,6 +19,7 @@
       <env name="CLIENT_SECRET" value="Ygsethoh90*" />
       <env name="RESOURCE_ID" value="tekVetrinaShowcase" />
       <env name="DDL_AUTO" value="update" />
+      <env name="RUNNER_ACTION" value="NONE" />
     </envs>
     <method v="2">
       <option name="Make" enabled="true" />

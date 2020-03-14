@@ -5,10 +5,10 @@ import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.ROLE_PATH
+import com.tek.security.common.TekSecurityPattern.PROFILE_PATH
 import com.tek.security.common.model.RoleName
-import com.tek.security.common.model.TekRole
-import com.tek.security.common.service.TekRoleService
+import com.tek.security.common.model.TekProfile
+import com.tek.security.common.service.TekProfileService
 import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
 
 @Suppress("unused")
-@Api(tags = ["Roles"])
+@Api(tags = ["Profiles"])
 @RestController
-@RequestMapping(path = [ROLE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
-class TekRoleController(
-    private val roleService: TekRoleService
+@RequestMapping(path = [PROFILE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
+class TekProfileController(
+    private val profileService: TekProfileService
 ) {
 
     private val log by LoggerDelegate()
@@ -38,19 +38,28 @@ class TekRoleController(
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")
     @ApiPageable
-    fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<TekRole>> {
+    fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<TekProfile>> {
         log.debug("Executing [GET] method")
-        return ResponseEntity.ok(
-            TekPageResponse(HttpStatus.OK, roleService.list(pageable, predicate))
+        return ResponseEntity(
+            TekPageResponse(HttpStatus.OK, profileService.list(pageable, predicate)), HttpStatus.OK
         )
     }
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/read/{id}")
-    fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekRole>> {
+    fun readById(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekProfile>> {
         log.debug("Executing [GET] method")
-        return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, roleService.readOne(id))
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, profileService.readOne(id)), HttpStatus.OK
+        )
+    }
+
+    @PreAuthorize("this.readAuthorized")
+    @GetMapping("/readByName/{name}")
+    fun readByName(@PathVariable("name") name: String): ResponseEntity<TekResponseEntity<TekProfile>> {
+        log.debug("Executing [GET] method")
+        return ResponseEntity(
+            TekResponseEntity(HttpStatus.OK, profileService.readOneByName(name)), HttpStatus.OK
         )
     }
 }

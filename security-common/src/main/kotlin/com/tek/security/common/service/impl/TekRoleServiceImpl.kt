@@ -4,8 +4,8 @@ import com.querydsl.core.types.Predicate
 import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
-import com.tek.core.i18n.CoreMessageSource.Companion.errorNotFoundResource
 import com.tek.core.util.LoggerDelegate
+import com.tek.core.util.orNull
 import com.tek.security.common.model.TekRole
 import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.service.TekRoleService
@@ -16,33 +16,28 @@ import org.springframework.stereotype.Service
 @Suppress("unused")
 @Service
 class TekRoleServiceImpl(
-    private val tekRoleRepository: TekRoleRepository,
+    private val roleRepository: TekRoleRepository,
     private val coreMessageSource: CoreMessageSource
 ) : TekRoleService {
 
     private val log by LoggerDelegate()
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<TekRole> {
-        log.debug("Fetching data from repository: $tekRoleRepository")
+        log.debug("Fetching data from repository: $roleRepository")
         predicate?.let {
-            return tekRoleRepository.findAll(predicate, pageable)
-        } ?: return tekRoleRepository.findAll(pageable)
+            return roleRepository.findAll(predicate, pageable)
+        } ?: return roleRepository.findAll(pageable)
     }
 
     override fun readOne(id: Long): TekRole {
-        log.debug("Accessing $tekRoleRepository for entity: ${TekRole::class.java.name} with id:$id")
-
-        val optional = tekRoleRepository.findById(id)
-        if (!optional.isPresent)
-            throw TekResourceNotFoundException(
+        log.debug("Accessing $roleRepository for entity: ${TekRole::class.java.name} with id:$id")
+        roleRepository.findById(id).orNull()?.let { return it }
+            ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
                     source = coreMessageSource,
-                    message = errorNotFoundResource,
+                    message = CoreMessageSource.errorNotFoundResource,
                     parameters = arrayOf(id.toString())
                 )
             )
-        return optional.get()
     }
-
-
 }

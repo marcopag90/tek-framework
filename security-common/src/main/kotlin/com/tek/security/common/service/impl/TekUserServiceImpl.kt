@@ -9,14 +9,14 @@ import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
+import com.tek.core.util.orNull
 import com.tek.security.common.form.RegisterForm
 import com.tek.security.common.i18n.SecurityMessageSource
 import com.tek.security.common.model.TekUser
-import com.tek.security.common.model.enums.RoleName
-import com.tek.security.common.repository.TekRoleRepository
+import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
-import com.tek.security.common.service.TekRoleService
+import com.tek.security.common.service.TekProfileService
 import com.tek.security.common.service.TekTokenService
 import com.tek.security.common.service.TekUserService
 import org.springframework.beans.factory.annotation.Qualifier
@@ -32,10 +32,10 @@ import javax.validation.Validator
 @Suppress("unused")
 @Service
 class TekUserServiceImpl(
-    private val tekAuthService: TekAuthService,
-    private val tekRoleService: TekRoleService,
+    private val authService: TekAuthService,
+    private val profileService: TekProfileService,
     private val userRepository: TekUserRepository,
-    private val tekRoleRepository: TekRoleRepository,
+    private val profileRepository: TekProfileRepository,
     @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,
     private val securityMessageSource: SecurityMessageSource,
@@ -45,21 +45,19 @@ class TekUserServiceImpl(
     private val log by LoggerDelegate()
 
     companion object {
-        const val REFRESH_PASSWORD_EXPIRATION = 3L
+        const val REFRESH_PASSWORD_EXPIRATION = 3L //3 Months Expiration Date
     }
 
     @Transactional
     override fun register(registerForm: RegisterForm): TekUser {
-
         log.debug("Processing user form validation with data: $registerForm")
-
         val message = securityMessageSource.getSecuritySource()
             .getMessage(
                 SecurityMessageSource.errorNotValidPassword,
                 null,
                 LocaleContextHolder.getLocale()
             )
-        tekAuthService.isValidPassword(registerForm.password).isFalse {
+        authService.isValidPassword(registerForm.password).isFalse {
             throw TekValidationException(mutableMapOf(RegisterForm::password.name to message))
         }
 
@@ -84,7 +82,7 @@ class TekUserServiceImpl(
                 httpStatus = HttpStatus.CONFLICT
             )
         }
-        val (isAcceptable, constraintMessage) = tekAuthService.checkPasswordConstraints(
+        val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
             registerForm.username, registerForm.email, registerForm.password
         )
         if (!isAcceptable) {
@@ -98,21 +96,21 @@ class TekUserServiceImpl(
             )
         }
 
-        tekRoleRepository.findByName(RoleName.USER)?.let { role ->
+        profileRepository.findByName(registerForm.profileName).orNull()?.let { role ->
             return userRepository.save(
                 TekUser().apply {
                     username = registerForm.username
-                    password = tekAuthService.passwordEncoder().encode(registerForm.password)
+                    password = authService.passwordEncoder().encode(registerForm.password)
                     email = registerForm.email
                     this.pwdExpireAt = LocalDate.now().plusMonths(REFRESH_PASSWORD_EXPIRATION)
-                    this.roles.add(role)
+                    this.profiles.add(role)
                 }
             )
         } ?: throw TekResourceNotFoundException(
             data = ServiceExceptionData(
                 source = coreMessageSource,
                 message = CoreMessageSource.errorNotFoundResource,
-                parameters = arrayOf(RoleName.USER.name)
+                parameters = arrayOf(registerForm.profileName)
             )
         )
     }
@@ -126,24 +124,20 @@ class TekUserServiceImpl(
 
     override fun findById(id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-
-        val optional = userRepository.findById(id)
-        if (!optional.isPresent)
-            throw TekResourceNotFoundException(
+        userRepository.findById(id).orNull()?.let { return it }
+            ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
                     source = coreMessageSource,
                     message = CoreMessageSource.errorNotFoundResource,
                     parameters = arrayOf(id.toString())
                 )
             )
-        return optional.get()
     }
 
     @Suppress("unchecked_cast")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-
         val optional = userRepository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
@@ -199,7 +193,7 @@ class TekUserServiceImpl(
                     httpStatus = HttpStatus.BAD_REQUEST
                 )
             }
-            tekAuthService.isValidPassword(password).isFalse {
+            authService.isValidPassword(password).isFalse {
                 throw TekServiceException(
                     data = ServiceExceptionData(
                         source = securityMessageSource,
@@ -208,7 +202,7 @@ class TekUserServiceImpl(
                     httpStatus = HttpStatus.BAD_REQUEST
                 )
             }
-            userToUpdate.password = tekAuthService.passwordEncoder().encode(password)
+            userToUpdate.password = authService.passwordEncoder().encode(password)
         }
 
         if (properties.containsKey(TekUser::email.name)) {
@@ -256,17 +250,17 @@ class TekUserServiceImpl(
             userToUpdate.enabled = enabled
         }
 
-        if (properties.containsKey(TekUser::roles.name)) {
-            userToUpdate.roles = mutableSetOf()
-            val roles = properties[TekUser::roles.name] as MutableList<Long>
+        if (properties.containsKey(TekUser::profiles.name)) {
+            userToUpdate.profiles = mutableSetOf()
+            val roles = properties[TekUser::profiles.name] as MutableList<Long>
             for (role in roles) {
-                userToUpdate.roles.add(tekRoleService.readOne(role))
+                userToUpdate.profiles.add(profileService.readOne(role))
             }
             log.info("User roles have changed! Searching for user oauth tokens...")
             oAuthTokenService.invalidateUserTokens(optional.get().username!!)
         }
 
-        val (isAcceptable, constraintMessage) = tekAuthService.checkPasswordConstraints(
+        val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
             userToUpdate.username!!,
             userToUpdate.email!!,
             userToUpdate.password!!
@@ -294,19 +288,17 @@ class TekUserServiceImpl(
     @Transactional
     override fun delete(id: Long): Long {
         log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-
-        val optional = userRepository.findById(id)
-        if (!optional.isPresent)
-            throw TekResourceNotFoundException(
-                data = ServiceExceptionData(
-                    source = coreMessageSource,
-                    message = CoreMessageSource.errorNotFoundResource,
-                    parameters = arrayOf(id.toString())
-                )
+        userRepository.findById(id).orNull()?.let {
+            userRepository.deleteById(it.id!!)
+            log.info("User deleted! Deleting user oauth tokens...")
+            oAuthTokenService.invalidateUserTokens(it.username!!)
+            return it.id!!
+        } ?: throw TekResourceNotFoundException(
+            data = ServiceExceptionData(
+                source = coreMessageSource,
+                message = CoreMessageSource.errorNotFoundResource,
+                parameters = arrayOf(id.toString())
             )
-        userRepository.deleteById(id)
-        log.info("User deleted! Deleting user oauth tokens...")
-        oAuthTokenService.invalidateUserTokens(optional.get().username!!)
-        return id
+        )
     }
 }

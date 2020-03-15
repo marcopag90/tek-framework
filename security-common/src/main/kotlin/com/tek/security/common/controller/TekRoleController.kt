@@ -46,11 +46,11 @@ class TekRoleController(
     }
 
     @PreAuthorize("this.readAuthorized")
-    @GetMapping("/read/{id}")
-    fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekRole>> {
+    @GetMapping("/read/{name}")
+    fun read(@PathVariable("name") name: String): ResponseEntity<TekResponseEntity<TekRole>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, roleService.readOne(id))
+            TekResponseEntity(HttpStatus.OK, roleService.readOne(name))
         )
     }
 }

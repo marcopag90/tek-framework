@@ -9,5 +9,5 @@ interface TekRoleService {
 
     fun list(pageable: Pageable, predicate: Predicate?): Page<TekRole>
 
-    fun readOne(id: Long): TekRole
+    fun readOne(name: String): TekRole
 }

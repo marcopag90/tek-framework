@@ -6,6 +6,7 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.orNull
+import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekRole
 import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.service.TekRoleService
@@ -29,14 +30,14 @@ class TekRoleServiceImpl(
         } ?: return roleRepository.findAll(pageable)
     }
 
-    override fun readOne(id: Long): TekRole {
-        log.debug("Accessing $roleRepository for entity: ${TekRole::class.java.name} with id:$id")
-        roleRepository.findById(id).orNull()?.let { return it }
+    override fun readOne(name: String): TekRole {
+        log.debug("Accessing $roleRepository for entity: ${TekRole::class.java.name} with name: [$name]")
+        roleRepository.findByName(RoleName.valueOf(name)).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
                     source = coreMessageSource,
                     message = CoreMessageSource.errorNotFoundResource,
-                    parameters = arrayOf(id.toString())
+                    parameters = arrayOf(name)
                 )
             )
     }

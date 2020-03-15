@@ -5,10 +5,11 @@ import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekRole
 import org.javers.spring.annotation.JaversSpringDataAuditable
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 @JaversSpringDataAuditable
 interface TekRoleRepository : TekEntityRepository<TekRole, Long> {
 
-    fun findByName(name: RoleName): TekRole?
+    fun findByName(name: RoleName): Optional<TekRole>
 }

@@ -42,4 +42,8 @@ class TekRole(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @ManyToMany(mappedBy = "roles")
+    var profiles: MutableSet<TekProfile> = mutableSetOf()
+
 }

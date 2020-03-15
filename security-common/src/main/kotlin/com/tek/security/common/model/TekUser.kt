@@ -85,7 +85,7 @@ class TekUser : UserActivityAudit() {
      *
      * Implementations of authorities are tied to Business Logic requirements.
      */
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
         name = "users_profiles",
         joinColumns = [JoinColumn(name = "user_id")],

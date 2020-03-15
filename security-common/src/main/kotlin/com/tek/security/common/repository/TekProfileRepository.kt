@@ -14,12 +14,8 @@ import java.util.*
 interface TekProfileRepository : TekEntityRepository<TekProfile, Long> {
 
     @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
-    fun findByName(name: String): Optional<TekProfile>
-
-    @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
-    override fun findById(id: Long): Optional<TekProfile>
-
-    @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
     override fun findOne(predicate: Predicate): Optional<TekProfile>
 
+    @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
+    fun findByName(name: String): Optional<TekProfile>
 }

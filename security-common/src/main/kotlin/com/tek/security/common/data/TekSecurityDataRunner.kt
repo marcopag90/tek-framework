@@ -4,47 +4,49 @@ import com.tek.core.TekCoreProperties
 import com.tek.core.data.TekDataRunner
 import com.tek.core.util.orNull
 import com.tek.security.common.TekPasswordEncoder
-import com.tek.security.common.TekSecurityDataOrder
+import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekProfile
+import com.tek.security.common.model.TekRole
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
+import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.repository.TekUserRepository
-import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.LocalDate
 
 @Suppress("unused")
-@Order(TekSecurityDataOrder.user)
-//@Component
-class TekUserDataRunner(
+@Component
+class TekSecurityDataRunner(
     private val userRepository: TekUserRepository,
-    private val tekProfileRepository: TekProfileRepository,
+    private val profileRepository: TekProfileRepository,
+    private val roleRepository: TekRoleRepository,
     private val pswEncoder: TekPasswordEncoder,
     coreProperties: TekCoreProperties
-) : TekDataRunner<TekUserDataRunner>(coreProperties, TekUserDataRunner::class.java) {
+) : TekDataRunner<TekRoleDataRunner>(coreProperties, TekRoleDataRunner::class.java) {
+
+    /**
+     * Base Profiles definitions for mockup purposes
+     */
+    internal enum class ProfileName {
+        ADMIN,
+        AUDIT,
+        USER
+    }
 
     @Transactional
     override fun runDevelopmentMode() {
 
-        createUser(
-            username = "admin",
-            password = "admin",
-            email = "admin@gmail.com",
-            profiles = tekProfileRepository.findAll().toMutableSet(),
-            enabled = true,
-            pwdExpireAt = LocalDate.of(2099, 12, 31)
-        )
+        RoleName.values().forEach {
+            roleRepository.save(TekRole(it))
+        }
 
-        createUser(
-            username = "user",
-            password = "user",
-            email = "user@gmail.com",
-            profiles = mutableSetOf(TekProfile(name = TekProfileDataRunner.ProfileName.USER.name)),
-            enabled = true,
-            pwdExpireAt = LocalDate.of(2099, 12, 31)
-        )
+        val adminProfile = TekProfile().apply {
+            name = ProfileName.ADMIN.name
+
+        }
+
     }
 
     private fun createUser(
@@ -60,7 +62,7 @@ class TekUserDataRunner(
 
         val userRoles = mutableSetOf<TekProfile>()
         for (role in profiles)
-            tekProfileRepository.findByName(role.name!!).orNull()?.let {
+            profileRepository.findByName(role.name!!).orNull()?.let {
                 userRoles.add(it)
             }
 
@@ -75,5 +77,5 @@ class TekUserDataRunner(
             this.lastLogin = lastLogin
         }.let(userRepository::save)
     }
-}
 
+}

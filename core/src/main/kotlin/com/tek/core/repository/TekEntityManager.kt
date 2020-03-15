@@ -51,15 +51,15 @@ class TekEntityManager(
             it.allAnnotations.findInstanceOrNull<Id>() != null
         }.name)
 
-    fun getTekRepository(entityName: String): Class<out JpaRepository<*, *>> {
-        log.debug("Trying to load ${TekEntityRepository::class.java} for entity: $entityName")
-        return (repositories.getRepositoryFor(getEntity(entityName)!!.javaType).get() as JpaRepository<*, *>)::class.java
-    }
+    fun getTekRepository(entityName: String): Class<out JpaRepository<*, *>> =
+        (repositories.getRepositoryFor(getEntity(entityName)!!.javaType).get() as JpaRepository<*, *>)::class.java
+
 
     private fun getEntity(entityName: String): EntityType<*>? {
         log.debug("Trying to load entity: $entityName")
 
-        val entityClass: EntityType<*>? = entityManager.metamodel.entities.find { it.name == entityName.capitalize() }
+        val entityClass: EntityType<*>? =
+            entityManager.metamodel.entities.find { it.name == entityName.capitalize() }
         check(entityClass != null) {
             "Unable to find a suitable class for given entity: $entityName" //verificare
         }

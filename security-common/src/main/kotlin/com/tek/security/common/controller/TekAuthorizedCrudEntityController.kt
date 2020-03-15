@@ -18,32 +18,31 @@ import javax.validation.Valid
  * Extension of [TekCrudEntityController] to provide security at method access level
  */
 @Suppress("unused")
-abstract class TekAuthorizedCrudEntityController<Entity, ID, Service : ICrudEntityService<Entity, ID, Form>, Form : AbstractForm>(
-    crudService: Service
-) : TekCrudEntityController<Entity, ID, Service, Form>(crudService) {
+abstract class TekAuthorizedCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>, DTO : AbstractForm>(
+) : TekCrudEntityController<E, ID, S, DTO>() {
 
     @PreAuthorize("this.createAuthorized")
     @GetMapping("/list")
     @ApiPageable
-    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<Entity>> {
+    override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<E>> {
         return super.list(pageable, predicate)
     }
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/read/{id}")
-    override fun read(id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+    override fun read(id: ID): ResponseEntity<TekResponseEntity<E>> {
         return super.read(id)
     }
 
     @PreAuthorize("this.updateAuthorized")
     @PatchMapping("/update/{id}")
-    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+    override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
         return super.update(properties, id)
     }
 
     @PreAuthorize("this.updateAuthorized")
-    @PutMapping("/update/{id}")
-    override fun update(@RequestBody @Valid form: Form, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Entity>> {
+    @PostMapping("/update/{id}")
+    override fun update(@RequestBody @Valid form: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
         return super.update(form, id)
     }
 

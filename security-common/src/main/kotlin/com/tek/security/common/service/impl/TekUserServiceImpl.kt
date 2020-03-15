@@ -12,6 +12,7 @@ import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
+import com.tek.security.common.service.provider.TekProfileServiceProvider
 import com.tek.security.common.service.TekTokenService
 import com.tek.security.common.service.TekUserService
 import org.springframework.beans.factory.annotation.Qualifier

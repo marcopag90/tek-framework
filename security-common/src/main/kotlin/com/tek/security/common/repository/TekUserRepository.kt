@@ -1,11 +1,12 @@
 package com.tek.security.common.repository
 
 import com.querydsl.core.types.Predicate
-import com.tek.core.repository.TekEntityRepository
 import com.tek.security.common.model.TEK_USER_FULL
 import com.tek.security.common.model.TekUser
 import org.javers.spring.annotation.JaversSpringDataAuditable
 import org.springframework.data.jpa.repository.EntityGraph
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.querydsl.QuerydslPredicateExecutor
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -13,7 +14,7 @@ import java.util.*
 @Repository
 @Transactional
 @JaversSpringDataAuditable
-interface TekUserRepository : TekEntityRepository<TekUser, Long> {
+interface TekUserRepository : JpaRepository<TekUser, Long>, QuerydslPredicateExecutor<TekUser> {
 
     @EntityGraph(value = TEK_USER_FULL, type = EntityGraph.EntityGraphType.LOAD)
     fun findByUsername(username: String): TekUser?

@@ -4,6 +4,7 @@ import org.javers.core.metamodel.annotation.TypeName
 import java.io.Serializable
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 const val TEK_PROFILE_FULL = "TekProfile.full"
 
@@ -18,21 +19,25 @@ const val TEK_PROFILE_FULL = "TekProfile.full"
     includeAllAttributes = true
 )
 class TekProfile(
-    @NotBlank
+    @field:NotBlank
+    @field:Size(min = 1, max = 10)
     @Column(length = 10, nullable = false)
-    val name: String? = null
+    var name: String? = null
 ) : Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
         name = "profiles_roles",
         joinColumns = [JoinColumn(name = "profile_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
     )
     var roles: MutableSet<TekRole> = mutableSetOf()
+
+    @ManyToMany(mappedBy = "profiles")
+    var users: MutableSet<TekUser> = hashSetOf()
 }
 

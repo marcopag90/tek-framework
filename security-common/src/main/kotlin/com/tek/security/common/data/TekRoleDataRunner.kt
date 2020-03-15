@@ -10,10 +10,11 @@ import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Suppress("unused")
 @Order(TekSecurityDataOrder.role)
-@Component
+//@Component
 class TekRoleDataRunner(
     private val userRepository: TekUserRepository,
     private val profileRepository: TekProfileRepository,
@@ -21,6 +22,7 @@ class TekRoleDataRunner(
     coreProperties: TekCoreProperties
 ) : TekDataRunner<TekRoleDataRunner>(coreProperties, TekRoleDataRunner::class.java) {
 
+    @Transactional
     override fun runDevelopmentMode() {
 
         userRepository.deleteAll() //cascade delete of users_roles and users

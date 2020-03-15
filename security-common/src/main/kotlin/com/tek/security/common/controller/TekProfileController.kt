@@ -7,7 +7,7 @@ import com.tek.security.common.TekSecurityPattern.PROFILE_PATH
 import com.tek.security.common.form.ProfileForm
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekProfile
-import com.tek.security.common.service.impl.TekProfileServiceProvider
+import com.tek.security.common.service.provider.TekProfileServiceProvider
 import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
@@ -25,10 +25,8 @@ import org.springframework.web.bind.annotation.RestController
 @Api(tags = ["Profiles"])
 @RestController
 @RequestMapping(path = [PROFILE_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
-class TekProfileController(
-    val serviceProvider: TekProfileServiceProvider
-) : TekAuthorizedCrudEntityController<TekProfile, Long, TekProfileServiceProvider, ProfileForm>
-    (serviceProvider) {
+class TekProfileController :
+    TekAuthorizedCrudEntityController<TekProfile, Long, TekProfileServiceProvider, ProfileForm>() {
 
     override fun list(
         pageable: Pageable,
@@ -41,7 +39,7 @@ class TekProfileController(
         @PathVariable("name") name: String
     ): ResponseEntity<TekResponseEntity<TekProfile>> {
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, serviceProvider.readOneByName(name))
+            TekResponseEntity(HttpStatus.OK, service.readOneByName(name))
         )
     }
 

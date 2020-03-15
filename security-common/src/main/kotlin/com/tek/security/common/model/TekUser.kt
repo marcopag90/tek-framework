@@ -51,8 +51,7 @@ class TekUser : UserActivityAudit() {
     var password: String? = null
 
     @field:Email
-    @field:NotBlank
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = true)
     var email: String? = null
 
     /**
@@ -116,7 +115,7 @@ class TekUser : UserActivityAudit() {
      * Usually some action is required to release it (Server or Client side)
      */
     @Column(name = "enabled", length = 1)
-    var enabled: Boolean = true
+    var enabled: Boolean = false
 
     /**
      * Condition: _OPTIONAL_

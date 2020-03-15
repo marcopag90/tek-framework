@@ -5,7 +5,7 @@ import com.tek.core.i18n.LOCALE_PATH
 /**Class sharing constants among all Spring Security configurations*/
 object TekSecurityPattern {
 
-    const val BASE_PATH = "/"
+    const val INDEX_PATH = "/"
     const val REGISTER_PATH = "/register"
     const val PROFILE_PATH = "/profile"
     const val ROLE_PATH = "/role"
@@ -17,7 +17,7 @@ object TekSecurityPattern {
 
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(
-            BASE_PATH,
+            INDEX_PATH,
             REGISTER_PATH,
             LOCALE_PATH
         )

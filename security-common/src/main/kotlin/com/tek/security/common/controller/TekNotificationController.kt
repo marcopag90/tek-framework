@@ -41,7 +41,10 @@ class TekNotificationController(
     ): ResponseEntity<TekPageResponse<TekNotification>> {
         log.debug("Executing [GET] method")
         return ResponseEntity.ok(
-            TekPageResponse(HttpStatus.OK, tekNotificationService.listNotificationsByPrivilege(pageable, isRead))
+            TekPageResponse(
+                HttpStatus.OK,
+                tekNotificationService.listNotificationsByPrivilege(pageable, isRead)
+            )
         )
     }
 

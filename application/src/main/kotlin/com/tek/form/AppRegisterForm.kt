@@ -1,23 +1,20 @@
-package com.tek.security.common.form
+package com.tek.form
 
+import com.tek.security.common.form.AbstractRegisterForm
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-data class RegisterForm(
-
+data class AppRegisterForm(
     @field:NotBlank
     @field:Size(min = 3, max = 20)
-    val username: String,
+    override val username: String,
 
     @field:NotBlank
-    val password: String,
+    override val password: String,
 
     @field:NotBlank
     @field:Email
-    val email: String,
+    override val email: String?
+) : AbstractRegisterForm()
 
-    @field:NotBlank
-    @field:Size(min = 1, max = 10)
-    val profileName: String
-)

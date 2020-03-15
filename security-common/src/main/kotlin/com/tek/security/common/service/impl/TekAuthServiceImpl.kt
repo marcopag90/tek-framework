@@ -3,8 +3,8 @@ package com.tek.security.common.service.impl
 import com.tek.core.util.isFalse
 import com.tek.security.common.TekPasswordEncoder
 import com.tek.security.common.TekUserDetails
-import com.tek.security.common.model.TekRole
 import com.tek.security.common.model.TekProfile
+import com.tek.security.common.model.TekRole
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
@@ -28,7 +28,7 @@ class TekAuthServiceImpl(
     private val pswEncoder: TekPasswordEncoder
 ) : TekAuthService {
 
-    private val passwordRegex =
+    protected val passwordRegex =
         Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
@@ -53,10 +53,9 @@ class TekAuthServiceImpl(
 
     override fun checkPasswordConstraints(
         username: String,
-        email: String,
+        email: String?,
         password: String
     ): Pair<Boolean, String?> {
-
         if (password == username)
             return Pair(false, username)
         if (password == email)

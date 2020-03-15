@@ -6,11 +6,7 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
 import com.tek.core.i18n.CoreMessageSource
-import com.tek.core.util.LoggerDelegate
-import com.tek.core.util.isFalse
-import com.tek.core.util.isTrue
-import com.tek.core.util.orNull
-import com.tek.security.common.form.RegisterForm
+import com.tek.core.util.*
 import com.tek.security.common.i18n.SecurityMessageSource
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
@@ -20,7 +16,7 @@ import com.tek.security.common.service.TekProfileService
 import com.tek.security.common.service.TekTokenService
 import com.tek.security.common.service.TekUserService
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -39,81 +35,10 @@ class TekUserServiceImpl(
     @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,
     private val securityMessageSource: SecurityMessageSource,
-    private val oAuthTokenService: TekTokenService
+    private val tokenService: TekTokenService
 ) : TekUserService {
 
     private val log by LoggerDelegate()
-
-    companion object {
-        const val REFRESH_PASSWORD_EXPIRATION = 3L //3 Months Expiration Date
-    }
-
-    @Transactional
-    override fun register(registerForm: RegisterForm): TekUser {
-        log.debug("Processing user form validation with data: $registerForm")
-        val message = securityMessageSource.getSecuritySource()
-            .getMessage(
-                SecurityMessageSource.errorNotValidPassword,
-                null,
-                LocaleContextHolder.getLocale()
-            )
-        authService.isValidPassword(registerForm.password).isFalse {
-            throw TekValidationException(mutableMapOf(RegisterForm::password.name to message))
-        }
-
-        userRepository.existsByUsername(registerForm.username).isTrue {
-            throw TekServiceException(
-                data = ServiceExceptionData(
-                    source = securityMessageSource,
-                    message = SecurityMessageSource.errorConflictUsername,
-                    parameters = arrayOf(registerForm.username)
-                ),
-                httpStatus = HttpStatus.CONFLICT
-            )
-        }
-
-        userRepository.existsByEmail(registerForm.email).isTrue {
-            throw TekServiceException(
-                data = ServiceExceptionData(
-                    source = securityMessageSource,
-                    message = SecurityMessageSource.errorConflictEmail,
-                    parameters = arrayOf(registerForm.email)
-                ),
-                httpStatus = HttpStatus.CONFLICT
-            )
-        }
-        val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
-            registerForm.username, registerForm.email, registerForm.password
-        )
-        if (!isAcceptable) {
-            throw TekServiceException(
-                data = ServiceExceptionData(
-                    source = securityMessageSource,
-                    message = SecurityMessageSource.errorConflictPassword,
-                    parameters = arrayOf(constraintMessage!!)
-                ),
-                httpStatus = HttpStatus.BAD_REQUEST
-            )
-        }
-
-        profileRepository.findByName(registerForm.profileName).orNull()?.let { role ->
-            return userRepository.save(
-                TekUser().apply {
-                    username = registerForm.username
-                    password = authService.passwordEncoder().encode(registerForm.password)
-                    email = registerForm.email
-                    this.pwdExpireAt = LocalDate.now().plusMonths(REFRESH_PASSWORD_EXPIRATION)
-                    this.profiles.add(role)
-                }
-            )
-        } ?: throw TekResourceNotFoundException(
-            data = ServiceExceptionData(
-                source = coreMessageSource,
-                message = CoreMessageSource.errorNotFoundResource,
-                parameters = arrayOf(registerForm.profileName)
-            )
-        )
-    }
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<TekUser> {
         log.debug("Fetching data from repository: $userRepository")
@@ -256,8 +181,8 @@ class TekUserServiceImpl(
             for (role in roles) {
                 userToUpdate.profiles.add(profileService.readOne(role))
             }
-            log.info("User roles have changed! Searching for user oauth tokens...")
-            oAuthTokenService.invalidateUserTokens(optional.get().username!!)
+            log.info("User roles have changed! Searching for user tokens...")
+            tokenService.invalidateUserTokens(optional.get().username!!)
         }
 
         val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
@@ -291,7 +216,7 @@ class TekUserServiceImpl(
         userRepository.findById(id).orNull()?.let {
             userRepository.deleteById(it.id!!)
             log.info("User deleted! Deleting user oauth tokens...")
-            oAuthTokenService.invalidateUserTokens(it.username!!)
+            tokenService.invalidateUserTokens(it.username!!)
             return it.id!!
         } ?: throw TekResourceNotFoundException(
             data = ServiceExceptionData(

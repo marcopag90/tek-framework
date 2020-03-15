@@ -18,7 +18,11 @@ interface TekAuthService : UserDetailsService {
 
     fun getCurrentUser(): TekUserDetails?
 
-    fun checkPasswordConstraints(username: String, email: String, password: String): Pair<Boolean, String?>
+    fun checkPasswordConstraints(
+        username: String,
+        email: String?,
+        password: String
+    ): Pair<Boolean, String?>
 }
 
 

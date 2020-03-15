@@ -112,4 +112,5 @@ tek:
                 scope: read,write
                 accessTokenValidity: 1800
                 refreshTokenValidity: 3600
-
+        registerProfile: USER # profilo assegnato di default alla registrazione
+        passwordExpiration: 3 # in mesi

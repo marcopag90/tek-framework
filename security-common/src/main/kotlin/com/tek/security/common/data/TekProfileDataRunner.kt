@@ -2,6 +2,7 @@ package com.tek.security.common.data
 
 import com.tek.core.TekCoreProperties
 import com.tek.core.data.TekDataRunner
+import com.tek.core.util.orNull
 import com.tek.security.common.TekSecurityDataOrder
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekRole
@@ -44,7 +45,7 @@ class TekProfileDataRunner(
                 ))
                 ProfileName.AUDIT -> tekProfileRepository.save(ProfileName.AUDIT.createRole(
                     mutableSetOf<TekRole>().apply {
-                        tekRoleRepository.findByName(RoleName.AUDIT_READ)?.let {
+                        tekRoleRepository.findByName(RoleName.AUDIT_READ).orNull()?.let {
                             this.add(it)
                         }
                     }

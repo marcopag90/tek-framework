@@ -21,4 +21,5 @@ interface TekProfileRepository : TekEntityRepository<TekProfile, Long> {
 
     @EntityGraph(value = TEK_PROFILE_FULL, type = EntityGraph.EntityGraphType.LOAD)
     override fun findOne(predicate: Predicate): Optional<TekProfile>
+
 }

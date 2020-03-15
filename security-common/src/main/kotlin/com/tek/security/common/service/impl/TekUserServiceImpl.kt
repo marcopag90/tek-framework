@@ -12,11 +12,9 @@ import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
-import com.tek.security.common.service.TekProfileService
 import com.tek.security.common.service.TekTokenService
 import com.tek.security.common.service.TekUserService
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -29,7 +27,7 @@ import javax.validation.Validator
 @Service
 class TekUserServiceImpl(
     private val authService: TekAuthService,
-    private val profileService: TekProfileService,
+    private val profileService: TekProfileServiceProvider,
     private val userRepository: TekUserRepository,
     private val profileRepository: TekProfileRepository,
     @Qualifier("security_validator") private val validator: Validator,

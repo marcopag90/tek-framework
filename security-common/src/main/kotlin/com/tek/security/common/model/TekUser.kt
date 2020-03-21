@@ -85,7 +85,7 @@ class TekUser : UserActivityAudit() {
      *
      * Implementations of authorities are tied to Business Logic requirements.
      */
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ManyToMany
     @JoinTable(
         name = "users_profiles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -93,14 +93,23 @@ class TekUser : UserActivityAudit() {
     )
     var profiles: MutableSet<TekProfile> = mutableSetOf()
 
-    @OneToOne(
-        mappedBy = "user",
-        cascade = [CascadeType.ALL]
-    )
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonManagedReference
     var preference: TekPreference? = null
+    // --------------------------------- Many to Many management --------------------------------------
 
-    /*--------------------------------- Account Management ---------------------------------------*/
+//    fun addProfile(profile: TekProfile) {
+//        profiles.add(profile)
+//        profile.users.add(this)
+//    }
+//
+//    fun removeProfile(profile: TekProfile) {
+//        profiles.remove(profile)
+//        profile.users.remove(this)
+//    }
+//
+
+    // --------------------------------- Account management --------------------------------------
 
     companion object {
         const val EXPIRATION_MONTHS = 6L

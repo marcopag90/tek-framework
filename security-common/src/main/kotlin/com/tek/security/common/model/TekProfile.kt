@@ -1,5 +1,7 @@
 package com.tek.security.common.model
 
+import org.javers.core.metamodel.annotation.DiffIgnore
+import org.javers.core.metamodel.annotation.ShallowReference
 import org.javers.core.metamodel.annotation.TypeName
 import java.io.Serializable
 import javax.persistence.*
@@ -29,7 +31,7 @@ class TekProfile(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ManyToMany
     @JoinTable(
         name = "profiles_roles",
         joinColumns = [JoinColumn(name = "profile_id", referencedColumnName = "id")],
@@ -38,6 +40,19 @@ class TekProfile(
     var roles: MutableSet<TekRole> = mutableSetOf()
 
     @ManyToMany(mappedBy = "profiles")
-    var users: MutableSet<TekUser> = hashSetOf()
+    @DiffIgnore
+    var users: MutableSet<TekUser> = mutableSetOf()
+
+    // --------------------------------- Many to Many management --------------------------------------
+
+//    fun addRole(role: TekRole) {
+//        roles.add(role)
+//        role.profiles.add(this)
+//    }
+//
+//    fun removeRole(role: TekRole) {
+//        roles.remove(role)
+//        role.profiles.remove(this)
+//    }
 }
 

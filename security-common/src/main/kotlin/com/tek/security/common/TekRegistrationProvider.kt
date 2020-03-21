@@ -138,7 +138,7 @@ abstract class TekRegistrationProvider(
     private fun getUserWithProfile(): TekUser {
         log.info("Adding default [user profile]: $registerProfile...")
         profileRepository.findByName(registerProfile).orNull()?.let { profile ->
-            userRepository.findByUsername(form.username)?.let { user ->
+            userRepository.findByUsername(form.username).orNull()?.let { user ->
                 user.profiles.add(profile)
                 return userRepository.save(user)
             } ?: throw Error("User with username: ${form.username} not found!")

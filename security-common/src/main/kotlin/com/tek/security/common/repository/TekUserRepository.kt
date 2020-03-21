@@ -17,7 +17,7 @@ import java.util.*
 interface TekUserRepository : JpaRepository<TekUser, Long>, QuerydslPredicateExecutor<TekUser> {
 
     @EntityGraph(value = TEK_USER_FULL, type = EntityGraph.EntityGraphType.LOAD)
-    fun findByUsername(username: String): TekUser?
+    fun findByUsername(username: String): Optional<TekUser>
 
     @EntityGraph(value = TEK_USER_FULL, type = EntityGraph.EntityGraphType.LOAD)
     override fun findById(id: Long): Optional<TekUser>

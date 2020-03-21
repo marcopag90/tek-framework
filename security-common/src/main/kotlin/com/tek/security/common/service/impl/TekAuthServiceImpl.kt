@@ -1,6 +1,7 @@
 package com.tek.security.common.service.impl
 
 import com.tek.core.util.isFalse
+import com.tek.core.util.orNull
 import com.tek.security.common.TekPasswordEncoder
 import com.tek.security.common.TekUserDetails
 import com.tek.security.common.model.TekProfile
@@ -38,7 +39,7 @@ class TekAuthServiceImpl(
     @Transactional
     override fun loadUserByUsername(username: String): UserDetails {
 
-        val user = userRepository.findByUsername(username)?.apply {
+        val user = userRepository.findByUsername(username).orNull()?.apply {
             this.accountExpired = isAccountExpired(this.userExpireAt)
             this.accountLocked = isAccountLocked(this.lastLogin)
             this.credentialsExpired = isCredentialsExpired(this.pwdExpireAt!!)
@@ -79,12 +80,10 @@ class TekAuthServiceImpl(
     )
 
     fun MutableSet<TekProfile>.getAuthorities(): Set<GrantedAuthority> {
-
-        val privileges = mutableSetOf<TekRole>()
-        for (role in this)
-            for (privilege in role.roles)
-                privileges.add(privilege)
-
-        return privileges.map { privilege -> SimpleGrantedAuthority(privilege.name.name) }.toSet()
+        val roles = mutableSetOf<TekRole>()
+        for (profile in this)
+            for (role in profile.roles)
+                roles.add(role)
+        return roles.map { role -> SimpleGrantedAuthority(role.name.name) }.toSet()
     }
 }

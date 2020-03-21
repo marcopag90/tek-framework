@@ -1,10 +1,15 @@
 package com.tek.security.common.model
 
 import org.hibernate.annotations.NaturalId
+import org.javers.core.metamodel.annotation.DiffIgnore
+import org.javers.core.metamodel.annotation.ShallowReference
 import org.javers.core.metamodel.annotation.TypeName
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.io.Serializable
 import javax.persistence.*
+
+const val TEK_ROLE_FULL = "TekRole.full"
+
 
 /**
  * Enum to define user roles, to evaluate Spring [SimpleGrantedAuthority]
@@ -33,6 +38,13 @@ enum class RoleName {
 @Entity
 @TypeName("role")
 @Table(name = "role")
+//@NamedEntityGraph(
+//    name = TEK_ROLE_FULL,
+//    attributeNodes = [NamedAttributeNode("profiles", subgraph = "profiles.roles")],
+//    subgraphs = [
+//        NamedSubgraph(name = "profiles.roles", attributeNodes = [NamedAttributeNode("roles")])
+//    ]
+//)
 class TekRole(
     @Enumerated(EnumType.STRING)
     @NaturalId
@@ -44,6 +56,7 @@ class TekRole(
     var id: Long? = null
 
     @ManyToMany(mappedBy = "roles")
+    @DiffIgnore
     var profiles: MutableSet<TekProfile> = mutableSetOf()
 
 }

@@ -94,7 +94,7 @@ class TekUser : UserActivityAudit() {
     )
     var profiles: MutableSet<TekProfile> = mutableSetOf()
 
-    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+    @OneToOne(mappedBy = "user")
     @JsonManagedReference
     var preference: TekPreference? = null
 

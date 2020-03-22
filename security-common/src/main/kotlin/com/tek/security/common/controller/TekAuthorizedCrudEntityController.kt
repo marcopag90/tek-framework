@@ -48,7 +48,7 @@ abstract class TekAuthorizedCrudEntityController<E, ID, S : ICrudEntityService<E
 
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
-    override fun delete(id: ID): ResponseEntity<TekResponseEntity<Unit>> {
+    override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Unit>> {
         return super.delete(id)
     }
 

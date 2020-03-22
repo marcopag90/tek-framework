@@ -12,19 +12,21 @@ import com.tek.security.common.model.TekProfile
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekTokenService
+import com.tek.security.common.service.TekUserService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Suppress("unused")
 @Service
 class TekProfileServiceProvider(
     override val repository: TekProfileRepository,
     private val userRepository: TekUserRepository,
+    private val tekUserService: TekUserService,
     private val tokenService: TekTokenService
-) :
-    TekCrudEntityService<TekProfile, Long, TekProfileRepository, ProfileForm>(
-        QTekProfile.tekProfile.id.stringValue(),
-        repository
-    ) {
+) : TekCrudEntityService<TekProfile, Long, TekProfileRepository, ProfileForm>(
+    QTekProfile.tekProfile.id.stringValue(),
+    repository
+) {
 
     fun readOneByName(name: String): TekProfile {
         log.debug("Accessing $repository with name:$name")
@@ -38,31 +40,30 @@ class TekProfileServiceProvider(
             )
     }
 
+    @Transactional
     override fun update(form: ProfileForm, id: Long): TekProfile {
         val profile = super.update(form, id)
         invalidateUserTokens(profile)
         return profile
     }
 
+    @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekProfile {
         val profile = super.update(properties, id)
         invalidateUserTokens(profile)
         return profile
     }
 
+    @Transactional
     override fun delete(id: Long) {
         val profile = repository.findOne(QTekProfile.tekProfile.id.eq(id))
         super.delete(id)
         profile.orNull()?.let {
-            userRepository.findAll(QTekUser.tekUser.profiles.contains(it))
-                .forEach { user ->
-                    user.profiles.remove(it)
-                    userRepository.save(user)
-                    tokenService.invalidateUserTokens(user.username!!)
-                }
+            tekUserService.removeUserProfileAndInvalidate(it)
         }
     }
 
+    @Transactional
     private fun invalidateUserTokens(profile: TekProfile) {
         userRepository.findAll(QTekUser.tekUser.profiles.contains(profile))
             .forEach { tokenService.invalidateUserTokens(it.username!!) }

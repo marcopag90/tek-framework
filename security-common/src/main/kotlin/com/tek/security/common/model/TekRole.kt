@@ -1,5 +1,6 @@
 package com.tek.security.common.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.NaturalId
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.ShallowReference
@@ -38,13 +39,6 @@ enum class RoleName {
 @Entity
 @TypeName("role")
 @Table(name = "role")
-//@NamedEntityGraph(
-//    name = TEK_ROLE_FULL,
-//    attributeNodes = [NamedAttributeNode("profiles", subgraph = "profiles.roles")],
-//    subgraphs = [
-//        NamedSubgraph(name = "profiles.roles", attributeNodes = [NamedAttributeNode("roles")])
-//    ]
-//)
 class TekRole(
     @Enumerated(EnumType.STRING)
     @NaturalId
@@ -57,6 +51,7 @@ class TekRole(
 
     @ManyToMany(mappedBy = "roles")
     @DiffIgnore
+    @JsonIgnore
     var profiles: MutableSet<TekProfile> = mutableSetOf()
 
 }

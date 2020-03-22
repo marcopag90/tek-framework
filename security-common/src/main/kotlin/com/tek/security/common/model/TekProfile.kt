@@ -1,5 +1,6 @@
 package com.tek.security.common.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.ShallowReference
 import org.javers.core.metamodel.annotation.TypeName
@@ -41,18 +42,7 @@ class TekProfile(
 
     @ManyToMany(mappedBy = "profiles")
     @DiffIgnore
+    @JsonIgnore
     var users: MutableSet<TekUser> = mutableSetOf()
-
-    // --------------------------------- Many to Many management --------------------------------------
-
-//    fun addRole(role: TekRole) {
-//        roles.add(role)
-//        role.profiles.add(this)
-//    }
-//
-//    fun removeRole(role: TekRole) {
-//        roles.remove(role)
-//        role.profiles.remove(this)
-//    }
 }
 

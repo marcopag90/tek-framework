@@ -76,6 +76,7 @@ class TekUser : UserActivityAudit() {
      * Sets a User last login date
      */
     @Column(name = "last_login")
+    @DiffIgnore
     var lastLogin: Instant? = null
 
     /**
@@ -96,18 +97,6 @@ class TekUser : UserActivityAudit() {
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonManagedReference
     var preference: TekPreference? = null
-    // --------------------------------- Many to Many management --------------------------------------
-
-//    fun addProfile(profile: TekProfile) {
-//        profiles.add(profile)
-//        profile.users.add(this)
-//    }
-//
-//    fun removeProfile(profile: TekProfile) {
-//        profiles.remove(profile)
-//        profile.users.remove(this)
-//    }
-//
 
     // --------------------------------- Account management --------------------------------------
 

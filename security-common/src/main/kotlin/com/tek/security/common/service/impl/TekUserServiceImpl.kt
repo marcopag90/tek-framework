@@ -8,6 +8,9 @@ import com.tek.core.exception.TekValidationException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.*
 import com.tek.security.common.i18n.SecurityMessageSource
+import com.tek.security.common.model.QTekProfile
+import com.tek.security.common.model.QTekUser
+import com.tek.security.common.model.TekProfile
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
@@ -28,7 +31,6 @@ import javax.validation.Validator
 @Service
 class TekUserServiceImpl(
     private val authService: TekAuthService,
-    private val profileService: TekProfileServiceProvider,
     private val userRepository: TekUserRepository,
     private val profileRepository: TekProfileRepository,
     @Qualifier("security_validator") private val validator: Validator,
@@ -176,9 +178,11 @@ class TekUserServiceImpl(
 
         if (properties.containsKey(TekUser::profiles.name)) {
             userToUpdate.profiles = mutableSetOf()
-            val roles = properties[TekUser::profiles.name] as MutableList<Long>
-            for (role in roles) {
-                userToUpdate.profiles.add(profileService.readOne(role))
+            val profileIds = properties[TekUser::profiles.name] as MutableList<Long>
+            for (profileId in profileIds) {
+                profileRepository.findOne(QTekProfile.tekProfile.id.eq(profileId)).orNull()?.let {
+                    userToUpdate.profiles.add(it)
+                }
             }
             log.info("User roles have changed! Searching for user tokens...")
             tokenService.invalidateUserTokens(optional.get().username!!)
@@ -224,5 +228,15 @@ class TekUserServiceImpl(
                 parameters = arrayOf(id.toString())
             )
         )
+    }
+
+    @Transactional
+    override fun removeUserProfileAndInvalidate(profile: TekProfile) {
+        userRepository.findAll(QTekUser.tekUser.profiles.contains(profile)).forEach { user ->
+            user.profiles.remove(profile)
+            userRepository.save(user)
+            userRepository.deleteUserProfile(profile.id!!)
+            tokenService.invalidateUserTokens(user.username!!)
+        }
     }
 }

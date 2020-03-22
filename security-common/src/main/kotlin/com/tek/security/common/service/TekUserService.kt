@@ -1,6 +1,7 @@
 package com.tek.security.common.service
 
 import com.querydsl.core.types.Predicate
+import com.tek.security.common.model.TekProfile
 import com.tek.security.common.model.TekUser
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -14,4 +15,6 @@ interface TekUserService {
     fun update(properties: Map<String, Any?>, id: Long): TekUser
 
     fun delete(id: Long): Long
+
+    fun removeUserProfileAndInvalidate(profile: TekProfile)
 }

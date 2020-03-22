@@ -49,7 +49,7 @@ class TekSecurityDataRunner(
 
         createUser(
             username = "admin",
-            password = pswEncoder.bcryptEncoder().encode("admin"),
+            password = "admin",
             email = "admin@gmail.com",
             profiles = mutableSetOf(adminProfile, auditProfile),
             enabled = true,
@@ -58,7 +58,7 @@ class TekSecurityDataRunner(
 
         createUser(
             username = "user",
-            password = pswEncoder.bcryptEncoder().encode("user"),
+            password = "user",
             email = "user@gmail.com",
             profiles = mutableSetOf(userProfile),
             enabled = true,

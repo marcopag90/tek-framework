@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 class TekProfileServiceProvider(
     override val repository: TekProfileRepository,
     private val userRepository: TekUserRepository,
-    private val tekUserService: TekUserService,
+    private val userService: TekUserService,
     private val tokenService: TekTokenService
 ) : TekCrudEntityService<TekProfile, Long, TekProfileRepository, ProfileForm>(
     QTekProfile.tekProfile.id.stringValue(),
@@ -56,11 +56,18 @@ class TekProfileServiceProvider(
 
     @Transactional
     override fun delete(id: Long) {
-        val profile = repository.findOne(QTekProfile.tekProfile.id.eq(id))
-        super.delete(id)
-        profile.orNull()?.let {
-            tekUserService.removeUserProfileAndInvalidate(it)
-        }
+        log.debug("Accessing $repository with id:$id")
+        repository.findOne(QTekProfile.tekProfile.id.eq(id)).orNull()?.let { profile ->
+            repository.deleteProfileRolesByProfile(profile.id!!)
+            userService.removeUserProfileAndInvalidate(profile)
+            repository.delete(profile)
+        } ?: throw TekResourceNotFoundException(
+            data = ServiceExceptionData(
+                source = coreMessageSource,
+                message = errorNotFoundResource,
+                parameters = arrayOf(id.toString())
+            )
+        )
     }
 
     @Transactional

@@ -14,7 +14,7 @@ interface TekUserService {
 
     fun update(properties: Map<String, Any?>, id: Long): TekUser
 
-    fun delete(id: Long): Long
+    fun delete(id: Long)
 
     fun removeUserProfileAndInvalidate(profile: TekProfile)
 }

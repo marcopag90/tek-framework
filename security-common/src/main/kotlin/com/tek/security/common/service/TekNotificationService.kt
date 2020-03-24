@@ -12,5 +12,5 @@ interface TekNotificationService {
 
     fun setNotificationRead(id: Long): Boolean
 
-    fun delete(id: Long): Long
+    fun delete(id: Long)
 }

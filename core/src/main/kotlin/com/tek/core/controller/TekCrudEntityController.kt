@@ -1,6 +1,7 @@
 package com.tek.core.controller
 
 import com.querydsl.core.types.Predicate
+import com.tek.core.TekBaseResponse
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.form.AbstractForm
@@ -84,10 +85,10 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
      * Function to execute a _DELETE_ request for the given [E] via [ICrudEntityService]
      */
     @DeleteMapping("/delete/{id}")
-    override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Unit>> {
+    override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekBaseResponse> {
         log.debug("Executing [DELETE] method")
         return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, service.delete(id))
+            TekBaseResponse(HttpStatus.OK, service.delete(id))
         )
     }
 

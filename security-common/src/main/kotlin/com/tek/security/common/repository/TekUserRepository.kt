@@ -35,5 +35,9 @@ interface TekUserRepository : JpaRepository<TekUser, Long>, QuerydslPredicateExe
 
     @Modifying
     @Query(value = "delete from users_profiles where profile_id = ?1", nativeQuery = true)
-    fun deleteUserProfile(profileId: Long)
+    fun deleteUserProfilesByProfile(profileId: Long)
+
+    @Modifying
+    @Query(value = "delete from users_profiles where user_id = ?1", nativeQuery = true)
+    fun deleteUserProfilesByUser(userId: Long)
 }

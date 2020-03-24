@@ -1,6 +1,7 @@
 package com.tek.security.common.controller
 
 import com.querydsl.core.types.Predicate
+import com.tek.core.TekBaseResponse
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.controller.TekCrudEntityController
@@ -48,7 +49,7 @@ abstract class TekAuthorizedCrudEntityController<E, ID, S : ICrudEntityService<E
 
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
-    override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<Unit>> {
+    override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekBaseResponse> {
         return super.delete(id)
     }
 

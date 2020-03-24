@@ -68,7 +68,7 @@ class TekUserController(
 
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
-    fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Long>> {
+    fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Unit>> {
         log.debug("Executing [DELETE] method")
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, tekUserService.delete(id))

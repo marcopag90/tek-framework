@@ -12,10 +12,10 @@ import com.tek.security.common.model.QTekProfile
 import com.tek.security.common.model.QTekUser
 import com.tek.security.common.model.TekProfile
 import com.tek.security.common.model.TekUser
+import com.tek.security.common.repository.TekPreferencesRepository
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
-import com.tek.security.common.service.provider.TekProfileServiceProvider
 import com.tek.security.common.service.TekTokenService
 import com.tek.security.common.service.TekUserService
 import org.springframework.beans.factory.annotation.Qualifier
@@ -31,7 +31,8 @@ import javax.validation.Validator
 @Service
 class TekUserServiceImpl(
     private val authService: TekAuthService,
-    private val userRepository: TekUserRepository,
+    private val repository: TekUserRepository,
+    private val preferencesRepository: TekPreferencesRepository,
     private val profileRepository: TekProfileRepository,
     @Qualifier("security_validator") private val validator: Validator,
     private val coreMessageSource: CoreMessageSource,
@@ -42,15 +43,15 @@ class TekUserServiceImpl(
     private val log by LoggerDelegate()
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<TekUser> {
-        log.debug("Fetching data from repository: $userRepository")
+        log.debug("Fetching data from repository: $repository")
         predicate?.let {
-            return userRepository.findAll(predicate, pageable)
-        } ?: return userRepository.findAll(pageable)
+            return repository.findAll(predicate, pageable)
+        } ?: return repository.findAll(pageable)
     }
 
     override fun findById(id: Long): TekUser {
-        log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-        userRepository.findById(id).orNull()?.let { return it }
+        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        repository.findById(id).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
                     source = coreMessageSource,
@@ -63,8 +64,8 @@ class TekUserServiceImpl(
     @Suppress("unchecked_cast")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
-        log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-        val optional = userRepository.findById(id)
+        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        val optional = repository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -93,7 +94,7 @@ class TekUserServiceImpl(
                 )
             }
             if (userToUpdate.username != username)
-                userRepository.existsByUsername(username).isTrue {
+                repository.existsByUsername(username).isTrue {
                     throw TekServiceException(
                         data = ServiceExceptionData(
                             source = securityMessageSource,
@@ -145,7 +146,7 @@ class TekUserServiceImpl(
                 )
             }
             if (userToUpdate.email != email)
-                userRepository.existsByEmail(email).isTrue {
+                repository.existsByEmail(email).isTrue {
                     throw TekServiceException(
                         data = ServiceExceptionData(
                             source = securityMessageSource,
@@ -210,17 +211,18 @@ class TekUserServiceImpl(
                 violationMap[v.propertyPath.toList()[0].name] = v.message
             throw TekValidationException(violationMap)
         }
-        return userRepository.save(userToUpdate)
+        return repository.save(userToUpdate)
     }
 
     @Transactional
-    override fun delete(id: Long): Long {
-        log.debug("Accessing $userRepository for entity: ${TekUser::class.java.name} with id:$id")
-        userRepository.findById(id).orNull()?.let {
-            userRepository.deleteById(it.id!!)
-            log.info("User deleted! Deleting user oauth tokens...")
-            tokenService.invalidateUserTokens(it.username!!)
-            return it.id!!
+    override fun delete(id: Long) {
+        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        repository.findById(id).orNull()?.let { user ->
+            repository.deleteUserProfilesByUser(user.id!!)
+            user.preference?.let { preferencesRepository.delete(it) }
+            repository.deleteById(user.id!!)
+            log.info("User deleted! Revoking [${user.username}] tokens...")
+            tokenService.invalidateUserTokens(user.username!!)
         } ?: throw TekResourceNotFoundException(
             data = ServiceExceptionData(
                 source = coreMessageSource,
@@ -232,10 +234,10 @@ class TekUserServiceImpl(
 
     @Transactional
     override fun removeUserProfileAndInvalidate(profile: TekProfile) {
-        userRepository.findAll(QTekUser.tekUser.profiles.contains(profile)).forEach { user ->
+        repository.findAll(QTekUser.tekUser.profiles.contains(profile)).forEach { user ->
             user.profiles.remove(profile)
-            userRepository.save(user)
-            userRepository.deleteUserProfile(profile.id!!)
+            repository.save(user)
+            repository.deleteUserProfilesByProfile(profile.id!!)
             tokenService.invalidateUserTokens(user.username!!)
         }
     }

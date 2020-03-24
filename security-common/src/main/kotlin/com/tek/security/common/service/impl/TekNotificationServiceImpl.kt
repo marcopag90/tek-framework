@@ -69,7 +69,7 @@ class TekNotificationServiceImpl(
     }
 
     @Transactional
-    override fun delete(id: Long): Long {
+    override fun delete(id: Long) {
         log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
         val optional = notificationRepository.findById(id)
         if (!optional.isPresent)
@@ -81,6 +81,5 @@ class TekNotificationServiceImpl(
                 )
             )
         notificationRepository.deleteById(id)
-        return id
     }
 }

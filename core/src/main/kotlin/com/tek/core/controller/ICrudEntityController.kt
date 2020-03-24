@@ -1,6 +1,7 @@
 package com.tek.core.controller
 
 import com.querydsl.core.types.Predicate
+import com.tek.core.TekBaseResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.TekPageResponse
 import org.springframework.data.domain.Pageable
@@ -16,5 +17,5 @@ interface ICrudEntityController<E, ID, DTO> {
 
     fun update(form: DTO, id: ID): ResponseEntity<TekResponseEntity<E>>
 
-    fun delete(id: ID): ResponseEntity<TekResponseEntity<Unit>>
+    fun delete(id: ID): ResponseEntity<TekBaseResponse>
 }

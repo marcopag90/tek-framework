@@ -39,7 +39,7 @@ class TekNotificationController(
         @ApiIgnore pageable: Pageable,
         @RequestParam("isRead", required = false) isRead: Boolean?
     ): ResponseEntity<TekPageResponse<TekNotification>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekPageResponse(
                 HttpStatus.OK,
@@ -51,7 +51,7 @@ class TekNotificationController(
     @PreAuthorize("this.updateAuthorized")
     @PostMapping("/isRead/{id}")
     fun setNotificationRead(@PathVariable("id") id: Long): ResponseEntity<TekBaseResponse> {
-        log.debug("Executing [POST] method")
+        log.debug("Executing method: {}", RequestMethod.POST)
         return ResponseEntity.ok(
             TekBaseResponse(HttpStatus.OK, tekNotificationService.setNotificationRead(id))
         )
@@ -60,7 +60,7 @@ class TekNotificationController(
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Long): ResponseEntity<TekBaseResponse> {
-        log.debug("Executing [DELETE] method")
+        log.debug("Executing method: {}", RequestMethod.DELETE)
         return ResponseEntity.ok(
             TekBaseResponse(HttpStatus.OK, tekNotificationService.delete(id))
         )

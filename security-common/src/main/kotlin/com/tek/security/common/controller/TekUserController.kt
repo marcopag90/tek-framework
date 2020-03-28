@@ -42,7 +42,7 @@ class TekUserController(
     @GetMapping("/list")
     @ApiPageable
     fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<TekUser>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekPageResponse(HttpStatus.OK, tekUserService.list(pageable, predicate))
         )
@@ -51,7 +51,7 @@ class TekUserController(
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/read/{id}")
     fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, tekUserService.findById(id))
         )
@@ -60,7 +60,7 @@ class TekUserController(
     @PreAuthorize("this.updateAuthorized")
     @PatchMapping("/update/{id}")
     fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
-        log.debug("Executing [PATCH] method")
+        log.debug("Executing method: {}", RequestMethod.PATCH)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, tekUserService.update(properties, id))
         )
@@ -69,7 +69,7 @@ class TekUserController(
     @PreAuthorize("this.deleteAuthorized")
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Unit>> {
-        log.debug("Executing [DELETE] method")
+        log.debug("Executing method: {}", RequestMethod.DELETE)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, tekUserService.delete(id))
         )

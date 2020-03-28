@@ -18,7 +18,6 @@ import javax.validation.Valid
 /**
  * Extension of [TekCrudEntityController] to provide security at method access level
  */
-@Suppress("unused")
 abstract class TekAuthorizedCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>, DTO : AbstractForm>(
 ) : TekCrudEntityController<E, ID, S, DTO>() {
 

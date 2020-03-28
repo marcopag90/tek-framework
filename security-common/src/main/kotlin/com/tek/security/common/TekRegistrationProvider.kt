@@ -5,6 +5,7 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
 import com.tek.core.i18n.CoreMessageSource
+import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
 import com.tek.core.util.orNull
@@ -31,7 +32,7 @@ abstract class TekRegistrationProvider(
     private val authService: TekAuthService
 ) {
 
-    protected val log: Logger = LoggerFactory.getLogger(TekRegistrationProvider::class.java)
+    protected val log by LoggerDelegate()
 
     @Autowired
     lateinit var coreMessageSource: CoreMessageSource
@@ -59,19 +60,19 @@ abstract class TekRegistrationProvider(
     @Transactional
     fun processRegistration(form: AbstractRegisterForm): TekUser {
         this.form = form
-        log.info("Processing user registration with data: $form...")
+        log.info("Processing user registration with data: {}...", form)
         isValidPassword()
         isUsernameAlreadyTaken()
         form.email?.let { form.email?.let { isEmailAlreadyTaken() } }
         isPasswordAcceptable()
         register(form)
         val user = getUserWithProfile()
-        log.info("User [${form.username}] registration completed!")
+        log.info("User {} registration completed!", form.username)
         return user
     }
 
     fun isPasswordAcceptable() {
-        log.info("Checking if given [password] is acceptable: ${form.password}...")
+        log.info("Checking if given [password] is acceptable: {}...", form.password)
         val (isAcceptable, constraintMessage) = authService.checkPasswordConstraints(
             form.username, form.email, form.password
         )
@@ -91,7 +92,7 @@ abstract class TekRegistrationProvider(
     abstract fun register(form: AbstractRegisterForm)
 
     private fun isValidPassword() {
-        log.info("Checking if given [password] is valid: ${form.password}...")
+        log.info("Checking if given [password] is valid: {}...", form.password)
         val message = securityMessageSource.getSecuritySource()
             .getMessage(
                 SecurityMessageSource.errorNotValidPassword,
@@ -105,7 +106,7 @@ abstract class TekRegistrationProvider(
     }
 
     private fun isUsernameAlreadyTaken() {
-        log.info("Checking if given [username] is taken: ${form.username}...")
+        log.info("Checking if given [username] is taken: {}...", form.username)
         userRepository.existsByUsername(form.username).isTrue {
             throw TekServiceException(
                 data = ServiceExceptionData(
@@ -120,7 +121,7 @@ abstract class TekRegistrationProvider(
     }
 
     private fun isEmailAlreadyTaken() {
-        log.info("Checking if given [email] is taken: ${form.email}...")
+        log.info("Checking if given [email] is taken: {}...", form.email)
         userRepository.existsByEmail(form.email!!).isTrue {
             throw TekServiceException(
                 data = ServiceExceptionData(
@@ -135,7 +136,7 @@ abstract class TekRegistrationProvider(
     }
 
     private fun getUserWithProfile(): TekUser {
-        log.info("Adding default [user profile]: $registerProfile...")
+        log.info("Adding default [user profile]: {}...", registerProfile)
         profileRepository.findByName(registerProfile).orNull()?.let { profile ->
             userRepository.findByUsername(form.username).orNull()?.let { user ->
                 user.profiles.add(profile)

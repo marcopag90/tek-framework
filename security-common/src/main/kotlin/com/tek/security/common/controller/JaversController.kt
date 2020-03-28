@@ -33,7 +33,7 @@ class JaversController(
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list/entities")
     fun getAuditableEntities(): ResponseEntity<TekResponseEntity<List<String>>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, javersService.getAuditableEntities())
         )
@@ -47,7 +47,7 @@ class JaversController(
         @RequestParam("limit", required = false) limit: Int?,
         params: JaversQEntityParam
     ): ResponseEntity<TekResponseEntity<List<JaversEntityListChanges>>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekResponseEntity(
                 HttpStatus.OK,
@@ -62,7 +62,7 @@ class JaversController(
         @PathVariable("entity") entity: String,
         @PathVariable("id") id: BigDecimal
     ): ResponseEntity<TekResponseEntity<List<JaversEntityChanges>>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, javersService.queryChangesByCommit(entity, id))
         )

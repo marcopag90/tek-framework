@@ -24,14 +24,19 @@ class TekRoleServiceImpl(
     private val log by LoggerDelegate()
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<TekRole> {
-        log.debug("Fetching data from repository: $roleRepository")
+        log.debug("Fetching data from repository: {}", roleRepository)
         predicate?.let {
             return roleRepository.findAll(predicate, pageable)
         } ?: return roleRepository.findAll(pageable)
     }
 
     override fun readOne(name: String): TekRole {
-        log.debug("Accessing $roleRepository for entity: ${TekRole::class.java.name} with name: [$name]")
+        log.debug(
+            "Accessing {} for entity: {} with name: {}",
+            roleRepository,
+            TekRole::class.java.name,
+            name
+        )
         roleRepository.findByName(RoleName.valueOf(name)).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(

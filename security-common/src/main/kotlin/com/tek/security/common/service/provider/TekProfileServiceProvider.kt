@@ -16,7 +16,6 @@ import com.tek.security.common.service.TekUserService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Suppress("unused")
 @Service
 class TekProfileServiceProvider(
     override val repository: TekProfileRepository,
@@ -29,7 +28,7 @@ class TekProfileServiceProvider(
 ) {
 
     fun readOneByName(name: String): TekProfile {
-        log.debug("Accessing $repository with name:$name")
+        log.debug("Accessing {} with name: {}", repository, name)
         repository.findByName(name).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -56,7 +55,7 @@ class TekProfileServiceProvider(
 
     @Transactional
     override fun delete(id: Long) {
-        log.debug("Accessing $repository with id:$id")
+        log.debug("Accessing {} with id: {}", repository, id)
         repository.findOne(QTekProfile.tekProfile.id.eq(id)).orNull()?.let { profile ->
             repository.deleteProfileRolesByProfile(profile.id!!)
             userService.removeUserProfileAndInvalidate(profile)

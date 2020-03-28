@@ -60,7 +60,7 @@ class OAuthServer(
 
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
 
-        log.info("Security type: $securityType")
+        log.info("Security type: {}", securityType)
 
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token

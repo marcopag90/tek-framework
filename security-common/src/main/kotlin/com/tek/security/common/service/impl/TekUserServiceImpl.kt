@@ -43,14 +43,19 @@ class TekUserServiceImpl(
     private val log by LoggerDelegate()
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<TekUser> {
-        log.debug("Fetching data from repository: $repository")
+        log.debug("Fetching data from repository: {}", repository)
         predicate?.let {
             return repository.findAll(predicate, pageable)
         } ?: return repository.findAll(pageable)
     }
 
     override fun findById(id: Long): TekUser {
-        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        log.debug(
+            "Accessing {} for entity: {} with id:{}",
+            repository,
+            TekUser::class.java.name,
+            id
+        )
         repository.findById(id).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -64,7 +69,12 @@ class TekUserServiceImpl(
     @Suppress("unchecked_cast")
     @Transactional
     override fun update(properties: Map<String, Any?>, id: Long): TekUser {
-        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        log.debug(
+            "Accessing {} for entity: {} with id:{}",
+            repository,
+            TekUser::class.java.name,
+            id
+        )
         val optional = repository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
@@ -216,12 +226,17 @@ class TekUserServiceImpl(
 
     @Transactional
     override fun delete(id: Long) {
-        log.debug("Accessing $repository for entity: ${TekUser::class.java.name} with id:$id")
+        log.debug(
+            "Accessing {} for entity: {} with id:{}",
+            repository,
+            TekUser::class.java.name,
+            id
+        )
         repository.findById(id).orNull()?.let { user ->
             repository.deleteUserProfilesByUser(user.id!!)
             user.preference?.let { preferencesRepository.delete(it) }
             repository.deleteById(user.id!!)
-            log.info("User deleted! Revoking [${user.username}] tokens...")
+            log.info("User deleted! Revoking [{}] tokens...", user.username)
             tokenService.invalidateUserTokens(user.username!!)
         } ?: throw TekResourceNotFoundException(
             data = ServiceExceptionData(

@@ -32,7 +32,12 @@ class TekNotificationServiceImpl(
 
     @Transactional
     override fun saveNotification(content: String): TekNotification {
-        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with content: $content")
+        log.debug(
+            "Accessing {} for entity: {} with content: {}",
+            notificationRepository,
+            TekNotification::class.java.name,
+            content
+        )
         return notificationRepository.save(TekNotification(content))
     }
 
@@ -42,7 +47,7 @@ class TekNotificationServiceImpl(
     ): Page<TekNotification> {
         log.debug("Retrieving current user authentication")
         authService.getCurrentUser()?.let { userDetails ->
-            log.debug("User found: ${userDetails.username}")
+            log.debug("User found: {}", userDetails.username)
 
             userDetails.authorities.singleOrNull() { it.authority == RoleName.NOTIFICATION_READ.name }
                 ?: return Page.empty()
@@ -55,7 +60,12 @@ class TekNotificationServiceImpl(
 
     @Transactional
     override fun setNotificationRead(id: Long): Boolean {
-        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
+        log.debug(
+            "Accessing {} for entity: {} with id: {}",
+            notificationRepository,
+            TekNotification::class.java.name,
+            id
+        )
         val optional = notificationRepository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
@@ -70,7 +80,12 @@ class TekNotificationServiceImpl(
 
     @Transactional
     override fun delete(id: Long) {
-        log.debug("Accessing $notificationRepository for entity: ${TekNotification::class.java.name} with id: $id")
+        log.debug(
+            "Accessing {} for entity: {} with id: {}",
+            notificationRepository,
+            notificationRepository,
+            id
+        )
         val optional = notificationRepository.findById(id)
         if (!optional.isPresent)
             throw TekResourceNotFoundException(

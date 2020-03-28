@@ -1,19 +1,9 @@
 package com.tek.security.common
 
-import com.tek.core.controller.LOCALE_PATH
+import com.tek.core.LOCALE_PATH
 
 /**Class sharing constants among all Spring Security configurations*/
 object TekSecurityPattern {
-
-    const val INDEX_PATH = "/"
-    const val REGISTER_PATH = "/register"
-    const val PROFILE_PATH = "/profile"
-    const val ROLE_PATH = "/role"
-    const val USER_PATH = "/user"
-    const val PREFERENCES_PATH = "/preferences"
-    const val JAVERS_PATH = "/javers"
-    const val WEBAUDIT_PATH = "/webaudit" //TODO web audit controller
-    const val NOTIFICATION_PATH = "/notification"
 
     fun unauthenticatedPatterns(): Array<String> {
         return arrayOf(

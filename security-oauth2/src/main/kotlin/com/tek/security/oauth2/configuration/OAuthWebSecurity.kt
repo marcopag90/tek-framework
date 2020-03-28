@@ -1,5 +1,6 @@
 package com.tek.security.oauth2.configuration
 
+import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.service.TekAuthService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -11,22 +12,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
 @Configuration
-@ConditionalOnProperty(
-    prefix = "tek.security.module",
-    name = ["type"],
-    havingValue = "oauth2"
-)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class OAuthWebSecurity(
     private val tekAuthService: TekAuthService
 ) : WebSecurityConfigurerAdapter() {
 
+    companion object {
+        private val log by LoggerDelegate()
+    }
+
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager =
         super.authenticationManagerBean()
 
     override fun configure(auth: AuthenticationManagerBuilder) {
+        log.info("Initializing Tek Web Security...")
         auth.userDetailsService(tekAuthService)
             .passwordEncoder(tekAuthService.passwordEncoder())
     }

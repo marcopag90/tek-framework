@@ -5,7 +5,7 @@ import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.ROLE_PATH
+import com.tek.security.common.ROLE_PATH
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekRole
 import com.tek.security.common.service.TekRoleService

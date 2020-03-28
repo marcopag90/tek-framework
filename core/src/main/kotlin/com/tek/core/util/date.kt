@@ -31,6 +31,6 @@ class DateStringParser {
             dateString.matches(enRegSlash) -> engRegSlashFormat().parse(dateString)
             dateString.matches(itRegDash) -> itRegDashFormat().parse(dateString)
             dateString.matches(itRegSlash) -> itRegSlashFormat().parse(dateString)
-            else -> TODO()
+            else -> throw NotImplementedError()
         }
 }

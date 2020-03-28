@@ -4,11 +4,7 @@ import com.google.common.base.Predicates
 import com.google.common.collect.Lists
 import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
-import com.tek.security.common.TekSecurityPattern.JAVERS_PATH
-import com.tek.security.common.TekSecurityPattern.ROLE_PATH
-import com.tek.security.common.TekSecurityPattern.PROFILE_PATH
-import com.tek.security.common.TekSecurityPattern.USER_PATH
-import com.tek.security.common.TekSecurityPattern.WEBAUDIT_PATH
+import com.tek.security.common.*
 import com.tek.security.common.util.antPath
 import com.tek.security.oauth2.configuration.OAuthWebSecurity
 import org.slf4j.LoggerFactory

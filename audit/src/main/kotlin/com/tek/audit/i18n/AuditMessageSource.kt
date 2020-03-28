@@ -1,12 +1,12 @@
 package com.tek.audit.i18n
 
+import com.tek.audit.AUDIT_MESSAGES
 import com.tek.core.i18n.TekMessageSource
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
-@Suppress("unused")
 @Configuration
 class AuditMessageSource : TekMessageSource {
 
@@ -15,7 +15,7 @@ class AuditMessageSource : TekMessageSource {
     @Bean
     fun getAuditSource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasenames("classpath:/i18n/audit_messages")
+            setBasenames(AUDIT_MESSAGES)
             setDefaultEncoding("UTF-8")
         }
 

@@ -3,7 +3,7 @@ package com.tek.security.common.controller
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
-import com.tek.security.common.TekSecurityPattern.PROFILE_PATH
+import com.tek.security.common.PROFILE_PATH
 import com.tek.security.common.form.ProfileForm
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekProfile
@@ -27,6 +27,11 @@ import javax.validation.Valid
 class TekProfileController(
     private val profileRepository: TekProfileRepository
 ) : TekAuthorizedCrudEntityController<TekProfile, Long, TekProfileServiceProvider, ProfileForm>() {
+
+    override val createAuthorized get() = hasRole(RoleName.PROFILE_CREATE)
+    override val readAuthorized get() = hasRole(RoleName.PROFILE_READ)
+    override val updateAuthorized get() = hasRole(RoleName.PROFILE_UPDATE)
+    override val deleteAuthorized get() = hasRole(RoleName.PROFILE_DELETE)
 
     override fun list(
         pageable: Pageable,
@@ -54,10 +59,4 @@ class TekProfileController(
             TekResponseEntity(HttpStatus.OK, service.readOneByName(name))
         )
     }
-
-    override val createAuthorized get() = hasRole(RoleName.PROFILE_CREATE)
-    override val readAuthorized get() = hasRole(RoleName.PROFILE_READ)
-    override val updateAuthorized get() = hasRole(RoleName.PROFILE_UPDATE)
-    override val deleteAuthorized get() = hasRole(RoleName.PROFILE_DELETE)
-
 }

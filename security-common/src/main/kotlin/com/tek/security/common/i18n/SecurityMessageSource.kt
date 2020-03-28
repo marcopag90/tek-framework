@@ -1,6 +1,8 @@
 package com.tek.security.common.i18n
 
 import com.tek.core.i18n.TekMessageSource
+import com.tek.security.common.SECURITY_MESSAGES
+import com.tek.security.common.SECURITY_VALIDATOR
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,11 +17,11 @@ class SecurityMessageSource : TekMessageSource {
     @Bean
     fun getSecuritySource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasenames("classpath:/i18n/security_messages")
+            setBasenames(SECURITY_MESSAGES)
             setDefaultEncoding("UTF-8")
         }
 
-    @Bean(name = ["security_validator"])
+    @Bean(name = [SECURITY_VALIDATOR])
     fun securityValidator(): LocalValidatorFactoryBean =
         LocalValidatorFactoryBean().apply {
             setValidationMessageSource(getSecuritySource())

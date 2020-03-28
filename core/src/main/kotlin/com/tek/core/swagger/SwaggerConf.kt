@@ -1,9 +1,8 @@
 package com.tek.core.swagger
 
+import com.tek.core.TEK_MODULE_SECURITY
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.core.util.ConditionalOnMissingProperty
-import com.tek.core.util.LoggerDelegate
-import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.bind.annotation.RestController
@@ -20,14 +19,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
  */
 @Configuration
 @EnableSwagger2
-@ConditionalOnMissingProperty(value = "tek.security.module.type")
+@ConditionalOnMissingProperty(value = TEK_MODULE_SECURITY)
 class SwaggerConf(
     private val swaggerApiInfo: SwaggerApiInfo
 ) {
 
     @Bean
     fun api(): Docket {
-
         return Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors.withClassAnnotation(RestController::class.java))

@@ -1,5 +1,6 @@
 package com.tek.core.i18n
 
+import com.tek.core.CORE_MESSAGES
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,7 +14,7 @@ class CoreMessageSource : TekMessageSource {
     @Bean
     fun getCoreMessageSource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
-            setBasename("classpath:/i18n/core_messages")
+            setBasename(CORE_MESSAGES)
             setDefaultEncoding("UTF-8")
         }
 

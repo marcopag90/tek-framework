@@ -1,5 +1,6 @@
 package com.tek.core.controller
 
+import com.tek.core.LOCALE_PATH
 import com.tek.core.TekBaseResponse
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.i18n.CoreMessageSource.Companion.localeLang
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-
-const val LOCALE_PATH = "/locale"
 
 @Suppress("unused")
 @Api(tags = ["Locale"])

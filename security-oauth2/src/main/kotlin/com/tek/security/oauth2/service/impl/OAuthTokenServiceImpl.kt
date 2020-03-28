@@ -20,9 +20,12 @@ class OAuthTokenServiceImpl(
 
     @Transactional
     override fun invalidateUserTokens(username: String) {
-        log.info("Retrieving user oauth token with username: [$username] ...")
+        log.info("Retrieving user oauth token with username: [{}] ...", username)
         tokenStore.findTokensByUserName(username)?.forEach { accessToken ->
-            log.info("Revoking user access token and refresh token with id: [${accessToken.value}] ...")
+            log.info(
+                "Revoking user access token and refresh token with id: [{}] ...",
+                accessToken.value
+            )
             consumerTokenServices.revokeToken(accessToken.value)
         }
     }

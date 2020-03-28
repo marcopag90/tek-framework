@@ -15,8 +15,6 @@ import com.tek.security.common.model.TekUser
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekUserRepository
 import com.tek.security.common.service.TekAuthService
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.i18n.LocaleContextHolder
@@ -48,13 +46,13 @@ abstract class TekRegistrationProvider(
     /**
      * Provides a default registration profile for the user
      */
-    @Value("\${tek.security.module.registerProfile}")
+    @Value(SECURITY_REGISTER_PROFILE)
     private lateinit var registerProfile: String
 
     /**
      * Provides a password expiration for the user
      */
-    @Value("\${tek.security.module.passwordExpiration}")
+    @Value(SECURITY_PSW_EXPIRATION)
     lateinit var passwordExpiration: String
 
     @Transactional

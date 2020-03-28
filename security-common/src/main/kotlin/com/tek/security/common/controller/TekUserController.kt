@@ -5,7 +5,7 @@ import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.USER_PATH
+import com.tek.security.common.USER_PATH
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.service.TekUserService
@@ -31,11 +31,8 @@ class TekUserController(
     private val log by LoggerDelegate()
 
     val createAuthorized get() = hasRole(RoleName.USER_CREATE)
-
     val readAuthorized get() = hasRole(RoleName.USER_READ)
-
     val updateAuthorized get() = hasRole(RoleName.USER_UPDATE)
-
     val deleteAuthorized get() = hasRole(RoleName.USER_DELETE)
 
     @PreAuthorize("this.readAuthorized")

@@ -5,10 +5,7 @@ import com.tek.security.common.service.TekAuthService
 import com.tek.security.common.util.hasAuthority
 import com.tek.security.common.util.isAnonymous
 import com.tek.security.oauth2.TekOAuthProperties
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -25,22 +22,15 @@ import javax.sql.DataSource
  *
  * to manage clientId and token validation
  */
-@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @EnableAuthorizationServer
 class OAuthServer(
     private val datasource: DataSource,
-    private val context: ApplicationContext,
     private val authenticationManager: AuthenticationManager,
     private val tekAuthService: TekAuthService,
     private val properties: TekOAuthProperties
 ) : AuthorizationServerConfigurerAdapter() {
-
-    private val log = LoggerFactory.getLogger(OAuthServer::class.java)
-
-    @Value("\${tek.security.module.type}")
-    private lateinit var securityType: String
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)
@@ -59,9 +49,6 @@ class OAuthServer(
     }
 
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
-
-        log.info("Security type: {}", securityType)
-
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
             .tokenKeyAccess(isAnonymous().or(hasAuthority(properties.client.authority)))

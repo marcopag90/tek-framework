@@ -3,12 +3,12 @@ package com.tek.core.configuration
 import com.tek.core.SpringProfile.DEVELOPMENT
 import com.tek.core.SpringProfile.PRODUCTION
 import com.tek.core.SpringProfile.TEST
+import com.tek.core.TEK_CORE_CONFIGURATION
 import com.tek.core.TekModuleConfiguration
 import com.tek.core.util.LoggerDelegate
 import org.springframework.context.annotation.Configuration
 import javax.naming.ConfigurationException
 
-const val TEK_CORE_CONFIGURATION = "TekCoreConfiguration"
 
 /**
  * Core Module Configuration to check

@@ -1,6 +1,6 @@
 package com.tek.controller
 
-import com.tek.security.common.TekSecurityPattern.INDEX_PATH
+import com.tek.security.common.INDEX_PATH
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping

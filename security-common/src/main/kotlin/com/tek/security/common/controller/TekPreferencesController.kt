@@ -2,7 +2,7 @@ package com.tek.security.common.controller
 
 import com.tek.core.TekBaseResponse
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.PREFERENCES_PATH
+import com.tek.security.common.PREFERENCES_PATH
 import com.tek.security.common.TekUserDetails
 import com.tek.security.common.service.TekPreferenceService
 import io.swagger.annotations.Api

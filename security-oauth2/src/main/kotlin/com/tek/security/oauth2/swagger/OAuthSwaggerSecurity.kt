@@ -2,9 +2,9 @@ package com.tek.security.oauth2.swagger
 
 import com.google.common.base.Predicates
 import com.google.common.collect.Lists
+import com.tek.security.oauth2.SECURITY_SCHEME_NAME
 import com.tek.security.oauth2.TekOAuthProperties
 import com.tek.security.oauth2.configuration.OAuthWebSecurity
-import com.tek.security.oauth2.swagger.OAuthSwaggerSecurity.Parameters.SECURITY_SCHEME_NAME
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,16 +14,11 @@ import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.swagger.web.SecurityConfiguration
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder
 
-@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 class OAuthSwaggerSecurity(
     private val properties: TekOAuthProperties
 ) {
-
-    object Parameters {
-        const val SECURITY_SCHEME_NAME = "Spring_OAuth2"
-    }
 
     @Bean
     fun securityInfo(): SecurityConfiguration =

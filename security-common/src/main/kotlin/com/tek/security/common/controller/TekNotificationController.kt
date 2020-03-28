@@ -4,7 +4,7 @@ import com.tek.core.TekBaseResponse
 import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.NOTIFICATION_PATH
+import com.tek.security.common.NOTIFICATION_PATH
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekNotification
 import com.tek.security.common.service.TekNotificationService

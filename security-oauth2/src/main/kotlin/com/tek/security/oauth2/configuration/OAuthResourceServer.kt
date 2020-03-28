@@ -1,6 +1,7 @@
 package com.tek.security.oauth2.configuration
 
 import com.tek.core.SpringProfile
+import com.tek.core.util.LoggerDelegate
 import com.tek.core.util.unreachableCode
 import com.tek.security.common.TekSecurityPattern.clientResources
 import com.tek.security.common.TekSecurityPattern.nebularResources
@@ -24,7 +25,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  *
  * to manage access to server resources
  */
-@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
 @EnableResourceServer
@@ -34,6 +34,10 @@ class OAuthResourceServer(
     private val accessDeniedHandler: OAuth2AccessDeniedHandler,
     private val environment: Environment
 ) : ResourceServerConfigurerAdapter() {
+
+    companion object {
+        private val log by LoggerDelegate()
+    }
 
     override fun configure(resources: ResourceServerSecurityConfigurer) {
         resources
@@ -57,6 +61,7 @@ class OAuthResourceServer(
     }
 
     fun configureDevelopmentSecurity(http: HttpSecurity) {
+        log.info("Configuring Tek security with profile: {}", SpringProfile.DEVELOPMENT)
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()
@@ -79,6 +84,7 @@ class OAuthResourceServer(
     }
 
     fun configureProdSecurity(http: HttpSecurity) {
+        log.info("Configuring security with profile: {}", SpringProfile.PRODUCTION)
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()

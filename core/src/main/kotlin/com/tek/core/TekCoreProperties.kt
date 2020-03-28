@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 
 @Configuration
-@ConfigurationProperties(prefix = "tek.core.module")
+@ConfigurationProperties(prefix = TEK_MODULE_CORE)
 class TekCoreProperties {
     val cors: TekCorsProperties = TekCorsProperties()
     val runner: TekRunnerProperties = TekRunnerProperties()

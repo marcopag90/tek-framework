@@ -84,9 +84,9 @@ security:
         resource.filter-order: 3
 
 # Tek Modules Configurations
-tek:
+tek.module:
     # Tek-Core
-    core.module:
+    core:
         # Data Runner Configuration
         runner.action: ${RUNNER_ACTION:CREATE}
         cors:
@@ -97,9 +97,7 @@ tek:
         locale:
             type: SESSION
     # Tek-Security
-    security.module:
-        # basic, oauth2
-        type: oauth2
+    security:
         oauth2:
             # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
             accessTokenHost: http://localhost:8080

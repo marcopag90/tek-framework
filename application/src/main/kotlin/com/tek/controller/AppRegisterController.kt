@@ -2,7 +2,7 @@ package com.tek.controller
 
 import com.tek.core.TekBaseResponse
 import com.tek.form.AppRegisterForm
-import com.tek.security.common.TekSecurityPattern
+import com.tek.security.common.REGISTER_PATH
 import com.tek.service.AppRegisterService
 import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
@@ -18,7 +18,7 @@ import javax.validation.Valid
 @Api(tags = ["Register"])
 @RestController
 @RequestMapping(
-    path = [TekSecurityPattern.REGISTER_PATH],
+    path = [REGISTER_PATH],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 class AppRegisterController(

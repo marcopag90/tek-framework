@@ -1,10 +1,11 @@
 package com.tek.core.swagger
 
+import com.tek.core.TEK_SWAGGER_API_INFO
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "tek.swagger.api.info")
+@ConfigurationProperties(prefix = TEK_SWAGGER_API_INFO)
 class SwaggerApiInfoProperties {
 
     var title: String = "Tek Framework"

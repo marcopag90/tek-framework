@@ -9,10 +9,9 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 import kotlin.properties.Delegates
 
-@Suppress("unused")
 @Configuration
 @ConditionalOnBean(OAuthWebSecurity::class)
-@ConfigurationProperties(prefix = "tek.security.module.oauth2")
+@ConfigurationProperties(prefix = TEK_OAUTH_MODULE)
 class TekOAuthProperties {
     val client = ClientDetailsProperties()
     var accessTokenHost: String by Delegates.notNull()

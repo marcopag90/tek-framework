@@ -1,5 +1,9 @@
 package com.tek.security.common.audit
 
+import com.tek.security.common.AUTHOR_ID
+import com.tek.security.common.NOT_AUTHENTICATED
+import com.tek.security.common.NOT_AVAILABLE
+import com.tek.security.common.REMOTE_ADDRESS
 import org.javers.spring.auditable.CommitPropertiesProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,11 +28,6 @@ class JaversAuthorConf(
     private val servletRequestHolder: ServletRequestHolder
 ) {
 
-    companion object {
-        const val REMOTE_ADDRESS = "remote-address"
-        const val AUTHOR_ID = "author-id"
-    }
-
     @Bean
     fun commitPropertiesProvider(): CommitPropertiesProvider {
 
@@ -45,14 +44,14 @@ class JaversAuthorConf(
 
             private fun getRemoteAddress(): String {
                 val requestAttributes = servletRequestHolder.getRequestAttributes() as ServletRequestAttributes?
-                var remoteAddress = "unavailable"
+                var remoteAddress = NOT_AVAILABLE
                 if (requestAttributes?.request?.remoteAddr != null)
                     remoteAddress = requestAttributes.request.remoteAddr
                 return remoteAddress
             }
 
             private fun getAuthorId(): String {
-                var authorId = "unauthenticated"
+                var authorId = NOT_AUTHENTICATED
                 if (auditorAware.currentAuditor.isPresent)
                     authorId = auditorAware.currentAuditor.get().toString()
                 return authorId

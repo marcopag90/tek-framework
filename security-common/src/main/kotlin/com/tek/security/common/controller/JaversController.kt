@@ -7,7 +7,7 @@ import com.tek.audit.javers.JaversQPage
 import com.tek.audit.service.JaversQService
 import com.tek.core.TekResponseEntity
 import com.tek.core.util.LoggerDelegate
-import com.tek.security.common.TekSecurityPattern.JAVERS_PATH
+import com.tek.security.common.JAVERS_PATH
 import com.tek.security.common.model.RoleName
 import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api

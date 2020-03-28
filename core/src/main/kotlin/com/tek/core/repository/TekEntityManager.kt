@@ -42,7 +42,7 @@ class TekEntityManager(
             Int::class -> id.toInt()
             Long::class -> id.toLong()
             BigDecimal::class -> id.toBigDecimal()
-            else -> TODO("Missing type implementation")
+            else -> NotImplementedError()
         }
     }
 

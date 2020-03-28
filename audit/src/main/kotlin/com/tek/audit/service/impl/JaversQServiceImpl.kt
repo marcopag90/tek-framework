@@ -80,8 +80,15 @@ class JaversQServiceImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun queryChangesByCommit(entityName: String, id: BigDecimal): List<JaversEntityChanges> {
-        log.debug("Performing [queryChangesByCommit] on entity: $entityName with the following commit id: $id")
+    override fun queryChangesByCommit(
+        entityName: String,
+        id: BigDecimal
+    ): List<JaversEntityChanges> {
+        log.debug(
+            "Performing [queryChangesByCommit] on entity: {} with the following commit id: {}",
+            entityName,
+            id
+        )
 
         val clazz = manager.getEntityClass(entityName)
         val jqlQuery =

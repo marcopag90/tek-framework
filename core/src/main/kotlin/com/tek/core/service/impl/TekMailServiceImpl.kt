@@ -16,7 +16,7 @@ class TekMailServiceImpl(
 
     override fun sendSimpleMessage(to: Array<String>, subject: String, text: String) {
 
-        log.debug("Sending email to: $${to.contentToString()}...")
+        log.debug("Sending email to: {}...", to.contentToString())
 
         SimpleMailMessage().apply {
             this.setTo(*to)

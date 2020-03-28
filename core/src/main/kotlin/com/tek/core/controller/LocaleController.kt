@@ -1,6 +1,7 @@
-package com.tek.core.i18n
+package com.tek.core.controller
 
 import com.tek.core.TekBaseResponse
+import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.i18n.CoreMessageSource.Companion.localeLang
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam

@@ -1,4 +1,4 @@
-package com.tek.core.web.qdsl
+package com.tek.core.querydsl
 
 import com.querydsl.core.types.Operator
 import com.querydsl.core.types.Ops

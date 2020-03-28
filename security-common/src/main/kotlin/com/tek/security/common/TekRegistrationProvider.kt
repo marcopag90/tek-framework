@@ -5,7 +5,6 @@ import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.exception.TekServiceException
 import com.tek.core.exception.TekValidationException
 import com.tek.core.i18n.CoreMessageSource
-import com.tek.core.util.TekProperty
 import com.tek.core.util.isFalse
 import com.tek.core.util.isTrue
 import com.tek.core.util.orNull
@@ -49,13 +48,13 @@ abstract class TekRegistrationProvider(
      * Provides a default registration profile for the user
      */
     @Value("\${tek.security.module.registerProfile}")
-    private lateinit var registerProfile: TekProperty
+    private lateinit var registerProfile: String
 
     /**
      * Provides a password expiration for the user
      */
     @Value("\${tek.security.module.passwordExpiration}")
-    lateinit var passwordExpiration: TekProperty
+    lateinit var passwordExpiration: String
 
     @Transactional
     fun processRegistration(form: AbstractRegisterForm): TekUser {

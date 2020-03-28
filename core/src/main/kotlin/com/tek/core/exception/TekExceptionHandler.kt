@@ -3,6 +3,7 @@ package com.tek.core.exception
 import com.tek.core.TekErrorResponse
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.i18n.CoreMessageSource.Companion.messageInternalServerError
+import com.tek.core.util.LoggerDelegate
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -31,7 +32,7 @@ class TekExceptionHandler(
     private val coreMessageSource: CoreMessageSource
 ) : ResponseEntityExceptionHandler() {
 
-    private val log: Logger = LoggerFactory.getLogger(TekExceptionHandler::class.java)
+    private val log by LoggerDelegate()
 
     /**
      * Function to give a standard response for a [HttpMessageNotReadableException]

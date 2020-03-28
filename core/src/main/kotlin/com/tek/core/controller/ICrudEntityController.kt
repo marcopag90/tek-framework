@@ -2,8 +2,8 @@ package com.tek.core.controller
 
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekBaseResponse
-import com.tek.core.TekResponseEntity
 import com.tek.core.TekPageResponse
+import com.tek.core.TekResponseEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 

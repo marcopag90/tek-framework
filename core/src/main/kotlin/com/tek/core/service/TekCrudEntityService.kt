@@ -38,7 +38,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
     protected lateinit var coreMessageSource: CoreMessageSource
 
     override fun list(pageable: Pageable, predicate: Predicate?): Page<E> {
-        log.debug("Fetching data from repository: $repository")
+        log.debug("Fetching data from repository: {}", repository)
 
         predicate?.let {
             return repository.findAll(predicate, pageable)
@@ -47,7 +47,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
 
     @Transactional
     override fun readOne(id: ID): E {
-        log.debug("Accessing $repository with id:$id")
+        log.debug("Accessing {} with id: {}", repository, id)
         repository.findOne(stringIdExpression.eq(id.toString())).orNull()?.let { return it }
             ?: throw TekResourceNotFoundException(
                 data = ServiceExceptionData(
@@ -60,13 +60,13 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
 
     @Transactional
     override fun update(properties: Map<String, Any?>, id: ID): E {
-        log.debug("Initializing properties lookup for : $properties")
+        log.debug("Initializing properties lookup for: {}", properties)
         if (properties.isNullOrEmpty()) throw TekServiceException(
             "At least one property must be set in properties: $properties",
             HttpStatus.NOT_ACCEPTABLE
         )
 
-        log.debug("Accessing $repository with id:$id")
+        log.debug("Accessing {} with id: {}", repository, id)
         val optional = repository.findOne(stringIdExpression.eq(id.toString()))
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
@@ -86,7 +86,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
             )
         }
 
-        log.debug("Filling properties in class instance: $instance")
+        log.debug("Filling properties in class instance: {}", instance)
         BeanUtils.populate(instance, properties)
 
         val violations = validator.validate(instance)
@@ -103,7 +103,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
 
     @Transactional
     override fun update(form: DTO, id: ID): E {
-        log.debug("Accessing $repository with id:$id")
+        log.debug("Accessing {}, with id: {}", repository, id)
         val optional = repository.findOne(stringIdExpression.eq(id.toString()))
         if (!optional.isPresent)
             throw TekResourceNotFoundException(
@@ -115,7 +115,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
             )
         val entityToUpdate = optional.get()
 
-        log.debug("Filling properties:$form in class instance:$entityToUpdate")
+        log.debug("Filling properties: {} in class instance: {}", form, entityToUpdate)
         BeanUtils.copyProperties(entityToUpdate, form)
         log.debug("Properties successfully loaded in class instance.")
 
@@ -124,7 +124,7 @@ abstract class TekCrudEntityService<E, ID, R, DTO : AbstractForm>(
 
     @Transactional
     override fun delete(id: ID) {
-        log.debug("Accessing $repository with id:$id")
+        log.debug("Accessing {} with id: {}", repository, id)
         repository.findOne(stringIdExpression.eq(id.toString())).orNull()?.let {
             repository.deleteById(id)
         } ?: throw TekResourceNotFoundException(

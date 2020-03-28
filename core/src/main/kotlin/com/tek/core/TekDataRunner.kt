@@ -1,8 +1,6 @@
-package com.tek.core.data
+package com.tek.core
 
-import com.tek.core.SpringProfile
-import com.tek.core.TekCoreProperties
-import com.tek.core.TekRunnerAction
+import com.tek.core.TekRunnerProperties.TekRunnerAction
 import com.tek.core.util.LabelEnum
 import com.tek.core.util.LoggerDelegate
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,14 +19,14 @@ abstract class TekDataRunner<Runner>(
     @Autowired
     lateinit var environment: Environment
 
+    private val log by LoggerDelegate()
+
+    private val action = coreProperties.runner.action
+
     private enum class Profile(override val label: String) : LabelEnum {
         DEVELOPMENT(SpringProfile.DEVELOPMENT),
         PRODUCTION(SpringProfile.PRODUCTION)
     }
-
-    private val log by LoggerDelegate()
-
-    private val action = coreProperties.runner.action
 
     override fun run(vararg args: String?) {
         environment.activeProfiles.map { profile ->
@@ -46,19 +44,28 @@ abstract class TekDataRunner<Runner>(
     }
 
     private fun logAndAct(profile: Profile) {
-        log.info("Executing [${runner.simpleName}] with profile: [${profile.name}] and action: [$action]")
+        log.info(
+            "Executing {} with profile: {} and action: {}",
+            runner.simpleName,
+            profile.name,
+            action
+        )
         return when (action) {
             TekRunnerAction.CREATE -> when (profile) {
                 Profile.DEVELOPMENT -> runDevelopmentMode()
                 Profile.PRODUCTION -> runProductionMode()
             }
-            TekRunnerAction.NONE -> log.info("Skipping [${runner.simpleName}]!")
+            TekRunnerAction.NONE -> log.info("Skipping ", runner.simpleName)
         }
     }
 
     abstract fun runDevelopmentMode()
 
     protected open fun runProductionMode() {
-        log.info("No configuration provided for profile [${Profile.PRODUCTION}]. Skipping ${runner.simpleName}!")
+        log.info(
+            "No configuration provided for profile {}. Skipping {}",
+            Profile.PRODUCTION,
+            runner.simpleName
+        )
     }
 }

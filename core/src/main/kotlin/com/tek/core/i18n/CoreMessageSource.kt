@@ -26,5 +26,4 @@ class CoreMessageSource : TekMessageSource {
 
         const val messageInternalServerError = "message.internal.server.error"
     }
-
 }

@@ -7,7 +7,7 @@ import javax.persistence.AttributeConverter
  * Italian Boolean Type Conversion.
  *
  * This implementation considers anything different from character "S" including **null**
- * as false
+ * as false.
  */
 class ItalianBoolean : AttributeConverter<Boolean, String> {
     

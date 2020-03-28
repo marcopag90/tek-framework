@@ -42,7 +42,7 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
     @GetMapping("/list")
     @ApiPageable
     override fun list(@ApiIgnore pageable: Pageable, predicate: Predicate?): ResponseEntity<TekPageResponse<E>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekPageResponse(HttpStatus.OK, service.list(pageable, predicate))
         )
@@ -53,7 +53,7 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
      */
     @GetMapping("/read/{id}")
     override fun read(@PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
-        log.debug("Executing [GET] method")
+        log.debug("Executing method: {}", RequestMethod.GET)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, service.readOne(id))
         )
@@ -64,7 +64,7 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
      */
     @PatchMapping("/update/{id}")
     override fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
-        log.debug("Executing [PATCH] method")
+        log.debug("Executing method: {}", RequestMethod.PATCH)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, service.update(properties, id))
         )
@@ -75,7 +75,7 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
      */
     @PostMapping("/update/{id}")
     override fun update(@RequestBody @Valid form: DTO, @PathVariable("id") id: ID): ResponseEntity<TekResponseEntity<E>> {
-        log.debug("Executing [PUT] method")
+        log.debug("Executing method: {}", RequestMethod.PUT)
         return ResponseEntity.ok(
             TekResponseEntity(HttpStatus.OK, service.update(form, id))
         )
@@ -86,11 +86,9 @@ abstract class TekCrudEntityController<E, ID, S : ICrudEntityService<E, ID, DTO>
      */
     @DeleteMapping("/delete/{id}")
     override fun delete(@PathVariable("id") id: ID): ResponseEntity<TekBaseResponse> {
-        log.debug("Executing [DELETE] method")
+        log.debug("Executing method: {}", RequestMethod.DELETE)
         return ResponseEntity.ok(
             TekBaseResponse(HttpStatus.OK, service.delete(id))
         )
     }
-
-
 }

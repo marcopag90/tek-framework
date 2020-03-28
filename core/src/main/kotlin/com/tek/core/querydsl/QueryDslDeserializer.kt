@@ -1,4 +1,4 @@
-package com.tek.core.web.qdsl
+package com.tek.core.querydsl
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -150,7 +150,10 @@ class QueryDslDeserializer(
         if (nodeValue.isObject) {
             nodeValue.fields().forEach { objectNode ->
                 // the key is the operator
-                valueOp = QueryDslOperator.getFromJson(objectNode.key)
+                valueOp =
+                    QueryDslOperator.getFromJson(
+                        objectNode.key
+                    )
                 when (valueOp) {
                     QueryDslOperator.BETWEEN ->
                         objectNode.value.elements().forEach {

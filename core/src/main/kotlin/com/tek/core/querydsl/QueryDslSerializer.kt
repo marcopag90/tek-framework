@@ -1,4 +1,4 @@
-package com.tek.core.web.qdsl
+package com.tek.core.querydsl
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper

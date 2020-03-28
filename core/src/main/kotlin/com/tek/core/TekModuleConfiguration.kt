@@ -1,12 +1,11 @@
 package com.tek.core
 
-import org.slf4j.LoggerFactory
+import com.tek.core.util.LoggerDelegate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.util.ClassUtils
 import javax.annotation.PostConstruct
 
-@Suppress("unused")
 abstract class TekModuleConfiguration<Configuration>(
     private val configuration: Class<Configuration>
 ) {
@@ -14,11 +13,16 @@ abstract class TekModuleConfiguration<Configuration>(
     @Autowired
     lateinit var environment: ConfigurableEnvironment
 
-    private val log = LoggerFactory.getLogger(TekModuleConfiguration::class.java)
+    companion object {
+        private val log by LoggerDelegate()
+    }
 
     @PostConstruct
     fun postConstruct() {
-        log.info("Checking Tek Modules Configuration: [${ClassUtils.getUserClass(configuration).simpleName}]")
+        log.info(
+            "Checking Tek Modules Configuration: {}",
+            ClassUtils.getUserClass(configuration).simpleName
+        )
         checkModuleConfiguration()
     }
 

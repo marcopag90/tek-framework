@@ -1,6 +1,5 @@
 package com.tek.security.oauth2.configuration
 
-import com.tek.core.util.TekProperty
 import com.tek.core.util.or
 import com.tek.security.common.service.TekAuthService
 import com.tek.security.common.util.hasAuthority
@@ -41,7 +40,7 @@ class OAuthServer(
     private val log = LoggerFactory.getLogger(OAuthServer::class.java)
 
     @Value("\${tek.security.module.type}")
-    private lateinit var securityType: TekProperty
+    private lateinit var securityType: String
 
     @Bean
     fun tokenStore() = JdbcTokenStore(datasource)

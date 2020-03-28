@@ -1,7 +1,7 @@
 package com.tek.security.common.data
 
 import com.tek.core.TekCoreProperties
-import com.tek.core.data.TekDataRunner
+import com.tek.core.TekDataRunner
 import com.tek.core.util.orNull
 import com.tek.security.common.TekPasswordEncoder
 import com.tek.security.common.model.RoleName

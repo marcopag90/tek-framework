@@ -1,4 +1,4 @@
-package com.tek.core.web
+package com.tek.core.configuration
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -12,7 +12,7 @@ import java.io.IOException
  * Json Deserializer to _trim_ all incoming JSON parameters from REST services
  */
 @Configuration
-class JsonDeserializer : SimpleModule() {
+class TekJsonDeserializer : SimpleModule() {
     init {
         this.addDeserializer(
             String::class.java,

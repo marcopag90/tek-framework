@@ -56,12 +56,12 @@ class TekEntityManager(
 
 
     private fun getEntity(entityName: String): EntityType<*>? {
-        log.debug("Trying to load entity: $entityName")
+        log.debug("Trying to load entity: {}", entityName)
 
         val entityClass: EntityType<*>? =
             entityManager.metamodel.entities.find { it.name == entityName.capitalize() }
         check(entityClass != null) {
-            "Unable to find a suitable class for given entity: $entityName" //verificare
+            "Unable to find a suitable class for given entity: $entityName"
         }
         return entityClass
     }

@@ -1,6 +1,6 @@
 package com.tek.security.common
 
-import com.tek.core.i18n.LOCALE_PATH
+import com.tek.core.controller.LOCALE_PATH
 
 /**Class sharing constants among all Spring Security configurations*/
 object TekSecurityPattern {

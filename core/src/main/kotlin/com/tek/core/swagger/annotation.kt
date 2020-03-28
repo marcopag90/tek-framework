@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiImplicitParams
     value = [
         ApiImplicitParam(
             name = "page",
-            dataType = "string", //swagger bug: dataType int with defaultValue = 0 fails to escape html. Workaround to use it as string parameter
+            dataType = "string", //swagger bug: dataType int with defaultValue = 0 fails to escape html. Workaround to use it as string parameter.
             paramType = "query",
             defaultValue = "0",
             example = "0",

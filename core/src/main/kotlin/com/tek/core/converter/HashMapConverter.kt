@@ -1,8 +1,7 @@
 package com.tek.core.converter
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.slf4j.LoggerFactory
-import java.lang.Exception
+import com.tek.core.util.LoggerDelegate
 import javax.persistence.AttributeConverter
 
 /**
@@ -14,16 +13,14 @@ import javax.persistence.AttributeConverter
  */
 class HashMapConverter : AttributeConverter<HashMap<String, Any>, String> {
 
-    companion object {
-        private val log = LoggerFactory.getLogger(HashMapConverter::class.java)
-    }
+    private val log by LoggerDelegate()
 
     override fun convertToDatabaseColumn(attribute: HashMap<String, Any>): String {
         var jsonData = ""
         try {
             jsonData = jacksonObjectMapper().writeValueAsString(attribute)
         } catch (ex: Exception) {
-            log.error("JSON writing error: $attribute")
+            log.error("JSON writing error: {}", attribute)
         }
         return jsonData
     }
@@ -33,9 +30,8 @@ class HashMapConverter : AttributeConverter<HashMap<String, Any>, String> {
         try {
             mapData = jacksonObjectMapper().readValue(dbData, mapData::class.java)
         } catch (ex: Exception) {
-            log.error("JSON reading error: $dbData")
+            log.error("JSON reading error: {}", dbData)
         }
         return mapData
     }
-
 }

@@ -6,12 +6,11 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
-@Suppress("unused")
 @Configuration
 class TekJacksonConverter : WebMvcConfigurer {
 
     /**
-     * Add an handler interceptor to avoid [MappingJackson2HttpMessageConverter] serialization failure
+     * Add a handler interceptor to avoid [MappingJackson2HttpMessageConverter] serialization failure
      * on lazy proxy objects retrieved from Hibernate, when no session is in context.
      */
     override fun extendMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
@@ -22,5 +21,4 @@ class TekJacksonConverter : WebMvcConfigurer {
             }
         }
     }
-
 }

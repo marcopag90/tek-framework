@@ -2,8 +2,8 @@ package com.tek.security.oauth2.configuration
 
 import com.tek.core.util.or
 import com.tek.security.common.service.TekAuthService
-import com.tek.security.common.util.hasAuthority
-import com.tek.security.common.util.isAnonymous
+import com.tek.security.common.hasAuthority
+import com.tek.security.common.isAnonymous
 import com.tek.security.oauth2.TekOAuthProperties
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
@@ -51,7 +51,10 @@ class OAuthServer(
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
         security
             // unauthenticated access to path: oauth/token with Basic Authentication to get a Bearer Token
-            .tokenKeyAccess(isAnonymous().or(hasAuthority(properties.client.authority)))
+            .tokenKeyAccess(
+                isAnonymous().or(
+                    hasAuthority(properties.client.authority)
+                ))
             // authenticated access to path: oauth/check_token with Basic Authentication (clientId and clientSecret) to get token status
             .checkTokenAccess(hasAuthority(properties.client.authority))
             .passwordEncoder(tekAuthService.passwordEncoder())

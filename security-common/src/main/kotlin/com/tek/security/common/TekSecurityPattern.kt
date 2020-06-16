@@ -1,6 +1,7 @@
 package com.tek.security.common
 
 import com.tek.core.LOCALE_PATH
+import com.tek.core.TEST_PATH
 
 /**Class sharing constants among all Spring Security configurations*/
 object TekSecurityPattern {
@@ -9,7 +10,8 @@ object TekSecurityPattern {
         return arrayOf(
             INDEX_PATH,
             REGISTER_PATH,
-            LOCALE_PATH
+            LOCALE_PATH,
+            "$TEST_PATH/**"
         )
     }
 
@@ -33,9 +35,9 @@ object TekSecurityPattern {
         return arrayOf(
             "/v2/api-docs",
             "/v3/**",
-            "/com.tek.security.oauth2.configuration/ui/**",
+            "/configuration/ui/**",
             "/swagger-resources/**",
-            "/com.tek.security.oauth2.configuration/security/**",
+            "/configuration/security/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/webjars/**"

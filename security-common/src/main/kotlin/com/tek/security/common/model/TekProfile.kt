@@ -1,6 +1,8 @@
 package com.tek.security.common.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.tek.security.common.RolePrefix
+import org.hibernate.annotations.NaturalId
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.ShallowReference
 import org.javers.core.metamodel.annotation.TypeName
@@ -21,9 +23,11 @@ const val TEK_PROFILE_FULL = "TekProfile.full"
     name = TEK_PROFILE_FULL,
     includeAllAttributes = true
 )
+@RolePrefix(value = "profile")
 class TekProfile(
     @field:NotBlank
     @field:Size(min = 1, max = 10)
+    @NaturalId
     @Column(length = 10, nullable = false)
     var name: String? = null
 ) : Serializable {

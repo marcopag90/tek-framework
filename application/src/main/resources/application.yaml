@@ -1,4 +1,26 @@
+# Endpoint application servlet
+server.servlet.context-path: /api
+
+# Application Loggers
+logging.level:
+    org.springframework: INFO
+    com.tek: INFO
+    org.hibernate:
+        tool.hbm2ddl: DEBUG
+        SQL: DEBUG
+        type: TRACE #TRACE per vedere i parametri delle rsql
+        type.EnumType: INFO
+        type.BasicTypeRegistry: INFO
+        descriptor:
+            sql: DEBUG
+            sql.BasicExtractor: DEBUG
+
+# Actuator endpoints
+management.endpoints.web.exposure.include: info, metrics, env
+
 spring:
+    application.name: Tek Framework Application
+
     # Maven-Spring Profilo attivo
     profiles.active: @activeProfile@
 
@@ -15,38 +37,38 @@ spring:
         cache-seconds: -1
         encoding: UTF-8
 
-    # JPA settings
-    jpa:
-        # Jpa nelle view disattivato
-        open-in-view: false
-        properties:
-            hibernate:
-                dialect: ${HIB_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
-                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-                # Workaround. Vedi:
-                # https://github.com/pgjdbc/pgjdbc/issues/1102
-                # https://hibernate.atlassian.net/browse/HHH-12368
-                jdbc.lob.non_contextual_creation: true
+    # Default date timezone (old java.util.Date)
+    jackson.time-zone: Europe/Rome
 
-        hibernate:
-            # Configurazione creazione tabelle Hibernate
-            #create, update
-            ddl-auto: ${DDL_AUTO:update}
-            naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-    # Database PostgreSQL
+    # Configurazione Datasource
     datasource:
-        url: ${DS_JDBC_URL:jdbc:postgresql://localhost/tek}
+        url: ${DS_JDBC_URL:jdbc:postgresql://localhost/postgres}
         driverClassName: ${DS_DRIVER_CLASS:org.postgresql.Driver}
         username: ${DS_USER:tek}
         password: ${DS_PASSWORD:tek}
+        # Schema
+        jpa.properties.hibernate.default_schema: tek
 
-    # Schema
-    jpa.properties.hibernate.default_schema: tek
+    # JPA settings
+    jpa:
+        # Configurazione creazione tabelle Hibernate
+        # create, update
+        hibernate.ddl-auto: ${DDL_AUTO:update}
+
+        # Jpa nelle view disattivato
+        open-in-view: false
+        properties.hibernate:
+            dialect: ${HIB_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
+            current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+            # Workaround. Vedi:
+            # https://github.com/pgjdbc/pgjdbc/issues/1102
+            # https://hibernate.atlassian.net/browse/HHH-12368
+            jdbc.lob.non_contextual_creation: true
 
     # SMTP
     # Inoltro IMAP:
     # consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
+    # https://myaccount.google.com/lesssecureapps to test dev apps
     mail:
         host: smtp.gmail.com
         port: 587
@@ -60,55 +82,43 @@ spring:
             starttls.enable: true
 
 javers:
-    sqlSchema: ${JAVERS_SCHEMA:audit}
-
-logging:
-    level:
-        root: INFO
-        com.tek: DEBUG
-        org.hibernate:
-            tool.hbm2ddl: DEBUG
-            SQL: DEBUG
-            type: INFO #TRACE
-            type.EnumType: INFO
-            type.BasicTypeRegistry: INFO
-            descriptor:
-                sql: DEBUG
-                sql.BasicExtractor: DEBUG
+    sqlSchema: audit
 
 security:
     # Workaround. Vedi:
     # https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/
     # 2.7.2 Changing the Filter Order
-    oauth2:
-        resource.filter-order: 3
+    oauth2.resource.filter-order: 3
 
 # Tek Modules Configurations
-tek.module:
-    # Tek-Core
+tek:
     core:
-        # Data Runner Configuration
-        runner.action: ${RUNNER_ACTION:CREATE}
-        cors:
-            allowedOrigin: http://localhost:4200
-            allowedCredentials: true
-            allowedMethods: GET,POST,PATCH,PUT,DELETE,OPTIONS
-            allowedHeaders: x-requested-with,authorization,Content-Type,Authorization,credential,X-XSRF-TOKEN
-        locale:
-            type: SESSION
-    # Tek-Security
-    security:
-        oauth2:
-            # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
-            accessTokenHost: http://localhost:8080
-            client:
-                clientId: ${CLIENT_ID:tekClientId}
-                clientSecret: ${CLIENT_SECRET:tekSecret}
-                resourceId: ${RESOURCE_ID:tekResourceId}
-                authority: ROLE_CLIENT
-                grants: password,refresh_token,client_credentials
-                scope: read,write
-                accessTokenValidity: 1800
-                refreshTokenValidity: 3600
-        registerProfile: USER # profilo assegnato di default alla registrazione
-        passwordExpiration: 3 # in mesi
+        scheduler.active: true
+        file:
+            tmp:
+                directory: tmp
+                cleanAfter: 5
+                cron: "*/60 * * * * *"
+            binary:
+                directory: upload
+
+        mail:
+            sendErrors: true
+            realDelivery: false
+#    # Tek-Security
+#    security:
+#        oauth2:
+#            # Authorization Server (potrebbe essere separato logicamente dal ResourceServer)
+#            accessTokenHost: http://localhost:8080
+#            client:
+#                clientId: ${CLIENT_ID:tekClientId}
+#                clientSecret: ${CLIENT_SECRET:tekSecret}
+#                resourceId: ${RESOURCE_ID:tekResourceId}
+#                authority: ROLE_CLIENT
+#                grants: password,refresh_token,client_credentials
+#                scope: read,write
+#                accessTokenValidity: 1800
+#                refreshTokenValidity: 3600
+#        registerProfile: USER # profilo assegnato di default alla registrazione
+#        passwordExpiration: 90 # days
+#        accountExpiration: 180 # days

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 /**
- * Configuration for JBot Password Encoders
+ * Configuration for Tek Password Encoders
  */
 @Configuration
 class TekPasswordEncoder {

@@ -5,10 +5,10 @@ import com.tek.core.TekPageResponse
 import com.tek.core.swagger.ApiPageable
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.NOTIFICATION_PATH
-import com.tek.security.common.model.RoleName
+import com.tek.security.common.TekRoleRegistry
+import com.tek.security.common.hasRole
 import com.tek.security.common.model.TekNotification
 import com.tek.security.common.service.TekNotificationService
-import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -23,14 +23,20 @@ import springfox.documentation.annotations.ApiIgnore
 @RestController
 @RequestMapping(path = [NOTIFICATION_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
 class TekNotificationController(
-    private val tekNotificationService: TekNotificationService
+    private val tekNotificationService: TekNotificationService,
+    private val tekRoleRegistry: TekRoleRegistry
 ) {
 
     private val log by LoggerDelegate()
 
-    val readAuthorized get() = hasRole(RoleName.NOTIFICATION_READ)
-    val updateAuthorized get() = hasRole(RoleName.NOTIFICATION_UPDATE)
-    val deleteAuthorized get() = hasRole(RoleName.NOTIFICATION_DELETE)
+    val readAuthorized: Boolean
+        get() = hasRole(tekRoleRegistry.getRoleRead(TekNotification::class))
+
+    val updateAuthorized: Boolean
+        get() = hasRole(tekRoleRegistry.getRoleUpdate(TekNotification::class))
+
+    val deleteAuthorized: Boolean
+        get() = hasRole(tekRoleRegistry.getRoleDelete(TekNotification::class))
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list")

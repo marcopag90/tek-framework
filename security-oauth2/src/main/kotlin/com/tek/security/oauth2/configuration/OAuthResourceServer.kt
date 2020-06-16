@@ -61,7 +61,7 @@ class OAuthResourceServer(
     }
 
     fun configureDevelopmentSecurity(http: HttpSecurity) {
-        log.info("Configuring Tek security with profile: {}", SpringProfile.DEVELOPMENT)
+        log.info("Configuring security with profile: {}", SpringProfile.DEVELOPMENT)
         http
             .authorizeRequests()
             .antMatchers(*unauthenticatedPatterns()).permitAll()

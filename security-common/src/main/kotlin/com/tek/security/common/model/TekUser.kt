@@ -2,13 +2,12 @@ package com.tek.security.common.model
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.tek.security.common.RolePrefix
 import com.tek.security.common.audit.UserActivityAudit
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.TypeName
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 import javax.persistence.*
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -33,6 +32,7 @@ const val TEK_USER_FULL = "TekUser.full"
         )
     ]
 )
+@RolePrefix(value = "user")
 class TekUser : UserActivityAudit() {
 
     @Id
@@ -41,7 +41,7 @@ class TekUser : UserActivityAudit() {
 
     @field:NotBlank
     @field:Size(min = 3, max = 20)
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "username", length = 20, unique = true, nullable = false)
     var username: String? = null
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -51,7 +51,8 @@ class TekUser : UserActivityAudit() {
     var password: String? = null
 
     @field:Email
-    @Column(name = "email", unique = true, nullable = true)
+    @field:Size(min = 1, max = 50)
+    @Column(name = "email", length = 50, unique = true, nullable = true)
     var email: String? = null
 
     /**
@@ -59,7 +60,7 @@ class TekUser : UserActivityAudit() {
      *
      * Sets a User expiration date
      */
-    @Column(name = "expiration")
+    @Column(name = "expiration", nullable = true)
     var userExpireAt: LocalDate? = null
 
     /**
@@ -71,7 +72,7 @@ class TekUser : UserActivityAudit() {
     var pwdExpireAt: LocalDate? = null
 
     /**
-     * Condition: _REQUIRED_
+     * Condition: _OPTIONAL_
      *
      * Sets a User last login date
      */
@@ -100,10 +101,6 @@ class TekUser : UserActivityAudit() {
 
     // --------------------------------- Account management --------------------------------------
 
-    companion object {
-        const val EXPIRATION_MONTHS = 6L
-    }
-
     //TODO decide user registration path (email with confirm activation, credentials etc..) to enable it
     /**
      * Condition: _REQUIRED_
@@ -112,7 +109,7 @@ class TekUser : UserActivityAudit() {
      *
      * Usually some action is required to release it (Server or Client side)
      */
-    @Column(name = "enabled", length = 1)
+    @Column(name = "enabled", length = 1, nullable = false)
     var enabled: Boolean = false
 
     /**
@@ -122,7 +119,7 @@ class TekUser : UserActivityAudit() {
      *
      * If you don't need your User to expire, you just have to leave [TekUser.userExpireAt] = **null**
      */
-    @Column(name = "expired", length = 1)
+    @Column(name = "expired", length = 1, nullable = true)
     var accountExpired: Boolean = false
 
     //TODO check how to implement login attempts
@@ -135,7 +132,7 @@ class TekUser : UserActivityAudit() {
      * 1) too many login attempts (not yet implemented)
      * 2) has been offline for more than 6 months (standard implementation)
      */
-    @Column(name = "locked", length = 1)
+    @Column(name = "locked", length = 1, nullable = false)
     var accountLocked: Boolean = false
 
     /**
@@ -144,31 +141,8 @@ class TekUser : UserActivityAudit() {
      *
      * A User with credentials expired has to change password, due to **GDPR** policy
      */
-    @Column(name = "credentials_expired", length = 1)
+    @Column(name = "credentials_expired", length = 1, nullable = false)
     var credentialsExpired: Boolean = false
-
-    /**
-     * Check if User account has expired
-     */
-    fun isAccountExpired(userExpireAt: LocalDate?): Boolean = userExpireAt?.let {
-        userExpireAt < LocalDate.now()
-    } ?: false
-
-    /**
-     * Check if User account has to become locked
-     */
-    fun isAccountLocked(lastLogin: Instant?): Boolean = lastLogin?.let { it ->
-        val today = LocalDateTime.now()
-        today.minusMonths(EXPIRATION_MONTHS)
-            .isAfter(it.atZone(ZoneId.systemDefault()).toLocalDateTime())
-    } ?: false
-
-    /**
-     * Check if User password has expired
-     */
-    fun isCredentialsExpired(passwordExpireAt: LocalDate): Boolean =
-        passwordExpireAt < LocalDate.now()
-
 }
 
 

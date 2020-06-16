@@ -4,14 +4,14 @@ import com.tek.core.TekCoreProperties
 import com.tek.core.TekDataRunner
 import com.tek.core.util.orNull
 import com.tek.security.common.TekPasswordEncoder
-import com.tek.security.common.model.RoleName
-import com.tek.security.common.model.TekProfile
-import com.tek.security.common.model.TekRole
-import com.tek.security.common.model.TekUser
+import com.tek.security.common.model.*
 import com.tek.security.common.repository.TekProfileRepository
 import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.repository.TekUserRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.time.LocalDate
@@ -26,36 +26,31 @@ class TekSecurityDataRunner(
     coreProperties: TekCoreProperties
 ) : TekDataRunner<TekSecurityDataRunner>(coreProperties, TekSecurityDataRunner::class.java) {
 
-    /**
-     * Base Profiles definitions for mockup purposes
-     */
+    @Autowired
+    lateinit var service: DataRunnerService
+
     enum class ProfileMockup {
         ADMIN,
         AUDIT,
         USER
     }
 
-    @Transactional
     override fun runDevelopmentMode() {
 
-        val roles = mutableSetOf<TekRole>()
-        RoleName.values().forEach { rolename -> createRole(rolename).let(roles::add) }
+        service.performReset()
 
-        val auditRoles = roles.filter { it.name == RoleName.AUDIT_READ }.toMutableSet()
-
-        val adminProfile = createProfile(ProfileMockup.ADMIN, roles)
-        val auditProfile = createProfile(ProfileMockup.AUDIT, auditRoles)
+        val adminRoles = roleRepository.findAll().toMutableSet()
+        val adminProfile = createProfile(ProfileMockup.ADMIN, adminRoles)
         val userProfile = createProfile(ProfileMockup.USER, mutableSetOf())
 
         createUser(
             username = "admin",
             password = "admin",
             email = "admin@gmail.com",
-            profiles = mutableSetOf(adminProfile, auditProfile),
+            profiles = mutableSetOf(adminProfile),
             enabled = true,
             pwdExpireAt = LocalDate.of(2099, 12, 31)
         )
-
         createUser(
             username = "user",
             password = "user",
@@ -66,16 +61,6 @@ class TekSecurityDataRunner(
         )
     }
 
-    @Transactional
-    private fun createRole(roleName: RoleName): TekRole {
-        var role = roleRepository.findByName(roleName).orNull()
-        if (role == null) {
-            role = roleRepository.save(TekRole(roleName))
-        }
-        return role
-    }
-
-    @Transactional
     private fun createProfile(name: ProfileMockup, roles: MutableSet<TekRole>): TekProfile {
         var profile = profileRepository.findByName(name.name).orNull()
         if (profile == null) {
@@ -84,7 +69,6 @@ class TekSecurityDataRunner(
         return profile
     }
 
-    @Transactional
     private fun createUser(
         username: String,
         password: String,
@@ -109,5 +93,30 @@ class TekSecurityDataRunner(
             })
         }
         return user
+    }
+}
+
+@Service
+class DataRunnerService {
+
+    @Autowired
+    lateinit var userRepository: TekUserRepository
+
+    @Autowired
+    lateinit var profileRepository: TekProfileRepository
+
+    @Autowired
+    lateinit var roleRepository: TekRoleRepository
+
+    @Transactional
+    fun performReset() {
+        userRepository.findAll().forEach { user ->
+            userRepository.deleteUserProfilesByUser(user.id!!)
+            userRepository.delete(user)
+        }
+        profileRepository.findAll().forEach { profile ->
+            profileRepository.deleteProfileRolesByProfile(profile.id!!)
+            profileRepository.delete(profile)
+        }
     }
 }

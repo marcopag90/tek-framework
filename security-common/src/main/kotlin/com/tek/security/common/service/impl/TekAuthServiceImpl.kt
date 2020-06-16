@@ -3,6 +3,7 @@ package com.tek.security.common.service.impl
 import com.tek.core.util.isFalse
 import com.tek.core.util.orNull
 import com.tek.security.common.TekPasswordEncoder
+import com.tek.security.common.TekSecurityProperties
 import com.tek.security.common.TekUserDetails
 import com.tek.security.common.model.TekProfile
 import com.tek.security.common.model.TekRole
@@ -18,6 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 /**
  * Implementation of [TekAuthService] to get User information and [GrantedAuthority]
@@ -25,37 +29,18 @@ import java.time.Instant
 @Suppress("unused")
 @Service
 class TekAuthServiceImpl(
-    private val userRepository: TekUserRepository,
-    private val pswEncoder: TekPasswordEncoder
+    private val pswEncoder: TekPasswordEncoder,
+    private val properties: TekSecurityProperties,
+    private val userRepository: TekUserRepository
 ) : TekAuthService {
 
-    protected val passwordRegex =
+    override val passwordRegex =
         Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^*&_])(?=\\S+\$).{8,}\$")
 
     override fun isValidPassword(password: String) = password.matches(passwordRegex)
-
     override fun passwordEncoder() = pswEncoder.bcryptEncoder()
-
-    @Transactional
-    override fun loadUserByUsername(username: String): UserDetails {
-
-        val user = userRepository.findByUsername(username).orNull()?.apply {
-            this.accountExpired = isAccountExpired(this.userExpireAt)
-            this.accountLocked = isAccountLocked(this.lastLogin)
-            this.credentialsExpired = isCredentialsExpired(this.pwdExpireAt!!)
-            this.accountLocked.isFalse { this.lastLogin = Instant.now() }
-        } ?: throw UsernameNotFoundException("User $username not found!")
-
-        return buildUserDetails(user)
-    }
-
-    override fun getCurrentUser(): TekUserDetails? =
-        getAuthentication()?.principal as? TekUserDetails
-
     override fun checkPasswordConstraints(
-        username: String,
-        email: String?,
-        password: String
+        username: String, email: String?, password: String
     ): Pair<Boolean, String?> {
         if (password == username)
             return Pair(false, username)
@@ -64,13 +49,27 @@ class TekAuthServiceImpl(
         return Pair(true, null)
     }
 
+    @Transactional
+    override fun loadUserByUsername(username: String): UserDetails {
+        val user = userRepository.findByUsername(username).orNull()?.apply {
+            accountExpired = isAccountExpired(userExpireAt)
+            accountLocked = isAccountLocked(lastLogin)
+            credentialsExpired = isCredentialsExpired(pwdExpireAt!!)
+            accountLocked.isFalse { this.lastLogin = Instant.now() }
+        } ?: throw UsernameNotFoundException("User $username not found!")
+        return buildTekUserDetails(user)
+    }
+
+    override fun getCurrentUser(): TekUserDetails? =
+        getAuthentication()?.principal as? TekUserDetails
+
     override fun getAuthentication(): Authentication? =
         SecurityContextHolder.getContext().authentication
 
-    fun buildUserDetails(user: TekUser) = TekUserDetails(
+    fun buildTekUserDetails(user: TekUser) = TekUserDetails(
         id = user.id,
         username = user.username!!,
-        email = user.email!!,
+        email = user.email,
         password = user.password!!,
         enabled = user.enabled,
         accountNonExpired = !user.accountExpired,
@@ -79,11 +78,27 @@ class TekAuthServiceImpl(
         authorities = user.profiles.getAuthorities()
     )
 
-    fun MutableSet<TekProfile>.getAuthorities(): Set<GrantedAuthority> {
+    /** Check if User account has expired */
+    override fun isAccountExpired(expireAt: LocalDate?): Boolean = expireAt?.let {
+        expireAt < LocalDate.now()
+    } ?: false
+
+    /** Check if User account has to become locked */
+    override fun isAccountLocked(lastLogin: Instant?): Boolean = lastLogin?.let { it ->
+        val today = LocalDateTime.now()
+        today.minusDays(properties.accountExpiration!!.toDays())
+            .isAfter(it.atZone(ZoneId.systemDefault()).toLocalDateTime())
+    } ?: false
+
+    /** Check if User password has expired */
+    override fun isCredentialsExpired(pswExpireAt: LocalDate): Boolean =
+        pswExpireAt < LocalDate.now()
+
+    private fun MutableSet<TekProfile>.getAuthorities(): Set<GrantedAuthority> {
         val roles = mutableSetOf<TekRole>()
         for (profile in this)
             for (role in profile.roles)
                 roles.add(role)
-        return roles.map { role -> SimpleGrantedAuthority(role.name.name) }.toSet()
+        return roles.map { role -> SimpleGrantedAuthority(role.name) }.toSet()
     }
 }

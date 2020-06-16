@@ -1,49 +1,39 @@
 package com.tek.security.common.service.impl
 
-import com.querydsl.core.types.Predicate
 import com.tek.core.exception.ServiceExceptionData
-import com.tek.core.exception.TekResourceNotFoundException
-import com.tek.core.i18n.CoreMessageSource
-import com.tek.core.util.LoggerDelegate
-import com.tek.core.util.orNull
-import com.tek.security.common.model.RoleName
+import com.tek.core.exception.TekServiceException
+import com.tek.security.common.SECURITY_MESSAGE_SOURCE
+import com.tek.security.common.i18n.SecurityMessageBundle
 import com.tek.security.common.model.TekRole
 import com.tek.security.common.repository.TekRoleRepository
 import com.tek.security.common.service.TekRoleService
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.MessageSource
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
-@Suppress("unused")
 @Service
-class TekRoleServiceImpl(
-    private val roleRepository: TekRoleRepository,
-    private val coreMessageSource: CoreMessageSource
-) : TekRoleService {
+class TekRoleServiceImpl : TekRoleService {
 
-    private val log by LoggerDelegate()
+    @Autowired
+    @Qualifier(SECURITY_MESSAGE_SOURCE)
+    lateinit var messageSource: MessageSource
 
-    override fun list(pageable: Pageable, predicate: Predicate?): Page<TekRole> {
-        log.debug("Fetching data from repository: {}", roleRepository)
-        predicate?.let {
-            return roleRepository.findAll(predicate, pageable)
-        } ?: return roleRepository.findAll(pageable)
-    }
+    @Autowired
+    lateinit var repository: TekRoleRepository
 
-    override fun readOne(name: String): TekRole {
-        log.debug(
-            "Accessing {} for entity: {} with name: {}",
-            roleRepository,
-            TekRole::class.java.name,
-            name
-        )
-        roleRepository.findByName(RoleName.valueOf(name)).orNull()?.let { return it }
-            ?: throw TekResourceNotFoundException(
+    override fun checkIfExists(role: TekRole): Boolean {
+        if (!repository.existsById(role.id!!)) {
+            throw TekServiceException(
                 data = ServiceExceptionData(
-                    source = coreMessageSource,
-                    message = CoreMessageSource.errorNotFoundResource,
-                    parameters = arrayOf(name)
-                )
+                    source = messageSource,
+                    message = SecurityMessageBundle.errorNotFoundRole,
+                    parameters = arrayOf(role.name)
+                ),
+                httpStatus = HttpStatus.NOT_FOUND
             )
+        } else
+            return true
     }
 }

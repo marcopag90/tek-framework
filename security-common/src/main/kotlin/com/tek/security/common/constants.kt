@@ -1,11 +1,14 @@
 package com.tek.security.common
 
+// Configuration
+const val TEK_SECURITY_CONFIGURATION = "TekSecurityConfiguration"
+
 // Properties
-const val SECURITY_REGISTER_PROFILE = "{tek.module.security.registerProfile}"
-const val SECURITY_PSW_EXPIRATION = "{tek.module.security.passwordExpiration}"
+const val TEK_SECURITY_MODULE = "tek.module.security"
 
 // Bean
 const val SECURITY_VALIDATOR = "security_validator"
+const val SECURITY_MESSAGE_SOURCE = "security_message_source"
 
 // Classpath
 const val SECURITY_MESSAGES = "classpath:/i18n/security_messages"

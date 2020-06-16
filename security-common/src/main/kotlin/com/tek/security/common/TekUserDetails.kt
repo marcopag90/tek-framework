@@ -3,6 +3,7 @@ package com.tek.security.common
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
 import java.io.Serializable
+import java.time.LocalDateTime
 
 /**
  * Class to store User information for Authentication purpose
@@ -12,7 +13,7 @@ import java.io.Serializable
 open class TekUserDetails(
     val id: Long?,
     username: String,
-    val email: String,
+    val email: String?,
     password: String,
     enabled: Boolean = true,
     accountNonExpired: Boolean = true,
@@ -28,5 +29,8 @@ open class TekUserDetails(
     accountNonLocked,
     authorities
 ), Serializable
+
+
+
 
 

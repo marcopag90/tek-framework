@@ -1,6 +1,6 @@
 package com.tek.security.common.repository
 
-import com.tek.security.common.model.RoleName
+import com.tek.core.repository.TekRepository
 import com.tek.security.common.model.TekRole
 import org.javers.spring.annotation.JaversSpringDataAuditable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -10,8 +10,8 @@ import java.util.*
 
 @Repository
 @JaversSpringDataAuditable
-interface TekRoleRepository : JpaRepository<TekRole, Long>, QuerydslPredicateExecutor<TekRole> {
+interface TekRoleRepository : TekRepository<TekRole, Long> {
 
-    fun findByName(name: RoleName): Optional<TekRole>
-
+    fun findByName(name: String): Optional<TekRole>
+    fun existsByName(name: String): Boolean
 }

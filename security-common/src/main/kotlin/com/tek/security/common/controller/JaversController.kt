@@ -8,8 +8,6 @@ import com.tek.audit.service.JaversQService
 import com.tek.core.TekResponseEntity
 import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.JAVERS_PATH
-import com.tek.security.common.model.RoleName
-import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -28,7 +26,8 @@ class JaversController(
 
     private val log by LoggerDelegate()
 
-    val readAuthorized get() = hasRole(RoleName.AUDIT_READ)
+    //TODO role issue
+//    val readAuthorized get() = hasRole(RoleName.AUDIT_READ)
 
     @PreAuthorize("this.readAuthorized")
     @GetMapping("/list/entities")

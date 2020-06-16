@@ -1,0 +1,45 @@
+# To create symbolink links:
+
+# Windows: mklink docker-compose.yml docker-compose.dev.yml
+# Linux: ln -s docker-compose.dev.yml docker-compose.yml
+
+version: "3.7"
+
+# Volumes
+volumes:
+    db-data:
+    pgadmin-data:
+
+# Services
+services:
+
+    # Database
+    db:
+        # Dockerfile to setup image and init pgdev/schema.sql
+        build:
+            context: pgdev
+        ports:
+        - "5432:5432"
+        volumes:
+        - db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: tek
+            POSTGRES_PASSWORD: tek
+
+    # PgAdmin
+    pgadmin:
+        image: dpage/pgadmin4:4.22
+        ports:
+        - "8090:80"
+        volumes:
+        - pgadmin-data:/var/lib/pgadmin
+        # Hostname alias for the db service (so we don't need to know the ip)
+        links:
+        - "db:pgsql-server"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: tekready-solutions@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: 123Stella!
+            PGADMIN_LISTEN_PORT: 80
+
+

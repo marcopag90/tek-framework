@@ -35,8 +35,7 @@ class TekPreferencesController(
     fun setPreferences(@RequestBody preferences: Map<String, Any>): ResponseEntity<TekBaseResponse> =
         ResponseEntity.ok(
             TekBaseResponse(
-                HttpStatus.OK,
-                tekPreferenceService.setUserPreferences(
+                HttpStatus.OK, tekPreferenceService.setUserPreferences(
                     getPrincipal().id!!,
                     preferences.toMutableMap()
                 )

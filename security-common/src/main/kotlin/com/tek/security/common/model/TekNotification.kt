@@ -1,5 +1,6 @@
 package com.tek.security.common.model
 
+import com.tek.security.common.RolePrefix
 import org.javers.core.metamodel.annotation.DiffIgnore
 import org.javers.core.metamodel.annotation.TypeName
 import org.springframework.data.annotation.CreatedBy
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank
 @TypeName("notification")
 @Table(name = "notification")
 @EntityListeners(AuditingEntityListener::class)
+@RolePrefix(value = "notification")
 class TekNotification(
     @field:NotBlank
     @Column(name = "message", nullable = false, length = 1024)

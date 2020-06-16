@@ -1,18 +1,16 @@
 package com.tek.audit.i18n
 
 import com.tek.audit.AUDIT_MESSAGES
-import com.tek.core.i18n.TekMessageSource
+import com.tek.audit.AUDIT_MESSAGE_SOURCE
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class AuditMessageSource : TekMessageSource {
+class AuditMessageSource{
 
-    override fun getResource(): MessageSource = getAuditSource()
-
-    @Bean
+    @Bean(name = [AUDIT_MESSAGE_SOURCE])
     fun getAuditSource(): MessageSource =
         ReloadableResourceBundleMessageSource().apply {
             setBasenames(AUDIT_MESSAGES)

@@ -1,16 +1,19 @@
 package com.tek.security.common.service.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.tek.core.CORE_MESSAGE_SOURCE
 import com.tek.core.exception.ServiceExceptionData
 import com.tek.core.exception.TekResourceNotFoundException
 import com.tek.core.i18n.CoreMessageSource
 import com.tek.core.util.LoggerDelegate
+import com.tek.security.common.SECURITY_MESSAGE_SOURCE
 import com.tek.security.common.i18n.SecurityMessageSource
-import com.tek.security.common.model.RoleName
 import com.tek.security.common.model.TekNotification
 import com.tek.security.common.repository.TekNotificationRepository
 import com.tek.security.common.service.TekAuthService
 import com.tek.security.common.service.TekNotificationService
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.MessageSource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.mail.javamail.JavaMailSender
@@ -22,8 +25,8 @@ import javax.transaction.Transactional
 class TekNotificationServiceImpl(
     private val notificationRepository: TekNotificationRepository,
     private val authService: TekAuthService,
-    private val coreMessageSource: CoreMessageSource,
-    private val securityMessageSource: SecurityMessageSource,
+    @Qualifier(CORE_MESSAGE_SOURCE) private val coreMessageSource: MessageSource,
+    @Qualifier(SECURITY_MESSAGE_SOURCE) private val securityMessageSource: MessageSource,
     private val objectMapper: ObjectMapper,
     private val mailSender: JavaMailSender
 ) : TekNotificationService {
@@ -49,7 +52,8 @@ class TekNotificationServiceImpl(
         authService.getCurrentUser()?.let { userDetails ->
             log.debug("User found: {}", userDetails.username)
 
-            userDetails.authorities.singleOrNull() { it.authority == RoleName.NOTIFICATION_READ.name }
+            //TODO change role name
+            userDetails.authorities.singleOrNull() { it.authority == "NOTIFICATION_READ" }
                 ?: return Page.empty()
 
             isRead?.let { return notificationRepository.findAllByIsRead(pageable, isRead) }

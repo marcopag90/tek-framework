@@ -5,7 +5,7 @@ import com.google.common.collect.Lists
 import com.tek.core.swagger.SwaggerApiInfo
 import com.tek.core.swagger.SwaggerIgnore.ignoredParameters
 import com.tek.security.common.*
-import com.tek.security.common.util.antPath
+import com.tek.security.common.antPath
 import com.tek.security.oauth2.configuration.OAuthWebSecurity
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -23,7 +23,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 /**
  * Configuration for Swagger with OAuth2 Authentication
  */
-@Suppress("unused")
 @Configuration
 @EnableSwagger2
 @ConditionalOnBean(OAuthWebSecurity::class)

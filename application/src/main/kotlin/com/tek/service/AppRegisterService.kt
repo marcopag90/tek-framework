@@ -1,17 +1,16 @@
 package com.tek.service
 
-import com.tek.security.common.TekRegistrationProvider
+import com.tek.security.common.TekRegisterProvider
 import com.tek.security.common.form.AbstractRegisterForm
 import com.tek.security.common.model.TekUser
 import com.tek.security.common.service.TekAuthService
-import com.tek.security.common.service.impl.TekUserServiceImpl
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
 class AppRegisterService(
     private val authService: TekAuthService
-) : TekRegistrationProvider(authService) {
+) : TekRegisterProvider(authService) {
 
     override fun register(form: AbstractRegisterForm) {
         userRepository.save(
@@ -21,7 +20,7 @@ class AppRegisterService(
                 email = form.email
                 enabled = true
                 pwdExpireAt =
-                    LocalDate.now().plusMonths(passwordExpiration.toLong())
+                    LocalDate.now().plusDays(authSecurityProperties.passwordExpiration!!.toDays())
             })
     }
 }

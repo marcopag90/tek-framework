@@ -3,13 +3,13 @@ package com.tek.security.common.controller
 import com.querydsl.core.types.Predicate
 import com.tek.core.TekPageResponse
 import com.tek.core.TekResponseEntity
+import com.tek.core.controller.UPDATE_MAPPING
 import com.tek.core.swagger.ApiPageable
-import com.tek.core.util.LoggerDelegate
 import com.tek.security.common.USER_PATH
-import com.tek.security.common.model.RoleName
+import com.tek.security.common.crud.TekUserCrudService
+import com.tek.security.common.form.UserCreateForm
+import com.tek.security.common.form.UserUpdateForm
 import com.tek.security.common.model.TekUser
-import com.tek.security.common.service.TekUserService
-import com.tek.security.common.util.hasRole
 import io.swagger.annotations.Api
 import org.springframework.data.domain.Pageable
 import org.springframework.data.querydsl.binding.QuerydslPredicate
@@ -18,59 +18,28 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import springfox.documentation.annotations.ApiIgnore
 
 @Suppress("unused")
 @Api(tags = ["Users"])
 @RestController
 @RequestMapping(path = [USER_PATH], produces = [MediaType.APPLICATION_JSON_VALUE])
-class TekUserController(
-    private val tekUserService: TekUserService
-) {
+class TekUserController :
+    TekAuthWritableController<TekUser, Long, TekUserCrudService, UserCreateForm, UserUpdateForm>() {
 
-    private val log by LoggerDelegate()
-
-    val createAuthorized get() = hasRole(RoleName.USER_CREATE)
-    val readAuthorized get() = hasRole(RoleName.USER_READ)
-    val updateAuthorized get() = hasRole(RoleName.USER_UPDATE)
-    val deleteAuthorized get() = hasRole(RoleName.USER_DELETE)
-
-    @PreAuthorize("this.readAuthorized")
-    @GetMapping("/list")
+    @Suppress("RedundantOverride")
     @ApiPageable
-    fun list(@ApiIgnore pageable: Pageable, @QuerydslPredicate predicate: Predicate?): ResponseEntity<TekPageResponse<TekUser>> {
-        log.debug("Executing method: {}", RequestMethod.GET)
-        return ResponseEntity.ok(
-            TekPageResponse(HttpStatus.OK, tekUserService.list(pageable, predicate))
-        )
-    }
-
-    @PreAuthorize("this.readAuthorized")
-    @GetMapping("/read/{id}")
-    fun read(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
-        log.debug("Executing method: {}", RequestMethod.GET)
-        return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, tekUserService.findById(id))
-        )
+    override fun list(
+        pageable: Pageable, @QuerydslPredicate predicate: Predicate?
+    ): ResponseEntity<TekPageResponse<TekUser>> {
+        return super.list(pageable, predicate)
     }
 
     @PreAuthorize("this.updateAuthorized")
-    @PatchMapping("/update/{id}")
-    fun update(@RequestBody properties: Map<String, Any?>, @PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<TekUser>> {
-        log.debug("Executing method: {}", RequestMethod.PATCH)
-        return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, tekUserService.update(properties, id))
-        )
-    }
-
-    @PreAuthorize("this.deleteAuthorized")
-    @DeleteMapping("/delete/{id}")
-    fun delete(@PathVariable("id") id: Long): ResponseEntity<TekResponseEntity<Unit>> {
-        log.debug("Executing method: {}", RequestMethod.DELETE)
-        return ResponseEntity.ok(
-            TekResponseEntity(HttpStatus.OK, tekUserService.delete(id))
-        )
+    @PatchMapping(UPDATE_MAPPING)
+    fun update(
+        @RequestBody properties: MutableMap<String, Any?>,
+        @PathVariable("id") id: Long
+    ): ResponseEntity<TekResponseEntity<TekUser>> {
+        return ResponseEntity.ok(TekResponseEntity(HttpStatus.OK, service.update(properties, id)))
     }
 }
-
-

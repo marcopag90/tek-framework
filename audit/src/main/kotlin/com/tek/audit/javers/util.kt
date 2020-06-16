@@ -34,7 +34,7 @@ fun QueryBuilder.setDeletedSnapshot() {
 fun QueryBuilder.toMax(date: LocalDate): QueryBuilder = this.to(date.atTime(LocalTime.MAX))
 
 /**
- * Extension function to set pagination for Javers query
+ * Extension function to set pagination for Javers rsql
  */
 fun QueryBuilder.withPagination(page: JaversQPage): QueryBuilder {
     page.skip?.let { this.skip(it) } ?: this.skip(0)

@@ -30,7 +30,7 @@ public class TekSwaggerInfoConfiguration {
     @Bean
     public ApiInfo getApiInfo() {
         return new ApiInfo(
-            context.getApplicationName(),
+            context.getApplicationName(), //server.servlet.context-path
             swaggerProperties.getDescription(),
             gitBuildVersion,
             swaggerProperties.getTermOfServiceUrl(),

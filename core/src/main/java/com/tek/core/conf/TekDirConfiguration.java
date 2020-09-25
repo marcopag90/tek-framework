@@ -1,13 +1,13 @@
 package com.tek.core.conf;
 
 import com.tek.core.TekCoreProperties;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.nio.file.Files;
 
@@ -21,7 +21,7 @@ import java.nio.file.Files;
 @Slf4j
 public class TekDirConfiguration {
 
-    @NotNull private final TekCoreProperties coreProperties;
+    @NonNull private final TekCoreProperties coreProperties;
     private File tmpDirectory;
     private File binaryDirectory;
 

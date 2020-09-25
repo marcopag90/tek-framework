@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.6.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -20,7 +20,7 @@
     <description>tek framework module</description>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -77,7 +77,7 @@
             <dependency>
                 <groupId>org.javers</groupId>
                 <artifactId>javers-spring-boot-starter-sql</artifactId>
-                <version>5.9.1</version>
+                <version>5.11.2</version>
             </dependency>
 
             <dependency>

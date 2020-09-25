@@ -17,7 +17,7 @@ services:
     db:
         # Dockerfile to setup image and init pgdev/schema.sql
         build:
-            context: pgdev
+            context: postgres
         ports:
         - "5432:5432"
         volumes:

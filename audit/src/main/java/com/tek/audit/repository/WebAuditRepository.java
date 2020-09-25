@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface WebAuditRepository
-    extends JpaRepository<WebAudit, Long>, JpaSpecificationExecutor<WebAudit> {
+public interface WebAuditRepository extends JpaRepository<WebAudit, Long>, JpaSpecificationExecutor<WebAudit> {
 
     @Override
     Page<WebAudit> findAll(Specification<WebAudit> spec, Pageable pageable);

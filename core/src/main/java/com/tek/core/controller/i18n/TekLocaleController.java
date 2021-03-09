@@ -1,13 +1,15 @@
 package com.tek.core.controller.i18n;
 
-import com.tek.core.controller.api.TekResponse;
+import com.tek.core.config.i18n.TekCoreMessageSource;
 import com.tek.core.service.TekRestMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,31 +45,16 @@ class TekLocaleController {
     @ApiImplicitParam(
         paramType = "form",
         dataType = "string",
+        dataTypeClass = String.class,
         name = "locale",
         value = "Value of the locale to set, provided in the format BCP 47",
         allowableValues = "it, en",
-        defaultValue = "en",
         required = true
     )
-//    public ResponseEntity<TekBodyResponse> setLocale() {
-//        TekBodyResponse response = TekBodyResponse.builder().result(getMessage()).build();
-//        return ResponseEntity.ok(response);
-//    }
-//
-//    private String getMessage() {
-//        return messageSource.getMessage(
-//            TekCoreMessageSource.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
-//        );
-//    }
-
-    public ResponseEntity<TekResponse> setLocale() {
-        TekResponse response = TekResponse.builder()
-            .message(tekRestMessage.ok())
-            .body(getMessage().toString()).build();
-        return ResponseEntity.ok(response);
-    }
-
-    private String getMessage() {
-        return null;
+    public ResponseEntity<String> setLocale() {
+        val message = messageSource.getMessage(
+            TekCoreMessageSource.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
+        );
+        return ResponseEntity.ok(message);
     }
 }

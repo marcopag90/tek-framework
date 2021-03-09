@@ -8,24 +8,26 @@ package com.tek.core;
  * <p>
  * - application.properties -> spring.profiles.active=dev
  * <p>
- * - application yaml -> spring:profiles.active:dev
+ * - application yaml -> spring.profiles.active:dev
  *
  * @author MarcoPagan
  */
-public interface TekProfile {
+public class TekProfile {
+
+    private TekProfile() {}
 
     /**
      * Profile that MUST be used only for development environment
      **/
-    String DEVELOPMENT = "dev";
+    public static final String DEVELOPMENT = "dev";
 
     /**
      * Profile that MUST be used for test environment
      **/
-    String TEST = "test";
+    public static final String TEST = "test";
 
     /**
      * Profile that MUST be used for application deployment environment
      **/
-    String PRODUCTION = "prod";
+    public static final String PRODUCTION = "prod";
 }

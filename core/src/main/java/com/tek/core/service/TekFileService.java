@@ -1,6 +1,6 @@
 package com.tek.core.service;
 
-import com.tek.core.conf.TekDirConfiguration;
+import com.tek.core.config.TekDirConfiguration;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,6 @@ public class TekFileService {
     private File tmpDirectory;
     private File binaryDirectory;
 
-    @SuppressWarnings("unused")
     @PostConstruct
     private void init() {
         this.tmpDirectory = dirConfiguration.tmpDirectory();
@@ -44,7 +43,6 @@ public class TekFileService {
     public String createFile(String fileName) {
         File file = new File(fileName);
         boolean created;
-
         try {
             created = file.createNewFile();
         } catch (IOException e) {
@@ -70,7 +68,6 @@ public class TekFileService {
     public File createDirectory(String directory) {
         File dir = new File(directory + File.separator);
         boolean created;
-
         if (!dir.isDirectory()) {
             log.debug(
                 "Directory {} doesn't exist. Performing creation...", dir.getAbsolutePath()

@@ -1,6 +1,6 @@
 package com.tek.core.service.impl;
 
-import com.tek.core.conf.i18n.TekCoreMessageSource;
+import com.tek.core.config.i18n.TekCoreMessageSource;
 import com.tek.core.service.TekRestMessage;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +42,4 @@ public class TekRestMessageServiceImpl implements TekRestMessage {
             LocaleContextHolder.getLocale()
         );
     }
-
 }

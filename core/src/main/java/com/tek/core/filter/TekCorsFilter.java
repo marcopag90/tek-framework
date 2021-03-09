@@ -1,9 +1,10 @@
 package com.tek.core.filter;
 
 import com.tek.core.TekCoreProperties;
-import com.tek.core.prop.TekCorsProperties;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.val;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Cors Filter Policy
@@ -41,15 +41,15 @@ public class TekCorsFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+        //noop
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
-
-        TekCorsProperties corsProperties = coreProperties.getCors();
+    @SneakyThrows
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
+        val request = (HttpServletRequest) req;
+        val response = (HttpServletResponse) res;
+        val corsProperties = coreProperties.getCors();
 
         response.setHeader(
             HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsProperties.getAllowedOrigin()

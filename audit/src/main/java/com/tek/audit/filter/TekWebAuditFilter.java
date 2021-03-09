@@ -6,7 +6,6 @@ import com.tek.audit.dto.ServletRequestDto;
 import com.tek.audit.dto.ServletResponseDto;
 import com.tek.audit.model.WebAudit;
 import com.tek.audit.service.WebAuditService;
-import com.tek.audit.service.impl.WebAuditServiceImpl;
 import com.tek.core.util.TekStreamEnumeration;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

@@ -5,50 +5,54 @@ package com.tek.core;
  *
  * @author MarcoPagan
  */
-public interface TekCoreConstant {
+public class TekCoreConstant {
+
+    private TekCoreConstant() {}
 
     /**
      * Default packages to scan by Spring
      */
-    String TEK_PACKAGES_TO_SCAN = "com.tek";
+    public static final String TEK_PACKAGES_TO_SCAN = "com.tek";
 
     /**
      * Tek Core Module Configuration name
      */
-    String TEK_CORE_CONFIGURATION = "TekCoreConfiguration";
+    public static final String TEK_CORE_CONFIGURATION = "TekCoreConfiguration";
 
     /**
      * Classpath location for i18n message bundle
      */
-    String TEK_CORE_MESSAGE_BUNDLE = "classpath:/i18n/core_messages";
+    public static final String TEK_CORE_MESSAGE_BUNDLE = "classpath:/i18n/core_messages";
 
     /**
      * Default name of i18n message bundle
      */
-    String TEK_CORE_MESSAGE_SOURCE = "com.tek.core.messageSource";
+    public static final String TEK_CORE_MESSAGE_SOURCE = "com.tek.core.messageSource";
 
     /**
      * Prefix of the .yaml/.properties for Tek Core Module configuration.
      */
-    String TEK_CORE = "tek.core";
+    public static final String TEK_CORE = "tek.core";
 
     /**
      * Locale change API path
      */
-    String TEK_LOCALE_PATH = "/locale";
+    @SuppressWarnings("squid:S1075")
+    public static final String TEK_LOCALE_PATH = "/locale";
 
     /**
      * Date format API path
      */
-    String TEK_DATE_PATH = "/dateformat";
+    @SuppressWarnings("squid:S1075")
+    public static final String TEK_DATE_PATH = "/dateformat";
 
     /**
      * Name of the .yaml property for Swagger API info
      */
-    String TEK_SWAGGER_API_INFO = "tek.swagger.api.info";
+    public static final String TEK_SWAGGER_API_INFO = "tek.swagger.api.info";
 
     /**
      * Name of the git.properties file
      */
-    String GIT_PROPERTIES = "git.properties";
+    public static final String GIT_PROPERTIES = "git.properties";
 }

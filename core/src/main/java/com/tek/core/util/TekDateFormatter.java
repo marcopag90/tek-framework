@@ -11,11 +11,11 @@ import java.text.SimpleDateFormat;
 @Configuration
 public class TekDateFormatter {
 
-    public static String TIMESTAMP = "yyyy-MM-dd HH:mm:ss.SSS";
-    public static String FILE_TIMESTAMP = "yyyyMMdd_HHmmss_SSS";
+    public static final String TIMESTAMP = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String FILE_TIMESTAMP = "yyyyMMdd_HHmmss_SSS";
 
     @Bean
-    public SimpleDateFormat timestamp() {
+    public SimpleDateFormat withTimestamp() {
         return new SimpleDateFormat(TIMESTAMP);
     }
 

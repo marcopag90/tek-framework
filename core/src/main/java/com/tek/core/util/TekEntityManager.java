@@ -1,5 +1,6 @@
 package com.tek.core.util;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +46,10 @@ public class TekEntityManager {
     @NonNull private final EntityManager entityManager;
     @NonNull private final ApplicationContext applicationContext;
 
-    public Set<EntityType<?>> entityTypes;
-    public Repositories repositories;
+    @Getter public Set<EntityType<?>> entityTypes;
+    @Getter public Repositories repositories;
 
     @PostConstruct
-    @SuppressWarnings("unused")
     private void init() {
         entityTypes = entityManager.getMetamodel().getEntities();
         repositories = new Repositories(applicationContext);

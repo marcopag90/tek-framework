@@ -4,8 +4,7 @@ import com.tek.audit.model.WebAudit;
 import com.tek.audit.service.WebAuditService;
 import com.tek.core.conf.swagger.ApiPageable;
 import com.tek.core.controller.TekMapping;
-import com.tek.core.controller.api.TekPageResult;
-import com.tek.core.controller.api.TekResponse;
+import com.tek.core.controller.api.TekPage;
 import com.tek.core.rsql.TekRsqlVisitor;
 import com.tek.core.service.TekRestMessage;
 import cz.jirutka.rsql.parser.RSQLParser;
@@ -44,19 +43,13 @@ public class TekWebAuditController {
     @SuppressWarnings("unused")
     @GetMapping(TekMapping.LIST)
     @ApiPageable
-    public ResponseEntity<TekPageResult<WebAudit>> list(
+    public ResponseEntity<TekPage<WebAudit>> list(
         @RequestParam(value = "q") String q,
         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Node rootNode = new RSQLParser().parse(q);
         Specification<WebAudit> spec = rootNode.accept(new TekRsqlVisitor<>());
-        TekPageResult<WebAudit> result = new TekPageResult<>(service.list(spec, pageable));
-
-        TekResponse response = TekResponse.builder()
-            .message(tekRestMessage.ok())
-            .body(result)
-            .build();
-
+        TekPage<WebAudit> result = new TekPage<>(service.list(spec, pageable));
         return ResponseEntity.ok(result);
     }
 

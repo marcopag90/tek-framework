@@ -15,6 +15,8 @@ import java.util.stream.StreamSupport;
  */
 public class TekStreamEnumeration {
 
+    private TekStreamEnumeration() {}
+
     public static <T> Stream<T> enumerationAsStream(Enumeration<T> e) {
         return StreamSupport.stream(
             new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
@@ -26,6 +28,7 @@ public class TekStreamEnumeration {
                     return false;
                 }
 
+                @Override
                 public void forEachRemaining(Consumer<? super T> action) {
                     while (e.hasMoreElements()) action.accept(e.nextElement());
                 }

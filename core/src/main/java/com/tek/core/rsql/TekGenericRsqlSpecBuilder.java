@@ -23,7 +23,7 @@ public class TekGenericRsqlSpecBuilder<T> {
     }
 
     public Specification<T> createSpecification(LogicalNode logicalNode) {
-        List<Specification> specs = logicalNode.getChildren()
+        List<Specification<T>> specs = logicalNode.getChildren()
             .stream()
             .map(this::createSpecification)
             .filter(Objects::nonNull)
@@ -44,7 +44,7 @@ public class TekGenericRsqlSpecBuilder<T> {
 
     public Specification<T> createSpecification(ComparisonNode comparisonNode) {
         return Specification.where(
-            new TekGenericRsqlSpecification<T>(
+            new TekGenericRsqlSpecification<>(
                 comparisonNode.getSelector(),
                 comparisonNode.getOperator(),
                 comparisonNode.getArguments()

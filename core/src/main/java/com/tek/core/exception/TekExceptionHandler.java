@@ -44,7 +44,7 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
         sendExceptionAsMail(request, ex);
         return handleExceptionInternal(
             ex,
-            errorService.createErrorResponse(ex, request),
+            errorService.createErrorResponse(request),
             new HttpHeaders(),
             HttpStatus.INTERNAL_SERVER_ERROR,
             request
@@ -58,10 +58,8 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
      * @author MarcoPagan
      */
     private void sendExceptionAsMail(WebRequest request, RuntimeException ex) {
-        Boolean sendException = coreProperties.getMail().getSendErrors();
-        Boolean realDelivery = coreProperties.getMail().getRealDelivery();
-        if (sendException) {
-            if (realDelivery) {
+        if (coreProperties.getMail().isSendErrors()) {
+            if (coreProperties.getMail().isRealDelivery()) {
                 mailService.sendExceptionMessage((ServletWebRequest) request, ex);
             } else {
                 log.warn("Parameter sendError is active but realDelivery is false. Skipping mail sending!");

@@ -1,11 +1,12 @@
 package com.tek.core.task;
 
 import com.tek.core.TekCoreProperties;
-import com.tek.core.conf.TekDirConfiguration;
 import com.tek.core.service.TekFileService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import lombok.var;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -43,17 +44,16 @@ public class TekTmpFileScheduler {
 
     @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone}")
     public void cleanTmpDirectory() throws InterruptedException {
-        LocalDate today = LocalDate.now();
+        val today = LocalDate.now();
         log.info("Today date: {}", today);
-        LocalDate start = today.minusDays(cleanAfter);
+        var start = today.minusDays(cleanAfter);
         log.info("cleanAfter parameter: {} days, starting date is {}", cleanAfter, start);
 
         if (!directory.exists()) {
             log.warn("Directory {} doesn't exist or has been deleted", directory.getAbsolutePath());
         }
-
         while (start.isBefore(today)) {
-            File dir = Paths.get(directory + File.separator + start).toFile();
+            val dir = Paths.get(directory + File.separator + start).toFile();
             if (dir.exists()) {
                 log.info("Performing clean of directory {}...", dir.getAbsolutePath());
                 fileService.deepDelete(dir);

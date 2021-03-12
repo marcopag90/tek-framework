@@ -8,11 +8,10 @@ import java.io.File;
 @Data
 public class BinaryProperties {
 
-    private File directory = new File("upload");
+  private File directory = new File("upload");
 
-    /**
-     * Upload directory cleans after (days)
-     * //TODO see binary scheduler
-     */
-    private String cron = TekSchedulerProperties.CRON_DAILY_MIDNIGHT;
+  /**
+   * Upload directory cleans after (days) //TODO see binary scheduler
+   */
+  private String cron = TekSchedulerProperties.CRON_DAILY_MIDNIGHT;
 }

@@ -20,8 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * Tek Core Exception Handler for all REST calls.
  * <p>
- * This service checks if a mail with errors must be sent via
- * {@link org.springframework.mail.javamail.JavaMailSender}
+ * This service checks if a mail with errors must be sent via {@link
+ * org.springframework.mail.javamail.JavaMailSender}
  *
  * @author MarcoPagan
  */
@@ -31,39 +31,42 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 public class TekExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @NonNull private final TekErrorService errorService;
-    @NonNull private final TekMailService mailService;
-    @NonNull private final TekCoreProperties coreProperties;
+  @NonNull
+  private final TekErrorService errorService;
+  @NonNull
+  private final TekMailService mailService;
+  @NonNull
+  private final TekCoreProperties coreProperties;
 
-    @ExceptionHandler(value = Exception.class)
-    @Order
-    public ResponseEntity<Object> handleGenericException(
-        RuntimeException ex, WebRequest request
-    ) {
-        log.error(ExceptionUtils.getStackTrace(ex));
-        sendExceptionAsMail(request, ex);
-        return handleExceptionInternal(
-            ex,
-            errorService.createErrorResponse(request),
-            new HttpHeaders(),
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            request
-        );
-    }
+  @ExceptionHandler(value = Exception.class)
+  @Order
+  public ResponseEntity<Object> handleGenericException(
+      RuntimeException ex, WebRequest request
+  ) {
+    log.error(ExceptionUtils.getStackTrace(ex));
+    sendExceptionAsMail(request, ex);
+    return handleExceptionInternal(
+        ex,
+        errorService.createErrorResponse(request),
+        new HttpHeaders(),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        request
+    );
+  }
 
-    /**
-     * Utility method to check if we have to produce an error mail
-     * with the throwable {@link RuntimeException} as attachment.
-     *
-     * @author MarcoPagan
-     */
-    private void sendExceptionAsMail(WebRequest request, RuntimeException ex) {
-        if (coreProperties.getMail().isSendErrors()) {
-            if (coreProperties.getMail().isRealDelivery()) {
-                mailService.sendExceptionMessage((ServletWebRequest) request, ex);
-            } else {
-                log.warn("Parameter sendError is active but realDelivery is false. Skipping mail sending!");
-            }
-        }
+  /**
+   * Utility method to check if we have to produce an error mail with the throwable {@link
+   * RuntimeException} as attachment.
+   *
+   * @author MarcoPagan
+   */
+  private void sendExceptionAsMail(WebRequest request, RuntimeException ex) {
+    if (coreProperties.getMail().isSendErrors()) {
+      if (coreProperties.getMail().isRealDelivery()) {
+        mailService.sendExceptionMessage((ServletWebRequest) request, ex);
+      } else {
+        log.warn("Parameter sendError is active but realDelivery is false. Skipping mail sending!");
+      }
     }
+  }
 }

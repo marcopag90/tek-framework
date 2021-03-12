@@ -22,11 +22,11 @@ import static com.tek.core.TekCoreConstant.TEK_CORE;
 @Data
 public class TekCoreProperties {
 
-    private TekCorsProperties cors = new TekCorsProperties();
-    private TekLocaleProperties locale = new TekLocaleProperties();
-    private TekFileProperties file = new TekFileProperties();
-    private TekMailProperties mail = new TekMailProperties();
-    private TekSchedulerProperties scheduler = new TekSchedulerProperties();
+  private TekCorsProperties cors = new TekCorsProperties();
+  private TekLocaleProperties locale = new TekLocaleProperties();
+  private TekFileProperties file = new TekFileProperties();
+  private TekMailProperties mail = new TekMailProperties();
+  private TekSchedulerProperties scheduler = new TekSchedulerProperties();
 }
 
 

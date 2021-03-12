@@ -21,47 +21,48 @@ import java.nio.file.Files;
 @Slf4j
 public class TekDirConfiguration {
 
-    @NonNull private final TekCoreProperties coreProperties;
-    private File tmpDirectory;
-    private File binaryDirectory;
+  @NonNull
+  private final TekCoreProperties coreProperties;
+  private File tmpDirectory;
+  private File binaryDirectory;
 
-    @PostConstruct
-    private void init() {
-        this.tmpDirectory = coreProperties.getFile().getTmp().getDirectory();
-        this.binaryDirectory = coreProperties.getFile().getBinary().getDirectory();
-    }
+  @PostConstruct
+  private void init() {
+    this.tmpDirectory = coreProperties.getFile().getTmp().getDirectory();
+    this.binaryDirectory = coreProperties.getFile().getBinary().getDirectory();
+  }
 
-    /**
-     * Directory where to store temporary application files.
-     */
-    @Bean
-    public File tmpDirectory() {
-        if (!this.tmpDirectory.isDirectory()) {
-            try {
-                File dir = Files.createDirectory(tmpDirectory.toPath()).toFile();
-                log.info("Creating directory: [{}]", dir.getAbsolutePath());
-                return dir;
-            } catch (Exception e) {
-                log.error("Could not create directory: {}", tmpDirectory.getAbsolutePath());
-            }
-        }
-        return tmpDirectory;
+  /**
+   * Directory where to store temporary application files.
+   */
+  @Bean
+  public File tmpDirectory() {
+    if (!this.tmpDirectory.isDirectory()) {
+      try {
+        File dir = Files.createDirectory(tmpDirectory.toPath()).toFile();
+        log.info("Creating directory: [{}]", dir.getAbsolutePath());
+        return dir;
+      } catch (Exception e) {
+        log.error("Could not create directory: {}", tmpDirectory.getAbsolutePath());
+      }
     }
+    return tmpDirectory;
+  }
 
-    /**
-     * Directory where to store uploaded files.
-     */
-    @Bean
-    public File binaryDirectory() {
-        if (!this.binaryDirectory.isDirectory()) {
-            try {
-                File dir = Files.createDirectory(binaryDirectory.toPath()).toFile();
-                log.info("Creating directory: [{}]", dir.getAbsolutePath());
-                return dir;
-            } catch (Exception e) {
-                log.error("Could not create directory: {}", binaryDirectory.getAbsolutePath());
-            }
-        }
-        return binaryDirectory;
+  /**
+   * Directory where to store uploaded files.
+   */
+  @Bean
+  public File binaryDirectory() {
+    if (!this.binaryDirectory.isDirectory()) {
+      try {
+        File dir = Files.createDirectory(binaryDirectory.toPath()).toFile();
+        log.info("Creating directory: [{}]", dir.getAbsolutePath());
+        return dir;
+      } catch (Exception e) {
+        log.error("Could not create directory: {}", binaryDirectory.getAbsolutePath());
+      }
     }
+    return binaryDirectory;
+  }
 }

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TekCoreSwaggerIgnore implements SwaggerIgnore {
 
-    @Override
-    public Class<?>[] ignore() {
-        return new Class[]{};
-    }
+  @Override
+  public Class<?>[] ignore() {
+    return new Class[]{};
+  }
 }

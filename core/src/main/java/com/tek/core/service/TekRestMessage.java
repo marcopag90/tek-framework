@@ -5,7 +5,7 @@ package com.tek.core.service;
  */
 public interface TekRestMessage {
 
-    String ok();
+  String ok();
 
-    String ko();
+  String ko();
 }

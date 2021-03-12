@@ -38,30 +38,30 @@ import java.util.List;
 @Configuration
 public class TekCoreWebMvc implements WebMvcConfigurer {
 
-    @Override
-    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        for (HttpMessageConverter<?> converter : converters) {
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
-                val mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                val serializerModule = new SimpleModule();
-                serializerModule.addDeserializer(
-                    String.class,
-                    new StdDeserializer<String>(String.class) {
-                        @Override
-                        @SneakyThrows
-                        public String deserialize(JsonParser p, DeserializationContext ctx) {
-                            return p.getText() != null ? p.getText().trim() : null;
-                        }
-                    }
-                );
-                mapper.registerModules(new Hibernate5Module(), serializerModule);
+  @Override
+  public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    for (HttpMessageConverter<?> converter : converters) {
+      if (converter instanceof MappingJackson2HttpMessageConverter) {
+        val mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        val serializerModule = new SimpleModule();
+        serializerModule.addDeserializer(
+            String.class,
+            new StdDeserializer<String>(String.class) {
+              @Override
+              @SneakyThrows
+              public String deserialize(JsonParser p, DeserializationContext ctx) {
+                return p.getText() != null ? p.getText().trim() : null;
+              }
             }
-        }
+        );
+        mapper.registerModules(new Hibernate5Module(), serializerModule);
+      }
     }
+  }
 
-    @Bean
-    public Module guavaModule() {
-        return new GuavaModule();
-    }
+  @Bean
+  public Module guavaModule() {
+    return new GuavaModule();
+  }
 }

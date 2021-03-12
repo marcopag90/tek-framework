@@ -11,12 +11,13 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 public class TekErrorService {
 
-    @NonNull private final TekRestMessage restMessage;
+  @NonNull
+  private final TekRestMessage restMessage;
 
-    public TekErrorResponse createErrorResponse(WebRequest request) {
-        return TekErrorResponse.builder()
-            .message(restMessage.ko())
-            .path(((ServletWebRequest) request).getRequest().getServletPath())
-            .build();
-    }
+  public TekErrorResponse createErrorResponse(WebRequest request) {
+    return TekErrorResponse.builder()
+        .message(restMessage.ko())
+        .path(((ServletWebRequest) request).getRequest().getServletPath())
+        .build();
+  }
 }

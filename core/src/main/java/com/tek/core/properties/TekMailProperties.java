@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class TekMailProperties {
 
-    private boolean sendErrors;
-    private boolean realDelivery;
+  private boolean sendErrors;
+  private boolean realDelivery;
 }

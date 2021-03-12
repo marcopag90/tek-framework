@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 public class TekFileProperties {
 
-    private TmpProperties tmp = new TmpProperties();
-    private BinaryProperties binary = new BinaryProperties();
+  private TmpProperties tmp = new TmpProperties();
+  private BinaryProperties binary = new BinaryProperties();
 }
 
 

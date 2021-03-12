@@ -32,8 +32,8 @@ import static java.lang.String.join;
 /**
  * Utility service to send mail.
  * <p>
- * The service uses the {@link Async} feature
- * to assure the email is sent in a non thread-blocking response for the client.
+ * The service uses the {@link Async} feature to assure the email is sent in a non thread-blocking
+ * response for the client.
  *
  * @author MarcoPagan
  */
@@ -43,121 +43,126 @@ import static java.lang.String.join;
 @Slf4j
 public class TekMailService {
 
-    @NonNull private final TekCoreProperties coreProperties;
-    @NonNull private final TekFileService fileService;
-    @NonNull private final JavaMailSender mailSender;
-    @NonNull private final TekDateFormatter dateFormatter;
-    @NonNull private final ApplicationContext context;
+  @NonNull
+  private final TekCoreProperties coreProperties;
+  @NonNull
+  private final TekFileService fileService;
+  @NonNull
+  private final JavaMailSender mailSender;
+  @NonNull
+  private final TekDateFormatter dateFormatter;
+  @NonNull
+  private final ApplicationContext context;
 
-    private final String newLine = System.getProperty("line.separator");
+  private final String newLine = System.getProperty("line.separator");
 
-    @SuppressWarnings("unused")
-    @Value("${spring.mail.username}")
-    private String host;
+  @SuppressWarnings("unused")
+  @Value("${spring.mail.username}")
+  private String host;
 
-    //TODO noreplay address handling and principal info
-    //TODO see if we can provide error timestamp to file
+  //TODO noreplay address handling and principal info
+  //TODO see if we can provide error timestamp to file
 
-    /**
-     * Sends a {@link RuntimeException} message as an attachment,
-     * including {@link ServletWebRequest} as text.
-     */
-    public void sendExceptionMessage(
-        ServletWebRequest servletWebRequest,
-        RuntimeException exception
+  /**
+   * Sends a {@link RuntimeException} message as an attachment, including {@link ServletWebRequest}
+   * as text.
+   */
+  public void sendExceptionMessage(
+      ServletWebRequest servletWebRequest,
+      RuntimeException exception
+  ) {
+    HttpServletRequest request = servletWebRequest.getRequest();
+    String requestUrl = request.getRequestURL().toString();
+
+    String[] to = new String[]{host};
+    String subject = context.getApplicationName();
+    String filename = fileService.createInTmpDir(
+        dateFormatter.fileDateFormat().format(new Date()) + "_exception.txt"
+    );
+
+    String text = join("")
+        .concat("Exception on: " + subject)
+        .concat(newLine)
+        .concat("Request URL: " + requestUrl);
+
+    try (
+        BufferedWriter out = new BufferedWriter(new FileWriter(filename, true));
+        PrintWriter pWriter = new PrintWriter(out, true);
     ) {
-        HttpServletRequest request = servletWebRequest.getRequest();
-        String requestUrl = request.getRequestURL().toString();
-
-        String[] to = new String[]{host};
-        String subject = context.getApplicationName();
-        String filename = fileService.createInTmpDir(
-            dateFormatter.fileDateFormat().format(new Date()) + "_exception.txt"
-        );
-
-        String text = join("")
-            .concat("Exception on: " + subject)
-            .concat(newLine)
-            .concat("Request URL: " + requestUrl);
-
-        try (
-            BufferedWriter out = new BufferedWriter(new FileWriter(filename, true));
-            PrintWriter pWriter = new PrintWriter(out, true);
-        ) {
-            exception.printStackTrace(pWriter);
-            sendWithAttachment(to, subject, text, filename);
-        } catch (Exception ex) {
-            logMailError(Arrays.toString(to), ex);
-        }
+      exception.printStackTrace(pWriter);
+      sendWithAttachment(to, subject, text, filename);
+    } catch (Exception ex) {
+      logMailError(Arrays.toString(to), ex);
     }
+  }
 
-    /**
-     * Sends a mail message with a text and an attachment
-     */
-    public void sendWithAttachment(String[] to, String subject, String text, String file) {
-        String toArray = Arrays.toString(to);
-        logMailSending(toArray);
+  /**
+   * Sends a mail message with a text and an attachment
+   */
+  public void sendWithAttachment(String[] to, String subject, String text, String file) {
+    String toArray = Arrays.toString(to);
+    logMailSending(toArray);
 
-        try {
-            String addresses = join(",", to);
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
-            mimeMessage.setSubject(subject);
+    try {
+      String addresses = join(",", to);
+      MimeMessage mimeMessage = mailSender.createMimeMessage();
+      mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
+      mimeMessage.setSubject(subject);
 
-            Multipart emailContent = new MimeMultipart();
+      Multipart emailContent = new MimeMultipart();
 
-            MimeBodyPart textBodyPart = new MimeBodyPart();
-            textBodyPart.setText(text);
+      MimeBodyPart textBodyPart = new MimeBodyPart();
+      textBodyPart.setText(text);
 
-            MimeBodyPart fileBodyPart = new MimeBodyPart();
-            fileBodyPart.attachFile(file);
+      MimeBodyPart fileBodyPart = new MimeBodyPart();
+      fileBodyPart.attachFile(file);
 
-            emailContent.addBodyPart(textBodyPart);
-            emailContent.addBodyPart(fileBodyPart);
+      emailContent.addBodyPart(textBodyPart);
+      emailContent.addBodyPart(fileBodyPart);
 
-            mimeMessage.setContent(emailContent);
-            mailSender.send(mimeMessage);
-        } catch (Exception ex) {
-            logMailError(toArray, ex);
-            return;
-        }
-        logMailSuccess(toArray);
+      mimeMessage.setContent(emailContent);
+      mailSender.send(mimeMessage);
+    } catch (Exception ex) {
+      logMailError(toArray, ex);
+      return;
     }
+    logMailSuccess(toArray);
+  }
 
-    /**
-     * Sends a mail message with a simple text
-     */
-    public void sendSimpleMessage(String[] to, String subject, String text) {
-        String toArray = Arrays.toString(to);
-        logMailSending(toArray);
+  /**
+   * Sends a mail message with a simple text
+   */
+  public void sendSimpleMessage(String[] to, String subject, String text) {
+    String toArray = Arrays.toString(to);
+    logMailSending(toArray);
 
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(text);
+    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    simpleMailMessage.setTo(to);
+    simpleMailMessage.setSubject(subject);
+    simpleMailMessage.setText(text);
 
-        try {
-            mailSender.send(simpleMailMessage);
-        } catch (Exception ex) {
-            logMailError(toArray, ex);
-            return;
-        }
-        logMailSuccess(toArray);
+    try {
+      mailSender.send(simpleMailMessage);
+    } catch (Exception ex) {
+      logMailError(toArray, ex);
+      return;
     }
+    logMailSuccess(toArray);
+  }
 
-    private void logMailSending(String addresses) {
-        log.debug("Sending mail to: {}", addresses);
-    }
+  private void logMailSending(String addresses) {
+    log.debug("Sending mail to: {}", addresses);
+  }
 
-    private void logMailSuccess(String addresses) {
-        log.debug("Email sent to: {}", addresses);
-    }
+  private void logMailSuccess(String addresses) {
+    log.debug("Email sent to: {}", addresses);
+  }
 
-    private void logMailError(String addresses, Exception ex) {
-        log.error(
-            "Unable to send mail to: {}, cause: [{}]",
-            addresses,
-            ExceptionUtils.getStackTrace(ex)
-        );
-    }
+  private void logMailError(String addresses, Exception ex) {
+    log.error(
+        "Unable to send mail to: {}, cause: [{}]",
+        addresses,
+        ExceptionUtils.getStackTrace(ex)
+    );
+  }
 }

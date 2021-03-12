@@ -18,13 +18,13 @@ import static com.tek.core.TekCoreConstant.TEK_SWAGGER_API_INFO;
 @Data
 public class TekSwaggerProperties {
 
-    private String description = "Tek Framework API Service";
-    private String termOfServiceUrl = null;
+  private String description = "Tek Framework API Service";
+  private String termOfServiceUrl = null;
 
-    private String contactName = null;
-    private String contactUrl = null;
-    private String contactEmail = null;
+  private String contactName = null;
+  private String contactUrl = null;
+  private String contactEmail = null;
 
-    private String license = null;
-    private String licenseUrl = null;
+  private String license = null;
+  private String licenseUrl = null;
 }

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 /**
  * Configuration to tell Swagger what classed must be ignored by <i>Swagger Models</i>.
  * <p>
- * Accessing the {@link ApplicationContext}, collect all beans implementing {@link SwaggerIgnore}
- * to create a flat map of ignorable class types.
+ * Accessing the {@link ApplicationContext}, collect all beans implementing {@link SwaggerIgnore} to
+ * create a flat map of ignorable class types.
  *
  * @author MarcoPagan
  */
@@ -23,12 +23,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TekSwaggerIgnoreConfiguration {
 
-    @NonNull private final ApplicationContext context;
+  @NonNull
+  private final ApplicationContext context;
 
-    @Bean
-    public Class<?>[] getIgnoredParameterTypes() {
-        Collection<SwaggerIgnore> beans = context.getBeansOfType(SwaggerIgnore.class).values();
-        return beans.stream().map(SwaggerIgnore::ignore).collect(Collectors.toSet())
-            .stream().flatMap(Arrays::stream).toArray(Class[]::new);
-    }
+  @Bean
+  public Class<?>[] getIgnoredParameterTypes() {
+    Collection<SwaggerIgnore> beans = context.getBeansOfType(SwaggerIgnore.class).values();
+    return beans.stream().map(SwaggerIgnore::ignore).collect(Collectors.toSet())
+        .stream().flatMap(Arrays::stream).toArray(Class[]::new);
+  }
 }

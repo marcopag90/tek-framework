@@ -21,27 +21,29 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class TekSwaggerInfoConfiguration {
 
-    @NonNull private final TekSwaggerProperties swaggerProperties;
-    @NonNull private final ApplicationContext context;
+  @NonNull
+  private final TekSwaggerProperties swaggerProperties;
+  @NonNull
+  private final ApplicationContext context;
 
-    @Value("${git.build.version}")
-    private String gitBuildVersion;
+  @Value("${git.build.version}")
+  private String gitBuildVersion;
 
-    @Bean
-    public ApiInfo getApiInfo() {
-        return new ApiInfo(
-            context.getApplicationName(), //server.servlet.context-path
-            swaggerProperties.getDescription(),
-            gitBuildVersion,
-            swaggerProperties.getTermOfServiceUrl(),
-            new Contact(
-                swaggerProperties.getContactName(),
-                swaggerProperties.getContactUrl(),
-                swaggerProperties.getContactEmail()
-            ),
-            swaggerProperties.getLicense(),
-            swaggerProperties.getLicenseUrl(),
-            Collections.emptyList()
-        );
-    }
+  @Bean
+  public ApiInfo getApiInfo() {
+    return new ApiInfo(
+        context.getApplicationName(), //server.servlet.context-path
+        swaggerProperties.getDescription(),
+        gitBuildVersion,
+        swaggerProperties.getTermOfServiceUrl(),
+        new Contact(
+            swaggerProperties.getContactName(),
+            swaggerProperties.getContactUrl(),
+            swaggerProperties.getContactEmail()
+        ),
+        swaggerProperties.getLicense(),
+        swaggerProperties.getLicenseUrl(),
+        Collections.emptyList()
+    );
+  }
 }

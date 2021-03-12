@@ -7,32 +7,32 @@ import lombok.Getter;
 @Getter
 public enum TekRsqlSearchOperation {
 
-    EQUAL(RSQLOperators.EQUAL),
-    NOT_EQUAL(RSQLOperators.NOT_EQUAL),
-    GREATER_THAN(RSQLOperators.GREATER_THAN),
-    GREATER_THAN_OR_EQUAL(RSQLOperators.GREATER_THAN_OR_EQUAL),
-    LESS_THAN(RSQLOperators.LESS_THAN),
-    LESS_THAN_OR_EQUAL(RSQLOperators.LESS_THAN_OR_EQUAL),
-    IN(RSQLOperators.IN),
-    NOT_IN(RSQLOperators.NOT_IN);
+  EQUAL(RSQLOperators.EQUAL),
+  NOT_EQUAL(RSQLOperators.NOT_EQUAL),
+  GREATER_THAN(RSQLOperators.GREATER_THAN),
+  GREATER_THAN_OR_EQUAL(RSQLOperators.GREATER_THAN_OR_EQUAL),
+  LESS_THAN(RSQLOperators.LESS_THAN),
+  LESS_THAN_OR_EQUAL(RSQLOperators.LESS_THAN_OR_EQUAL),
+  IN(RSQLOperators.IN),
+  NOT_IN(RSQLOperators.NOT_IN);
 
-    private final ComparisonOperator operator;
+  private final ComparisonOperator operator;
 
-    TekRsqlSearchOperation(ComparisonOperator operator) {
-        this.operator = operator;
+  TekRsqlSearchOperation(ComparisonOperator operator) {
+    this.operator = operator;
+  }
+
+  @Override
+  public String toString() {
+    return this.operator.getSymbol();
+  }
+
+  public static TekRsqlSearchOperation getSimpleOperator(ComparisonOperator operator) {
+    for (TekRsqlSearchOperation operation : values()) {
+      if (operation.getOperator() == operator) {
+        return operation;
+      }
     }
-
-    @Override
-    public String toString() {
-        return this.operator.getSymbol();
-    }
-
-    public static TekRsqlSearchOperation getSimpleOperator(ComparisonOperator operator) {
-        for (TekRsqlSearchOperation operation : values()) {
-            if (operation.getOperator() == operator) {
-                return operation;
-            }
-        }
-        return null;
-    }
+    return null;
+  }
 }

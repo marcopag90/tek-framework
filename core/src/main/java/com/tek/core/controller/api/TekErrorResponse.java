@@ -19,6 +19,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class TekErrorResponse implements Serializable {
 
-    private String message;
-    private String path;
+  private String message;
+  private String path;
 }

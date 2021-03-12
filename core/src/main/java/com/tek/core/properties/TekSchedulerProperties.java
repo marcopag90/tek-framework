@@ -30,14 +30,14 @@ second, minute, hour, day of month, month, day(s) of week
 @Data
 public class TekSchedulerProperties {
 
-    /**
-     * Default temporal cron execution
-     */
-    public static final String CRON_DAILY_MIDNIGHT = "0 0 * * * *";
+  /**
+   * Default temporal cron execution
+   */
+  public static final String CRON_DAILY_MIDNIGHT = "0 0 * * * *";
 
-    /**
-     * Whether the scheduler is active or not
-     * <p>{@link com.tek.core.task.TekTmpFileScheduler}
-     */
-    private Boolean active = true;
+  /**
+   * Whether the scheduler is active or not
+   * <p>{@link com.tek.core.task.TekTmpFileScheduler}
+   */
+  private Boolean active = true;
 }

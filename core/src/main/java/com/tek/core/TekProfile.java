@@ -14,20 +14,21 @@ package com.tek.core;
  */
 public class TekProfile {
 
-    private TekProfile() {}
+  private TekProfile() {
+  }
 
-    /**
-     * Profile that MUST be used only for development environment
-     **/
-    public static final String DEVELOPMENT = "dev";
+  /**
+   * Profile that MUST be used only for development environment
+   **/
+  public static final String DEVELOPMENT = "dev";
 
-    /**
-     * Profile that MUST be used for test environment
-     **/
-    public static final String TEST = "test";
+  /**
+   * Profile that MUST be used for test environment
+   **/
+  public static final String TEST = "test";
 
-    /**
-     * Profile that MUST be used for application deployment environment
-     **/
-    public static final String PRODUCTION = "prod";
+  /**
+   * Profile that MUST be used for application deployment environment
+   **/
+  public static final String PRODUCTION = "prod";
 }

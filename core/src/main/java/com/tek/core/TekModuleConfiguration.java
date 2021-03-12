@@ -17,28 +17,28 @@ import javax.naming.ConfigurationException;
 @Slf4j
 public abstract class TekModuleConfiguration {
 
-    @Autowired
-    protected ConfigurableEnvironment environment;
+  @Autowired
+  protected ConfigurableEnvironment environment;
 
-    private final Class<?> configuration;
+  private final Class<?> configuration;
 
-    protected TekModuleConfiguration(Class<?> configuration) {
-        this.configuration = configuration;
-    }
+  protected TekModuleConfiguration(Class<?> configuration) {
+    this.configuration = configuration;
+  }
 
-    public abstract void checkModuleConfiguration() throws ConfigurationException;
+  public abstract void checkModuleConfiguration() throws ConfigurationException;
 
-    @PostConstruct
-    @SneakyThrows
-    private void postConstruct() {
-        log.info(
-            "Checking Tek Module Configuration: [{}]",
-            ClassUtils.getUserClass(configuration).getSimpleName()
-        );
-        checkModuleConfiguration();
-        log.info(
-            "[{}] success!",
-            ClassUtils.getUserClass(configuration).getSimpleName()
-        );
-    }
+  @PostConstruct
+  @SneakyThrows
+  private void postConstruct() {
+    log.info(
+        "Checking Tek Module Configuration: [{}]",
+        ClassUtils.getUserClass(configuration).getSimpleName()
+    );
+    checkModuleConfiguration();
+    log.info(
+        "[{}] success!",
+        ClassUtils.getUserClass(configuration).getSimpleName()
+    );
+  }
 }

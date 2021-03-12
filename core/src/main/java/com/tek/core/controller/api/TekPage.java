@@ -24,13 +24,13 @@ import java.util.List;
 @Setter
 public class TekPage<T> implements Serializable {
 
-    private transient List<T> content;
-    private Long totalElements;
-    private Integer totalPages;
+  private transient List<T> content;
+  private Long totalElements;
+  private Integer totalPages;
 
-    public TekPage(Page<T> page) {
-        this.content = page.getContent();
-        this.totalElements = page.getTotalElements();
-        this.totalPages = page.getTotalPages();
-    }
+  public TekPage(Page<T> page) {
+    this.content = page.getContent();
+    this.totalElements = page.getTotalElements();
+    this.totalPages = page.getTotalPages();
+  }
 }

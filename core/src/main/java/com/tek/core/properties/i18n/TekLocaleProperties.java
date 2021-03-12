@@ -12,12 +12,12 @@ import lombok.Data;
 @Data
 public class TekLocaleProperties {
 
-    private TekLocaleType type = TekLocaleType.SESSION;
-    private String cookieName = "locale";
-    private Integer cookieMaxAge = -1;
+  private TekLocaleType type = TekLocaleType.SESSION;
+  private String cookieName = "locale";
+  private Integer cookieMaxAge = -1;
 
-    public enum TekLocaleType {
-        SESSION, COOKIE, ACCEPTH_HEADER
-    }
+  public enum TekLocaleType {
+    SESSION, COOKIE, ACCEPTH_HEADER
+  }
 }
 

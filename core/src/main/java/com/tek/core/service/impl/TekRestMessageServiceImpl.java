@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
 
 /**
- * Service to provide default messages for all the API responses,
- * based on the session locale.
+ * Service to provide default messages for all the API responses, based on the session locale.
  *
  * @author MarcoPagan
  */
@@ -23,23 +22,23 @@ import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
 @RequiredArgsConstructor
 public class TekRestMessageServiceImpl implements TekRestMessage {
 
-    @NonNull
-    @Qualifier(TEK_CORE_MESSAGE_SOURCE)
-    private final MessageSource messageSource;
+  @NonNull
+  @Qualifier(TEK_CORE_MESSAGE_SOURCE)
+  private final MessageSource messageSource;
 
-    public String ok() {
-        return messageSource.getMessage(
-            TekCoreMessageSource.Message.SERVICE_OK,
-            null,
-            LocaleContextHolder.getLocale()
-        );
-    }
+  public String ok() {
+    return messageSource.getMessage(
+        TekCoreMessageSource.Message.SERVICE_OK,
+        null,
+        LocaleContextHolder.getLocale()
+    );
+  }
 
-    public String ko() {
-        return messageSource.getMessage(
-            TekCoreMessageSource.Message.SERVICE_KO,
-            null,
-            LocaleContextHolder.getLocale()
-        );
-    }
+  public String ko() {
+    return messageSource.getMessage(
+        TekCoreMessageSource.Message.SERVICE_KO,
+        null,
+        LocaleContextHolder.getLocale()
+    );
+  }
 }

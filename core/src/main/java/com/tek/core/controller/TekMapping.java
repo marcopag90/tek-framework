@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 public class TekMapping {
 
-    private TekMapping() {}
+  private TekMapping() {
+  }
 
-    public static final String CREATE = "/create";
-    public static final String READ = "/read";
-    public static final String LIST = "/list";
-    public static final String UPDATE = "/update";
-    public static final String DELETE = "/delete";
+  public static final String CREATE = "/create";
+  public static final String READ = "/read";
+  public static final String LIST = "/list";
+  public static final String UPDATE = "/update";
+  public static final String DELETE = "/delete";
 }

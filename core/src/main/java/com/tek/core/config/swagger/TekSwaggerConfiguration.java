@@ -24,20 +24,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RequiredArgsConstructor
 public class TekSwaggerConfiguration {
 
-    @NonNull private final TekSwaggerInfoConfiguration infoConfiguration;
-    @NonNull private final TekSwaggerIgnoreConfiguration ignoreConfiguration;
+  @NonNull
+  private final TekSwaggerInfoConfiguration infoConfiguration;
+  @NonNull
+  private final TekSwaggerIgnoreConfiguration ignoreConfiguration;
 
-    private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
+  private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
 
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(infoConfiguration.getApiInfo())
-            .ignoredParameterTypes(defaultIgnoredParameterTypes)
-            .ignoredParameterTypes(ignoreConfiguration.getIgnoredParameterTypes());
-    }
+  @Bean
+  public Docket api() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+        .paths(PathSelectors.any())
+        .build()
+        .apiInfo(infoConfiguration.getApiInfo())
+        .ignoredParameterTypes(defaultIgnoredParameterTypes)
+        .ignoredParameterTypes(ignoreConfiguration.getIgnoredParameterTypes());
+  }
 }

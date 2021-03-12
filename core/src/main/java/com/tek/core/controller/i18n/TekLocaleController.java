@@ -20,8 +20,7 @@ import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
 import static com.tek.core.TekCoreConstant.TEK_LOCALE_PATH;
 
 /**
- * API to test the behaviour of the Spring
- * {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.
+ * API to test the behaviour of the Spring {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.
  *
  * @author MarcoPagan
  */
@@ -34,27 +33,28 @@ import static com.tek.core.TekCoreConstant.TEK_LOCALE_PATH;
 @RequiredArgsConstructor
 class TekLocaleController {
 
-    @NonNull
-    @Qualifier(TEK_CORE_MESSAGE_SOURCE)
-    private final MessageSource messageSource;
+  @NonNull
+  @Qualifier(TEK_CORE_MESSAGE_SOURCE)
+  private final MessageSource messageSource;
 
-    @NonNull private final TekRestMessage tekRestMessage;
+  @NonNull
+  private final TekRestMessage tekRestMessage;
 
-    @PostMapping
-    @ApiOperation(value = "Allows to change the server locale")
-    @ApiImplicitParam(
-        paramType = "form",
-        dataType = "string",
-        dataTypeClass = String.class,
-        name = "locale",
-        value = "Value of the locale to set, provided in the format BCP 47",
-        allowableValues = "it, en",
-        required = true
-    )
-    public ResponseEntity<String> setLocale() {
-        val message = messageSource.getMessage(
-            TekCoreMessageSource.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
-        );
-        return ResponseEntity.ok(message);
-    }
+  @PostMapping
+  @ApiOperation(value = "Allows to change the server locale")
+  @ApiImplicitParam(
+      paramType = "form",
+      dataType = "string",
+      dataTypeClass = String.class,
+      name = "locale",
+      value = "Value of the locale to set, provided in the format BCP 47",
+      allowableValues = "it, en",
+      required = true
+  )
+  public ResponseEntity<String> setLocale() {
+    val message = messageSource.getMessage(
+        TekCoreMessageSource.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
+    );
+    return ResponseEntity.ok(message);
+  }
 }

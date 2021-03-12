@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
-import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
+import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
 
 /**
  * Service to provide default messages for all the API responses, based on the session locale.

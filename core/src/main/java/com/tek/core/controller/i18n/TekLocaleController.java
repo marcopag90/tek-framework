@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
-import static com.tek.core.TekCoreConstant.TEK_LOCALE_PATH;
+import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
+import static com.tek.core.TekCoreConstants.TEK_LOCALE_PATH;
 
 /**
  * API to test the behaviour of the Spring {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.

@@ -36,8 +36,8 @@ public class TekCorePropertiesDefaultTest {
     @Test
     public void testCorsProperties() {
         TekCorsProperties corsProperties = properties.getCors();
-        String allowedMethods = String.join(",", corsProperties.getAllowedMethods());
-        String allowedHeaders = String.join(",", corsProperties.getAllowedHeaders());
+        val allowedMethods = String.join(",", corsProperties.getAllowedMethods());
+        val allowedHeaders = String.join(",", corsProperties.getAllowedHeaders());
 
         Assertions.assertEquals(corsProperties.getAllowedOrigin(), "http://localhost:4200");
         Assertions.assertEquals(corsProperties.getAllowedCredentials(), true);

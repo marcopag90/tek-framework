@@ -8,8 +8,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 import java.nio.charset.StandardCharsets;
 
-import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_BUNDLE;
-import static com.tek.core.TekCoreConstant.TEK_CORE_MESSAGE_SOURCE;
+import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
+import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
 
 @Configuration
 public class TekCoreMessageSource {

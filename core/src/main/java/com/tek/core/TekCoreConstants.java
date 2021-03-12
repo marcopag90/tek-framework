@@ -5,9 +5,9 @@ package com.tek.core;
  *
  * @author MarcoPagan
  */
-public class TekCoreConstant {
+public class TekCoreConstants {
 
-  private TekCoreConstant() {
+  private TekCoreConstants() {
   }
 
   /**

@@ -1,22 +1,20 @@
 package com.tek.core.task;
 
+import static com.tek.core.TekCoreConstants.TEK_CORE;
+
 import com.tek.core.TekCoreProperties;
 import com.tek.core.service.TekFileService;
+import java.io.File;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import lombok.var;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-
-import static com.tek.core.TekCoreConstant.TEK_CORE;
 
 /**
  * Scheduler to clean directory where unuseful file are stored.

@@ -1,4 +1,4 @@
-package com.tek.core;
+package com.tek.core.constants;
 
 /**
  * Tek Core Constants
@@ -16,19 +16,9 @@ public class TekCoreConstants {
   public static final String TEK_PACKAGES_TO_SCAN = "com.tek";
 
   /**
-   * Tek Core Module Configuration name
-   */
-  public static final String TEK_CORE_CONFIGURATION = "TekCoreConfiguration";
-
-  /**
    * Classpath location for i18n message bundle
    */
   public static final String TEK_CORE_MESSAGE_BUNDLE = "classpath:/i18n/core_messages";
-
-  /**
-   * Default name of i18n message bundle
-   */
-  public static final String TEK_CORE_MESSAGE_SOURCE = "com.tek.core.messageSource";
 
   /**
    * Prefix of the .yaml/.properties for Tek Core Module configuration.

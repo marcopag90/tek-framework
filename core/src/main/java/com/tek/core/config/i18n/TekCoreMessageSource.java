@@ -8,13 +8,13 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 import java.nio.charset.StandardCharsets;
 
-import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
-import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 
 @Configuration
 public class TekCoreMessageSource {
 
-  @Bean(name = TEK_CORE_MESSAGE_SOURCE)
+  @Bean(name = TEK_CORE_MESSAGE_SOURCE_BEAN)
   public MessageSource getMessageSource() {
     val messageSource = new ReloadableResourceBundleMessageSource();
     messageSource.setBasename(TEK_CORE_MESSAGE_BUNDLE);

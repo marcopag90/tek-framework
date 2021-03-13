@@ -12,8 +12,8 @@ import javax.naming.ConfigurationException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-import static com.tek.core.TekCoreConstants.TEK_CORE_CONFIGURATION;
 import static com.tek.core.TekProfile.*;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
 import static java.lang.String.join;
 
 /**

@@ -77,7 +77,7 @@ public class TekMailService {
     String[] to = new String[]{host};
     String subject = context.getApplicationName();
     String filename = fileService.createInTmpDir(
-        dateFormatter.fileDateFormat().format(new Date()) + "_exception.txt"
+        dateFormatter.fileTimestampFormat().format(new Date()) + "_exception.txt"
     );
 
     String text = join("")

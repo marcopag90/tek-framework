@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
-import static com.tek.core.TekCoreConstants.GIT_PROPERTIES;
+import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 
 /**
  * Configuration to allow access of different properties file through the application just by using

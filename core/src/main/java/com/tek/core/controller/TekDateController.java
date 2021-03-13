@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import static com.tek.core.TekCoreConstants.TEK_DATE_PATH;
+import static com.tek.core.constants.TekCoreConstants.TEK_DATE_PATH;
 
 @RestController
 @RequestMapping(

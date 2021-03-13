@@ -1,5 +1,7 @@
 package com.tek.core.service.impl;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
+
 import com.tek.core.config.i18n.TekCoreMessageSource;
 import com.tek.core.service.TekRestMessage;
 import lombok.NonNull;
@@ -10,7 +12,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
-import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
 
 /**
  * Service to provide default messages for all the API responses, based on the session locale.
@@ -23,7 +24,7 @@ import static com.tek.core.TekCoreConstants.TEK_CORE_MESSAGE_SOURCE;
 public class TekRestMessageServiceImpl implements TekRestMessage {
 
   @NonNull
-  @Qualifier(TEK_CORE_MESSAGE_SOURCE)
+  @Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN)
   private final MessageSource messageSource;
 
   public String ok() {

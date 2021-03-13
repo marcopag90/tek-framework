@@ -1,6 +1,6 @@
 package com.tek.core.task;
 
-import static com.tek.core.TekCoreConstants.TEK_CORE;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
 
 import com.tek.core.TekCoreProperties;
 import com.tek.core.service.TekFileService;

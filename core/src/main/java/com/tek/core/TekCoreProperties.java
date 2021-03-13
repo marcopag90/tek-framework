@@ -9,7 +9,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import static com.tek.core.TekCoreConstants.TEK_CORE;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
 
 
 /**

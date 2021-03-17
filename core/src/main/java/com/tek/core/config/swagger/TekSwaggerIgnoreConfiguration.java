@@ -1,20 +1,14 @@
 package com.tek.core.config.swagger;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * Configuration to tell Swagger what classed must be ignored by <i>Swagger Models</i>.
- * <p>
- * Accessing the {@link ApplicationContext}, collect all beans implementing {@link SwaggerIgnore} to
- * create a flat map of ignorable class types.
  *
  * @author MarcoPagan
  */
@@ -23,13 +17,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TekSwaggerIgnoreConfiguration {
 
-  @NonNull
-  private final ApplicationContext context;
+  @NonNull private final List<SwaggerIgnore> swaggerIgnores;
 
-  @Bean
   public Class<?>[] getIgnoredParameterTypes() {
-    Collection<SwaggerIgnore> beans = context.getBeansOfType(SwaggerIgnore.class).values();
-    return beans.stream().map(SwaggerIgnore::ignore).collect(Collectors.toSet())
+    return swaggerIgnores.stream().map(SwaggerIgnore::ignore).collect(Collectors.toSet())
         .stream().flatMap(Arrays::stream).toArray(Class[]::new);
   }
 }

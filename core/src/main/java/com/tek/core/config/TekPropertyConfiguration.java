@@ -1,11 +1,12 @@
 package com.tek.core.config;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN;
+import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
-
-import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 
 /**
  * Configuration to allow access of different properties file through the application just by using
@@ -16,7 +17,7 @@ import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 @Configuration
 public class TekPropertyConfiguration {
 
-  @Bean
+  @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
   public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
     PropertySourcesPlaceholderConfigurer propsConfig = new PropertySourcesPlaceholderConfigurer();
     propsConfig.setLocations(new ClassPathResource(GIT_PROPERTIES));

@@ -21,10 +21,8 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class TekSwaggerInfoConfiguration {
 
-  @NonNull
-  private final TekSwaggerProperties swaggerProperties;
-  @NonNull
-  private final ApplicationContext context;
+  @NonNull private final TekSwaggerProperties swaggerProperties;
+  @NonNull private final ApplicationContext context;
 
   @Value("${git.build.version}")
   private String gitBuildVersion;

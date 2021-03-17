@@ -24,10 +24,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RequiredArgsConstructor
 public class TekSwaggerConfiguration {
 
-  @NonNull
-  private final TekSwaggerInfoConfiguration infoConfiguration;
-  @NonNull
-  private final TekSwaggerIgnoreConfiguration ignoreConfiguration;
+  @NonNull private final TekSwaggerInfoConfiguration infoConfiguration;
+  @NonNull private final TekSwaggerIgnoreConfiguration ignoreConfiguration;
 
   private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
 

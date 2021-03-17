@@ -5,6 +5,7 @@ import com.tek.core.util.TekDateFormatter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -43,16 +44,11 @@ import static java.lang.String.join;
 @Slf4j
 public class TekMailService {
 
-  @NonNull
-  private final TekCoreProperties coreProperties;
-  @NonNull
-  private final TekFileService fileService;
-  @NonNull
-  private final JavaMailSender mailSender;
-  @NonNull
-  private final TekDateFormatter dateFormatter;
-  @NonNull
-  private final ApplicationContext context;
+  @NonNull private final TekCoreProperties coreProperties;
+  @NonNull private final TekFileService fileService;
+  @NonNull private final JavaMailSender mailSender;
+  @NonNull private final TekDateFormatter dateFormatter;
+  @NonNull private final ApplicationContext context;
 
   private final String newLine = System.getProperty("line.separator");
 
@@ -71,8 +67,8 @@ public class TekMailService {
       ServletWebRequest servletWebRequest,
       RuntimeException exception
   ) {
-    HttpServletRequest request = servletWebRequest.getRequest();
-    String requestUrl = request.getRequestURL().toString();
+    val request = servletWebRequest.getRequest();
+    val requestUrl = request.getRequestURL().toString();
 
     String[] to = new String[]{host};
     String subject = context.getApplicationName();

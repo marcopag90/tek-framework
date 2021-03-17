@@ -28,10 +28,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TekTmpFileScheduler {
 
-  @NonNull
-  private final TekCoreProperties coreProperties;
-  @NonNull
-  private final TekFileService fileService;
+  @NonNull private final TekCoreProperties coreProperties;
+  @NonNull private final TekFileService fileService;
 
   private File directory;
   private Integer cleanAfter;
@@ -43,7 +41,7 @@ public class TekTmpFileScheduler {
   }
 
   @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone}")
-  public void cleanTmpDirectory() throws InterruptedException {
+  public void cleanTmpDirectory() {
     val today = LocalDate.now();
     log.info("Today date: {}", today);
     var start = today.minusDays(cleanAfter);

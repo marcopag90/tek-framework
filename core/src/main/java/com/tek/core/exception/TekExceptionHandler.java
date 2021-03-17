@@ -31,12 +31,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 public class TekExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @NonNull
-  private final TekErrorService errorService;
-  @NonNull
-  private final TekMailService mailService;
-  @NonNull
-  private final TekCoreProperties coreProperties;
+  @NonNull private final TekErrorService errorService;
+  @NonNull private final TekMailService mailService;
+  @NonNull private final TekCoreProperties coreProperties;
 
   @ExceptionHandler(value = Exception.class)
   @Order

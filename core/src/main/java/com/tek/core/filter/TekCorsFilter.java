@@ -36,8 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class TekCorsFilter implements Filter {
 
-  @NonNull
-  private final TekCoreProperties coreProperties;
+  @NonNull private final TekCoreProperties coreProperties;
 
   @Override
   public void init(FilterConfig filterConfig) {

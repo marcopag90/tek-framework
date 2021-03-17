@@ -1,10 +1,9 @@
 package com.tek.core.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.AttributeConverter;
 import java.util.HashMap;
+import javax.persistence.AttributeConverter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Hashmap String Type Conversion.

@@ -1,5 +1,7 @@
 package com.tek.core;
 
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
+
 import com.tek.core.properties.TekCorsProperties;
 import com.tek.core.properties.TekMailProperties;
 import com.tek.core.properties.TekSchedulerProperties;
@@ -8,8 +10,6 @@ import com.tek.core.properties.i18n.TekLocaleProperties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
 
 
 /**

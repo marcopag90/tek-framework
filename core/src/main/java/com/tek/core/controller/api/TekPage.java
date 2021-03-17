@@ -1,12 +1,11 @@
 package com.tek.core.controller.api;
 
+import java.io.Serializable;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * Tek paged body response, providing:

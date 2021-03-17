@@ -1,12 +1,11 @@
 package com.tek.core.controller.api;
 
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * Tek standard body error response, to wrap inside a {@link org.springframework.http.ResponseEntity}

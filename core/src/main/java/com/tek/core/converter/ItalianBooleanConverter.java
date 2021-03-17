@@ -1,10 +1,9 @@
 package com.tek.core.converter;
 
+import javax.persistence.AttributeConverter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.AttributeConverter;
 
 /**
  * Italian Boolean Type Conversion.

@@ -1,5 +1,8 @@
 package com.tek.core.controller.i18n;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
+import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
+
 import com.tek.core.config.i18n.TekCoreMessageSource;
 import com.tek.core.service.TekRestMessage;
 import io.swagger.annotations.ApiImplicitParam;
@@ -15,9 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
-import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
 
 /**
  * API to test the behaviour of the Spring {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.

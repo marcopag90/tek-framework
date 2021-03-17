@@ -1,14 +1,59 @@
 package com.tek.core.config;
 
+import com.tek.core.TekCoreProperties;
+import java.io.File;
+import lombok.val;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@TestPropertySource(locations = "classpath:core-default.properties")
+@EnableConfigurationProperties(value = TekCoreProperties.class)
+@ContextConfiguration(classes = TekDirConfiguration.class)
+@TestMethodOrder(OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 class TekDirConfigurationTest {
 
+  @Autowired private TekDirConfiguration configuration;
+  @Autowired private TekCoreProperties properties;
+
   @Test
-  void testDirConfiguration() {
+  @Order(1)
+  void testTmpDirectory() {
+    val propDir = properties.getFile().getTmp().getDirectory();
+    val createdDir = configuration.tmpDirectory();
+    internalTestDir(propDir, createdDir);
+  }
+
+  @Test
+  @Order(2)
+  void testBinaryDirectory() {
+    val propDir = properties.getFile().getBinary().getDirectory();
+    val createdDir = configuration.binaryDirectory();
+    internalTestDir(propDir, createdDir);
+  }
+
+  @AfterAll
+  void deleteCreatedDirectories() {
+    properties.getFile().getBinary().getDirectory().deleteOnExit();
+    properties.getFile().getTmp().getDirectory().deleteOnExit();
+  }
+
+  private void internalTestDir(File propDir, File createdDir) {
+    Assertions.assertTrue(createdDir.isDirectory());
+    Assertions.assertEquals(propDir.getName(), createdDir.getName());
   }
 
 }

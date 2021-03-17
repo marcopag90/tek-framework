@@ -1,10 +1,10 @@
 package com.tek.core.properties.swagger;
 
+import static com.tek.core.constants.TekCoreConstants.TEK_SWAGGER_API_INFO;
+
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import static com.tek.core.constants.TekCoreConstants.TEK_SWAGGER_API_INFO;
 
 /**
  * Configuration properties for Swagger.

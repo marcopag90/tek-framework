@@ -1,15 +1,14 @@
 package com.tek.core.config;
 
 import com.tek.core.TekCoreProperties;
+import java.io.File;
+import java.nio.file.Files;
+import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.nio.file.Files;
 
 /**
  * Configuration to setup file directories used by application.

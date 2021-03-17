@@ -1,20 +1,21 @@
 package com.tek.core.config;
 
+import static com.tek.core.TekProfile.DEVELOPMENT;
+import static com.tek.core.TekProfile.PRODUCTION;
+import static com.tek.core.TekProfile.TEST;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
+import static java.lang.String.join;
+
 import com.tek.core.TekCoreProperties;
 import com.tek.core.TekModuleConfiguration;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import javax.naming.ConfigurationException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
-import javax.naming.ConfigurationException;
-import java.text.MessageFormat;
-import java.util.Arrays;
-
-import static com.tek.core.TekProfile.*;
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
-import static java.lang.String.join;
 
 /**
  * Tek Core Module Configuration:

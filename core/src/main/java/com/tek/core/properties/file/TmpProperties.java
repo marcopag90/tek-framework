@@ -2,9 +2,8 @@ package com.tek.core.properties.file;
 
 
 import com.tek.core.properties.TekSchedulerProperties;
-import lombok.Data;
-
 import java.io.File;
+import lombok.Data;
 
 @Data
 public class TmpProperties {

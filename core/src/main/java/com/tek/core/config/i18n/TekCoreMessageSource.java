@@ -1,15 +1,14 @@
 package com.tek.core.config.i18n;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
+
+import java.nio.charset.StandardCharsets;
 import lombok.val;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
-import java.nio.charset.StandardCharsets;
-
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 
 @Configuration
 public class TekCoreMessageSource {

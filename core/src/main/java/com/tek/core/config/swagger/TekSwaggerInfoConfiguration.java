@@ -1,6 +1,7 @@
 package com.tek.core.config.swagger;
 
 import com.tek.core.properties.swagger.TekSwaggerProperties;
+import java.util.Collections;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-
-import java.util.Collections;
 
 /**
  * Swagger ApiInfo Configuration.

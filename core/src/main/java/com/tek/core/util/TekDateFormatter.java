@@ -3,10 +3,9 @@ package com.tek.core.util;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_FILE_TIMESTAMP_BEAN;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_TIMESTAMP_BEAN;
 
+import java.text.SimpleDateFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.text.SimpleDateFormat;
 
 /**
  * Configuration to provide different date formatters.

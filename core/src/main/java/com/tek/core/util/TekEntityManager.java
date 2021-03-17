@@ -1,5 +1,15 @@
 package com.tek.core.util;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.Id;
+import javax.persistence.metamodel.EntityType;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -10,17 +20,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
-import javax.persistence.metamodel.EntityType;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Utility service wrapping {@link javax.persistence.EntityManager}

@@ -20,7 +20,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = TekCoreProperties.class)
 @TestPropertySource(locations = "classpath:core-default.properties")

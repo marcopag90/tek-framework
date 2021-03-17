@@ -1,9 +1,8 @@
 package com.tek.core.properties;
 
+import java.util.stream.Stream;
 import lombok.Data;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.stream.Stream;
 
 /**
  * Configuration properties for CORS Filter.

@@ -4,7 +4,6 @@ package com.tek.core.config;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.tek.core.config.TekPropertyPlaceholderConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 

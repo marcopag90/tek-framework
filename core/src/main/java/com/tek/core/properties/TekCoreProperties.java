@@ -1,15 +1,14 @@
-package com.tek.core;
+package com.tek.core.properties;
 
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
 
-import com.tek.core.properties.TekCorsProperties;
-import com.tek.core.properties.TekMailProperties;
-import com.tek.core.properties.TekSchedulerProperties;
+import com.tek.core.properties.cors.TekCorsProperties;
 import com.tek.core.properties.file.TekFileProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
+import com.tek.core.properties.mail.TekMailProperties;
+import com.tek.core.properties.scheduler.TekSchedulerProperties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 
 /**
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author MarcoPagan
  */
-@Configuration
 @ConfigurationProperties(prefix = TEK_CORE)
 @Data
 public class TekCoreProperties {

@@ -1,4 +1,4 @@
-package com.tek.core.properties;
+package com.tek.core.properties.scheduler;
 
 import lombok.Data;
 

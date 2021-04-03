@@ -1,6 +1,6 @@
 package com.tek.core.config.i18n;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import java.util.Locale;
 import lombok.NonNull;

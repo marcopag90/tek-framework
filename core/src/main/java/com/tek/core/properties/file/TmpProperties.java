@@ -1,7 +1,7 @@
 package com.tek.core.properties.file;
 
 
-import com.tek.core.properties.TekSchedulerProperties;
+import com.tek.core.properties.scheduler.TekSchedulerProperties;
 import java.io.File;
 import lombok.Data;
 

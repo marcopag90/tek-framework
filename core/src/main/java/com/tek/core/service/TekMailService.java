@@ -2,7 +2,7 @@ package com.tek.core.service;
 
 import static java.lang.String.join;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.util.TekDateFormatter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

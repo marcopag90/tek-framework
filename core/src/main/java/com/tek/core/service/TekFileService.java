@@ -1,6 +1,6 @@
 package com.tek.core.service;
 
-import com.tek.core.config.TekDirConfiguration;
+import com.tek.core.config.directory.TekDirConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;

@@ -6,8 +6,8 @@ import static com.tek.core.TekProfile.TEST;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
 import static java.lang.String.join;
 
-import com.tek.core.TekCoreProperties;
 import com.tek.core.TekModuleConfiguration;
+import com.tek.core.properties.TekCoreProperties;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import javax.naming.ConfigurationException;
@@ -15,6 +15,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
  * @author MarcoPagan
  */
 @Configuration(TEK_CORE_CONFIGURATION)
+@EnableConfigurationProperties(TekCoreProperties.class)
 @Slf4j
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
@@ -44,7 +46,8 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
     checkConditionalProperties();
   }
 
-  private void checkActiveProfile() throws ConfigurationException {
+  @SneakyThrows
+  private void checkActiveProfile() {
     val activeProfiles = Arrays.asList(environment.getActiveProfiles());
     boolean matchProfile =
         activeProfiles.contains(DEVELOPMENT) ||
@@ -55,7 +58,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
       String errorMessage =
           join("", newLine)
               .concat("Spring active profile NOT FOUND! ")
-              .concat("Evaluate the property [spring.profiles.active: <some-profile>] ")
+              .concat("Evaluate the property spring.profiles.active: <some-profile> ")
               .concat("in your application.yaml/properties file.")
               .concat(newLine)
               .concat("If the property evaluates, ")
@@ -82,11 +85,12 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
     }
   }
 
-  private void checkConditionalProperties() throws ConfigurationException {
+  private void checkConditionalProperties() {
     checkMailErrorHandling();
   }
 
-  private void checkMailErrorHandling() throws ConfigurationException {
+  @SneakyThrows
+  private void checkMailErrorHandling() {
     val sendErrors = coreProperties.getMail().isSendErrors();
     val isActiveScheduler = coreProperties.getScheduler().getActive();
 

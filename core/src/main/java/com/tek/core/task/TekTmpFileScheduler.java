@@ -2,7 +2,7 @@ package com.tek.core.task;
 
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.service.TekFileService;
 import java.io.File;
 import java.nio.file.Paths;

@@ -1,4 +1,4 @@
-package com.tek.core.properties;
+package com.tek.core.properties.cors;
 
 import java.util.stream.Stream;
 import lombok.Data;

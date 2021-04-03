@@ -15,7 +15,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author MarcoPagan
  */
 @Configuration
-public class TekPropertyConfiguration {
+public class TekPropertyPlaceholderConfiguration {
 
   @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
   public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {

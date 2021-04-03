@@ -1,6 +1,6 @@
-package com.tek.core.config;
+package com.tek.core.config.directory;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
 import java.nio.file.Files;
 import javax.annotation.PostConstruct;

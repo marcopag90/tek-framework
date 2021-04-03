@@ -1,6 +1,6 @@
 package com.tek.core.exception;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.service.TekErrorService;
 import com.tek.core.service.TekMailService;
 import lombok.NonNull;

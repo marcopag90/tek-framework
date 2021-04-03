@@ -1,6 +1,6 @@
-package com.tek.core.config;
+package com.tek.core.config.directory;
 
-import com.tek.core.TekCoreProperties;
+import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
 import lombok.val;
 import org.junit.jupiter.api.AfterAll;
@@ -19,7 +19,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@TestPropertySource(locations = "classpath:core-default.properties")
 @EnableConfigurationProperties(value = TekCoreProperties.class)
 @ContextConfiguration(classes = TekDirConfiguration.class)
 @TestMethodOrder(OrderAnnotation.class)

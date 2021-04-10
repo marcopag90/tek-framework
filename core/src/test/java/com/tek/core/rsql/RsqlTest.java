@@ -38,6 +38,7 @@ import org.springframework.test.context.TestPropertySource;
         "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE"
     }
 )
+@SuppressWarnings("squid:S5976")
 class RsqlTest {
 
   @Autowired
@@ -83,7 +84,6 @@ class RsqlTest {
   }
 
   @Test
-  @SuppressWarnings("squid:S5976")
   void equal_with_Integer() {
     val rootNode = new RSQLParser().parse("id==1");
     Specification<Developer> spec = rootNode.accept(new TekRsqlVisitor<>());
@@ -106,7 +106,6 @@ class RsqlTest {
   }
 
   @Test
-  @SuppressWarnings("squid:S5976")
   void equal_with_BigDecimal() {
     val rootNode = new RSQLParser().parse("lastPayment==1800.018");
     Specification<Developer> spec = rootNode.accept(new TekRsqlVisitor<>());

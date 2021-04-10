@@ -3,7 +3,6 @@ package com.tek.core.filter;
 import com.tek.core.properties.TekCoreProperties;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -40,11 +39,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class TekCorsFilter implements Filter {
 
   @NonNull private final TekCoreProperties coreProperties;
-
-  @Override
-  public void init(FilterConfig filterConfig) {
-    //noop
-  }
 
   @Override
   @SneakyThrows

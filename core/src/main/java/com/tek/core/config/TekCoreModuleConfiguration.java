@@ -30,9 +30,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
-  @Autowired
-  private TekCoreProperties coreProperties;
-
+  @Autowired private TekCoreProperties coreProperties;
   private final String newLine = System.getProperty("line.separator");
 
   public TekCoreModuleConfiguration() {

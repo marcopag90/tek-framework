@@ -2,6 +2,7 @@ package com.tek.core.rsql;
 
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import cz.jirutka.rsql.parser.ast.RSQLOperators;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -27,12 +28,9 @@ public enum TekRsqlSearchOperation {
     return this.operator.getSymbol();
   }
 
-  public static TekRsqlSearchOperation getSimpleOperator(ComparisonOperator operator) {
-    for (TekRsqlSearchOperation operation : values()) {
-      if (operation.getOperator() == operator) {
-        return operation;
-      }
-    }
-    return null;
+  public static TekRsqlSearchOperation getSimpleOperator(final ComparisonOperator operator) {
+    return Arrays.stream(values())
+        .filter(operation -> operation.getOperator() == operator)
+        .findAny().orElse(null);
   }
 }

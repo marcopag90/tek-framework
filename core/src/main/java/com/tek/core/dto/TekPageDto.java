@@ -1,4 +1,4 @@
-package com.tek.core.controller.api;
+package com.tek.core.dto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,13 +21,13 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TekPage<T> implements Serializable {
+public class TekPageDto<T> implements Serializable {
 
   private transient List<T> content;
-  private Long totalElements;
-  private Integer totalPages;
+  private long totalElements;
+  private int totalPages;
 
-  public TekPage(Page<T> page) {
+  public TekPageDto(Page<T> page) {
     this.content = page.getContent();
     this.totalElements = page.getTotalElements();
     this.totalPages = page.getTotalPages();

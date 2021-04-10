@@ -1,7 +1,7 @@
 package com.tek.core.service;
 
 /**
- * Interface to provide default messages for {@link com.tek.core.controller.api.TekResponse}
+ * Interface to provide default messages
  */
 public interface TekRestMessage {
 

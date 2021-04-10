@@ -1,6 +1,6 @@
 package com.tek.core.service;
 
-import com.tek.core.controller.api.TekErrorResponse;
+import com.tek.core.dto.TekErrorDto;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ public class TekErrorService {
 
   @NonNull private final TekRestMessage restMessage;
 
-  public TekErrorResponse createErrorResponse(WebRequest request) {
-    return TekErrorResponse.builder()
+  public TekErrorDto createErrorResponse(WebRequest request) {
+    return TekErrorDto.builder()
         .message(restMessage.ko())
         .path(((ServletWebRequest) request).getRequest().getServletPath())
         .build();

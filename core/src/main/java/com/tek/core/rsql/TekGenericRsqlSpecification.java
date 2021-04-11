@@ -167,7 +167,9 @@ public class TekGenericRsqlSpecification<T> implements Specification<T> {
     Class<?> type = root.get(property).getJavaType();
     return arguments.stream().map(
         arg -> {
-          if (type.equals(Integer.class)) {
+          if (type.equals(boolean.class) || type.equals(Boolean.class)) {
+            return Boolean.parseBoolean(arg);
+          } else if (type.equals(Integer.class)) {
             return Integer.parseInt(arg);
           } else if (type.equals(Long.class)) {
             return Long.parseLong(arg);

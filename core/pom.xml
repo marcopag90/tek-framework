@@ -57,8 +57,8 @@
       <artifactId>springfox-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>cz.jirutka.rsql</groupId>
-      <artifactId>rsql-parser</artifactId>
+      <groupId>com.turkraft</groupId>
+      <artifactId>spring-filter</artifactId>
     </dependency>
     <dependency>
       <groupId>com.vladmihalcea</groupId>
@@ -102,13 +102,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-      <version>1.0.2</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

@@ -18,10 +18,16 @@ import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * Implementation of {@link Specification} to create a {@link Predicate} to be executed inside
+ * repositories extending {@link org.springframework.data.jpa.repository.JpaSpecificationExecutor}
+ *
+ * @author MarcoPagan
+ */
 @Getter
 @Setter
 @NoArgsConstructor
-public class TekGenericRsqlSpecification<T> implements Specification<T> {
+public class TekRsqlSpecification<T> implements Specification<T> {
 
   private String property;
   private transient ComparisonOperator operator;
@@ -30,7 +36,7 @@ public class TekGenericRsqlSpecification<T> implements Specification<T> {
   private static final String NULL_ARG = "Argument cannot be null!";
   private static final String OPERATOR_NOT_SUPPORTED = "Operator not supported!";
 
-  public TekGenericRsqlSpecification(
+  public TekRsqlSpecification(
       final String property,
       final ComparisonOperator operator,
       final List<String> arguments

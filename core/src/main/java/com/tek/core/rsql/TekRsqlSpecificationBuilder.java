@@ -9,7 +9,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.data.jpa.domain.Specification;
 
-public class TekGenericRsqlSpecBuilder<T> {
+/**
+ * Builder to create a {@link Specification} object.
+ *
+ * @author MarcoPagan
+ */
+public class TekRsqlSpecificationBuilder<T> {
 
   public Specification<T> createSpecification(Node node) {
     if (node instanceof LogicalNode) {
@@ -43,7 +48,7 @@ public class TekGenericRsqlSpecBuilder<T> {
 
   public Specification<T> createSpecification(ComparisonNode comparisonNode) {
     return Specification.where(
-        new TekGenericRsqlSpecification<>(
+        new TekRsqlSpecification<>(
             comparisonNode.getSelector(),
             comparisonNode.getOperator(),
             comparisonNode.getArguments()

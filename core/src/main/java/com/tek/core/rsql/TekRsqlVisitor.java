@@ -6,12 +6,17 @@ import cz.jirutka.rsql.parser.ast.OrNode;
 import cz.jirutka.rsql.parser.ast.RSQLVisitor;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * Implementation of {@link RSQLVisitor} to allow the creation of a {@link Specification}.
+ *
+ * @author MarcoPagan
+ */
 public class TekRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void> {
 
-  private final TekGenericRsqlSpecBuilder<T> builder;
+  private final TekRsqlSpecificationBuilder<T> builder;
 
   public TekRsqlVisitor() {
-    builder = new TekGenericRsqlSpecBuilder<>();
+    builder = new TekRsqlSpecificationBuilder<>();
   }
 
   @Override

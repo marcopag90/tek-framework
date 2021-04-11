@@ -62,7 +62,7 @@
         <artifactId>springfox-boot-starter</artifactId>
         <version>${springfox-boot-starter.version}</version>
       </dependency>
-      <!--REST Sql Query Language-->
+      <!--REST Sql Query Language https://github.com/turkraft/spring-filter-->
       <dependency>
         <groupId>com.turkraft</groupId>
         <artifactId>spring-filter</artifactId>

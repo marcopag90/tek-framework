@@ -6,7 +6,6 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 import static com.tek.core.constants.TekCoreConstants.TEK_DATE_PATH;
 import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
 import static com.tek.core.constants.TekCoreConstants.TEK_PACKAGES_TO_SCAN;
-import static com.tek.core.constants.TekCoreConstants.TEK_SWAGGER_API_INFO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +21,6 @@ class TekCoreConstantsTest {
         () -> assertEquals("tek.core", TEK_CORE),
         () -> assertEquals("/locale", TEK_LOCALE_PATH),
         () -> assertEquals("/dateformat", TEK_DATE_PATH),
-        () -> assertEquals("tek.swagger.api.info", TEK_SWAGGER_API_INFO),
         () -> assertEquals("git.properties", GIT_PROPERTIES)
     );
   }

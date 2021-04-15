@@ -1,10 +1,6 @@
 package com.tek.core.properties.swagger;
 
-import static com.tek.core.constants.TekCoreConstants.TEK_SWAGGER_API_INFO;
-
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration properties for Swagger.
@@ -13,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author MarcoPagan
  */
-@Configuration
-@ConfigurationProperties(prefix = TEK_SWAGGER_API_INFO)
 @Data
 public class TekSwaggerProperties {
 
-  private String description = "Tek Framework API Service";
+  public static final String DEFAULT_DESCRIPTION = "Tek Framework API Service";
+
+  private String description = DEFAULT_DESCRIPTION;
   private String termOfServiceUrl = null;
 
   private String contactName = null;

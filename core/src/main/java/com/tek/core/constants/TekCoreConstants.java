@@ -38,11 +38,6 @@ public class TekCoreConstants {
   public static final String TEK_DATE_PATH = "/dateformat";
 
   /**
-   * Name of the .yaml property for Swagger API info
-   */
-  public static final String TEK_SWAGGER_API_INFO = "tek.swagger.api.info";
-
-  /**
    * Name of the git.properties file
    */
   public static final String GIT_PROPERTIES = "git.properties";

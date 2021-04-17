@@ -1,0 +1,9 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.tek.core.config.directory.TekDirConfiguration,\
+com.tek.core.config.i18n.TekCoreMessageSourceConfiguration,\
+com.tek.core.config.i18n.TekLocaleConfiguration,\
+com.tek.core.config.swagger.TekSwaggerConfiguration,\
+com.tek.core.config.web.TekCoreWebMvc,\
+com.tek.core.config.TekCoreModuleConfiguration,\
+com.tek.core.config.TekPropertyPlaceholderConfiguration

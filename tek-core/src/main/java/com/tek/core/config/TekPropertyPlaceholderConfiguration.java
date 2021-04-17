@@ -18,7 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 public class TekPropertyPlaceholderConfiguration {
 
   @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
-  public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+  public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
     PropertySourcesPlaceholderConfigurer propsConfig = new PropertySourcesPlaceholderConfigurer();
     propsConfig.setLocations(new ClassPathResource(GIT_PROPERTIES));
     propsConfig.setIgnoreResourceNotFound(true);

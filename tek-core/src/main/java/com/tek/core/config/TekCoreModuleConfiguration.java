@@ -11,13 +11,13 @@ import com.tek.core.properties.TekCoreProperties;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javax.naming.ConfigurationException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
@@ -34,6 +34,8 @@ import org.springframework.util.CollectionUtils;
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
   @Autowired private TekCoreProperties coreProperties;
+  @Autowired private ApplicationContext context;
+
   private final String newLine = System.getProperty("line.separator");
 
   public TekCoreModuleConfiguration() {
@@ -49,7 +51,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
   @SneakyThrows
   private void checkActiveProfile() {
-    val activeProfiles = Arrays.asList(environment.getActiveProfiles());
+    val activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
     val toMatchProfiles = new ArrayList<String>();
     toMatchProfiles.add(DEVELOPMENT);
     toMatchProfiles.add(TEST);

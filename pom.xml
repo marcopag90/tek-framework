@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -15,18 +16,20 @@
   <version>3.0.0</version>
   <packaging>pom</packaging>
 
-  <name>tek-framework</name>
-
   <properties>
     <java.version>11</java.version>
+    <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-    <spring.filter.version>0.9.4</spring.filter.version>
-    <javers-spring-boot-starter-sql.version>5.15.0</javers-spring-boot-starter-sql.version>
+    <spring-filter.version>0.9.5</spring-filter.version>
     <hibernate-types-52.version>2.9.0</hibernate-types-52.version>
     <commons-io.version>2.8.0</commons-io.version>
-    <!-- Plugin management versioning -->
-    <org.hibernate.orm.tooling.version>5.4.10.Final</org.hibernate.orm.tooling.version>
+    <!-- Plugin versioning -->
+    <hibernate-enhance-maven-plugin.version>5.4.10.Final</hibernate-enhance-maven-plugin.version>
   </properties>
+
+  <modules>
+    <module>tek-core</module>
+  </modules>
 
   <repositories>
     <repository>
@@ -50,6 +53,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
@@ -66,7 +70,7 @@
       <dependency>
         <groupId>com.turkraft</groupId>
         <artifactId>spring-filter</artifactId>
-        <version>${spring.filter.version}</version>
+        <version>${spring-filter.version}</version>
       </dependency>
       <!-- Hibernate Datatype extensions -->
       <dependency>
@@ -97,89 +101,26 @@
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
       </dependency>
-      <!--            <dependency>-->
-      <!--                <groupId>commons-beanutils</groupId>-->
-      <!--                <artifactId>commons-beanutils</artifactId>-->
-      <!--                <version>1.9.4</version>-->
-      <!--            </dependency>-->
-      <!--            <dependency>-->
-      <!--                <groupId>org.reflections</groupId>-->
-      <!--                <artifactId>reflections</artifactId>-->
-      <!--                <version>0.9.12</version>-->
-      <!--            </dependency>-->
     </dependencies>
   </dependencyManagement>
 
-  <profiles>
-    <!-- Development profile -->
-    <profile>
-      <id>dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>core</module>
-        <!--                <module>audit</module>-->
-        <!--                <module>application</module>-->
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <!-- Avoid deploy if accidentaly called -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Release profile: deploy a new framework version to the remote repository -->
-    <profile>
-      <id>release</id>
-      <modules>
-        <module>core</module>
-        <!--                <module>audit</module>-->
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <build>
     <plugins>
-      <!-- Git plugin to generate git.properties file when maven:compile is executed -->
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-      </plugin>
-      <!-- Create a jar with <test> classifier to import test sources across project modules -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-source-plugin</artifactId>
         <executions>
           <execution>
+            <id>attach-sources</id>
             <goals>
-              <goal>test-jar</goal>
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
       </plugin>
     </plugins>
     <!-- Optional plugin inherited by child modules: need to be declared inside child.pom.xml-->
@@ -191,7 +132,7 @@
         <plugin>
           <groupId>org.hibernate.orm.tooling</groupId>
           <artifactId>hibernate-enhance-maven-plugin</artifactId>
-          <version>${org.hibernate.orm.tooling.version}</version>
+          <version>${hibernate-enhance-maven-plugin.version}</version>
           <executions>
             <execution>
               <configuration>

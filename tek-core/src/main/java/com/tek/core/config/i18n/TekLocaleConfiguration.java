@@ -1,5 +1,8 @@
 package com.tek.core.config.i18n;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_LOCALE_RESOLVER_BEAN;
+
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import java.util.Locale;
@@ -41,7 +44,7 @@ public class TekLocaleConfiguration implements WebMvcConfigurer {
     registry.addInterceptor(localeChangeInterceptor());
   }
 
-  @Bean
+  @Bean(TEK_LOCALE_RESOLVER_BEAN)
   public LocaleResolver localeResolver() {
     TekLocaleProperties localeProperties = coreProperties.getLocale();
     TekLocaleProperties.TekLocaleType type = localeProperties.getType();
@@ -65,7 +68,7 @@ public class TekLocaleConfiguration implements WebMvcConfigurer {
    * Interceptor that will switch to a new <i>locale</i> based on the value of the <i>lang</i>
    * parameter appended inside the Url request as a {@link org.springframework.web.bind.annotation.RequestParam}
    */
-  @Bean
+  @Bean(TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN)
   public LocaleChangeInterceptor localeChangeInterceptor() {
     LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
     localeChangeInterceptor.setHttpMethods(HttpMethod.POST.name());

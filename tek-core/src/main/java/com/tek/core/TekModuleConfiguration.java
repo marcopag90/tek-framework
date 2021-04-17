@@ -5,7 +5,6 @@ import javax.naming.ConfigurationException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -18,8 +17,6 @@ import org.springframework.util.ClassUtils;
 public abstract class TekModuleConfiguration {
 
   private final Class<?> configuration;
-
-  protected ConfigurableEnvironment environment;
 
   public abstract void checkModuleConfiguration() throws ConfigurationException;
 

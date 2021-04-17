@@ -2,7 +2,7 @@ package com.tek.core.service.impl;
 
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
 
-import com.tek.core.config.i18n.TekCoreMessageSource;
+import com.tek.core.config.i18n.TekCoreMessageSourceConfiguration;
 import com.tek.core.service.TekRestMessage;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class TekRestMessageServiceImpl implements TekRestMessage {
 
   public String ok() {
     return messageSource.getMessage(
-        TekCoreMessageSource.Message.SERVICE_OK,
+        TekCoreMessageSourceConfiguration.Message.SERVICE_OK,
         null,
         LocaleContextHolder.getLocale()
     );
@@ -37,7 +37,7 @@ public class TekRestMessageServiceImpl implements TekRestMessage {
 
   public String ko() {
     return messageSource.getMessage(
-        TekCoreMessageSource.Message.SERVICE_KO,
+        TekCoreMessageSourceConfiguration.Message.SERVICE_KO,
         null,
         LocaleContextHolder.getLocale()
     );

@@ -3,7 +3,7 @@ package com.tek.core.controller.i18n;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURCE_BEAN;
 import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
 
-import com.tek.core.config.i18n.TekCoreMessageSource;
+import com.tek.core.config.i18n.TekCoreMessageSourceConfiguration;
 import com.tek.core.service.TekRestMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +53,7 @@ class TekLocaleController {
   )
   public ResponseEntity<String> setLocale() {
     val message = messageSource.getMessage(
-        TekCoreMessageSource.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
+        TekCoreMessageSourceConfiguration.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
     );
     return ResponseEntity.ok(message);
   }

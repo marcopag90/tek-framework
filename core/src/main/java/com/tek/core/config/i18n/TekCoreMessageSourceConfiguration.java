@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 @Configuration
-public class TekCoreMessageSource {
+public class TekCoreMessageSourceConfiguration {
 
   @Bean(name = TEK_CORE_MESSAGE_SOURCE_BEAN)
   public MessageSource getMessageSource() {

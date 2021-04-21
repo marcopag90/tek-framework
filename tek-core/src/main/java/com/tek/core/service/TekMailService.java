@@ -2,6 +2,7 @@ package com.tek.core.service;
 
 import static java.lang.String.join;
 
+import com.tek.core.aop.CanSendMail;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.util.TekDateFormatter;
 import java.io.BufferedWriter;
@@ -44,9 +45,9 @@ public class TekMailService {
 
   @NonNull private final TekCoreProperties coreProperties;
   @NonNull private final TekFileService fileService;
-  @NonNull private final JavaMailSender mailSender;
   @NonNull private final TekDateFormatter dateFormatter;
   @NonNull private final ApplicationContext context;
+  @NonNull private final JavaMailSender mailSender;
 
   private final String newLine = System.getProperty("line.separator");
 
@@ -61,24 +62,24 @@ public class TekMailService {
    * Sends a {@link RuntimeException} message as an attachment, including {@link ServletWebRequest}
    * as text.
    */
+  @CanSendMail
   public void sendExceptionMessage(
       ServletWebRequest servletWebRequest,
-      RuntimeException exception
+      Exception exception
   ) {
     val request = servletWebRequest.getRequest();
     val requestUrl = request.getRequestURL().toString();
-
     String[] to = new String[]{host};
+    val addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
     String filename = fileService.createInTmpDir(
         dateFormatter.fileTimestampFormat().format(new Date()) + "_exception.txt"
     );
-
     String text = join("")
         .concat("Exception on: " + subject)
         .concat(newLine)
         .concat("Request URL: " + requestUrl);
-
+    logMailSending(addresses);
     try (
         BufferedWriter out = new BufferedWriter(new FileWriter(filename, true));
         PrintWriter pWriter = new PrintWriter(out, true);
@@ -88,32 +89,28 @@ public class TekMailService {
     } catch (Exception ex) {
       logMailError(Arrays.toString(to), ex);
     }
+    logMailSuccess(addresses);
   }
 
   /**
    * Sends a mail message with a text and an attachment
    */
+  @CanSendMail
   public void sendWithAttachment(String[] to, String subject, String text, String file) {
     String toArray = Arrays.toString(to);
     logMailSending(toArray);
-
     try {
       String addresses = join(",", to);
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
       mimeMessage.setSubject(subject);
-
       Multipart emailContent = new MimeMultipart();
-
       MimeBodyPart textBodyPart = new MimeBodyPart();
       textBodyPart.setText(text);
-
       MimeBodyPart fileBodyPart = new MimeBodyPart();
       fileBodyPart.attachFile(file);
-
       emailContent.addBodyPart(textBodyPart);
       emailContent.addBodyPart(fileBodyPart);
-
       mimeMessage.setContent(emailContent);
       mailSender.send(mimeMessage);
     } catch (Exception ex) {
@@ -126,15 +123,14 @@ public class TekMailService {
   /**
    * Sends a mail message with a simple text
    */
+  @CanSendMail
   public void sendSimpleMessage(String[] to, String subject, String text) {
     String toArray = Arrays.toString(to);
     logMailSending(toArray);
-
     SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
     simpleMailMessage.setTo(to);
     simpleMailMessage.setSubject(subject);
     simpleMailMessage.setText(text);
-
     try {
       mailSender.send(simpleMailMessage);
     } catch (Exception ex) {

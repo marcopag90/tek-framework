@@ -38,10 +38,10 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = Exception.class)
   @Order
   public ResponseEntity<Object> handleGenericException(
-      RuntimeException ex, WebRequest request
+      Exception ex, WebRequest request
   ) {
     log.error(ExceptionUtils.getStackTrace(ex));
-    sendExceptionAsMail(request, ex);
+    sendErrorAsMail(request, ex);
     return handleExceptionInternal(
         ex,
         errorService.createErrorResponse(request),
@@ -53,17 +53,15 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
 
   /**
    * Utility method to check if we have to produce an error mail with the throwable {@link
-   * RuntimeException} as attachment.
+   * Exception} as attachment.
    *
    * @author MarcoPagan
    */
-  private void sendExceptionAsMail(WebRequest request, RuntimeException ex) {
+  private void sendErrorAsMail(WebRequest request, Exception ex) {
     if (coreProperties.getMail().isSendErrors()) {
-      if (coreProperties.getMail().isRealDelivery()) {
-        mailService.sendExceptionMessage((ServletWebRequest) request, ex);
-      } else {
-        log.warn("Parameter sendError is active but realDelivery is false. Skipping mail sending!");
-      }
+      mailService.sendExceptionMessage((ServletWebRequest) request, ex);
+    } else {
+      log.warn("Property tek.core.mail.sendErrors is false, skipping mail sending!");
     }
   }
 }

@@ -34,6 +34,7 @@ public class TekTmpFileScheduler {
   private File directory;
   private Integer cleanAfter;
 
+  @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
     this.directory = coreProperties.getFile().getTmp().getDirectory();

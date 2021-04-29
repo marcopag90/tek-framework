@@ -1,4 +1,4 @@
-package com.tek.core.converter;
+package com.tek.jpa.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;

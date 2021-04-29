@@ -1,14 +1,13 @@
-package com.tek.core;
+package com.tek.shared;
 
 import javax.annotation.PostConstruct;
 import javax.naming.ConfigurationException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ClassUtils;
 
 /**
- * Template class to create a Tek module configuration.
+ * Template class to create a Tek Module configuration.
  *
  * @author MarcoPagan
  */
@@ -20,16 +19,16 @@ public abstract class TekModuleConfiguration {
 
   public abstract void checkModuleConfiguration() throws ConfigurationException;
 
+  @SuppressWarnings("unused")
   @PostConstruct
-  @SneakyThrows
-  private void setup() {
+  private void setup() throws ConfigurationException {
     log.info(
-        "Checking Tek Module Configuration: [{}]",
+        "Checking Tek Module Configuration: {}",
         ClassUtils.getUserClass(configuration).getSimpleName()
     );
     checkModuleConfiguration();
     log.info(
-        "[{}] success!",
+        "{} success!",
         ClassUtils.getUserClass(configuration).getSimpleName()
     );
   }

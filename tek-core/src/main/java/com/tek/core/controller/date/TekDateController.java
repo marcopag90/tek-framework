@@ -1,4 +1,4 @@
-package com.tek.core.controller;
+package com.tek.core.controller.date;
 
 import static com.tek.core.constants.TekCoreConstants.TEK_DATE_PATH;
 

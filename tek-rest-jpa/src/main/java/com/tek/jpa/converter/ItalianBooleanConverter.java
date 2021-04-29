@@ -1,4 +1,4 @@
-package com.tek.core.converter;
+package com.tek.jpa.converter;
 
 import javax.persistence.AttributeConverter;
 import lombok.extern.slf4j.Slf4j;

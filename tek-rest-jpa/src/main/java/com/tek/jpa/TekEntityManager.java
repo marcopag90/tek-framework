@@ -1,4 +1,4 @@
-package com.tek.core.util;
+package com.tek.jpa;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -18,13 +18,12 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
- * Utility service wrapping {@link javax.persistence.EntityManager}
+ * Utility wrapping {@link javax.persistence.EntityManager}
  * <p>
- * Allows to rsql the Jpa Manager to find:
+ * Allows to find:
  * <ul>
  *     <li>Class annotated with {@link javax.persistence.Entity}</li>
  *     <li>Type of the field annotated with {@link Id} </li>
@@ -36,7 +35,6 @@ import org.springframework.util.Assert;
  * @throws IllegalArgumentException if the target method fails the inquiry.
  * @throws NotImplementedException if the method lacks implementations.
  */
-@Service
 @RequiredArgsConstructor
 @Slf4j
 //TODO Manager test
@@ -87,7 +85,7 @@ public class TekEntityManager {
     }
   }
 
-  public JpaRepository<?, ?> getRepository(String entityName) {
+  public JpaRepository getRepository(String entityName) {
     log.debug("Trying to retrieve repository for: [{}]", entityName);
 
     EntityType<?> entityType = getEntityType(entityName);

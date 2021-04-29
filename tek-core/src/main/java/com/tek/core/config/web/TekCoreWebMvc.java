@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import java.util.List;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -20,10 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Jackson Module configuration:
  * <ul>
- *     <li>
- *      Provides a handler interceptor to avoid MappingJackson2HttpMessageConverter serialization
- *      failure on lazy proxy objects retrieved from Hibernate, when no session is in context;
- *     </li>
  *     <li>
  *      Provides a json deserializer to trim all incoming json parameters from web requests;
  *     </li>
@@ -54,7 +49,7 @@ public class TekCoreWebMvc implements WebMvcConfigurer {
               }
             }
         );
-        mapper.registerModules(new Hibernate5Module(), serializerModule);
+        mapper.registerModules(serializerModule);
       }
     }
   }

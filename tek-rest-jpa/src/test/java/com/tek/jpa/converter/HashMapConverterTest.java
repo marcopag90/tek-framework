@@ -1,4 +1,4 @@
-package com.tek.core.converter;
+package com.tek.jpa.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

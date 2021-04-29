@@ -14,7 +14,6 @@ import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -59,17 +58,18 @@ public class TekMailService {
   //TODO see if we can provide error timestamp to file
 
   /**
-   * Sends a {@link RuntimeException} message as an attachment, including {@link ServletWebRequest}
-   * as text.
+   * Sends a {@link Exception} message as an attachment, including {@link ServletWebRequest} as
+   * text.
+   * <p>Requires a Servlet Context to be executed. </p>
    */
   @CanSendMail
-  public void sendExceptionMessage(
+  public void sendRequestExceptionMessage(
       ServletWebRequest servletWebRequest,
       Exception exception
   ) {
     val request = servletWebRequest.getRequest();
     val requestUrl = request.getRequestURL().toString();
-    String[] to = new String[]{host};
+    var to = new String[]{host};
     val addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
     String filename = fileService.createInTmpDir(
@@ -81,8 +81,8 @@ public class TekMailService {
         .concat("Request URL: " + requestUrl);
     logMailSending(addresses);
     try (
-        BufferedWriter out = new BufferedWriter(new FileWriter(filename, true));
-        PrintWriter pWriter = new PrintWriter(out, true);
+        var out = new BufferedWriter(new FileWriter(filename, true));
+        var pWriter = new PrintWriter(out, true);
     ) {
       exception.printStackTrace(pWriter);
       sendWithAttachment(to, subject, text, filename);
@@ -97,17 +97,17 @@ public class TekMailService {
    */
   @CanSendMail
   public void sendWithAttachment(String[] to, String subject, String text, String file) {
-    String toArray = Arrays.toString(to);
+    var toArray = Arrays.toString(to);
     logMailSending(toArray);
     try {
       String addresses = join(",", to);
-      MimeMessage mimeMessage = mailSender.createMimeMessage();
+      var mimeMessage = mailSender.createMimeMessage();
       mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
       mimeMessage.setSubject(subject);
       Multipart emailContent = new MimeMultipart();
-      MimeBodyPart textBodyPart = new MimeBodyPart();
+      var textBodyPart = new MimeBodyPart();
       textBodyPart.setText(text);
-      MimeBodyPart fileBodyPart = new MimeBodyPart();
+      var fileBodyPart = new MimeBodyPart();
       fileBodyPart.attachFile(file);
       emailContent.addBodyPart(textBodyPart);
       emailContent.addBodyPart(fileBodyPart);
@@ -125,9 +125,9 @@ public class TekMailService {
    */
   @CanSendMail
   public void sendSimpleMessage(String[] to, String subject, String text) {
-    String toArray = Arrays.toString(to);
+    var toArray = Arrays.toString(to);
     logMailSending(toArray);
-    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    var simpleMailMessage = new SimpleMailMessage();
     simpleMailMessage.setTo(to);
     simpleMailMessage.setSubject(subject);
     simpleMailMessage.setText(text);

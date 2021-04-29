@@ -6,8 +6,8 @@ import static com.tek.core.TekProfile.TEST;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
 import static java.lang.String.join;
 
-import com.tek.core.TekModuleConfiguration;
 import com.tek.core.properties.TekCoreProperties;
+import com.tek.shared.TekModuleConfiguration;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import org.springframework.util.CollectionUtils;
 /**
  * Tek Core Module Configuration:
  * <p>
- * - Checks Spring active profile configuration, after environment has been injected
+ * - Checks Spring active profile configuration after environment has been injected
  *
  * @author MarcoPagan
  */
@@ -43,14 +43,12 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
   }
 
   @Override
-  @SneakyThrows
-  public void checkModuleConfiguration() {
+  public void checkModuleConfiguration() throws ConfigurationException {
     checkActiveProfile();
     checkConditionalProperties();
   }
 
-  @SneakyThrows
-  private void checkActiveProfile() {
+  private void checkActiveProfile() throws ConfigurationException {
     val activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
     val toMatchProfiles = new ArrayList<String>();
     toMatchProfiles.add(DEVELOPMENT);
@@ -58,7 +56,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
     toMatchProfiles.add(PRODUCTION);
     val matches = CollectionUtils.containsAny(activeProfiles, toMatchProfiles);
     if (!matches) {
-      String errorMessage =
+      String warnMessage =
           join("", newLine)
               .concat(
                   String.format(
@@ -80,7 +78,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
               .concat("2) run Maven with the following goals: clean, compile")
               .concat(newLine)
               .concat("3) reboot your application.");
-      throw new ConfigurationException(errorMessage);
+      log.warn(warnMessage);
     }
     log.info("Running with Spring profile(s): {}", activeProfiles);
     if (activeProfiles.contains(DEVELOPMENT) && activeProfiles.contains(PRODUCTION)) {
@@ -110,7 +108,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
           join("", newLine)
               .concat("Email error handling is active but scheduled cleanup of directories is not!")
               .concat(newLine)
-              .concat("Set property [tek.core.scheduler.active: true]");
+              .concat("Set property tek.core.scheduler.active: true");
       throw new ConfigurationException(errorMessage);
     }
   }

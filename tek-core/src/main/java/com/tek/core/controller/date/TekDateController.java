@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class TekDateController {
 
+
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/date")
   @ApiOperation(
       value = "Allows to get the default java.util.Date format"
@@ -29,24 +32,28 @@ public class TekDateController {
     return ResponseEntity.ok(new Date());
   }
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/instant")
   @ApiOperation(value = "Allows to get the default java.time.Instant format")
   public ResponseEntity<Instant> getInstant() {
     return ResponseEntity.ok(Instant.now());
   }
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/localDate")
   @ApiOperation(value = "Allows to get the default java.time.LocalDate format")
   public ResponseEntity<LocalDate> getLocalDate() {
     return ResponseEntity.ok(LocalDate.now());
   }
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/localDateTime")
   @ApiOperation(value = "Allows to get the default java.time.LocalDateTime format")
   public ResponseEntity<LocalDateTime> getLocalDateTime() {
     return ResponseEntity.ok(LocalDateTime.now());
   }
 
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/zonedDatetime")
   @ApiOperation(value = "Allows to get the default java.time.ZonedDateTime format")
   public ResponseEntity<ZonedDateTime> getZonedDateTime() {

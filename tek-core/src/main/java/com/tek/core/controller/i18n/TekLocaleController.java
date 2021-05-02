@@ -14,10 +14,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//TODO this is broken!
 /**
  * API to test the behaviour of the Spring {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.
  *
@@ -39,6 +41,7 @@ class TekLocaleController {
   @NonNull
   private final TekRestMessage tekRestMessage;
 
+  @PreAuthorize("isAuthenticated()")
   @PostMapping
   @ApiOperation(value = "Allows to change the server locale")
   @ApiImplicitParam(

@@ -16,8 +16,8 @@
   <dependencies>
     <dependency>
       <groupId>com.tek</groupId>
-      <artifactId>tek-shared</artifactId>
-      <version>${tek-shared.version}</version>
+      <artifactId>tek-rest-shared</artifactId>
+      <version>${tek-rest-shared.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>

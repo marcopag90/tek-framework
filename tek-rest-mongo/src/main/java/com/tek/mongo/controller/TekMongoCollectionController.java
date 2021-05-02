@@ -1,4 +1,4 @@
-package com.tek.mongo;
+package com.tek.mongo.controller;
 
 import static com.tek.rest.shared.constants.TekRestConstants.FILTER_NAME;
 
@@ -24,7 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public abstract class TekMongoQueryController implements TekAuthApi {
+public abstract class TekMongoCollectionController implements TekAuthApi {
 
   @Autowired
   protected MongoTemplate mongoTemplate;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tek.jpa.config.TekJpaAutoConfig
+com.tek.jpa.TekJpaAutoConfig

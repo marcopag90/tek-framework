@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tek.mongo.config.TekMongoAutoConfig
+com.tek.mongo.TekMongoAutoConfig

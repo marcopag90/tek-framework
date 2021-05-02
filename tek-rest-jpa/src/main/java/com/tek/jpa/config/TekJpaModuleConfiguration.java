@@ -3,8 +3,10 @@ package com.tek.jpa.config;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.tek.jpa.TekEntityManager;
+import com.tek.jpa.TekJpaAutoConfig;
 import com.tek.shared.TekModuleConfiguration;
 import javax.persistence.EntityManager;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -25,9 +27,10 @@ import org.springframework.context.annotation.Configuration;
  * @author MarcoPagan
  */
 @Configuration
-public class TekJpaAutoConfig extends TekModuleConfiguration {
+@ConditionalOnClass(value = {TekJpaAutoConfig.class})
+public class TekJpaModuleConfiguration extends TekModuleConfiguration {
 
-  public TekJpaAutoConfig(ApplicationContext context) {
+  public TekJpaModuleConfiguration(ApplicationContext context) {
     super(context);
   }
 

@@ -15,7 +15,6 @@ import javax.naming.ConfigurationException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -33,13 +32,15 @@ import org.springframework.util.CollectionUtils;
 @Slf4j
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
-  @Autowired private TekCoreProperties coreProperties;
-  @Autowired private ApplicationContext context;
-
   private final String newLine = System.getProperty("line.separator");
+  private final TekCoreProperties coreProperties;
 
-  public TekCoreModuleConfiguration() {
-    super(TekCoreModuleConfiguration.class);
+  public TekCoreModuleConfiguration(
+      ApplicationContext context,
+      TekCoreProperties coreProperties
+  ) {
+    super(context);
+    this.coreProperties = coreProperties;
   }
 
   @Override

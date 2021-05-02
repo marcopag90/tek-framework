@@ -1,6 +1,6 @@
 package com.tek.core.task;
 
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.service.TekFileService;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * be on queue, waiting for the previous thread to finish its execution.
  */
 @Component
-@ConditionalOnProperty(prefix = TEK_CORE, name = "scheduler.active", havingValue = "true")
+@ConditionalOnProperty(prefix = TEK_CORE_PREFIX, name = "scheduler.active", havingValue = "true")
 @RequiredArgsConstructor
 @Slf4j
 public class TekTmpFileScheduler {

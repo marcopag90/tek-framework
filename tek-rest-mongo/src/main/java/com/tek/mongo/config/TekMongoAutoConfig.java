@@ -7,6 +7,7 @@ import javax.naming.ConfigurationException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
@@ -19,8 +20,8 @@ public class TekMongoAutoConfig extends TekModuleConfiguration {
   @Autowired
   private List<TekMongoQueryController> controllers;
 
-  public TekMongoAutoConfig() {
-    super(TekMongoAutoConfig.class);
+  public TekMongoAutoConfig(ApplicationContext context) {
+    super(context);
   }
 
   @Override

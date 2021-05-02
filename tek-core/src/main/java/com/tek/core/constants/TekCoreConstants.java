@@ -13,7 +13,7 @@ public class TekCoreConstants {
   /**
    * Default packages to scan by Spring
    */
-  public static final String TEK_PACKAGES_TO_SCAN = "com.tek";
+  public static final String TEK_CORE_PACKAGES_TO_SCAN = "com.tek.core";
 
   /**
    * Classpath location for i18n message bundle
@@ -23,7 +23,7 @@ public class TekCoreConstants {
   /**
    * Prefix of the .yaml/.properties for Tek Core Module configuration.
    */
-  public static final String TEK_CORE = "tek.core";
+  public static final String TEK_CORE_PREFIX = "tek.core";
 
   /**
    * Locale change API path

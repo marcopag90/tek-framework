@@ -1,5 +1,8 @@
 package com.tek.core.config.web;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_FILE_TIMESTAMP_BEAN;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_TIMESTAMP_BEAN;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -7,6 +10,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -19,18 +23,34 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Jackson Module configuration:
  * <ul>
- *     <li>
- *      Provides a json deserializer to trim all incoming json parameters from web requests;
- *     </li>
- *     <li>
+ *   <li>
+ *      Provides default date formats.
+ *   </li>
+ *   <li>
+ *     Provides a json deserializer to trim all incoming json parameters from web requests;
+ *   </li>
+ *   <li>
  *      Provides {@link GuavaModule} to allow serialization/deserialization of Guava collections.
- *     </li>
+ *   </li>
  * </ul>
  *
  * @author MarcoPagan
  */
 @Configuration
 public class TekCoreWebMvc implements WebMvcConfigurer {
+
+  public static final String TIMESTAMP = "yyyy-MM-dd HH:mm:ss.SSS";
+  public static final String FILE_TIMESTAMP = "yyyyMMdd_HHmmss_SSS";
+
+  @Bean(TEK_CORE_TIMESTAMP_BEAN)
+  public SimpleDateFormat timestampSimpleDateFormat() {
+    return new SimpleDateFormat(TIMESTAMP);
+  }
+
+  @Bean(TEK_CORE_FILE_TIMESTAMP_BEAN)
+  public SimpleDateFormat fileTimestampFormat() {
+    return new SimpleDateFormat(FILE_TIMESTAMP);
+  }
 
   @Override
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

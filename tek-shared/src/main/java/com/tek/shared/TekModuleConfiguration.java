@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.naming.ConfigurationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -15,21 +16,20 @@ import org.springframework.util.ClassUtils;
 @Slf4j
 public abstract class TekModuleConfiguration {
 
-  private final Class<?> configuration;
+  protected final ApplicationContext context;
 
   public abstract void checkModuleConfiguration() throws ConfigurationException;
 
   @SuppressWarnings("unused")
   @PostConstruct
   private void setup() throws ConfigurationException {
-    log.info(
-        "Checking Tek Module Configuration: {}",
-        ClassUtils.getUserClass(configuration).getSimpleName()
+    log.info("Checking Tek Module Configuration: {}",
+        ClassUtils.getUserClass(this).getSimpleName()
     );
     checkModuleConfiguration();
     log.info(
         "{} success!",
-        ClassUtils.getUserClass(configuration).getSimpleName()
+        ClassUtils.getUserClass(this).getSimpleName()
     );
   }
 }

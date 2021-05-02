@@ -1,13 +1,14 @@
 package com.tek.core.service;
 
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_FILE_TIMESTAMP_BEAN;
 import static java.lang.String.join;
 
 import com.tek.core.aop.CanSendMail;
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.util.TekDateFormatter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import javax.mail.Message;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.SimpleMailMessage;
@@ -42,9 +44,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Slf4j
 public class TekMailService {
 
+  @NonNull
+  @Qualifier(TEK_CORE_FILE_TIMESTAMP_BEAN)
+  private final SimpleDateFormat df;
+
   @NonNull private final TekCoreProperties coreProperties;
   @NonNull private final TekFileService fileService;
-  @NonNull private final TekDateFormatter dateFormatter;
   @NonNull private final ApplicationContext context;
   @NonNull private final JavaMailSender mailSender;
 
@@ -72,9 +77,7 @@ public class TekMailService {
     var to = new String[]{host};
     val addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
-    String filename = fileService.createInTmpDir(
-        dateFormatter.fileTimestampFormat().format(new Date()) + "_exception.txt"
-    );
+    String filename = fileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
     String text = join("")
         .concat("Exception on: " + subject)
         .concat(newLine)

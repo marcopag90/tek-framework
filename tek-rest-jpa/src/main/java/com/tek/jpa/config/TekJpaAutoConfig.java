@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TekJpaAutoConfig extends TekModuleConfiguration {
 
-  public TekJpaAutoConfig() {
-    super(TekJpaAutoConfig.class);
+  public TekJpaAutoConfig(ApplicationContext context) {
+    super(context);
   }
 
   @Override
@@ -37,13 +37,13 @@ public class TekJpaAutoConfig extends TekModuleConfiguration {
   }
 
   @Bean
-  TekEntityManager tekEntityManager(EntityManager manager, ApplicationContext context) {
+  public TekEntityManager tekEntityManager(EntityManager manager, ApplicationContext context) {
     return new TekEntityManager(manager, context);
   }
 
   @Bean
   @Conditional(HibernateConditional.class)
-  Module hibernate5Module() {
+  public Module hibernate5Module() {
     return new Hibernate5Module();
   }
 }

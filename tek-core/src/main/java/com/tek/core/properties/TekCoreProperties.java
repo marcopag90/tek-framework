@@ -1,6 +1,6 @@
 package com.tek.core.properties;
 
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.properties.cors.TekCorsProperties;
 import com.tek.core.properties.file.TekFileProperties;
@@ -17,7 +17,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author MarcoPagan
  */
-@ConfigurationProperties(prefix = TEK_CORE)
+@ConfigurationProperties(prefix = TEK_CORE_PREFIX)
 @Data
 public class TekCoreProperties {
 

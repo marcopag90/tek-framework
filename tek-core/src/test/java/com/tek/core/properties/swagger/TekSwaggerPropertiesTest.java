@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -31,7 +30,7 @@ class TekSwaggerPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    val properties = new TekCoreProperties().getSwagger();
+    final var properties = new TekCoreProperties().getSwagger();
     assertNotNull(properties);
     Assertions.assertAll(
         () -> assertEquals(DEFAULT_DESCRIPTION, properties.getDescription()),
@@ -47,7 +46,7 @@ class TekSwaggerPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    val properties = coreCustomProperties.getSwagger();
+    final var properties = coreCustomProperties.getSwagger();
     assertNotNull(properties);
     Assertions.assertAll(
         () -> assertEquals(fieldByName("description"), properties.getDescription()),
@@ -61,7 +60,7 @@ class TekSwaggerPropertiesTest {
   }
 
   private String fieldByName(String name) {
-    val field = ReflectionUtils.findField(TekSwaggerProperties.class, name);
+    final var field = ReflectionUtils.findField(TekSwaggerProperties.class, name);
     return field == null ? null : field.getName();
   }
 }

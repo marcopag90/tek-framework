@@ -5,7 +5,6 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 
 import com.tek.core.TekCoreAutoConfig;
 import java.nio.charset.StandardCharsets;
-import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

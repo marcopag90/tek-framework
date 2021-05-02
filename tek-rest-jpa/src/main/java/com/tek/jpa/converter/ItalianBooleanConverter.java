@@ -2,7 +2,6 @@ package com.tek.jpa.converter;
 
 import javax.persistence.AttributeConverter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 
 /**

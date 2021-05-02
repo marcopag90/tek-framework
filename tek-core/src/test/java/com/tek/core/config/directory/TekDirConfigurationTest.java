@@ -2,7 +2,6 @@ package com.tek.core.config.directory;
 
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
-import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -30,16 +29,16 @@ class TekDirConfigurationTest {
   @Test
   @Order(1)
   void testTmpDirectory() {
-    val propDir = properties.getFile().getTmp().getDirectory();
-    val createdDir = configuration.tmpDirectory();
+    final var propDir = properties.getFile().getTmp().getDirectory();
+    final var createdDir = configuration.tmpDirectory();
     internalTestDir(propDir, createdDir);
   }
 
   @Test
   @Order(2)
   void testBinaryDirectory() {
-    val propDir = properties.getFile().getBinary().getDirectory();
-    val createdDir = configuration.binaryDirectory();
+    final var propDir = properties.getFile().getBinary().getDirectory();
+    final var createdDir = configuration.binaryDirectory();
     internalTestDir(propDir, createdDir);
   }
 

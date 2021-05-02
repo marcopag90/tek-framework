@@ -6,7 +6,6 @@ import com.tek.shared.TekModuleConfiguration;
 import java.util.List;
 import javax.naming.ConfigurationException;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;

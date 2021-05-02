@@ -14,7 +14,6 @@ import com.tek.core.TekCoreAutoConfig;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import lombok.SneakyThrows;
-import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,18 +61,22 @@ public class TekCoreWebMvc implements WebMvcConfigurer {
         final var mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         final var serializerModule = new SimpleModule();
-        serializerModule.addDeserializer(
-            String.class,
-            new StdDeserializer<String>(String.class) {
-              @Override
-              @SneakyThrows
-              public String deserialize(JsonParser p, DeserializationContext ctx) {
-                return p.getText() != null ? p.getText().trim() : null;
-              }
-            }
-        );
+        serializerModule.addDeserializer(String.class, new TrimSerializer(String.class));
         mapper.registerModules(serializerModule);
       }
+    }
+  }
+
+  private static class TrimSerializer extends StdDeserializer<String> {
+
+    protected TrimSerializer(Class<?> vc) {
+      super(vc);
+    }
+
+    @Override
+    @SneakyThrows
+    public String deserialize(JsonParser jsonParser, DeserializationContext ctx) {
+      return jsonParser.getText() != null ? jsonParser.getText().trim() : null;
     }
   }
 

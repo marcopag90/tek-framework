@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.val;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -30,22 +29,22 @@ class TekCorsPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    val properties = new TekCoreProperties().getCors();
+    final var properties = new TekCoreProperties().getCors();
     assertNotNull(properties);
     String allowedOrigin = properties.getAllowedOrigin();
-    val allowedCredentials = properties.getAllowedCredentials();
-    val allowedMethodsProps = properties.getAllowedMethods();
-    val allowedHeadersProps = properties.getAllowedHeaders();
+    final var allowedCredentials = properties.getAllowedCredentials();
+    final var allowedMethodsProps = properties.getAllowedMethods();
+    final var allowedHeadersProps = properties.getAllowedHeaders();
     assertAll(
         () -> assertNotNull(allowedOrigin),
         () -> assertNotNull(allowedCredentials),
         () -> assertNotNull(allowedMethodsProps),
         () -> assertNotNull(allowedHeadersProps)
     );
-    val allowedMethods = String.join(",", properties.getAllowedMethods());
-    val expectedMethods = "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE";
-    val allowedHeaders = String.join(",", properties.getAllowedHeaders());
-    val expectedHeaders = "x-requested-with,authorization,Content-Type,Authorization,credential,X-XSRF-TOKEN";
+    final var allowedMethods = String.join(",", properties.getAllowedMethods());
+    final var expectedMethods = "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE";
+    final var allowedHeaders = String.join(",", properties.getAllowedHeaders());
+    final var expectedHeaders = "x-requested-with,authorization,Content-Type,Authorization,credential,X-XSRF-TOKEN";
     assertAll(
         () -> assertEquals("http://localhost:4200", allowedOrigin),
         () -> assertTrue(allowedCredentials),
@@ -60,19 +59,19 @@ class TekCorsPropertiesTest {
     TekCorsProperties properties = coreCustomProperties.getCors();
     assertNotNull(properties);
     String allowedOrigin = properties.getAllowedOrigin();
-    val allowedCredentials = properties.getAllowedCredentials();
-    val allowedMethodsProps = properties.getAllowedMethods();
-    val allowedHeadersProps = properties.getAllowedHeaders();
+    final var allowedCredentials = properties.getAllowedCredentials();
+    final var allowedMethodsProps = properties.getAllowedMethods();
+    final var allowedHeadersProps = properties.getAllowedHeaders();
     assertAll(
         () -> assertNotNull(allowedOrigin),
         () -> assertNotNull(allowedCredentials),
         () -> assertNotNull(allowedMethodsProps),
         () -> assertNotNull(allowedHeadersProps)
     );
-    val allowedMethods = String.join(",", properties.getAllowedMethods());
-    val expectedMethods = "GET,POST,PATCH,PUT,DELETE";
-    val allowedHeaders = String.join(",", properties.getAllowedHeaders());
-    val expectedHeaders = "x-requested-with,authorization,Content-Type,Authorization,credential";
+    final var allowedMethods = String.join(",", properties.getAllowedMethods());
+    final var expectedMethods = "GET,POST,PATCH,PUT,DELETE";
+    final var allowedHeaders = String.join(",", properties.getAllowedHeaders());
+    final var expectedHeaders = "x-requested-with,authorization,Content-Type,Authorization,credential";
     assertAll(
         () -> assertEquals("http://localhost:4201", allowedOrigin),
         () -> assertFalse(allowedCredentials),

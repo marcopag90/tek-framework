@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.val;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class TekSchedulerPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    val properties = new TekCoreProperties().getScheduler();
+    final var properties = new TekCoreProperties().getScheduler();
     assertNotNull(properties);
     assertTrue(properties.getActive());
   }
@@ -35,7 +34,7 @@ class TekSchedulerPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    val properties = coreCustomProperties.getScheduler();
+    final var properties = coreCustomProperties.getScheduler();
     assertNotNull(properties);
     assertTrue(properties.getActive());
   }

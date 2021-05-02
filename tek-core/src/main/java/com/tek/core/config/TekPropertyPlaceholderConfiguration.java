@@ -4,13 +4,13 @@ import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOL
 import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 
 import com.tek.core.TekCoreAutoConfig;
-import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
+//TODO find why it seems not to work anymore
 /**
  * Configuration to allow access of different properties file through the application just by using
  * its {@link org.springframework.beans.factory.annotation.Value} injection.

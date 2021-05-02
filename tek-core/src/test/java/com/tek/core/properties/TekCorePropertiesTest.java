@@ -2,7 +2,6 @@ package com.tek.core.properties;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,7 @@ class TekCorePropertiesTest {
 
   @Test
   void defaultValues() {
-    val properties = new TekCoreProperties();
+    final var properties = new TekCoreProperties();
     Assertions.assertAll(
         () -> assertNotNull(properties.getCors()),
         () -> assertNotNull(properties.getLocale()),

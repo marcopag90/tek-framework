@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties.TekLocaleType;
-import lombok.val;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class TekLocalePropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    val properties = new TekCoreProperties().getLocale();
+    final var properties = new TekCoreProperties().getLocale();
     assertNotNull(properties);
     assertAll(
         () -> assertEquals(TekLocaleType.SESSION, properties.getType()),
@@ -41,7 +40,7 @@ class TekLocalePropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    val properties = coreCustomProperties.getLocale();
+    final var properties = coreCustomProperties.getLocale();
     assertNotNull(properties);
     assertAll(
         () -> assertEquals(TekLocaleType.COOKIE, properties.getType()),

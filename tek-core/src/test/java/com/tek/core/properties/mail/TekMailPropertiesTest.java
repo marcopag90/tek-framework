@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.val;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class TekMailPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    val properties = new TekCoreProperties().getMail();
+    final var properties = new TekCoreProperties().getMail();
     assertNotNull(properties);
     assertAll(
         () -> assertFalse(properties.isSendErrors()),
@@ -40,7 +39,7 @@ class TekMailPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    val properties = coreCustomProperties.getMail();
+    final var properties = coreCustomProperties.getMail();
     assertNotNull(properties);
     assertAll(
         () -> assertTrue(properties.isSendErrors()),

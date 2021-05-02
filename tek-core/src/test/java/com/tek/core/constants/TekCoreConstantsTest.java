@@ -1,11 +1,11 @@
 package com.tek.core.constants;
 
 import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PACKAGES_TO_SCAN;
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 import static com.tek.core.constants.TekCoreConstants.TEK_DATE_PATH;
 import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
-import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PACKAGES_TO_SCAN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Assertions;

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
-import lombok.val;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,9 +28,9 @@ class TekFilePropertiesTest {
   @Test
   @Order(1)
   void tmpDefaultValues() {
-    val fileProperties = new TekCoreProperties().getFile();
+    final var fileProperties = new TekCoreProperties().getFile();
     assertNotNull(fileProperties);
-    val tmpProperties = fileProperties.getTmp();
+    final var tmpProperties = fileProperties.getTmp();
     File tmpDirectory = tmpProperties.getDirectory();
     Integer tmpCleanAfter = tmpProperties.getCleanAfter();
     assertAll(
@@ -44,9 +43,9 @@ class TekFilePropertiesTest {
   @Test
   @Order(2)
   void tmpCustomValues() {
-    val fileProperties = coreCustomProperties.getFile();
+    final var fileProperties = coreCustomProperties.getFile();
     assertNotNull(fileProperties);
-    val tmpProperties = fileProperties.getTmp();
+    final var tmpProperties = fileProperties.getTmp();
     File tmpDirectory = tmpProperties.getDirectory();
     Integer tmpCleanAfter = tmpProperties.getCleanAfter();
     assertAll(
@@ -59,10 +58,10 @@ class TekFilePropertiesTest {
   @Test
   @Order(3)
   void binaryDefaultValues() {
-    val fileProperties = new TekCoreProperties().getFile();
+    final var fileProperties = new TekCoreProperties().getFile();
     assertNotNull(fileProperties);
-    val binProperties = fileProperties.getBinary();
-    val binDirectory = binProperties.getDirectory();
+    final var binProperties = fileProperties.getBinary();
+    final var binDirectory = binProperties.getDirectory();
     assertAll(
         () -> assertNotNull(binProperties),
         () -> assertNotNull(binDirectory)
@@ -76,10 +75,10 @@ class TekFilePropertiesTest {
   @Test
   @Order(4)
   void binaryCustomValues() {
-    val fileProperties = coreCustomProperties.getFile();
+    final var fileProperties = coreCustomProperties.getFile();
     assertNotNull(fileProperties);
-    val binProperties = fileProperties.getBinary();
-    val binDirectory = binProperties.getDirectory();
+    final var binProperties = fileProperties.getBinary();
+    final var binDirectory = binProperties.getDirectory();
     assertAll(
         () -> assertNotNull(binProperties),
         () -> assertNotNull(binDirectory)

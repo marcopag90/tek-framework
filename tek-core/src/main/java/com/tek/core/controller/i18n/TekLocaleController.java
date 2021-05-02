@@ -52,7 +52,7 @@ class TekLocaleController {
       required = true
   )
   public ResponseEntity<String> setLocale() {
-    val message = messageSource.getMessage(
+    final var message = messageSource.getMessage(
         TekCoreMessageSourceConfiguration.Message.LOCALE_LANG, null, LocaleContextHolder.getLocale()
     );
     return ResponseEntity.ok(message);

@@ -77,10 +77,10 @@ public abstract class TekMongoCollectionController implements TekAuthApi {
 
   protected long count(MongoCollection<Document> collection, Document filter) {
     if (filter != null) {
-      val countOptions = new CountOptions().maxTime(5, TimeUnit.SECONDS);
+      final var countOptions = new CountOptions().maxTime(5, TimeUnit.SECONDS);
       return collection.countDocuments(filter, countOptions);
     }
-    val countOptions = new EstimatedDocumentCountOptions().maxTime(5, TimeUnit.SECONDS);
+    final var countOptions = new EstimatedDocumentCountOptions().maxTime(5, TimeUnit.SECONDS);
     return collection.estimatedDocumentCount(countOptions);
   }
 }

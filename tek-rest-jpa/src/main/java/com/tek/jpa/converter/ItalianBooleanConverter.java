@@ -28,7 +28,7 @@ public class ItalianBooleanConverter implements AttributeConverter<Boolean, Stri
   public Boolean convertToEntityAttribute(String dbData) {
     if (StringUtils.isNotBlank(dbData)) {
       if (dbData.length() > 1) {
-        val message = String.join("", NEWLINE)
+        final var message = String.join("", NEWLINE)
             .concat("Data retrieved contains at least 1 blank char. ")
             .concat("Ignoring blank chars to avoid equality failure. ")
             .concat("You should check your database column!");

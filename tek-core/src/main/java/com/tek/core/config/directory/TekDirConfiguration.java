@@ -41,7 +41,7 @@ public class TekDirConfiguration {
   public File tmpDirectory() {
     if (!this.tmpDirectory.isDirectory()) {
       try {
-        File dir = Files.createDirectory(tmpDirectory.toPath()).toFile();
+        final var dir = Files.createDirectory(tmpDirectory.toPath()).toFile();
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {
@@ -58,7 +58,7 @@ public class TekDirConfiguration {
   public File binaryDirectory() {
     if (!this.binaryDirectory.isDirectory()) {
       try {
-        File dir = Files.createDirectory(binaryDirectory.toPath()).toFile();
+        final var dir = Files.createDirectory(binaryDirectory.toPath()).toFile();
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {

@@ -59,9 +59,9 @@ public class TekCoreWebMvc implements WebMvcConfigurer {
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
     for (HttpMessageConverter<?> converter : converters) {
       if (converter instanceof MappingJackson2HttpMessageConverter) {
-        val mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+        final var mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        val serializerModule = new SimpleModule();
+        final var serializerModule = new SimpleModule();
         serializerModule.addDeserializer(
             String.class,
             new StdDeserializer<String>(String.class) {

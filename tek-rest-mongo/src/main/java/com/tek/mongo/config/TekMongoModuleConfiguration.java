@@ -29,12 +29,12 @@ public class TekMongoModuleConfiguration extends TekModuleConfiguration {
 
   @Override
   public void checkModuleConfiguration() throws ConfigurationException {
-    val className = TekMongoCollectionController.class.getSimpleName();
+    final var className = TekMongoCollectionController.class.getSimpleName();
     if (CollectionUtils.isEmpty(controllers)) {
       log.warn("No implementation of {} was found.", className);
       log.warn("If you don't need a common collection querable controller, you can ignore this.");
     } else if (controllers.size() > 1) {
-      val message = String.format("There must be only one instance of %s", className);
+      final var message = String.format("There must be only one instance of %s", className);
       throw new ConfigurationException(message);
     }
   }

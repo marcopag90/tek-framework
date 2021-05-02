@@ -18,7 +18,7 @@ public class TekCoreMessageSourceConfiguration {
 
   @Bean(name = TEK_CORE_MESSAGE_SOURCE_BEAN)
   public MessageSource getMessageSource() {
-    val messageSource = new ReloadableResourceBundleMessageSource();
+    final var messageSource = new ReloadableResourceBundleMessageSource();
     messageSource.setBasename(TEK_CORE_MESSAGE_BUNDLE);
     messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
     return messageSource;

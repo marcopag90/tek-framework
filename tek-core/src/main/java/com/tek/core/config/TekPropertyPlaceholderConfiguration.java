@@ -19,11 +19,12 @@ import org.springframework.core.io.ClassPathResource;
  */
 @Configuration
 @ConditionalOnClass(TekCoreAutoConfig.class)
+@SuppressWarnings("squid:S1118")
 public class TekPropertyPlaceholderConfiguration {
 
   @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
   public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-    val propsConfig = new PropertySourcesPlaceholderConfigurer();
+    final var propsConfig = new PropertySourcesPlaceholderConfigurer();
     propsConfig.setLocations(new ClassPathResource(GIT_PROPERTIES));
     propsConfig.setIgnoreResourceNotFound(true);
     propsConfig.setIgnoreUnresolvablePlaceholders(true);

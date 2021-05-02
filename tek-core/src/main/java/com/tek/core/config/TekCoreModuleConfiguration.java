@@ -53,12 +53,12 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
   }
 
   private void checkActiveProfile() throws ConfigurationException {
-    val activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
-    val toMatchProfiles = new ArrayList<String>();
+    final var activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
+    final var toMatchProfiles = new ArrayList<String>();
     toMatchProfiles.add(DEVELOPMENT);
     toMatchProfiles.add(TEST);
     toMatchProfiles.add(PRODUCTION);
-    val matches = CollectionUtils.containsAny(activeProfiles, toMatchProfiles);
+    final var matches = CollectionUtils.containsAny(activeProfiles, toMatchProfiles);
     if (!matches) {
       String warnMessage =
           join("", newLine)
@@ -105,10 +105,10 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
   @SneakyThrows
   private void checkMailErrorHandling() {
-    val sendErrors = coreProperties.getMail().isSendErrors();
-    val isActiveScheduler = coreProperties.getScheduler().getActive();
+    final var sendErrors = coreProperties.getMail().isSendErrors();
+    final boolean isActiveScheduler = coreProperties.getScheduler().getActive();
     if (sendErrors && !isActiveScheduler) {
-      val errorMessage =
+      final var errorMessage =
           join("", newLine)
               .concat("Email error handling is active but scheduled cleanup of directories is not!")
               .concat(newLine)

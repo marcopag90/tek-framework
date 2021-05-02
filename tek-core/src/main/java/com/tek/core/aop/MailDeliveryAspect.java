@@ -4,7 +4,6 @@ import com.tek.core.properties.TekCoreProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,7 +25,7 @@ public class MailDeliveryAspect {
   @Around("@annotation(CanSendMail)")
   @SneakyThrows
   public Object executeAround(ProceedingJoinPoint joinPoint) {
-    val mailProperties = properties.getMail();
+    final var mailProperties = properties.getMail();
     if (!mailProperties.isRealDelivery()) {
       log.warn("Skipping mail delivery since property tek.core.mail.realDelivery is false!");
       return null;

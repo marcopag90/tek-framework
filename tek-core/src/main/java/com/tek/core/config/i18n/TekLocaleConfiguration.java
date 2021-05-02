@@ -51,13 +51,12 @@ public class TekLocaleConfiguration implements WebMvcConfigurer {
   public LocaleResolver localeResolver() {
     TekLocaleProperties localeProperties = coreProperties.getLocale();
     TekLocaleProperties.TekLocaleType type = localeProperties.getType();
-
     if (type == TekLocaleProperties.TekLocaleType.SESSION) {
-      SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+      final var sessionLocaleResolver = new SessionLocaleResolver();
       sessionLocaleResolver.setDefaultLocale(DEFAULT_LOCALE);
       return sessionLocaleResolver;
     } else if (type == TekLocaleProperties.TekLocaleType.COOKIE) {
-      CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+      final var cookieLocaleResolver = new CookieLocaleResolver();
       cookieLocaleResolver.setDefaultLocale(DEFAULT_LOCALE);
       cookieLocaleResolver.setCookieName(localeProperties.getCookieName());
       cookieLocaleResolver.setCookieMaxAge(localeProperties.getCookieMaxAge());
@@ -73,7 +72,7 @@ public class TekLocaleConfiguration implements WebMvcConfigurer {
    */
   @Bean(TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN)
   public LocaleChangeInterceptor localeChangeInterceptor() {
-    LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+    final var localeChangeInterceptor = new LocaleChangeInterceptor();
     localeChangeInterceptor.setHttpMethods(HttpMethod.POST.name());
     return localeChangeInterceptor;
   }

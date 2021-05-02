@@ -41,7 +41,7 @@ public class TekFileService {
    * Returns the newly created file path.
    */
   public String createFile(String fileName) {
-    File file = new File(fileName);
+    final var file = new File(fileName);
     boolean created;
     try {
       created = file.createNewFile();

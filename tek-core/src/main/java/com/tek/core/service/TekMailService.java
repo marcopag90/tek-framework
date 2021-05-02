@@ -72,10 +72,10 @@ public class TekMailService {
       ServletWebRequest servletWebRequest,
       Exception exception
   ) {
-    val request = servletWebRequest.getRequest();
-    val requestUrl = request.getRequestURL().toString();
-    var to = new String[]{host};
-    val addresses = Arrays.toString(to);
+    final var request = servletWebRequest.getRequest();
+    final var requestUrl = request.getRequestURL().toString();
+    final var to = new String[]{host};
+    final var addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
     String filename = fileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
     String text = join("")
@@ -84,8 +84,8 @@ public class TekMailService {
         .concat("Request URL: " + requestUrl);
     logMailSending(addresses);
     try (
-        var out = new BufferedWriter(new FileWriter(filename, true));
-        var pWriter = new PrintWriter(out, true);
+        final var out = new BufferedWriter(new FileWriter(filename, true));
+        final var pWriter = new PrintWriter(out, true);
     ) {
       exception.printStackTrace(pWriter);
       sendWithAttachment(to, subject, text, filename);
@@ -104,13 +104,13 @@ public class TekMailService {
     logMailSending(toArray);
     try {
       String addresses = join(",", to);
-      var mimeMessage = mailSender.createMimeMessage();
+      final var mimeMessage = mailSender.createMimeMessage();
       mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
       mimeMessage.setSubject(subject);
       Multipart emailContent = new MimeMultipart();
-      var textBodyPart = new MimeBodyPart();
+      final var textBodyPart = new MimeBodyPart();
       textBodyPart.setText(text);
-      var fileBodyPart = new MimeBodyPart();
+      final var fileBodyPart = new MimeBodyPart();
       fileBodyPart.attachFile(file);
       emailContent.addBodyPart(textBodyPart);
       emailContent.addBodyPart(fileBodyPart);
@@ -128,9 +128,9 @@ public class TekMailService {
    */
   @CanSendMail
   public void sendSimpleMessage(String[] to, String subject, String text) {
-    var toArray = Arrays.toString(to);
+    final var toArray = Arrays.toString(to);
     logMailSending(toArray);
-    var simpleMailMessage = new SimpleMailMessage();
+    final var simpleMailMessage = new SimpleMailMessage();
     simpleMailMessage.setTo(to);
     simpleMailMessage.setSubject(subject);
     simpleMailMessage.setText(text);

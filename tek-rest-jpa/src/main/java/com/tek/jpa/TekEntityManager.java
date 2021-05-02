@@ -63,7 +63,7 @@ public class TekEntityManager {
   public Object getIdType(Class<?> clazz, String stringId) {
     log.debug("Trying to retrieve id type for class: [{}]", clazz.getSimpleName());
 
-    Field field = Arrays.stream(clazz.getDeclaredFields())
+    final var field = Arrays.stream(clazz.getDeclaredFields())
         .filter(f -> f.isAnnotationPresent(Id.class)).findFirst().orElse(null);
     String ann = Id.class.getSimpleName();
 

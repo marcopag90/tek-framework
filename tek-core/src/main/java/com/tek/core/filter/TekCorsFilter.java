@@ -43,9 +43,9 @@ public class TekCorsFilter implements Filter {
   @Override
   @SneakyThrows
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
-    val request = (HttpServletRequest) req;
-    val response = (HttpServletResponse) res;
-    val corsProperties = coreProperties.getCors();
+    final var request = (HttpServletRequest) req;
+    final var response = (HttpServletResponse) res;
+    final var corsProperties = coreProperties.getCors();
 
     response.setHeader(
         HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsProperties.getAllowedOrigin()

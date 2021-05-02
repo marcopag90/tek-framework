@@ -58,7 +58,7 @@ public class TekSwaggerConfiguration {
 
   @Bean
   public ApiInfo getApiInfo() {
-    val swaggerProperties = coreProperties.getSwagger();
+    final var swaggerProperties = coreProperties.getSwagger();
     return new ApiInfo(
         context.getApplicationName(),
         swaggerProperties.getDescription(),
@@ -76,7 +76,7 @@ public class TekSwaggerConfiguration {
   }
 
   private Class<?>[] getIgnoredParameterTypes() {
-    val swaggerIgnores = context.getBeansOfType(SwaggerIgnore.class).values();
+    final var swaggerIgnores = context.getBeansOfType(SwaggerIgnore.class).values();
     return swaggerIgnores.stream().map(SwaggerIgnore::ignore).collect(Collectors.toSet())
         .stream().flatMap(Arrays::stream).toArray(Class[]::new);
   }

@@ -1,5 +1,6 @@
 package com.tek.core.config.swagger;
 
+import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author MarcoPagan
  */
 @Configuration
+@ConditionalOnClass(TekCoreAutoConfig.class)
 @EnableSwagger2
 @RequiredArgsConstructor
 public class TekSwaggerConfiguration {

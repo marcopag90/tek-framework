@@ -1,5 +1,6 @@
 package com.tek.core.config.directory;
 
+import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
 import java.nio.file.Files;
@@ -7,6 +8,7 @@ import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @author MarcoPagan
  */
 @Configuration
+@ConditionalOnClass(TekCoreAutoConfig.class)
 @RequiredArgsConstructor
 @Slf4j
 public class TekDirConfiguration {

@@ -10,10 +10,12 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.tek.core.TekCoreAutoConfig;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import lombok.SneakyThrows;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -37,6 +39,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author MarcoPagan
  */
 @Configuration
+@ConditionalOnClass(TekCoreAutoConfig.class)
 public class TekCoreWebMvc implements WebMvcConfigurer {
 
   public static final String TIMESTAMP = "yyyy-MM-dd HH:mm:ss.SSS";

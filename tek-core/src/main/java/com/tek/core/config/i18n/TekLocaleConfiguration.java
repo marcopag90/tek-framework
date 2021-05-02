@@ -3,12 +3,14 @@ package com.tek.core.config.i18n;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_LOCALE_RESOLVER_BEAN;
 
+import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import java.util.Locale;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +31,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  * @author MarcoPagan
  */
 @Configuration
+@ConditionalOnClass(TekCoreAutoConfig.class)
 @RequiredArgsConstructor
 @Slf4j
 public class TekLocaleConfiguration implements WebMvcConfigurer {

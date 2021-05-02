@@ -6,6 +6,7 @@ import static com.tek.core.TekProfile.TEST;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
 import static java.lang.String.join;
 
+import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.TekModuleConfiguration;
 import java.text.MessageFormat;
@@ -15,6 +16,7 @@ import javax.naming.ConfigurationException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,7 @@ import org.springframework.util.CollectionUtils;
  * @author MarcoPagan
  */
 @Configuration(TEK_CORE_CONFIGURATION)
+@ConditionalOnClass(TekCoreAutoConfig.class)
 @EnableConfigurationProperties(TekCoreProperties.class)
 @Slf4j
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {

@@ -10,6 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AliasFor;
 
+/**
+ * Annotation to use on a class responsible for configuring the application context.
+ *
+ * @author MarcoPagan
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -1,7 +1,8 @@
-package com.tek.core.task;
+package com.tek.core.config.scheduler;
 
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
+import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.service.TekFileService;
 import java.io.File;
@@ -11,9 +12,11 @@ import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  * Scheduler to clean directory where unuseful file are stored.
@@ -21,11 +24,13 @@ import org.springframework.stereotype.Component;
  * Scheduler is executed synchronously, so if a scheduled thread is still running, the next one will
  * be on queue, waiting for the previous thread to finish its execution.
  */
-@Component
+@Configuration
+@EnableScheduling
+@ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(prefix = TEK_CORE_PREFIX, name = "scheduler.active", havingValue = "true")
 @RequiredArgsConstructor
 @Slf4j
-public class TekTmpFileScheduler {
+public class TekSchedulerConfiguration {
 
   @NonNull private final TekCoreProperties coreProperties;
   @NonNull private final TekFileService fileService;

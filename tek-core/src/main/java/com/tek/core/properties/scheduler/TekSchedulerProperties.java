@@ -1,5 +1,6 @@
 package com.tek.core.properties.scheduler;
 
+import com.tek.core.config.scheduler.TekSchedulerConfiguration;
 import lombok.Data;
 
 /*
@@ -37,7 +38,7 @@ public class TekSchedulerProperties {
 
   /**
    * Whether the scheduler is active or not
-   * <p>{@link com.tek.core.task.TekTmpFileScheduler}
+   * <p>{@link TekSchedulerConfiguration}
    */
   private Boolean active = true;
 }

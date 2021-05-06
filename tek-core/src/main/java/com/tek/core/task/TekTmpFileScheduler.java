@@ -40,13 +40,12 @@ public class TekTmpFileScheduler {
     this.cleanAfter = coreProperties.getFile().getTmp().getCleanAfter();
   }
 
-  @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone}")
+  @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone:Europe/Rome}")
   public void cleanTmpDirectory() {
     final var today = LocalDate.now();
     log.info("Today date: {}", today);
     var start = today.minusDays(cleanAfter);
     log.info("cleanAfter parameter: {} days, starting date is {}", cleanAfter, start);
-
     if (!directory.exists()) {
       log.warn("Directory {} doesn't exist or has been deleted", directory.getAbsolutePath());
     }

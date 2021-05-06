@@ -28,6 +28,7 @@ public class TekFileService {
   private File tmpDirectory;
   private File binaryDirectory;
 
+  @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
     this.tmpDirectory = dirConfiguration.tmpDirectory();
@@ -66,7 +67,7 @@ public class TekFileService {
    * E.g: /myDir/mySubDir
    */
   public File createDirectory(String directory) {
-    File dir = new File(directory + File.separator);
+    final var dir = new File(directory + File.separator);
     boolean created;
     if (!dir.isDirectory()) {
       log.debug(
@@ -116,7 +117,7 @@ public class TekFileService {
    * Attempt to create a file inside the default application tmp directory.
    */
   public String createInTmpDir(String name) {
-    String directory = tmpDirectory + File.separator + LocalDate.now().toString();
+    String directory = tmpDirectory + File.separator + LocalDate.now();
     return deepCreate(directory, name);
   }
 }

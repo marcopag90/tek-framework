@@ -32,7 +32,6 @@ class TekWebPropertiesTest {
     final var properties = new TekWebProperties();
     assertAll(
         () -> assertTrue(properties.isEnabled()),
-        () -> assertEquals("/", properties.getRootPath()),
         () -> assertEquals("index.html", properties.getIndexPage())
     );
   }
@@ -44,7 +43,6 @@ class TekWebPropertiesTest {
     assertNotNull(properties);
     assertAll(
         () -> assertFalse(properties.isEnabled()),
-        () -> assertEquals("/custom", properties.getRootPath()),
         () -> assertEquals("index-custom.html", properties.getIndexPage())
     );
   }

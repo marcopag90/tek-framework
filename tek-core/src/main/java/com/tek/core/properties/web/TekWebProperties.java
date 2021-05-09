@@ -18,11 +18,6 @@ public class TekWebProperties {
   private boolean enabled = true;
 
   /**
-   * Root path of the web application
-   */
-  private String rootPath = "/";
-
-  /**
    * Main page of the web application
    */
   private String indexPage = "index.html";

@@ -8,6 +8,7 @@ import com.tek.core.properties.i18n.TekLocaleProperties;
 import com.tek.core.properties.mail.TekMailProperties;
 import com.tek.core.properties.scheduler.TekSchedulerProperties;
 import com.tek.core.properties.swagger.TekSwaggerProperties;
+import com.tek.core.properties.web.TekWebProperties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -21,6 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class TekCoreProperties {
 
+  private TekWebProperties web = new TekWebProperties();
   private TekCorsProperties cors = new TekCorsProperties();
   private TekLocaleProperties locale = new TekLocaleProperties();
   private TekFileProperties file = new TekFileProperties();

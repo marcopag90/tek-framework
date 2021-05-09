@@ -12,31 +12,31 @@ import java.lang.annotation.Target;
 @ApiImplicitParams(
     value = {
         @ApiImplicitParam(
+            name = "page",
+            value = "The page number you want to retrieve.",
+            dataTypeClass = String.class,
             paramType = "query",
             /*
             Swagger bug: dataType int with defaultValue = 0 fails to escape html.
             Workaround to use it as string parameter
             */
-            dataTypeClass = String.class,
-            name = "page",
-            value = "The page number you want to retrieve.",
             defaultValue = "0",
             example = "0"
         ),
         @ApiImplicitParam(
-            paramType = "query",
-            dataTypeClass = Integer.class,
             name = "size",
             value = "Number of records per page.",
+            dataTypeClass = Integer.class,
+            paramType = "query",
             defaultValue = "10",
             example = "10"
         ),
         @ApiImplicitParam(
-            paramType = "query",
-            dataTypeClass = String.class,
             name = "sort",
             value = "Sorting criteria in the format: property,asc|desc. " +
                 "Default sort order is ascending. Multiple sort criteria is supported.",
+            dataTypeClass = String.class,
+            paramType = "query",
             allowMultiple = true
         )
     }

@@ -16,42 +16,32 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//TODO this is broken!
 /**
  * API to test the behaviour of the Spring {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor}.
  *
  * @author MarcoPagan
  */
 @RestController
-@RequestMapping(
-    path = TEK_LOCALE_PATH,
-    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE
-)
 @RequiredArgsConstructor
 class TekLocaleController {
 
-  @NonNull
-  @Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN)
-  private final MessageSource messageSource;
-
-  @NonNull
-  private final TekRestMessage tekRestMessage;
-
   @PreAuthorize("isAuthenticated()")
-  @PostMapping
+  @PostMapping(
+      value = TEK_LOCALE_PATH,
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE
+  )
   @ApiOperation(value = "Allows to change the server locale")
   @ApiImplicitParam(
-      paramType = "form",
-      dataType = "string",
-      dataTypeClass = String.class,
       name = "locale",
       value = "Value of the locale to set, provided in the format BCP 47",
-      allowableValues = "it, en",
-      required = true
+      required = true,
+      dataTypeClass = String.class,
+      //FIXME https://github.com/springfox/springfox/issues/3435
+      paramType = "form",
+      allowableValues = "it, en"
   )
   public ResponseEntity<String> setLocale() {
     final var message = messageSource.getMessage(
@@ -59,4 +49,11 @@ class TekLocaleController {
     );
     return ResponseEntity.ok(message);
   }
+
+  @NonNull
+  @Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN)
+  private final MessageSource messageSource;
+
+  @NonNull
+  private final TekRestMessage tekRestMessage;
 }

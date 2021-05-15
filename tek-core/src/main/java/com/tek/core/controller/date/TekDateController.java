@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
     path = TEK_DATE_PATH,
     produces = MediaType.APPLICATION_JSON_VALUE
 )
-public class TekDateController {
+class TekDateController {
 
 
   @PreAuthorize("isAuthenticated()")

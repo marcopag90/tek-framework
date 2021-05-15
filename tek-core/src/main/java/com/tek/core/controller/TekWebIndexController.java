@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @ConditionalOnProperty(prefix = TEK_CORE_PREFIX, name = "web.enabled", havingValue = "true")
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class TekWebIndexController {
+class TekWebIndexController {
 
   private String forward;
 

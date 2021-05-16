@@ -12,6 +12,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/**
+ * Interface to provide a read-only <i>CRUD</i> JPA Rest API.
+ *
+ * @param <T> : a concrete {@link javax.persistence.Entity}
+ * @param <I> : the {@link javax.persistence.Id}
+ *
+ * @author MarcoPagan
+ */
 public interface TekReadOnlyJpaApi<T, I> extends TekReadOnlyApi {
 
   @GetMapping

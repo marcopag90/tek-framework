@@ -8,6 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Interface to provide a <i>CRUD</i> JPA Rest API.
+ *
+ * @param <T> : a concrete {@link javax.persistence.Entity}
+ * @param <I> : the {@link javax.persistence.Id}
+ *
+ * @author MarcoPagan
+ */
 public interface TekWritableJpaApi<T, I> extends TekWritableApi {
 
   @PostMapping

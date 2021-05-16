@@ -1,5 +1,10 @@
 package com.tek.rest.shared;
 
+/**
+ * Base interface to provide <i>crud AOP</i> methods.
+ *
+ * @author MarcoPagan
+ */
 public interface TekWritableApi extends TekReadOnlyApi {
 
   String CAN_CREATE = "this.createAuthorized()";

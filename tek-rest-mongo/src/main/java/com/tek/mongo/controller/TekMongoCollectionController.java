@@ -7,7 +7,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.CountOptions;
 import com.mongodb.client.model.EstimatedDocumentCountOptions;
-import com.tek.rest.shared.TekAuthApi;
+import com.tek.rest.shared.TekReadOnlyApi;
 import com.turkraft.springfilter.boot.Filter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,30 +23,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public abstract class TekMongoCollectionController implements TekAuthApi {
+public class TekMongoCollectionController implements TekReadOnlyApi {
 
   @Autowired
   protected MongoTemplate mongoTemplate;
-
-  @Override
-  public final boolean createAuthorized() {
-    return false;
-  }
-
-  @Override
-  public boolean readAuthorized() {
-    return isAuthorized();
-  }
-
-  @Override
-  public final boolean updateAuthorized() {
-    return false;
-  }
-
-  @Override
-  public final boolean deleteAuthorized() {
-    return false;
-  }
 
   @GetMapping
   @PreAuthorize(CAN_READ)

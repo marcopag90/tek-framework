@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration to provide
+ * Configuration providing:
  * <ul>
  *   <li>{@link Hibernate5Module} to avoid MappingJackson2HttpMessageConverter serialization
  *    failure on lazy proxy objects retrieved from Hibernate, when no session is in context.
  *  </li>
  *  <li>
- *    {@link TekEntityManager} as bean extending {@link EntityManager} to provide some utility
+ *    {@link TekEntityManager} as a bean extending {@link EntityManager} to expose some utility
  *    methods.
  *  </li>
  * </ul>

@@ -39,10 +39,8 @@ import org.springframework.util.Assert;
 //TODO Manager test
 public class TekEntityManager {
 
-  @NonNull
-  private final EntityManager entityManager;
-  @NonNull
-  private final ApplicationContext applicationContext;
+  @NonNull private final EntityManager entityManager;
+  @NonNull private final ApplicationContext applicationContext;
 
   @Getter
   public Set<EntityType<?>> entityTypes;

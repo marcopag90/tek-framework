@@ -2,13 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.4</version>
+    <version>2.5.4</version>
   </parent>
 
   <groupId>com.tek</groupId>
@@ -16,28 +15,12 @@
   <version>3.0.0</version>
   <packaging>pom</packaging>
 
-  <properties>
-    <java.version>11</java.version>
-    <!-- Dependencies versioning -->
-    <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-    <springfox-legacy.version>2.9.2</springfox-legacy.version>
-    <spring-filter.version>1.0.0</spring-filter.version>
-    <hibernate-types-52.version>2.9.0</hibernate-types-52.version>
-    <commons-io.version>2.8.0</commons-io.version>
-    <!-- Plugin versioning -->
-    <hibernate-enhance-plugin.version>5.4.10.Final</hibernate-enhance-plugin.version>
-    <!-- Shared modules versioning -->
-    <tek-shared.version>${project.version}</tek-shared.version>
-    <tek-rest-shared.version>${project.version}</tek-rest-shared.version>
-  </properties>
-
-  <modules>
-    <module>tek-shared</module>
-    <module>tek-core</module>
-    <module>tek-rest-shared</module>
-    <module>tek-rest-jpa</module>
-    <module>tek-rest-mongo</module>
-  </modules>
+  <developers>
+    <developer>
+      <name>Marco Pagan</name>
+      <email>marcopag90@gmail.com</email>
+    </developer>
+  </developers>
 
   <repositories>
     <repository>
@@ -56,6 +39,29 @@
       <url>${repoWriteUrl}</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <properties>
+    <java.version>11</java.version>
+    <!-- Dependencies versioning -->
+    <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+    <springfox-legacy.version>2.9.2</springfox-legacy.version>
+    <spring-filter.version>1.0.5</spring-filter.version>
+    <hibernate-types-52.version>2.12.1</hibernate-types-52.version>
+    <commons-io.version>2.11.0</commons-io.version>
+    <!-- Plugin versioning -->
+    <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+    <!-- Shared modules versioning -->
+    <tek-shared.version>${project.version}</tek-shared.version>
+    <tek-rest-shared.version>${project.version}</tek-rest-shared.version>
+  </properties>
+
+  <modules>
+    <module>tek-shared</module>
+    <module>tek-core</module>
+    <module>tek-rest-shared</module>
+    <module>tek-rest-jpa</module>
+    <module>tek-rest-mongo</module>
+  </modules>
 
   <dependencies>
     <dependency>
@@ -139,6 +145,30 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>${flatten-maven-plugin.version}</version>
+        <configuration>
+          <flattenMode>minimum</flattenMode>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
@@ -158,18 +188,24 @@
     <!-- Optional plugin inherited by child modules: need to be declared inside child.pom.xml-->
     <pluginManagement>
       <plugins>
-        <!-- Bytecode enhancement to work with lazy attributes properly
-        see https://dzone.com/articles/hibernate-bytecode-enhancement-association-managem
-        -->
         <plugin>
           <groupId>org.hibernate.orm.tooling</groupId>
           <artifactId>hibernate-enhance-maven-plugin</artifactId>
-          <version>${hibernate-enhance-plugin.version}</version>
+          <version>${hibernate.version}</version>
           <executions>
             <execution>
               <configuration>
-                <failOnError>true</failOnError>
+                <!-- see https://dzone.com/articles/hibernate-bytecode-enhancement-dirty-tracking -->
+                <enableDirtyTracking>true</enableDirtyTracking>
+                <!--
+                The enableLazyInitialization can be useful for lazy attributes,
+                like fetching a parent-side @OneToOne association lazily, as by default,
+                this one is fetched eagerly even when set to FetchType.LAZY.
+                -->
                 <enableLazyInitialization>true</enableLazyInitialization>
+                <!-- see https://dzone.com/articles/hibernate-bytecode-enhancement-association-managem -->
+                <enableAssociationManagement>true</enableAssociationManagement>
+                <failOnError>true</failOnError>
               </configuration>
               <goals>
                 <goal>enhance</goal>

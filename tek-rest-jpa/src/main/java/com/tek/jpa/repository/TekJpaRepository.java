@@ -6,4 +6,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface TekJpaRepository<T, I> extends CrudRepository<T, I>, JpaSpecificationExecutor<T> {
+
 }

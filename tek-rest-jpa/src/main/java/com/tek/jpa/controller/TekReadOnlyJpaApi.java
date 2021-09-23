@@ -2,6 +2,7 @@ package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.constants.TekRestConstants.FILTER_NAME;
 
+import com.tek.rest.shared.swagger.ApiPageable;
 import com.tek.rest.shared.TekReadOnlyApi;
 import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public interface TekReadOnlyJpaApi<T, I> extends TekReadOnlyApi {
 
   @GetMapping
   @PreAuthorize(CAN_READ)
+  @ApiPageable
   Page<T> findAll(@Filter(parameterName = FILTER_NAME) Specification<T> spec, Pageable page);
 
   @GetMapping("/{id}")

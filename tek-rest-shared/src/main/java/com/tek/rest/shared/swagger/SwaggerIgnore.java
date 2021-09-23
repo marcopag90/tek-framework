@@ -1,4 +1,4 @@
-package com.tek.core.config.swagger;
+package com.tek.rest.shared.swagger;
 
 /**
  * Utility interface that <i>MUST</i> be implemented by Spring {@link

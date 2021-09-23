@@ -1,4 +1,4 @@
-package com.tek.core.config.swagger;
+package com.tek.rest.shared.swagger;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

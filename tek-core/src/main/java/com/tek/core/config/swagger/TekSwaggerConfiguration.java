@@ -2,6 +2,7 @@ package com.tek.core.config.swagger;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
+import com.tek.rest.shared.swagger.SwaggerIgnore;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;

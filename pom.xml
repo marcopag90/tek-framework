@@ -12,7 +12,7 @@
 
   <groupId>com.tek</groupId>
   <artifactId>tek-framework-parent</artifactId>
-  <version>3.0.0</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 
   <scm>
@@ -25,13 +25,6 @@
       <email>marcopag90@gmail.com</email>
     </developer>
   </developers>
-
-  <repositories>
-    <repository>
-      <id>repoReadUrl</id>
-      <url>${repoReadUrl}</url>
-    </repository>
-  </repositories>
 
   <distributionManagement>
     <repository>
@@ -46,17 +39,15 @@
 
   <properties>
     <java.version>11</java.version>
+    <revision>3.0.0</revision>
     <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     <springfox-legacy.version>2.9.2</springfox-legacy.version>
-    <spring-filter.version>1.0.5</spring-filter.version>
+    <spring-filter.version>2.0.0</spring-filter.version>
     <hibernate-types-52.version>2.12.1</hibernate-types-52.version>
     <commons-io.version>2.11.0</commons-io.version>
     <!-- Plugin versioning -->
     <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
-    <!-- Shared modules versioning -->
-    <tek-shared.version>${project.version}</tek-shared.version>
-    <tek-rest-shared.version>${project.version}</tek-rest-shared.version>
   </properties>
 
   <modules>

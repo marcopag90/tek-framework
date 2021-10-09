@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.tek</groupId>
     <artifactId>tek-framework-parent</artifactId>
-    <version>3.0.0</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>tek-core</artifactId>
@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.tek</groupId>
       <artifactId>tek-rest-shared</artifactId>
-      <version>${tek-rest-shared.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>

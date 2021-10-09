@@ -7,7 +7,7 @@
   <parent>
     <artifactId>tek-framework-parent</artifactId>
     <groupId>com.tek</groupId>
-    <version>3.0.0</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>tek-rest-jpa</artifactId>
@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.tek</groupId>
       <artifactId>tek-rest-shared</artifactId>
-      <version>${tek-rest-shared.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.turkraft</groupId>

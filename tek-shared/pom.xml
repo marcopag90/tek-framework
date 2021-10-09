@@ -7,7 +7,7 @@
   <parent>
     <artifactId>tek-framework-parent</artifactId>
     <groupId>com.tek</groupId>
-    <version>3.0.0</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>tek-shared</artifactId>

@@ -4,7 +4,6 @@ import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_FILE_TIMESTAM
 import static java.lang.String.join;
 
 import com.tek.core.aop.CanSendMail;
-import com.tek.core.properties.TekCoreProperties;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -47,8 +46,7 @@ public class TekMailService {
   @Qualifier(TEK_CORE_FILE_TIMESTAMP_BEAN)
   private final SimpleDateFormat df;
 
-  @NonNull private final TekCoreProperties coreProperties;
-  @NonNull private final TekFileService fileService;
+  @NonNull private final TekTmpDirFileService tmpFileService;
   @NonNull private final ApplicationContext context;
   @NonNull private final JavaMailSender mailSender;
 
@@ -76,7 +74,7 @@ public class TekMailService {
     final var to = new String[]{host};
     final var addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
-    String filename = fileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
+    String filename = tmpFileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
     String text = join("")
         .concat("Exception on: " + subject)
         .concat(newLine)

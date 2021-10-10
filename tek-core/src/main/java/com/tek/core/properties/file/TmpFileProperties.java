@@ -1,15 +1,20 @@
 package com.tek.core.properties.file;
 
 
-import com.tek.core.config.scheduler.TekSchedulerConfiguration;
+import com.tek.core.config.scheduler.TekBinDirSchedulerConfiguration;
 import com.tek.core.properties.scheduler.TekSchedulerProperties;
 import java.io.File;
 import lombok.Data;
 
 @Data
-public class TmpProperties {
+public class TmpFileProperties {
 
-  private boolean enabled = false;
+  /**
+   * Triggers {@link com.tek.core.config.directory.TekTmpDirConfiguration} activation.
+   */
+  private boolean enabled;
+
+  private boolean schedulerEnabled;
 
   /**
    * Tmp directory path
@@ -18,7 +23,7 @@ public class TmpProperties {
 
   /**
    * Tmp directory cleans after (days)
-   * <p> see {@link TekSchedulerConfiguration}
+   * <p> see {@link TekBinDirSchedulerConfiguration}
    */
   private Integer cleanAfter = 10;
 

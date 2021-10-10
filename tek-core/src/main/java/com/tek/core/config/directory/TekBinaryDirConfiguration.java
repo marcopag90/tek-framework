@@ -1,5 +1,7 @@
 package com.tek.core.config.directory;
 
+import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
+
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
@@ -13,6 +15,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//TODO tests
+
 /**
  * Configuration to setup file directories used to store binaries files.
  *
@@ -20,7 +24,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(TekCoreAutoConfig.class)
-@ConditionalOnProperty(name = "tek.core.fileConfiguration.binary.enabled", havingValue = "true")
+@ConditionalOnProperty(
+    prefix = TEK_CORE_PREFIX,
+    name = "fileConfiguration.binary.enabled",
+    havingValue = "true"
+)
 @RequiredArgsConstructor
 @Slf4j
 public class TekBinaryDirConfiguration {

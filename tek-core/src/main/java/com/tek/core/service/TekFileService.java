@@ -1,40 +1,21 @@
 package com.tek.core.service;
 
-import com.tek.core.config.directory.TekBinaryDirConfiguration;
-import com.tek.core.config.directory.TekTmpDirConfiguration;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import javax.annotation.PostConstruct;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
+//TODO tests
+
 /**
- * Service to manage file inside the application.
+ * Utility service to manage file and directories.
  *
  * @author MarcoPagan
  */
-//TODO create uploadDirectory file, cron jobs for upload dir
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class TekFileService {
-
-  @NonNull private final TekTmpDirConfiguration tmpDirConfiguration;
-  @NonNull private final TekBinaryDirConfiguration binaryDirConfiguration;
-
-  private File tmpDirectory;
-  private File binaryDirectory;
-
-  @SuppressWarnings("unused")
-  @PostConstruct
-  private void init() {
-    this.tmpDirectory = tmpDirConfiguration.tmpDirectory();
-    this.binaryDirectory = binaryDirConfiguration.binaryDirectory();
-  }
 
   /**
    * Attempt to create a file. If the file has to be created inside a directory, the fully qualified
@@ -48,14 +29,14 @@ public class TekFileService {
     try {
       created = file.createNewFile();
     } catch (IOException e) {
-      log.error("Could not create file: {}", file.getAbsolutePath());
+      TekFileService.log.error("Could not create file: {}", file.getAbsolutePath());
       return null;
     }
     String filePath = file.getPath();
     if (created) {
-      log.debug("File created at path: {}", file.getAbsolutePath());
+      TekFileService.log.debug("File created at path: {}", file.getAbsolutePath());
     } else {
-      log.debug("File {} already exists.", file.getAbsolutePath());
+      TekFileService.log.debug("File {} already exists.", file.getAbsolutePath());
     }
     return filePath;
   }
@@ -71,20 +52,20 @@ public class TekFileService {
     final var dir = new File(directory + File.separator);
     boolean created;
     if (!dir.isDirectory()) {
-      log.debug(
+      TekFileService.log.debug(
           "Directory {} doesn't exist. Performing creation...", dir.getAbsolutePath()
       );
     }
     try {
       created = dir.mkdirs();
       if (created) {
-        log.debug("Directory created :{} ", dir.getAbsolutePath());
+        TekFileService.log.debug("Directory created :{} ", dir.getAbsolutePath());
         return dir;
       } else {
-        log.debug("Directory {} already exists.", dir.getAbsolutePath());
+        TekFileService.log.debug("Directory {} already exists.", dir.getAbsolutePath());
       }
     } catch (Exception e) {
-      log.error("Could not create directory: {}", dir);
+      TekFileService.log.error("Could not create directory: {}", dir);
       return null;
     }
     return dir;
@@ -105,20 +86,12 @@ public class TekFileService {
    * Deletes a directory recursively
    */
   public void deepDelete(File directory) {
-    log.debug("Deleting directory: {}", directory.getAbsolutePath());
+    TekFileService.log.debug("Deleting directory: {}", directory.getAbsolutePath());
     try {
       FileUtils.deleteDirectory(directory);
-      log.debug("Directory deleted: {}", directory.getAbsolutePath());
+      TekFileService.log.debug("Directory deleted: {}", directory.getAbsolutePath());
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * Attempt to create a file inside the default application tmp directory.
-   */
-  public String createInTmpDir(String name) {
-    String directory = tmpDirectory + File.separator + LocalDate.now();
-    return deepCreate(directory, name);
   }
 }

@@ -18,19 +18,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+//TODO tests
+
 /**
- * Scheduler to clean directory where unuseful file are stored.
+ * Scheduler to clean binary file directories.
  * <p>
  * Scheduler is executed synchronously, so if a scheduled thread is still running, the next one will
  * be on queue, waiting for the previous thread to finish its execution.
+ *
+ * @author MarcoPagan
  */
 @Configuration
 @EnableScheduling
 @ConditionalOnClass(TekCoreAutoConfig.class)
-@ConditionalOnProperty(prefix = TEK_CORE_PREFIX, name = "scheduler.active", havingValue = "true")
+@ConditionalOnProperty(
+    prefix = TEK_CORE_PREFIX,
+    name = "fileConfiguration.bin.schedulerEnabled",
+    havingValue = "true"
+)
 @RequiredArgsConstructor
 @Slf4j
-public class TekSchedulerConfiguration {
+public class TekBinDirSchedulerConfiguration {
 
   @NonNull private final TekCoreProperties coreProperties;
   @NonNull private final TekFileService fileService;
@@ -41,15 +49,15 @@ public class TekSchedulerConfiguration {
   @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
-    this.directory = coreProperties.getFileConfiguration().getTmp().getDirectoryPath();
-    this.cleanAfter = coreProperties.getFileConfiguration().getTmp().getCleanAfter();
+    this.directory = coreProperties.getFileConfiguration().getBinary().getDirectoryPath();
+    this.cleanAfter = coreProperties.getFileConfiguration().getBinary().getCleanAfter();
   }
 
   @Scheduled(
-      cron = "${tek.core.fileConfiguration.tmp.cron}",
+      cron = "${tek.core.fileConfiguration.bin.cron}",
       zone = "${spring.jackson.time-zone:Europe/Rome}"
   )
-  public void cleanTmpDirectory() {
+  public void cleanBinDirectory() {
     final var today = LocalDate.now();
     log.info("Today date: {}", today);
     var start = today.minusDays(cleanAfter);

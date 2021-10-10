@@ -2,7 +2,10 @@ package com.tek.core.properties.file;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
@@ -31,10 +34,10 @@ class TekFilePropertiesTest {
     final var fileProperties = new TekCoreProperties().getFileConfiguration();
     assertNotNull(fileProperties);
     final var tmpProperties = fileProperties.getTmp();
-    File tmpDirectory = tmpProperties.getDirectory();
     Integer tmpCleanAfter = tmpProperties.getCleanAfter();
     assertAll(
-        () -> assertEquals(new File("tmp"), tmpDirectory),
+        () -> assertFalse(tmpProperties.isEnabled()),
+        () -> assertNull(tmpProperties.getDirectoryPath()),
         () -> assertEquals("0 0 * * * *", tmpProperties.getCron()),
         () -> assertEquals(10, tmpCleanAfter)
     );
@@ -46,10 +49,12 @@ class TekFilePropertiesTest {
     final var fileProperties = coreCustomProperties.getFileConfiguration();
     assertNotNull(fileProperties);
     final var tmpProperties = fileProperties.getTmp();
-    File tmpDirectory = tmpProperties.getDirectory();
+    File tmpDirectory = tmpProperties.getDirectoryPath();
     Integer tmpCleanAfter = tmpProperties.getCleanAfter();
     assertAll(
-        () -> assertEquals(new File("tmpDir"), tmpDirectory),
+        () -> assertTrue(tmpProperties.isEnabled()),
+        () -> assertEquals(new File("C:/Users/MarcoPagan/Desktop/tmpDir"), tmpDirectory),
+        () -> assertTrue(tmpDirectory.isAbsolute()),
         () -> assertEquals("*/5 * * * * *", tmpProperties.getCron()),
         () -> assertEquals(20, tmpCleanAfter)
     );
@@ -61,14 +66,12 @@ class TekFilePropertiesTest {
     final var fileProperties = new TekCoreProperties().getFileConfiguration();
     assertNotNull(fileProperties);
     final var binProperties = fileProperties.getBinary();
-    final var binDirectory = binProperties.getDirectory();
+    Integer tmpCleanAfter = binProperties.getCleanAfter();
     assertAll(
-        () -> assertNotNull(binProperties),
-        () -> assertNotNull(binDirectory)
-    );
-    assertAll(
-        () -> assertEquals(new File("upload"), binDirectory),
-        () -> assertEquals("0 0 * * * *", binProperties.getCron())
+        () -> assertFalse(binProperties.isEnabled()),
+        () -> assertNull(binProperties.getDirectoryPath()),
+        () -> assertEquals("0 0 * * * *", binProperties.getCron()),
+        () -> assertEquals(10, tmpCleanAfter)
     );
   }
 
@@ -78,14 +81,14 @@ class TekFilePropertiesTest {
     final var fileProperties = coreCustomProperties.getFileConfiguration();
     assertNotNull(fileProperties);
     final var binProperties = fileProperties.getBinary();
-    final var binDirectory = binProperties.getDirectory();
+    File binDirectory = binProperties.getDirectoryPath();
+    Integer tmpCleanAfter = binProperties.getCleanAfter();
     assertAll(
-        () -> assertNotNull(binProperties),
-        () -> assertNotNull(binDirectory)
-    );
-    assertAll(
-        () -> assertEquals(new File("uploadDir"), binDirectory),
-        () -> assertEquals("*/10 * * * * *", binProperties.getCron())
+        () -> assertTrue(binProperties.isEnabled()),
+        () -> assertEquals(new File("C:/Users/MarcoPagan/Desktop/binDir"), binDirectory),
+        () -> assertTrue(binDirectory.isAbsolute()),
+        () -> assertEquals("*/10 * * * * *", binProperties.getCron()),
+        () -> assertEquals(20, tmpCleanAfter)
     );
   }
 }

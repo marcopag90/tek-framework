@@ -1,6 +1,7 @@
 package com.tek.core.service;
 
-import com.tek.core.config.directory.TekDirConfiguration;
+import com.tek.core.config.directory.TekBinaryDirConfiguration;
+import com.tek.core.config.directory.TekTmpDirConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,8 +23,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TekFileService {
 
-  @NonNull
-  private final TekDirConfiguration dirConfiguration;
+  @NonNull private final TekTmpDirConfiguration tmpDirConfiguration;
+  @NonNull private final TekBinaryDirConfiguration binaryDirConfiguration;
 
   private File tmpDirectory;
   private File binaryDirectory;
@@ -31,8 +32,8 @@ public class TekFileService {
   @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
-    this.tmpDirectory = dirConfiguration.tmpDirectory();
-    this.binaryDirectory = dirConfiguration.binaryDirectory();
+    this.tmpDirectory = tmpDirConfiguration.tmpDirectory();
+    this.binaryDirectory = binaryDirConfiguration.binaryDirectory();
   }
 
   /**

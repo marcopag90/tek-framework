@@ -41,11 +41,14 @@ public class TekSchedulerConfiguration {
   @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
-    this.directory = coreProperties.getFileConfiguration().getTmp().getDirectory();
+    this.directory = coreProperties.getFileConfiguration().getTmp().getDirectoryPath();
     this.cleanAfter = coreProperties.getFileConfiguration().getTmp().getCleanAfter();
   }
 
-  @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone:Europe/Rome}")
+  @Scheduled(
+      cron = "${tek.core.fileConfiguration.tmp.cron}",
+      zone = "${spring.jackson.time-zone:Europe/Rome}"
+  )
   public void cleanTmpDirectory() {
     final var today = LocalDate.now();
     log.info("Today date: {}", today);

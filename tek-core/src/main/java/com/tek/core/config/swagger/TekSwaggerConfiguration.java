@@ -41,7 +41,7 @@ public class TekSwaggerConfiguration {
 
   private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
 
-  @Value("${git.build.version:version not available}")
+  @Value("${git.build.version:undefined}")
   private String gitBuildVersion;
 
   @Bean

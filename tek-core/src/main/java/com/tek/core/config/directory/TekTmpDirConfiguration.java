@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,19 +20,18 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(TekCoreAutoConfig.class)
+@ConditionalOnProperty(name = "tek.core.fileConfiguration.tmp.enabled", havingValue = "true")
 @RequiredArgsConstructor
 @Slf4j
-public class TekDirConfiguration {
+public class TekTmpDirConfiguration {
 
   @NonNull
   private final TekCoreProperties coreProperties;
   private File tmpDirectory;
-  private File binaryDirectory;
 
   @PostConstruct
   private void init() {
-    this.tmpDirectory = coreProperties.getFileConfiguration().getTmp().getDirectory();
-    this.binaryDirectory = coreProperties.getFileConfiguration().getBinary().getDirectory();
+    this.tmpDirectory = coreProperties.getFileConfiguration().getTmp().getDirectoryPath();
   }
 
   /**
@@ -49,22 +49,5 @@ public class TekDirConfiguration {
       }
     }
     return tmpDirectory;
-  }
-
-  /**
-   * Directory where to store uploaded files.
-   */
-  @Bean
-  public File binaryDirectory() {
-    if (!this.binaryDirectory.isDirectory()) {
-      try {
-        final var dir = Files.createDirectory(binaryDirectory.toPath()).toFile();
-        log.info("Creating directory: [{}]", dir.getAbsolutePath());
-        return dir;
-      } catch (Exception e) {
-        log.error("Could not create directory: {}", binaryDirectory.getAbsolutePath());
-      }
-    }
-    return binaryDirectory;
   }
 }

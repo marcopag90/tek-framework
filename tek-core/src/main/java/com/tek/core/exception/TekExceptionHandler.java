@@ -54,8 +54,6 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Utility method to check if we have to produce an error mail with the throwable {@link
    * Exception} as attachment.
-   *
-   * @author MarcoPagan
    */
   private void sendErrorAsMail(WebRequest request, Exception ex) {
     if (coreProperties.getMailConfiguration().isSendErrors()) {

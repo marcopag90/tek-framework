@@ -14,7 +14,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class TekLocaleController {
 
-  @PreAuthorize("isAuthenticated()")
   @PostMapping(
       value = TEK_LOCALE_PATH,
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE,

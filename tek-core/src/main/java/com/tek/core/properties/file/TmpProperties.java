@@ -9,10 +9,12 @@ import lombok.Data;
 @Data
 public class TmpProperties {
 
+  private boolean enabled = false;
+
   /**
    * Tmp directory path
    */
-  private File directory = new File("tmp");
+  private File directoryPath;
 
   /**
    * Tmp directory cleans after (days)

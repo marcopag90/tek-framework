@@ -49,7 +49,7 @@ public class TekLocaleConfiguration implements WebMvcConfigurer {
 
   @Bean(TEK_LOCALE_RESOLVER_BEAN)
   public LocaleResolver localeResolver() {
-    TekLocaleProperties localeProperties = coreProperties.getLocale();
+    TekLocaleProperties localeProperties = coreProperties.getLocaleConfiguration();
     TekLocaleProperties.TekLocaleType type = localeProperties.getType();
     if (type == TekLocaleProperties.TekLocaleType.SESSION) {
       final var sessionLocaleResolver = new SessionLocaleResolver();

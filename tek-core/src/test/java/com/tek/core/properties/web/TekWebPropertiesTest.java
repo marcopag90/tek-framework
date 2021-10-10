@@ -39,7 +39,7 @@ class TekWebPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    final var properties = coreCustomProperties.getWeb();
+    final var properties = coreCustomProperties.getWebConfiguration();
     assertNotNull(properties);
     assertAll(
         () -> assertFalse(properties.isEnabled()),

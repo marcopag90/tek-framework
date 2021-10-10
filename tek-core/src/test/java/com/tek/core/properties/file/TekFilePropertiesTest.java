@@ -28,7 +28,7 @@ class TekFilePropertiesTest {
   @Test
   @Order(1)
   void tmpDefaultValues() {
-    final var fileProperties = new TekCoreProperties().getFile();
+    final var fileProperties = new TekCoreProperties().getFileConfiguration();
     assertNotNull(fileProperties);
     final var tmpProperties = fileProperties.getTmp();
     File tmpDirectory = tmpProperties.getDirectory();
@@ -43,7 +43,7 @@ class TekFilePropertiesTest {
   @Test
   @Order(2)
   void tmpCustomValues() {
-    final var fileProperties = coreCustomProperties.getFile();
+    final var fileProperties = coreCustomProperties.getFileConfiguration();
     assertNotNull(fileProperties);
     final var tmpProperties = fileProperties.getTmp();
     File tmpDirectory = tmpProperties.getDirectory();
@@ -58,7 +58,7 @@ class TekFilePropertiesTest {
   @Test
   @Order(3)
   void binaryDefaultValues() {
-    final var fileProperties = new TekCoreProperties().getFile();
+    final var fileProperties = new TekCoreProperties().getFileConfiguration();
     assertNotNull(fileProperties);
     final var binProperties = fileProperties.getBinary();
     final var binDirectory = binProperties.getDirectory();
@@ -75,7 +75,7 @@ class TekFilePropertiesTest {
   @Test
   @Order(4)
   void binaryCustomValues() {
-    final var fileProperties = coreCustomProperties.getFile();
+    final var fileProperties = coreCustomProperties.getFileConfiguration();
     assertNotNull(fileProperties);
     final var binProperties = fileProperties.getBinary();
     final var binDirectory = binProperties.getDirectory();

@@ -28,7 +28,7 @@ class TekLocalePropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    final var properties = new TekCoreProperties().getLocale();
+    final var properties = new TekCoreProperties().getLocaleConfiguration();
     assertNotNull(properties);
     assertAll(
         () -> assertEquals(TekLocaleType.SESSION, properties.getType()),
@@ -40,7 +40,7 @@ class TekLocalePropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    final var properties = coreCustomProperties.getLocale();
+    final var properties = coreCustomProperties.getLocaleConfiguration();
     assertNotNull(properties);
     assertAll(
         () -> assertEquals(TekLocaleType.COOKIE, properties.getType()),

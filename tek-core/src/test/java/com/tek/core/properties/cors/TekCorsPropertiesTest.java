@@ -29,7 +29,7 @@ class TekCorsPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    final var properties = new TekCoreProperties().getCors();
+    final var properties = new TekCoreProperties().getCorsConfiguration();
     assertNotNull(properties);
     String allowedOrigin = properties.getAllowedOrigin();
     final var allowedCredentials = properties.getAllowedCredentials();
@@ -56,7 +56,7 @@ class TekCorsPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    TekCorsProperties properties = coreCustomProperties.getCors();
+    TekCorsProperties properties = coreCustomProperties.getCorsConfiguration();
     assertNotNull(properties);
     String allowedOrigin = properties.getAllowedOrigin();
     final var allowedCredentials = properties.getAllowedCredentials();

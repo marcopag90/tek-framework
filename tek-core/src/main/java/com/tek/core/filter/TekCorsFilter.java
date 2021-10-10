@@ -44,7 +44,7 @@ public class TekCorsFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
     final var request = (HttpServletRequest) req;
     final var response = (HttpServletResponse) res;
-    final var corsProperties = coreProperties.getCors();
+    final var corsProperties = coreProperties.getCorsConfiguration();
 
     response.setHeader(
         HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsProperties.getAllowedOrigin()

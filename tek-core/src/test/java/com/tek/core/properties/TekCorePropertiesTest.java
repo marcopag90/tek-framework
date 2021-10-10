@@ -11,12 +11,12 @@ class TekCorePropertiesTest {
   void defaultValues() {
     final var properties = new TekCoreProperties();
     Assertions.assertAll(
-        () -> assertNotNull(properties.getCors()),
-        () -> assertNotNull(properties.getLocale()),
-        () -> assertNotNull(properties.getFile()),
-        () -> assertNotNull(properties.getFile()),
-        () -> assertNotNull(properties.getMail()),
-        () -> assertNotNull(properties.getScheduler())
+        () -> assertNotNull(properties.getCorsConfiguration()),
+        () -> assertNotNull(properties.getLocaleConfiguration()),
+        () -> assertNotNull(properties.getFileConfiguration()),
+        () -> assertNotNull(properties.getFileConfiguration()),
+        () -> assertNotNull(properties.getMailConfiguration()),
+        () -> assertNotNull(properties.getSchedulerConfiguration())
     );
   }
 }

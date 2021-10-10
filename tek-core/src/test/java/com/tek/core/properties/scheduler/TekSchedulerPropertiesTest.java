@@ -26,7 +26,7 @@ class TekSchedulerPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    final var properties = new TekCoreProperties().getScheduler();
+    final var properties = new TekCoreProperties().getSchedulerConfiguration();
     assertNotNull(properties);
     assertTrue(properties.getActive());
   }
@@ -34,7 +34,7 @@ class TekSchedulerPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    final var properties = coreCustomProperties.getScheduler();
+    final var properties = coreCustomProperties.getSchedulerConfiguration();
     assertNotNull(properties);
     assertTrue(properties.getActive());
   }

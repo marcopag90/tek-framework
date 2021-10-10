@@ -29,7 +29,7 @@ class TekDirConfigurationTest {
   @Test
   @Order(1)
   void testTmpDirectory() {
-    final var propDir = properties.getFile().getTmp().getDirectory();
+    final var propDir = properties.getFileConfiguration().getTmp().getDirectory();
     final var createdDir = configuration.tmpDirectory();
     internalTestDir(propDir, createdDir);
   }
@@ -37,15 +37,15 @@ class TekDirConfigurationTest {
   @Test
   @Order(2)
   void testBinaryDirectory() {
-    final var propDir = properties.getFile().getBinary().getDirectory();
+    final var propDir = properties.getFileConfiguration().getBinary().getDirectory();
     final var createdDir = configuration.binaryDirectory();
     internalTestDir(propDir, createdDir);
   }
 
   @AfterAll
   void deleteCreatedDirectories() {
-    properties.getFile().getBinary().getDirectory().deleteOnExit();
-    properties.getFile().getTmp().getDirectory().deleteOnExit();
+    properties.getFileConfiguration().getBinary().getDirectory().deleteOnExit();
+    properties.getFileConfiguration().getTmp().getDirectory().deleteOnExit();
   }
 
   private void internalTestDir(File propDir, File createdDir) {

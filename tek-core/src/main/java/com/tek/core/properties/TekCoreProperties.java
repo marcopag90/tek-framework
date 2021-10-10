@@ -22,13 +22,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class TekCoreProperties {
 
-  private TekWebProperties web = new TekWebProperties();
-  private TekCorsProperties cors = new TekCorsProperties();
-  private TekLocaleProperties locale = new TekLocaleProperties();
-  private TekFileProperties file = new TekFileProperties();
-  private TekMailProperties mail = new TekMailProperties();
-  private TekSchedulerProperties scheduler = new TekSchedulerProperties();
-  private TekSwaggerProperties swagger = new TekSwaggerProperties();
+  private TekWebProperties webConfiguration = new TekWebProperties();
+  private TekCorsProperties corsConfiguration = new TekCorsProperties();
+  private TekLocaleProperties localeConfiguration = new TekLocaleProperties();
+  private TekFileProperties fileConfiguration = new TekFileProperties();
+  private TekMailProperties mailConfiguration = new TekMailProperties();
+  private TekSchedulerProperties schedulerConfiguration = new TekSchedulerProperties();
+  private TekSwaggerProperties swaggerConfiguration = new TekSwaggerProperties();
 }
 
 

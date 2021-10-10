@@ -30,8 +30,8 @@ public class TekDirConfiguration {
 
   @PostConstruct
   private void init() {
-    this.tmpDirectory = coreProperties.getFile().getTmp().getDirectory();
-    this.binaryDirectory = coreProperties.getFile().getBinary().getDirectory();
+    this.tmpDirectory = coreProperties.getFileConfiguration().getTmp().getDirectory();
+    this.binaryDirectory = coreProperties.getFileConfiguration().getBinary().getDirectory();
   }
 
   /**

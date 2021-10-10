@@ -58,7 +58,7 @@ public class TekSwaggerConfiguration {
 
   @Bean
   public ApiInfo getApiInfo() {
-    final var swaggerProperties = coreProperties.getSwagger();
+    final var swaggerProperties = coreProperties.getSwaggerConfiguration();
     return new ApiInfo(
         context.getApplicationName(),
         swaggerProperties.getDescription(),

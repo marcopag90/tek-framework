@@ -41,8 +41,8 @@ public class TekSchedulerConfiguration {
   @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
-    this.directory = coreProperties.getFile().getTmp().getDirectory();
-    this.cleanAfter = coreProperties.getFile().getTmp().getCleanAfter();
+    this.directory = coreProperties.getFileConfiguration().getTmp().getDirectory();
+    this.cleanAfter = coreProperties.getFileConfiguration().getTmp().getCleanAfter();
   }
 
   @Scheduled(cron = "${tek.core.file.tmp.cron}", zone = "${spring.jackson.time-zone:Europe/Rome}")

@@ -28,7 +28,7 @@ class TekMailPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    final var properties = new TekCoreProperties().getMail();
+    final var properties = new TekCoreProperties().getMailConfiguration();
     assertNotNull(properties);
     assertAll(
         () -> assertFalse(properties.isSendErrors()),
@@ -39,7 +39,7 @@ class TekMailPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    final var properties = coreCustomProperties.getMail();
+    final var properties = coreCustomProperties.getMailConfiguration();
     assertNotNull(properties);
     assertAll(
         () -> assertTrue(properties.isSendErrors()),

@@ -58,7 +58,7 @@ public class TekExceptionHandler extends ResponseEntityExceptionHandler {
    * @author MarcoPagan
    */
   private void sendErrorAsMail(WebRequest request, Exception ex) {
-    if (coreProperties.getMail().isSendErrors()) {
+    if (coreProperties.getMailConfiguration().isSendErrors()) {
       mailService.sendRequestExceptionMessage((ServletWebRequest) request, ex);
     } else {
       log.warn("Property tek.core.mail.sendErrors is false, skipping mail sending!");

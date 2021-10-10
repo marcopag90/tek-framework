@@ -30,7 +30,7 @@ class TekSwaggerPropertiesTest {
   @Test
   @Order(1)
   void defaultValues() {
-    final var properties = new TekCoreProperties().getSwagger();
+    final var properties = new TekCoreProperties().getSwaggerConfiguration();
     assertNotNull(properties);
     Assertions.assertAll(
         () -> assertEquals(DEFAULT_DESCRIPTION, properties.getDescription()),
@@ -46,7 +46,7 @@ class TekSwaggerPropertiesTest {
   @Test
   @Order(2)
   void customValues() {
-    final var properties = coreCustomProperties.getSwagger();
+    final var properties = coreCustomProperties.getSwaggerConfiguration();
     assertNotNull(properties);
     Assertions.assertAll(
         () -> assertEquals(fieldByName("description"), properties.getDescription()),

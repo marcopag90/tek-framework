@@ -25,7 +25,7 @@ public class MailDeliveryAspect {
   @Around("@annotation(CanSendMail)")
   @SneakyThrows
   public Object executeAround(ProceedingJoinPoint joinPoint) {
-    final var mailProperties = properties.getMail();
+    final var mailProperties = properties.getMailConfiguration();
     if (!mailProperties.isRealDelivery()) {
       log.warn("Skipping mail delivery since property tek.core.mail.realDelivery is false!");
       return null;

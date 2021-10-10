@@ -26,7 +26,8 @@ class TekWebIndexController {
 
   @PostConstruct
   void setup(TekCoreProperties coreProperties) {
-    this.forward = String.format("forward:/%s", coreProperties.getWeb().getIndexPage());
+    this.forward = String.format("forward:/%s",
+        coreProperties.getWebConfiguration().getIndexPage());
   }
 
   @GetMapping

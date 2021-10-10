@@ -13,7 +13,7 @@ class TekPropertyPlaceholderConfigurationTest {
 
   @Test
   void testPlaceholderConfigurer() {
-    this.context.withUserConfiguration(TekPropertyPlaceholderConfiguration.class)
+    this.context.withUserConfiguration(TekCoreModuleConfiguration.class)
         .run(context -> assertThat(context).hasBean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN));
   }
 }

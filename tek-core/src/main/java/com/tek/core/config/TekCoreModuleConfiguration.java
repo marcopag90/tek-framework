@@ -1,25 +1,23 @@
 package com.tek.core.config;
 
-import static com.tek.core.TekProfile.DEVELOPMENT;
-import static com.tek.core.TekProfile.PRODUCTION;
-import static com.tek.core.TekProfile.TEST;
 import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
+import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN;
+import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 import static java.lang.String.join;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.TekModuleConfiguration;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.naming.ConfigurationException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.CollectionUtils;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * Tek Core Module Configuration:
@@ -45,57 +43,18 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
     this.coreProperties = coreProperties;
   }
 
-  @Override
-  public void checkModuleConfiguration() throws ConfigurationException {
-    checkActiveProfile();
-    checkConditionalProperties();
+  @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
+  public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+    final var propsConfig = new PropertySourcesPlaceholderConfigurer();
+    propsConfig.setLocations(new ClassPathResource(GIT_PROPERTIES));
+    propsConfig.setIgnoreResourceNotFound(true);
+    propsConfig.setIgnoreUnresolvablePlaceholders(true);
+    return propsConfig;
   }
 
-  private void checkActiveProfile() throws ConfigurationException {
-    final var activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
-    final var toMatchProfiles = new ArrayList<String>();
-    toMatchProfiles.add(DEVELOPMENT);
-    toMatchProfiles.add(TEST);
-    toMatchProfiles.add(PRODUCTION);
-    final var matches = CollectionUtils.containsAny(activeProfiles, toMatchProfiles);
-    if (!matches) {
-      String warnMessage =
-          join("", newLine)
-              .concat(
-                  String.format(
-                      "Neither %s, %s or %s spring profile was found.",
-                      DEVELOPMENT, PRODUCTION, TEST
-                  )
-              )
-              .concat(newLine)
-              .concat("Evaluate the property spring.profiles.active ")
-              .concat("in your application.yaml/properties file.")
-              .concat(newLine)
-              .concat("If the property evaluates, ")
-              .concat("check your classpath configuration and rebuild your project. ")
-              .concat("If you are using Maven resource filtering via spring-boot-maven-plugin, ")
-              .concat("try the following steps:")
-              .concat(newLine)
-              .concat("1) perform a Maven update")
-              .concat(newLine)
-              .concat("2) run Maven with the following goals: clean, compile")
-              .concat(newLine)
-              .concat("3) reboot your application.");
-      log.warn(warnMessage);
-    }
-    log.info("Running with Spring profile(s): {}", activeProfiles);
-    if (activeProfiles.contains(DEVELOPMENT) && activeProfiles.contains(PRODUCTION)) {
-      String errorMessage =
-          join("", newLine)
-              .concat("Bad Spring active profile configuration! ")
-              .concat(
-                  MessageFormat.format("It should not run with both {0} ", DEVELOPMENT)
-              )
-              .concat(
-                  MessageFormat.format("and {0} profiles at the same time!", PRODUCTION)
-              );
-      throw new ConfigurationException(errorMessage);
-    }
+  @Override
+  public void checkModuleConfiguration() throws ConfigurationException {
+    checkConditionalProperties();
   }
 
   private void checkConditionalProperties() {

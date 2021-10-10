@@ -1,7 +1,4 @@
-package com.tek.core.properties.scheduler;
-
-import com.tek.core.config.scheduler.TekBinDirSchedulerConfiguration;
-import lombok.Data;
+package com.tek.core.constants;
 
 /*
 A Cron expression consists of six sequential fields:
@@ -22,23 +19,17 @@ second, minute, hour, day of month, month, day(s) of week
 //  "0 0 0 25 12 ?"               every Christmas Day at midnight
 
 /**
- * Configuration properties for scheduled cron jobs handling.
- * <p>
- * Fallback to default configuration if none provided.
+ * Constants for scheduled cron jobs handling.
  *
  * @author MarcoPagan
  */
-@Data
-public class TekSchedulerProperties {
+public class TekSchedulerConstants {
+
+  private TekSchedulerConstants() {
+  }
 
   /**
    * Default temporal cron execution
    */
   public static final String CRON_DAILY_MIDNIGHT = "0 0 * * * *";
-
-  /**
-   * Whether the scheduler is active or not
-   * <p>{@link TekBinDirSchedulerConfiguration}
-   */
-  private Boolean active = true;
 }

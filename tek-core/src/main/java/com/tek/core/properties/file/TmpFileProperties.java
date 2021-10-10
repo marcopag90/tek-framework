@@ -2,7 +2,7 @@ package com.tek.core.properties.file;
 
 
 import com.tek.core.config.scheduler.TekBinDirSchedulerConfiguration;
-import com.tek.core.properties.scheduler.TekSchedulerProperties;
+import com.tek.core.constants.TekSchedulerConstants;
 import java.io.File;
 import lombok.Data;
 
@@ -27,5 +27,5 @@ public class TmpFileProperties {
    */
   private Integer cleanAfter = 10;
 
-  private String cron = TekSchedulerProperties.CRON_DAILY_MIDNIGHT;
+  private String cron = TekSchedulerConstants.CRON_DAILY_MIDNIGHT;
 }

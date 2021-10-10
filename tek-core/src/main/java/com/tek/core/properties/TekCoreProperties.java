@@ -6,7 +6,6 @@ import com.tek.core.properties.cors.TekCorsProperties;
 import com.tek.core.properties.file.TekFileProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import com.tek.core.properties.mail.TekMailProperties;
-import com.tek.core.properties.scheduler.TekSchedulerProperties;
 import com.tek.core.properties.swagger.TekSwaggerProperties;
 import com.tek.core.properties.web.TekWebProperties;
 import lombok.Data;
@@ -27,7 +26,6 @@ public class TekCoreProperties {
   private TekLocaleProperties localeConfiguration = new TekLocaleProperties();
   private TekFileProperties fileConfiguration = new TekFileProperties();
   private TekMailProperties mailConfiguration = new TekMailProperties();
-  private TekSchedulerProperties schedulerConfiguration = new TekSchedulerProperties();
   private TekSwaggerProperties swaggerConfiguration = new TekSwaggerProperties();
 }
 

@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-class TekPropertyPlaceholderConfigurationTest {
+class TekPropertyPlaceholderTest {
 
   private final ApplicationContextRunner context = new ApplicationContextRunner();
 

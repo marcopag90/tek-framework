@@ -15,8 +15,7 @@ class TekCorePropertiesTest {
         () -> assertNotNull(properties.getLocaleConfiguration()),
         () -> assertNotNull(properties.getFileConfiguration()),
         () -> assertNotNull(properties.getFileConfiguration()),
-        () -> assertNotNull(properties.getMailConfiguration()),
-        () -> assertNotNull(properties.getSchedulerConfiguration())
+        () -> assertNotNull(properties.getMailConfiguration())
     );
   }
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
+import com.tek.core.service.TekFileService;
 import java.io.File;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -24,22 +25,20 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @EnableConfigurationProperties(value = TekCoreProperties.class)
 @ContextConfiguration(
     classes = {
-        TekBinaryDirConfiguration.class,
+        TekFileService.class,
         TekTmpDirConfiguration.class
-    })
+    }
+)
 @TestPropertySource(
     properties = {
         "tek.core.fileConfiguration.tmp.enabled=true",
-        "tek.core.fileConfiguration.tmp.directoryPath=C:/Users/MarcoPagan/Desktop/tmpDir",
-        "tek.core.fileConfiguration.binary.enabled=true",
-        "tek.core.fileConfiguration.binary.directoryPath=C:/Users/MarcoPagan/Desktop/binDir"
+        "tek.core.fileConfiguration.tmp.directoryPath=C:/Users/MarcoPagan/Desktop/tmpDir"
     })
 @TestMethodOrder(OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class TekDirConfigurationTest {
+class TekTmpDirConfigurationTest {
 
   @Autowired private TekCoreProperties properties;
-  @Autowired private TekBinaryDirConfiguration binaryDirConfiguration;
   @Autowired private TekTmpDirConfiguration tmpDirConfiguration;
 
   @Test
@@ -50,17 +49,8 @@ class TekDirConfigurationTest {
     checkDirectoryConfiguration(propDir, createdDir);
   }
 
-  @Test
-  @Order(2)
-  void test_BinaryDirectoryConfiguration() {
-    final var propDir = properties.getFileConfiguration().getBinary().getDirectoryPath();
-    final var createdDir = binaryDirConfiguration.binaryDirectory();
-    checkDirectoryConfiguration(propDir, createdDir);
-  }
-
   @AfterAll
-  void deleteCreatedDirectories() {
-    properties.getFileConfiguration().getBinary().getDirectoryPath().deleteOnExit();
+  void deleteCreatedDirectory() {
     properties.getFileConfiguration().getTmp().getDirectoryPath().deleteOnExit();
   }
 

@@ -4,8 +4,8 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
+import com.tek.core.service.TekFileService;
 import java.io.File;
-import java.nio.file.Files;
 import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-//TODO tests
 
 /**
  * Configuration to setup file directories used by application.
@@ -32,8 +30,9 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TekTmpDirConfiguration {
 
-  @NonNull
-  private final TekCoreProperties coreProperties;
+  @NonNull private final TekCoreProperties coreProperties;
+  @NonNull private final TekFileService fileService;
+
   private File tmpDirectory;
 
   @PostConstruct
@@ -48,7 +47,7 @@ public class TekTmpDirConfiguration {
   public File tmpDirectory() {
     if (!this.tmpDirectory.isDirectory()) {
       try {
-        final var dir = Files.createDirectory(tmpDirectory.toPath()).toFile();
+        final var dir = fileService.createDirectory(tmpDirectory.toPath().toString());
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {

@@ -4,8 +4,8 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
+import com.tek.core.service.TekFileService;
 import java.io.File;
-import java.nio.file.Files;
 import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-//TODO tests
 
 /**
  * Configuration to setup file directories used to store binaries files.
@@ -33,8 +31,9 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TekBinaryDirConfiguration {
 
-  @NonNull
-  private final TekCoreProperties coreProperties;
+  @NonNull private final TekCoreProperties coreProperties;
+  @NonNull private final TekFileService fileService;
+
   private File binaryDirectoryPath;
 
   @PostConstruct
@@ -43,13 +42,13 @@ public class TekBinaryDirConfiguration {
   }
 
   /**
-   * Directory where to store uploaded files.
+   * Directory where to store binary files.
    */
   @Bean
   public File binaryDirectory() {
     if (!this.binaryDirectoryPath.isDirectory()) {
       try {
-        final var dir = Files.createDirectory(binaryDirectoryPath.toPath()).toFile();
+        final var dir = fileService.createDirectory(binaryDirectoryPath.toPath().toString());
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {

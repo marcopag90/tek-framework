@@ -64,7 +64,8 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
   @SneakyThrows
   private void checkMailErrorHandling() {
     final var sendErrors = coreProperties.getMailConfiguration().isSendErrors();
-    final boolean isActiveScheduler = coreProperties.getSchedulerConfiguration().getActive();
+    final var isActiveScheduler =
+        coreProperties.getFileConfiguration().getTmp().isSchedulerEnabled();
     if (sendErrors && !isActiveScheduler) {
       final var errorMessage =
           join("", newLine)

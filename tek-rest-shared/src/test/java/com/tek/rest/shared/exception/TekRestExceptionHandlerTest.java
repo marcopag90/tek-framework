@@ -10,7 +10,6 @@ import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController.
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -111,7 +110,7 @@ class TekRestExceptionHandlerTest {
   @Test
   void test_handle_method_argument_not_valid() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post(METHOD_ARGUMENT_NOT_VALID_EXCEPTION)
-            .content(asJsonString(Body.builder().surname("").build()))
+            .content(asJsonString(Body.builder().name("").build()))
             .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
@@ -120,13 +119,9 @@ class TekRestExceptionHandlerTest {
         .andExpect(jsonPath("$.apiError.path").value(METHOD_ARGUMENT_NOT_VALID_EXCEPTION))
         .andExpect(jsonPath("$.apiError.message").value("Validation error"))
         .andExpect(jsonPath("$.apiError.subErrors[0].object").value("body"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].field").value("surname"))
+        .andExpect(jsonPath("$.apiError.subErrors[0].field").value("name"))
         .andExpect(jsonPath("$.apiError.subErrors[0].message").value("must not be blank"))
         .andExpect(jsonPath("$.apiError.subErrors[0].rejectedValue").value(""))
-        .andExpect(jsonPath("$.apiError.subErrors[1].object").value("body"))
-        .andExpect(jsonPath("$.apiError.subErrors[1].field").value("name"))
-        .andExpect(jsonPath("$.apiError.subErrors[1].message").value("must not be null"))
-        .andExpect(jsonPath("$.apiError.subErrors[1].rejectedValue").isEmpty())
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -161,10 +156,8 @@ class TekRestExceptionHandlerTest {
     @Validated
     static class Body {
 
-      @NotNull
-      private String name;
       @NotBlank
-      private String surname;
+      private String name;
     }
 
     @SuppressWarnings("unused")

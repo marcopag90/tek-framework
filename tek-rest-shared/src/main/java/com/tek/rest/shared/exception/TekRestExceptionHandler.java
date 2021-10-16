@@ -121,7 +121,6 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
     dto.setMessage("Validation error");
-    dto.setEx(ex);
     final var apiError = new ApiError(dto);
     apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
     apiError.addValidationError(ex.getBindingResult().getGlobalErrors());

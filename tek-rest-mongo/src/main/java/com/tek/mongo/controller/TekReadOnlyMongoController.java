@@ -1,11 +1,11 @@
 package com.tek.mongo.controller;
 
 import com.tek.mongo.repository.TekMongoRepository;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 public class TekReadOnlyMongoController<T, I> implements TekReadOnlyMongoApi<T, I> {
 
@@ -18,9 +18,7 @@ public class TekReadOnlyMongoController<T, I> implements TekReadOnlyMongoApi<T, 
   }
 
   @Override
-  public ResponseEntity<T> findById(I id) {
-    return repository.findById(id)
-        .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+  public T findById(I id) {
+    return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.class, id));
   }
 }

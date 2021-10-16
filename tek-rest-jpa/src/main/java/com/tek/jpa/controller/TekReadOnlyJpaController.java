@@ -1,11 +1,11 @@
 package com.tek.jpa.controller;
 
 import com.tek.jpa.repository.TekJpaRepository;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -46,9 +46,7 @@ public class TekReadOnlyJpaController<T, I> implements TekReadOnlyJpaApi<T, I> {
   }
 
   @Override
-  public ResponseEntity<T> findById(I id) {
-    return repository.findById(id)
-        .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+  public T findById(I id) {
+    return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.class, id));
   }
 }

@@ -1,7 +1,5 @@
 package com.tek.jpa.controller;
 
-import org.springframework.http.ResponseEntity;
-
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
  * to expose a <i>CRUD</i> JPA Rest API.
@@ -51,15 +49,14 @@ import org.springframework.http.ResponseEntity;
 public class TekWritableJpaController<T, I>
     extends TekReadOnlyJpaController<T, I> implements TekWritableJpaApi<T, I> {
 
-  //TODO see hibernate version for concurrent modification
   @Override
-  public ResponseEntity<T> create(T entity) {
-    return ResponseEntity.ok(repository.save(entity));
+  public T create(T entity) {
+    return repository.save(entity);
   }
 
   @Override
-  public ResponseEntity<I> deleteOne(I id) {
+  public I delete(I id) {
     repository.deleteById(id);
-    return ResponseEntity.ok(id);
+    return id;
   }
 }

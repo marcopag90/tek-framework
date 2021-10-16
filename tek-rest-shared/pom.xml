@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>tek-rest-shared</artifactId>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.tek</groupId>
@@ -37,6 +37,18 @@
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
     </dependency>
     <!-- Test dependencies -->
     <dependency>

@@ -1,4 +1,4 @@
-package com.tek.rest.shared;
+package com.tek.rest.shared.api;
 
 /**
  * Base interface to provide <i>crud AOP</i> methods.

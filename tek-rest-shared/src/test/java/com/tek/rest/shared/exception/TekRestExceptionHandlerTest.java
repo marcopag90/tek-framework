@@ -1,14 +1,17 @@
 package com.tek.rest.shared.exception;
 
 
+import static com.tek.rest.shared.TekRestSharedUtils.asJsonString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.rest.shared.config.TekJacksonConfig;
 import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController;
 import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController.Body;
+import java.util.HashSet;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,8 +42,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
     classes = {
-        TekJacksonConfig.class,
         TekRestExceptionHandler.class,
+        TekJacksonConfig.class,
         TestController.class
     }
 )
@@ -55,6 +58,7 @@ class TekRestExceptionHandlerTest {
   private static final String MISSING_SERVLET_REQUEST_PARAM_EXCEPTION = "/handleMissingServletRequestParameter";
   private static final String MEDIATYPE_NOT_SUPPORTED_EXCEPTION = "/handleHttpMediaTypeNotSupported";
   private static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION = "/handleMethodArgumentNotValid";
+  private static final String CONSTRAINT_VIOLATION_EXCEPTION = "/constraintViolationException";
 
   @Test
   void test_handle_generic_exception() throws Exception {
@@ -125,27 +129,55 @@ class TekRestExceptionHandlerTest {
         .andDo(MockMvcResultHandlers.print());
   }
 
+  @Test
+  void test_handle_constraint_violation_exception() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get(CONSTRAINT_VIOLATION_EXCEPTION))
+        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.apiError.path").value(CONSTRAINT_VIOLATION_EXCEPTION))
+        .andExpect(jsonPath("$.apiError.message").value("Validation error"))
+        .andExpect(jsonPath("$.apiError.subErrors[0].object").value("Body"))
+        .andExpect(jsonPath("$.apiError.subErrors[0].field").value("name"))
+        .andExpect(jsonPath("$.apiError.subErrors[0].message").value("must not be blank"))
+        .andExpect(jsonPath("$.apiError.subErrors[0].rejectedValue").doesNotExist());
+
+
+  }
+
   @RestController
+  @SuppressWarnings("unused")
   static class TestController {
 
-    @SuppressWarnings("unused")
+    @Autowired
+    private Validator validator;
+
     @GetMapping(GENERIC_EXCEPTION)
     void handleGenericException() throws Exception {
       throw new Exception("error");
     }
 
-    @SuppressWarnings("unused")
     @GetMapping(MISSING_SERVLET_REQUEST_PARAM_EXCEPTION)
     void handleMissingServletRequestParameter() throws MissingServletRequestParameterException {
       throw new MissingServletRequestParameterException("name", "string");
     }
 
-    @SuppressWarnings("unused")
     @GetMapping(MEDIATYPE_NOT_SUPPORTED_EXCEPTION)
     void handleHttpMediaTypeNotSupported() throws HttpMediaTypeNotSupportedException {
       throw new HttpMediaTypeNotSupportedException(
           MediaType.APPLICATION_XML,
           List.of(MediaType.APPLICATION_JSON)
+      );
+    }
+
+    @PostMapping(METHOD_ARGUMENT_NOT_VALID_EXCEPTION)
+    void handleMethodArgumentNotValid(@Valid @RequestBody Body body) {
+    }
+
+    @GetMapping(CONSTRAINT_VIOLATION_EXCEPTION)
+    void handleConstraintViolationException() {
+      throw new ConstraintViolationException(
+          new HashSet<>(validator.validate(new Body()))
       );
     }
 
@@ -159,20 +191,7 @@ class TekRestExceptionHandlerTest {
       @NotBlank
       private String name;
     }
-
-    @SuppressWarnings("unused")
-    @PostMapping(METHOD_ARGUMENT_NOT_VALID_EXCEPTION)
-    void handleMethodArgumentNotValid(@Valid @RequestBody Body body) {
-    }
-
   }
 
-  public static String asJsonString(final Object obj) {
-    try {
-      return new ObjectMapper().writeValueAsString(obj);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
 
 }

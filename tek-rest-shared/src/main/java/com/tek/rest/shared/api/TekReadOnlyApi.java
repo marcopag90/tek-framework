@@ -1,7 +1,5 @@
 package com.tek.rest.shared.api;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 /**
  * Base interface to provide read-only <i>AOP</i> methods.
  *
@@ -19,6 +17,6 @@ public interface TekReadOnlyApi {
    * Function to globally customize api authorizations.
    */
   default boolean isAuthorized() {
-    return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    return true;
   }
 }

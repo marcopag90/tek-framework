@@ -135,9 +135,11 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(javax.validation.ConstraintViolationException.class)
   protected ResponseEntity<Object> handleConstraintViolation(
-      javax.validation.ConstraintViolationException ex
+      javax.validation.ConstraintViolationException ex,
+      WebRequest request
   ) {
     final var dto = new ApiErrorDto();
+    dto.setRequest(request);
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setMessage("Validation error");
     dto.setEx(ex);
@@ -262,12 +264,13 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
     dto.setEx(ex);
+
     dto.setMessage(
         String.format(
             "The parameter '%s' of value '%s' could not be converted to type '%s'",
             ex.getName(),
             ex.getValue(),
-            ex.getRequiredType().getSimpleName()
+            (ex.getRequiredType() != null) ? ex.getRequiredType().getSimpleName() : null
         )
     );
     return buildResponseEntity(new ApiError(dto));

@@ -264,13 +264,13 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
     dto.setEx(ex);
-
+    Class<?> requiredType = ex.getRequiredType();
     dto.setMessage(
         String.format(
             "The parameter '%s' of value '%s' could not be converted to type '%s'",
             ex.getName(),
             ex.getValue(),
-            (ex.getRequiredType() != null) ? ex.getRequiredType().getSimpleName() : null
+            (requiredType != null) ? requiredType.getSimpleName() : null
         )
     );
     return buildResponseEntity(new ApiError(dto));

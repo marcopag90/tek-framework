@@ -11,16 +11,10 @@ public interface TekWritableApi extends TekReadOnlyApi {
   String CAN_UPDATE = "this.updateAuthorized()";
   String CAN_DELETE = "this.deleteAuthorized()";
 
-  default boolean createAuthorized() {
-    return isAuthorized();
-  }
+  boolean createAuthorized();
 
-  default boolean updateAuthorized() {
-    return isAuthorized();
-  }
+  boolean updateAuthorized();
 
-  default boolean deleteAuthorized() {
-    return isAuthorized();
-  }
+  boolean deleteAuthorized();
 
 }

@@ -8,6 +8,7 @@ import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,18 +16,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * Interface to provide a read-only <i>CRUD</i> JPA Rest API.
  *
- * @param <T> : a concrete {@link javax.persistence.Entity}
+ * @param <E> : a concrete {@link javax.persistence.Entity}
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface TekReadOnlyJpaApi<T, I> extends TekReadOnlyApi {
+public interface TekReadOnlyJpaApi<E, I> extends TekReadOnlyApi {
 
-  @GetMapping
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)
   @ApiPageable
-  Page<T> findAll(@Filter(parameterName = FILTER_NAME) Specification<T> spec, Pageable page);
+  Page<E> findAll(@Filter(parameterName = FILTER_NAME) Specification<E> spec, Pageable page);
 
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)
-  T findById(@PathVariable("id") I id);
+  E findById(@PathVariable("id") I id);
 }

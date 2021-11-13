@@ -9,14 +9,5 @@ public interface TekReadOnlyApi {
 
   String CAN_READ = "this.readAuthorized()";
 
-  default boolean readAuthorized() {
-    return isAuthorized();
-  }
-
-  /**
-   * Function to globally customize api authorizations.
-   */
-  default boolean isAuthorized() {
-    return true;
-  }
+  boolean readAuthorized();
 }

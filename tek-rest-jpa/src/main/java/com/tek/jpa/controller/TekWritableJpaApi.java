@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * Interface to provide a <i>CRUD</i> JPA Rest API.
  *
- * @param <T> : a concrete {@link javax.persistence.Entity}
+ * @param <E> : a concrete {@link javax.persistence.Entity}
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface TekWritableJpaApi<T, I> extends TekWritableApi {
+public interface TekWritableJpaApi<E, I> extends TekWritableApi {
 
   @PostMapping
   @PreAuthorize(CAN_CREATE)
-  T create(@RequestBody T entity);
+  E create(@RequestBody E entity);
 
   @DeleteMapping("/{id}")
   @PreAuthorize(CAN_DELETE)

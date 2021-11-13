@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public class TekReadOnlyMongoController<T, I> implements TekReadOnlyMongoApi<T, I> {
+public abstract class TekReadOnlyMongoController<T, I> implements TekReadOnlyMongoApi<T, I> {
 
   @Autowired
   protected TekMongoRepository<T, I> repository;

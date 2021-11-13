@@ -11,7 +11,7 @@ package com.tek.jpa.controller;
  * class BookController extends TekWritableJpaController{@literal <}Book, Long{@literal >} {}
  * </pre>
  *
- * <p>A developer can customize the <i>AOP crud</i> access in the following way:
+ * <p>A developer has to implement the <i>AOP crud</i> access in the following way:
  * <pre class="code">
  * {@literal @RestController}
  * {@literal @RequestMapping}("books")
@@ -29,28 +29,15 @@ package com.tek.jpa.controller;
  * }
  * </pre>
  *
- * <p>A globally configured <i>AOP crud</i> access can be achieved in the following way:
- * <pre class="code">
- * {@literal @RestController}
- * {@literal @RequestMapping}("books")
- * class BookController extends TekWritableJpaController{@literal <}Book, Long{@literal >} {
- *
- *   {@literal @Override}
- *   public boolean isAuthorized() {
- *     ...
- *   }
- * }
- * </pre>
- *
- * @param <T> : a concrete {@link javax.persistence.Entity}
+ * @param <E> : a concrete {@link javax.persistence.Entity}
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public class TekWritableJpaController<T, I>
-    extends TekReadOnlyJpaController<T, I> implements TekWritableJpaApi<T, I> {
+public abstract class TekWritableJpaController<E, I>
+    extends TekReadOnlyJpaController<E, I> implements TekWritableJpaApi<E, I> {
 
   @Override
-  public T create(T entity) {
+  public E create(E entity) {
     return repository.save(entity);
   }
 

@@ -2,7 +2,7 @@ package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
-import com.tek.rest.shared.api.TekReadOnlyApi;
+import com.tek.rest.shared.api.ReadOnlyApi;
 import com.tek.rest.shared.swagger.ApiPageable;
 import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface TekReadOnlyJpaApi<E, I> extends TekReadOnlyApi {
+public interface ReadOnlyCrudApi<E, I> extends ReadOnlyApi {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)

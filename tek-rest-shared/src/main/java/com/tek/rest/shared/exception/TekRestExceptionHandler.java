@@ -1,12 +1,18 @@
 package com.tek.rest.shared.exception;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.tek.rest.shared.TekRestSharedAutoConfig;
 import com.tek.rest.shared.dto.ApiError;
 import com.tek.rest.shared.dto.ApiError.ApiErrorDto;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +42,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RequiredArgsConstructor
 @Slf4j
 public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
+
+  @Autowired
+  private ApplicationContext context;
+
+  private ObjectMapper objectMapper;
+
+  @PostConstruct
+  void setup() {
+    this.objectMapper = context.getBean(ObjectMapper.class).copy()
+        .configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+  }
 
   /**
    * Handle generic {@link Exception}.
@@ -276,8 +293,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(new ApiError(dto));
   }
 
+  @SneakyThrows
   private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-    return new ResponseEntity<>(apiError, apiError.getStatus());
+    return new ResponseEntity<>(objectMapper.writeValueAsString(apiError), apiError.getStatus());
   }
-
 }

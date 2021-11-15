@@ -33,17 +33,17 @@ package com.tek.jpa.controller;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class TekWritableJpaController<E, I>
-    extends TekReadOnlyJpaController<E, I> implements TekWritableJpaApi<E, I> {
+public abstract class WritableCrudController<E, I>
+    extends ReadOnlyCrudController<E, I> implements WritableCrudApi<E, I> {
 
-  @Override
-  public E create(E entity) {
-    return repository.save(entity);
-  }
-
-  @Override
-  public I delete(I id) {
-    repository.deleteById(id);
-    return id;
-  }
+//  @Override
+//  public E create(E entity) {
+//    return repository.save(entity);
+//  }
+//
+//  @Override
+//  public I delete(I id) {
+//    repository.deleteById(id);
+//    return id;
+//  }
 }

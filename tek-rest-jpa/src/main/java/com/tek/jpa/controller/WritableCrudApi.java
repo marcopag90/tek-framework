@@ -1,6 +1,6 @@
 package com.tek.jpa.controller;
 
-import com.tek.rest.shared.api.TekWritableApi;
+import com.tek.rest.shared.api.WritableApi;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface TekWritableJpaApi<E, I> extends TekWritableApi {
+public interface WritableCrudApi<E, I> extends WritableApi {
 
   @PostMapping
   @PreAuthorize(CAN_CREATE)

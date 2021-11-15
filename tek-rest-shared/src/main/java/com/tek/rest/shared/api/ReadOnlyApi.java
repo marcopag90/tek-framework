@@ -5,7 +5,7 @@ package com.tek.rest.shared.api;
  *
  * @author MarcoPagan
  */
-public interface TekReadOnlyApi {
+public interface ReadOnlyApi {
 
   String CAN_READ = "this.readAuthorized()";
 

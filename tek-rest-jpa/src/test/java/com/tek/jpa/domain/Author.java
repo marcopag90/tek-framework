@@ -3,7 +3,6 @@ package com.tek.jpa.domain;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tek.jpa.domain.Author.Views.DeveloperView;
 import java.time.LocalDate;
-import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,9 +21,11 @@ public class Author {
   @Id
   @GeneratedValue
   @JsonView(DeveloperView.class)
-  private UUID id;
+  private Integer id;
 
   private String name;
+
+  private String surname;
 
   private LocalDate birthDate;
 

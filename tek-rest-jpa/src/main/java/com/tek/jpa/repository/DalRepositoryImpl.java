@@ -7,15 +7,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-public class TekJpaRepositoryImpl<T, I> extends SimpleJpaRepository<T, I> {
+public class DalRepositoryImpl<T, I> extends SimpleJpaRepository<T, I> {
 
-  public TekJpaRepositoryImpl(
+  public DalRepositoryImpl(
       JpaEntityInformation<T, ?> entityInformation,
       EntityManager entityManager) {
     super(entityInformation, entityManager);
   }
 
-  public TekJpaRepositoryImpl(Class<T> domainClass, EntityManager em) {
+  public DalRepositoryImpl(Class<T> domainClass, EntityManager em) {
     super(domainClass, em);
   }
 

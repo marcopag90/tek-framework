@@ -4,7 +4,6 @@ package com.tek.rest.shared.exception;
 import static com.tek.rest.shared.TekRestSharedUtils.asJsonString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.tek.rest.shared.config.TekJacksonConfig;
 import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController;
 import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController.Body;
 import java.io.InputStream;
@@ -53,7 +52,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ContextConfiguration(
     classes = {
         TekRestExceptionHandler.class,
-        TekJacksonConfig.class,
         TestController.class
     }
 )

@@ -5,7 +5,7 @@ package com.tek.rest.shared.api;
  *
  * @author MarcoPagan
  */
-public interface TekWritableApi extends TekReadOnlyApi {
+public interface WritableApi extends ReadOnlyApi {
 
   String CAN_CREATE = "this.createAuthorized()";
   String CAN_UPDATE = "this.updateAuthorized()";

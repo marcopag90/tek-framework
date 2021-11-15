@@ -1,8 +1,7 @@
 package com.tek.jpa.controller;
 
-import com.tek.jpa.repository.TekJpaRepository;
-import com.tek.jpa.service.TekJpaReadOnlyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tek.jpa.service.ReadOnlyDalService;
+import javax.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,18 +34,24 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class TekReadOnlyJpaController<E, I> implements TekReadOnlyJpaApi<E, I> {
+public abstract class ReadOnlyCrudController<E, I> implements ReadOnlyCrudApi<E, I> {
 
-  @Autowired protected TekJpaRepository<E, I> repository;
-  @Autowired protected TekJpaReadOnlyService<E, I> readOnlyService;
+  protected abstract ReadOnlyDalService<E, I> getReadOnlyDalService();
+
+  protected ReadOnlyDalService<E, I> readOnlyDalService;
+
+  @PostConstruct
+  void setup() {
+    this.readOnlyDalService = getReadOnlyDalService();
+  }
 
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {
-    return readOnlyService.findAll(spec, pageable);
+    return readOnlyDalService.findAll(spec, pageable);
   }
 
   @Override
   public E findById(I id) {
-    return readOnlyService.findById(id);
+    return readOnlyDalService.findById(id);
   }
 }

@@ -2,7 +2,7 @@ package com.tek.jpa.controller;
 
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.service.AuthorReadOnlyDalService;
-import com.tek.jpa.service.ReadOnlyDalService;
+import com.tek.jpa.service.impl.ReadOnlyDalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ public class AuthorReadyOnlyCrudController extends ReadOnlyCrudController<Author
   }
 
   @Override
-  protected ReadOnlyDalService<Author, Integer> getReadOnlyDalService() {
+  protected ReadOnlyDalServiceImpl<Author, Integer> getReadOnlyDalService() {
     return authorReadOnlyService;
   }
 }

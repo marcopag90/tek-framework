@@ -5,20 +5,21 @@ import com.tek.jpa.domain.Author.Views.DeveloperView;
 import com.tek.jpa.domain.Author.Views.UserView;
 import com.tek.jpa.repository.AuthorRepository;
 import com.tek.jpa.repository.DalRepository;
+import com.tek.jpa.service.impl.ReadOnlyDalServiceImpl;
 import javax.persistence.EntityManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorReadOnlyDalService extends ReadOnlyDalService<Author, Integer> {
+public class AuthorReadOnlyDalService extends ReadOnlyDalServiceImpl<Author, Integer> {
 
   @Override
-  protected DalRepository<Author, Integer> dalRepository() {
+  public DalRepository<Author, Integer> dalRepository() {
     return context.getBean(AuthorRepository.class);
   }
 
   @Override
-  protected EntityManager entityManager() {
+  public EntityManager entityManager() {
     return context.getBean(EntityManager.class);
   }
 

@@ -1,6 +1,6 @@
 package com.tek.jpa.controller;
 
-import com.tek.jpa.service.ReadOnlyDalService;
+import com.tek.jpa.service.impl.ReadOnlyDalServiceImpl;
 import javax.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +36,9 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public abstract class ReadOnlyCrudController<E, I> implements ReadOnlyCrudApi<E, I> {
 
-  protected abstract ReadOnlyDalService<E, I> getReadOnlyDalService();
+  protected abstract ReadOnlyDalServiceImpl<E, I> getReadOnlyDalService();
 
-  protected ReadOnlyDalService<E, I> readOnlyDalService;
+  protected ReadOnlyDalServiceImpl<E, I> readOnlyDalService;
 
   @PostConstruct
   void setup() {

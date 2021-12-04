@@ -21,12 +21,25 @@ public class DbMockup implements CommandLineRunner {
         .name("Italo")
         .surname("Calvino")
         .birthDate(LocalDate.of(1923, Month.OCTOBER, 15))
+        .deathDate(LocalDate.of(1973, Month.SEPTEMBER, 2))
         .build();
     var stephenKing = Author.builder()
         .name("Stephen")
         .surname("King")
         .birthDate(LocalDate.of(1947, Month.SEPTEMBER, 21))
         .build();
-    authorRepository.saveAll(List.of(calvino, stephenKing));
+    var umbertoEco = Author.builder()
+        .name("Umberto")
+        .surname("Eco")
+        .birthDate(LocalDate.of(1932, Month.JANUARY, 5))
+        .deathDate(LocalDate.of(2016, Month.FEBRUARY, 19))
+        .build();
+    authorRepository.saveAll(
+        List.of(
+            calvino,
+            stephenKing,
+            umbertoEco
+        )
+    );
   }
 }

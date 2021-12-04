@@ -22,12 +22,10 @@ public class Author {
   @GeneratedValue
   @JsonView(DeveloperView.class)
   private Integer id;
-
   private String name;
-
   private String surname;
-
   private LocalDate birthDate;
+  private LocalDate deathDate;
 
   public static class Views {
 

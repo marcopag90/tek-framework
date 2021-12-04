@@ -1,5 +1,6 @@
 package com.tek.jpa.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +47,8 @@ class TekReadyOnlyJpaControllerTest {
       authorities = {"USER", "AUTHOR_READ"}
   )
   void test_readOne_with_user_view_authorized() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyCrudController.PATH + "/1"))
+    var url = AuthorReadyOnlyCrudController.PATH + "/1";
+    mockMvc.perform(MockMvcRequestBuilders.get(url))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").isEmpty())
@@ -56,7 +58,17 @@ class TekReadyOnlyJpaControllerTest {
   }
 
   @Test
+  @WithMockUser(
+      value = "ADMIN",
+      authorities = {"DEVELOPER", "AUTHOR_READ"}
+  )
   void test_readAll_with_developer_view_authorized() throws Exception {
+    var parameters = "page=0&size=2";
+    var url = String.format("%s?%s", AuthorReadyOnlyCrudController.PATH, parameters);
+    mockMvc.perform(MockMvcRequestBuilders.get(url))
+        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+        .andDo(print());
   }
 
   @Test
@@ -65,7 +77,8 @@ class TekReadyOnlyJpaControllerTest {
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
   void test_readOne_with_developer_view_authorized() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyCrudController.PATH + "/1"))
+    var url = AuthorReadyOnlyCrudController.PATH + "/1";
+    mockMvc.perform(MockMvcRequestBuilders.get(url))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").exists())

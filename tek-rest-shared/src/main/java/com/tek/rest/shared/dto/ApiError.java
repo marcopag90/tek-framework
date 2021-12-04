@@ -1,6 +1,8 @@
 package com.tek.rest.shared.dto;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,9 @@ import org.springframework.web.context.request.WebRequest;
  */
 @Getter
 @ToString
-@JsonRootName("apiError")
-public class ApiError {
+@JsonTypeName("apiError")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+public class ApiError implements Serializable {
 
   private final Instant timestamp;
   private HttpStatus status;
@@ -136,7 +139,7 @@ public class ApiError {
   }
 
   /**
-   * Utility method for adding error of {@link ConstraintViolation}.
+   * Utility method to add error of {@link ConstraintViolation}.
    * <p> Usually when a {@link org.springframework.validation.annotation.Validated} validation
    * fails.
    *

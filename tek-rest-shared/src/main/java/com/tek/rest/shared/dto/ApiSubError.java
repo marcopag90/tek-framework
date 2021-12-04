@@ -1,5 +1,7 @@
 package com.tek.rest.shared.dto;
 
-public interface ApiSubError {
+import java.io.Serializable;
+
+public interface ApiSubError extends Serializable {
 
 }

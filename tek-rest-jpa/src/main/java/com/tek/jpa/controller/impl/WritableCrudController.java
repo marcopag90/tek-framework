@@ -1,4 +1,6 @@
-package com.tek.jpa.controller;
+package com.tek.jpa.controller.impl;
+
+import com.tek.jpa.controller.WritableCrudApi;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}

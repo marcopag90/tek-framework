@@ -10,18 +10,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MockupSeeder implements CommandLineRunner {
+public class DbMockup implements CommandLineRunner {
 
   @Autowired
   private AuthorRepository authorRepository;
 
   @Override
   public void run(String... args) throws Exception {
-    var tolkien = Author.builder()
-        .name("John Ronald Reuel")
-        .surname("Tolkien")
-        .birthDate(LocalDate.of(1892, Month.JANUARY, 3))
-        .build();
     var calvino = Author.builder()
         .name("Italo")
         .surname("Calvino")
@@ -32,6 +27,6 @@ public class MockupSeeder implements CommandLineRunner {
         .surname("King")
         .birthDate(LocalDate.of(1947, Month.SEPTEMBER, 21))
         .build();
-    authorRepository.saveAll(List.of(tolkien, calvino, stephenKing));
+    authorRepository.saveAll(List.of(calvino, stephenKing));
   }
 }

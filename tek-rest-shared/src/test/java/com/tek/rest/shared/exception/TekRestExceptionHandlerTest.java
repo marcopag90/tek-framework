@@ -262,7 +262,7 @@ class TekRestExceptionHandlerTest {
     }
 
     @GetMapping(ENTITY_NOT_FOUND_EXCEPTION)
-    void handleEntityNotFoundException() {
+    void handleEntityNotFoundException() throws EntityNotFoundException {
       throw new EntityNotFoundException(Body.class, 1);
     }
 

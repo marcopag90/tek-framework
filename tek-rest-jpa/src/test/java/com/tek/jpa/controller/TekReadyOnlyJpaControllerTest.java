@@ -51,10 +51,11 @@ class TekReadyOnlyJpaControllerTest {
     mockMvc.perform(MockMvcRequestBuilders.get(url))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.id").isEmpty())
+        .andExpect(jsonPath("$.id").doesNotExist())
         .andExpect(jsonPath("$.name").exists())
         .andExpect(jsonPath("$.surname").exists())
-        .andExpect(jsonPath("$.birthDate").exists());
+        .andExpect(jsonPath("$.birthDate").exists())
+        .andDo(print());
   }
 
   @Test

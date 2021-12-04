@@ -7,13 +7,15 @@ import com.tek.shared.TekModuleConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**
- * Configuration providing:
  * <ul>
- *   <li>{@link Hibernate5Module} to avoid MappingJackson2HttpMessageConverter serialization
+ *   <li>Provides a {@link Hibernate5Module} to avoid MappingJackson2HttpMessageConverter serialization
  *    failure on lazy proxy objects retrieved from Hibernate, when no session is in context.
  *  </li>
  * </ul>
@@ -22,9 +24,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(value = {TekJpaAutoConfig.class})
-public class TekJpaModuleConfiguration extends TekModuleConfiguration {
+public class TekRestJpaModuleConfiguration extends TekModuleConfiguration {
 
-  public TekJpaModuleConfiguration(ApplicationContext context) {
+  public TekRestJpaModuleConfiguration(ApplicationContext context) {
     super(context);
   }
 
@@ -37,5 +39,21 @@ public class TekJpaModuleConfiguration extends TekModuleConfiguration {
   @Conditional(HibernateConditional.class)
   public Module hibernate5Module() {
     return new Hibernate5Module();
+  }
+
+  /**
+   * Condition to detect hibernate implementation of JPA.
+   */
+  static class HibernateConditional implements Condition {
+
+    @Override
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+      try {
+        Class.forName("org.hibernate.internal.SessionImpl");
+        return true;
+      } catch (ClassNotFoundException e) {
+        return false;
+      }
+    }
   }
 }

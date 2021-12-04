@@ -3,6 +3,7 @@ package com.tek.jpa.controller;
 import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
 import com.tek.rest.shared.api.ReadOnlyApi;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import com.tek.rest.shared.swagger.ApiPageable;
 import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Page;
@@ -29,5 +30,5 @@ public interface ReadOnlyCrudApi<E, I> extends ReadOnlyApi {
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)
-  E findById(@PathVariable("id") I id);
+  E findById(@PathVariable("id") I id) throws EntityNotFoundException;
 }

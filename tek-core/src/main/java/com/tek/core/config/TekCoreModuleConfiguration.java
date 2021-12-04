@@ -8,8 +8,7 @@ import static java.lang.String.join;
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.TekModuleConfiguration;
-import javax.naming.ConfigurationException;
-import lombok.SneakyThrows;
+import com.tek.shared.exception.TekModuleException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,9 +19,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * Tek Core Module Configuration:
- * <p>
- * - Checks Spring active profile configuration after environment has been injected
+ * Tek Core Module Configuration
  *
  * @author MarcoPagan
  */
@@ -53,16 +50,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
   }
 
   @Override
-  public void checkModuleConfiguration() throws ConfigurationException {
-    checkConditionalProperties();
-  }
-
-  private void checkConditionalProperties() {
-    checkMailErrorHandling();
-  }
-
-  @SneakyThrows
-  private void checkMailErrorHandling() {
+  public void checkModuleConfiguration() throws TekModuleException {
     final var sendErrors = coreProperties.getMailConfiguration().isSendErrors();
     final var isActiveScheduler =
         coreProperties.getFileConfiguration().getTmp().isSchedulerEnabled();
@@ -72,7 +60,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
               .concat("Email error handling is active but scheduled cleanup of directories is not!")
               .concat(newLine)
               .concat("Set property tek.core.scheduler.active: true");
-      throw new ConfigurationException(errorMessage);
+      throw new TekModuleException(errorMessage);
     }
   }
 }

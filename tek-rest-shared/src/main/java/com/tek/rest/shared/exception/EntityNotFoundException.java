@@ -2,7 +2,7 @@ package com.tek.rest.shared.exception;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class EntityNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends Exception {
 
   public EntityNotFoundException(Class<?> clazz, Object id) {
     super(EntityNotFoundException.generateMessage(clazz.getSimpleName(), id));

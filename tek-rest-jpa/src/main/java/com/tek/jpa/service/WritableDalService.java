@@ -7,7 +7,7 @@ package com.tek.jpa.service;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface WritableDalService<E, I> {
+public interface WritableDalService<E, I> extends ReadOnlyDalService<E, I> {
 
 
 }

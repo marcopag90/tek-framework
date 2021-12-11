@@ -2,6 +2,7 @@ package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
+import com.tek.jpa.service.impl.BaseReadOnlyDalService;
 import com.tek.rest.shared.api.ReadOnlyApi;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import com.tek.rest.shared.swagger.ApiPageable;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface ReadOnlyCrudApi<E, I> extends ReadOnlyApi {
+public interface ReadOnlyDalController<E, I> extends ReadOnlyApi {
+
+  BaseReadOnlyDalService<E, I> getService();
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)
@@ -31,4 +34,6 @@ public interface ReadOnlyCrudApi<E, I> extends ReadOnlyApi {
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize(CAN_READ)
   E findById(@PathVariable("id") I id) throws EntityNotFoundException;
+
+
 }

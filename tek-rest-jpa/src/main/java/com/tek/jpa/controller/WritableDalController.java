@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface WritableCrudApi<E, I> extends WritableApi {
+public interface WritableDalController<E, I> extends WritableApi {
 
   @PostMapping
   @PreAuthorize(CAN_CREATE)

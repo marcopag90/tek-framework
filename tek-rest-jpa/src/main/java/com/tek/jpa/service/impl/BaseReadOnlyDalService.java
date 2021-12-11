@@ -10,12 +10,16 @@ import java.io.IOException;
 import java.util.function.UnaryOperator;
 import javax.annotation.PostConstruct;
 import javax.persistence.metamodel.EntityType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 
 public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService<E, I> {
 
@@ -23,17 +27,19 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
   protected ApplicationContext context;
   protected Class<E> entityClass;
   protected ObjectMapper objectMapper;
+  protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
+  @Nullable
   protected abstract Class<?> selectFields();
 
   private DalRepository<E, I> repository;
 
   @PostConstruct
-  protected void setup() {
+  private void setup() {
     this.entityClass = getEntityType().getJavaType();
     this.repository = repository();
-    this.objectMapper = context.getBean(ObjectMapper.class).copy()
-        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+    this.objectMapper = context.getBean(ObjectMapper.class)
+        .copy().configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
   }
 
   @Override
@@ -60,7 +66,6 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
       return null;
     }
   };
-
 
   @SuppressWarnings("unchecked")
   private EntityType<E> getEntityType() {

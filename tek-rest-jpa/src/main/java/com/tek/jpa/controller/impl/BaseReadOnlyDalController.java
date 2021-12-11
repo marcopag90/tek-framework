@@ -1,9 +1,11 @@
 package com.tek.jpa.controller.impl;
 
-import com.tek.jpa.controller.ReadOnlyCrudApi;
+import com.tek.jpa.controller.ReadOnlyDalController;
 import com.tek.jpa.service.impl.BaseReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,14 +19,14 @@ import org.springframework.data.jpa.domain.Specification;
  *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API
  *   </li>
  *   <li>
- *     implement the method <i>getDalService()</i> to define the {@link com.tek.jpa.service.ReadOnlyDalService} to use.
+ *     implement the method <i>getService()</i> to define the {@link com.tek.jpa.service.ReadOnlyDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>
  * <pre class="code">
  * {@literal @RestController}
  * {@literal @RequestMapping}("books")
- * class BookController extends ReadOnlyCrudController{@literal <}Book, Long{@literal >} {
+ * class BookController extends BaseReadOnlyDalController{@literal <}Book, Long{@literal >} {
  *
  *   {@literal @Override}
  *   public boolean readAuthorized() {
@@ -32,7 +34,7 @@ import org.springframework.data.jpa.domain.Specification;
  *   }
  *
  *   {@literal @Override}
- *   protected BaseReadOnlyDalService{@literal <}Book, Long{@literal >} getDalService() {
+ *   public BaseReadOnlyDalService{@literal <}Book, Long{@literal >} getService() {
  *     ...
  *   }
  * }
@@ -42,24 +44,25 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class ReadOnlyCrudController<E, I> implements ReadOnlyCrudApi<E, I> {
+public abstract class BaseReadOnlyDalController<E, I> implements ReadOnlyDalController<E, I> {
 
-  protected abstract BaseReadOnlyDalService<E, I> getDalService();
+  @Autowired
+  protected ApplicationContext context;
 
-  private BaseReadOnlyDalService<E, I> readOnlyDalService;
+  private BaseReadOnlyDalService<E, I> service;
 
   @PostConstruct
   void setup() {
-    this.readOnlyDalService = getDalService();
+    this.service = getService();
   }
 
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {
-    return readOnlyDalService.findAll(spec, pageable);
+    return service.findAll(spec, pageable);
   }
 
   @Override
   public E findById(I id) throws EntityNotFoundException {
-    return readOnlyDalService.findById(id);
+    return service.findById(id);
   }
 }

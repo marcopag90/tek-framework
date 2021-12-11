@@ -43,10 +43,11 @@
     <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     <springfox-legacy.version>2.9.2</springfox-legacy.version>
-    <spring-filter.version>2.0.0</spring-filter.version>
+    <spring-filter.version>2.0.4</spring-filter.version>
     <hibernate-types-52.version>2.12.1</hibernate-types-52.version>
     <commons-io.version>2.11.0</commons-io.version>
     <javafaker.version>1.0.2</javafaker.version>
+    <guava.version>31.0.1-jre</guava.version>
     <!-- Plugin versioning -->
     <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
   </properties>
@@ -134,6 +135,11 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,6 +1,6 @@
 package com.tek.jpa.controller.impl;
 
-import com.tek.jpa.controller.WritableCrudApi;
+import com.tek.jpa.controller.WritableDalController;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -35,10 +35,9 @@ import com.tek.jpa.controller.WritableCrudApi;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class WritableCrudController<E, I>
-    extends ReadOnlyCrudController<E, I> implements WritableCrudApi<E, I> {
+public abstract class BaseWritableDalController<E, I> implements WritableDalController<E, I> {
 
-//  @Override
+  //  @Override
 //  public E create(E entity) {
 //    return repository.save(entity);
 //  }

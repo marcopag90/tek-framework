@@ -23,22 +23,23 @@ import org.springframework.util.ClassUtils;
 
 public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService<E, I> {
 
+  protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
+
   @Autowired
   protected ApplicationContext context;
   protected Class<E> entityClass;
   protected ObjectMapper objectMapper;
-  protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
+
+  private DalRepository<E, I> repository;
 
   @Nullable
   protected abstract Class<?> selectFields();
 
-  private DalRepository<E, I> repository;
-
   @PostConstruct
   private void setup() {
-    this.entityClass = getEntityType().getJavaType();
-    this.repository = repository();
-    this.objectMapper = context.getBean(ObjectMapper.class)
+    entityClass = getEntityType().getJavaType();
+    repository = repository();
+    objectMapper = context.getBean(ObjectMapper.class)
         .copy().configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
   }
 
@@ -50,7 +51,7 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
 
   @Override
   public E findById(I id) throws EntityNotFoundException {
-    var entity = repository.findById(id)
+    final var entity = repository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(entityClass, id));
     return select.apply(entity);
   }
@@ -69,7 +70,7 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
 
   @SuppressWarnings("unchecked")
   private EntityType<E> getEntityType() {
-    var resolvableType = ResolvableType.forClass(this.getClass()).as(BaseReadOnlyDalService.class);
+    var resolvableType = ResolvableType.forClass(getClass()).as(BaseReadOnlyDalService.class);
     return entityManager().getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }
 

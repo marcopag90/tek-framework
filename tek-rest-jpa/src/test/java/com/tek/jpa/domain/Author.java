@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @Data
 @ToString(exclude = {"books", "ratings"})
-@EqualsAndHashCode(exclude = "books")
+@EqualsAndHashCode(exclude = {"books", "ratings"})
 @NamedEntityGraph(
     name = "Authors.full",
     includeAllAttributes = true
@@ -38,7 +39,10 @@ public class Author {
   @GeneratedValue
   @JsonView(DeveloperView.class)
   private Integer id;
+
+  @NotBlank
   private String name;
+  @NotBlank
   private String surname;
   private String pseudonym;
   private LocalDate birthDate;

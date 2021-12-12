@@ -34,5 +34,5 @@ public interface WritableDalApi<E, I> extends ReadOnlyDalApi<E, I> {
   @DeleteMapping("/{id}")
   @PreAuthorize("this.deleteAuthorized()")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
-  I deleteById(@PathVariable I id);
+  void deleteById(@PathVariable I id);
 }

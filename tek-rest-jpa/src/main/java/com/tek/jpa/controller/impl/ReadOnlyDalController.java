@@ -2,7 +2,6 @@ package com.tek.jpa.controller.impl;
 
 import com.tek.jpa.controller.ReadOnlyDalApi;
 import com.tek.jpa.service.impl.ReadOnlyDalService;
-import com.tek.rest.shared.exception.EntityNotFoundException;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,8 +33,8 @@ import org.springframework.data.jpa.domain.Specification;
  *   }
  *
  *   {@literal @Override}
- *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} getService() {
- *     ...
+ *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} getReadOnlyDalService() {
+ *     return context.getBean(BookReadOnlyDalService.class);
  *   }
  * }
  * </pre>
@@ -51,20 +50,20 @@ public abstract class ReadOnlyDalController<E, I> implements ReadOnlyDalApi<E, I
 
   protected abstract ReadOnlyDalService<E, I> getReadOnlyDalService();
 
-  private ReadOnlyDalService<E, I> service;
+  private ReadOnlyDalService<E, I> dalService;
 
   @PostConstruct
   void setup() {
-    this.service = getReadOnlyDalService();
+    this.dalService = getReadOnlyDalService();
   }
 
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {
-    return service.findAll(spec, pageable);
+    return dalService.findAll(spec, pageable);
   }
 
   @Override
-  public E findById(I id) throws EntityNotFoundException {
-    return service.findById(id);
+  public E findById(I id) {
+    return dalService.findById(id);
   }
 }

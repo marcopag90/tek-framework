@@ -1,7 +1,7 @@
 package com.tek.rest.shared.exception;
 
 
-import static com.tek.rest.shared.TekRestSharedUtils.asJsonString;
+import static com.tek.rest.shared.utils.TekRestSharedUtils.asJsonString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.tek.rest.shared.exception.TekRestExceptionHandlerTest.TestController;
@@ -32,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,6 +64,7 @@ class TekRestExceptionHandlerTest {
   private MockMvc mockMvc;
 
   private static final String GENERIC_EXCEPTION = "/handleGenericException";
+  private static final String ACCESS_DENIED_EXCEPTION = "/handleAccessDeniedException";
   private static final String MISSING_SERVLET_REQUEST_PARAM_EXCEPTION = "/handleMissingServletRequestParameter";
   private static final String MEDIATYPE_NOT_SUPPORTED_EXCEPTION = "/handleHttpMediaTypeNotSupported";
   private static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION = "/handleMethodArgumentNotValid";
@@ -82,6 +84,19 @@ class TekRestExceptionHandlerTest {
         .andExpect(jsonPath("$.apiError.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
         .andExpect(jsonPath("$.apiError.path").value(GENERIC_EXCEPTION))
         .andExpect(jsonPath("$.apiError.message").value("error"))
+        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andDo(MockMvcResultHandlers.print());
+  }
+
+  @Test
+  void test_handle_access_denied_exception() throws Exception {
+    var debugMessage = ExceptionUtils.getMessage(new AccessDeniedException("Access denied!"));
+    mockMvc.perform(MockMvcRequestBuilders.get(ACCESS_DENIED_EXCEPTION))
+        .andExpect(MockMvcResultMatchers.status().isForbidden())
+        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.FORBIDDEN.name()))
+        .andExpect(jsonPath("$.apiError.path").value(ACCESS_DENIED_EXCEPTION))
+        .andExpect(jsonPath("$.apiError.message").value("Access denied!"))
         .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
@@ -235,6 +250,11 @@ class TekRestExceptionHandlerTest {
     @GetMapping(GENERIC_EXCEPTION)
     void handleGenericException() throws Exception {
       throw new Exception("error");
+    }
+
+    @GetMapping(ACCESS_DENIED_EXCEPTION)
+    void handleAccessDeniedException() throws AccessDeniedException {
+      throw new AccessDeniedException("Access denied!");
     }
 
     @GetMapping(MISSING_SERVLET_REQUEST_PARAM_EXCEPTION)

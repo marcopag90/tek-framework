@@ -16,12 +16,7 @@ public class BeerReadOnlyDalService extends ReadOnlyDalService<Beer, Long> {
   }
 
   @Override
-  public DalRepository<Beer, Long> repository() {
+  public DalRepository<Beer, Long> dalRepository() {
     return context.getBean(BeerRepository.class);
-  }
-
-  @Override
-  protected Class<?> selectFields() {
-    return null;
   }
 }

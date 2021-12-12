@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -57,6 +58,26 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    dto.setRequest(request);
+    dto.setEx(ex);
+    if (StringUtils.isNotEmpty(ex.getMessage())) {
+      dto.setMessage(ex.getMessage());
+    }
+    return buildResponseEntity(new ApiError(dto));
+  }
+
+  /**
+   * Handle {@link AccessDeniedException}
+   *
+   * @return the {@link ApiError} object
+   */
+  @ExceptionHandler(value = AccessDeniedException.class)
+  public ResponseEntity<Object> handleAccessDeniedException(
+      @NonNull AccessDeniedException ex,
+      @NonNull WebRequest request
+  ) {
+    final var dto = new ApiErrorDto();
+    dto.setStatus(HttpStatus.FORBIDDEN);
     dto.setRequest(request);
     dto.setEx(ex);
     if (StringUtils.isNotEmpty(ex.getMessage())) {

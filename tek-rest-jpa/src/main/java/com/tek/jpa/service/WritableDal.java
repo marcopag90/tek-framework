@@ -1,7 +1,5 @@
 package com.tek.jpa.service;
 
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
 /**
  * Interface for jpa-based entities, allowing all crud operations.
  *
@@ -11,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  */
 public interface WritableDal<E, I> extends ReadOnlyDal<E, I> {
 
-  E create(E entity) throws MethodArgumentNotValidException;
+  E create(E entity);
 
   void deleteById(I id);
 

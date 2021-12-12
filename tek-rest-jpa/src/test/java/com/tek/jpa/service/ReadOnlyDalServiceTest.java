@@ -36,7 +36,7 @@ class ReadOnlyDalServiceTest {
       value = "USER",
       authorities = {"USER", "AUTHOR_READ"}
   )
-  void test_entity_not_found_exception() throws EntityNotFoundException {
+  void test_entity_not_found_exception() {
     assertThrows(EntityNotFoundException.class, () -> dalService.findById(100));
   }
 
@@ -45,7 +45,7 @@ class ReadOnlyDalServiceTest {
       value = "USER",
       authorities = {"USER", "AUTHOR_READ"}
   )
-  void test_findById_with_user_view() throws EntityNotFoundException {
+  void test_findById_with_user_view() {
     assertNull(dalService.findById(1).getId());
   }
 
@@ -54,7 +54,7 @@ class ReadOnlyDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
-  void test_findById_with_developer_view() throws EntityNotFoundException {
+  void test_findById_with_developer_view() {
     assertNotNull(dalService.findById(1).getId());
   }
 

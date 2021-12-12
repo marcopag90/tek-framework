@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.function.UnaryOperator;
 import javax.annotation.PostConstruct;
 import javax.persistence.metamodel.EntityType;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,16 @@ public abstract class ReadOnlyDalService<E, I> implements ReadOnlyDal<E, I> {
   private DalRepository<E, I> repository;
 
   @Nullable
-  protected abstract Class<?> selectFields();
+  protected Class<?> selectFields() {
+    return null;
+  }
 
   @PostConstruct
   private void readOnlyDalServiceSetup() {
     entityClass = getEntityType().getJavaType();
-    repository = repository();
-    objectMapper = context.getBean(ObjectMapper.class)
-        .copy().configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+    repository = dalRepository();
+    objectMapper = context.getBean(ObjectMapper.class).copy()
+        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
   }
 
   @Override
@@ -49,7 +52,8 @@ public abstract class ReadOnlyDalService<E, I> implements ReadOnlyDal<E, I> {
   }
 
   @Override
-  public E findById(I id) throws EntityNotFoundException {
+  @SneakyThrows
+  public E findById(I id) {
     return select.apply(
         repository.findById(id).orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );

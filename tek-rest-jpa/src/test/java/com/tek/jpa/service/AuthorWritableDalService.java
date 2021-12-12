@@ -19,7 +19,7 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
   }
 
   @Override
-  public DalRepository<Author, Integer> repository() {
+  public DalRepository<Author, Integer> dalRepository() {
     return context.getBean(AuthorRepository.class);
   }
 

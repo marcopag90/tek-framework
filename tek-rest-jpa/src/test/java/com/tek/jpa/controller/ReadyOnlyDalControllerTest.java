@@ -15,7 +15,6 @@ import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.repository.AuthorRepository;
 import com.tek.jpa.repository.BeerRepository;
-import com.tek.jpa.repository.BookRepository;
 import com.turkraft.springfilter.FilterBuilder;
 import com.turkraft.springfilter.parser.Filter;
 import java.time.LocalDate;
@@ -49,15 +48,30 @@ class ReadyOnlyDalControllerTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper mapper;
   @Autowired private AuthorRepository authorRepository;
-  @Autowired private BookRepository bookRepository;
   @Autowired private BeerRepository beerRepository;
 
-  // -------------------------------- Authorization Views Tests ------------------------------------
+  // -------------------------------------- Authorizations -----------------------------------------
+
   @Test
-  @WithMockUser(
-      value = "USER",
-      authorities = {"USER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "USER")
+  void test_readAll_forbidden() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyDalController.PATH))
+        .andExpect(MockMvcResultMatchers.status().isForbidden())
+        .andDo(print());
+  }
+
+  @Test
+  @WithMockUser(value = "USER")
+  void test_readOne_forbidden() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyDalController.PATH + "/1"))
+        .andExpect(MockMvcResultMatchers.status().isForbidden())
+        .andDo(print());
+  }
+
+  // ------------------------------------- Read methods --------------------------------------------
+
+  @Test
+  @WithMockUser(value = "USER", authorities = {"USER", "AUTHOR_READ"})
   void test_readAll_with_user_view() throws Exception {
     var result = mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyDalController.PATH))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
@@ -72,10 +86,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_readAll_with_developer_view_authorized() throws Exception {
     var result = mockMvc.perform(MockMvcRequestBuilders.get(AuthorReadyOnlyDalController.PATH))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
@@ -90,10 +101,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "USER",
-      authorities = {"USER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "USER", authorities = {"USER", "AUTHOR_READ"})
   void test_readOne_with_user_view_authorized() throws Exception {
     var url = AuthorReadyOnlyDalController.PATH + "/1";
     mockMvc.perform(MockMvcRequestBuilders.get(url))
@@ -108,10 +116,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_readOne_with_developer_view_authorized() throws Exception {
     var url = AuthorReadyOnlyDalController.PATH + "/1";
     mockMvc.perform(MockMvcRequestBuilders.get(url))
@@ -124,7 +129,8 @@ class ReadyOnlyDalControllerTest {
         .andExpect(jsonPath("$.deathDate").exists());
   }
 
-  // ----------------------------------- Pagination tests -----------------------------------------
+  // ----------------------------------- Pagination tests ------------------------------------------
+
   @Test
   @WithMockUser(value = "ADMIN")
   void test_pagination() throws Exception {
@@ -155,11 +161,9 @@ class ReadyOnlyDalControllerTest {
   }
 
   // ------------------------------------ Operators tests ------------------------------------------
+
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_and_predicate() throws Exception {
     var filter = FilterBuilder.and(
         FilterBuilder.equal("name", "Italo"),
@@ -182,10 +186,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_or_predicate() throws Exception {
     var filter = FilterBuilder.or(
         FilterBuilder.equal("name", "Italo"),
@@ -208,10 +209,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_not_predicate() throws Exception {
     var filter = FilterBuilder.not(FilterBuilder.equal("name", "Italo"));
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -230,10 +228,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_like_ends_with() throws Exception {
     var filter = FilterBuilder.like("name", "*lo");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -252,10 +247,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_like_starts_with() throws Exception {
     var filter = FilterBuilder.like("name", "ita*");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -274,10 +266,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_like_contains() throws Exception {
     var filter = FilterBuilder.like("name", "*al*");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -296,10 +285,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_equals() throws Exception {
     var filter = FilterBuilder.equal("name", "Stephen");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -318,10 +304,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_not_equals() throws Exception {
     var filter = FilterBuilder.notEqual("name", "Stephen");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -340,10 +323,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_greater_than() throws Exception {
     var birthDate = LocalDate.of(1923, Month.OCTOBER, 15);
     var filter = FilterBuilder.greaterThan("birthDate", birthDate);
@@ -363,10 +343,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_greater_than_or_equal() throws Exception {
     var birthDate = LocalDate.of(1923, Month.OCTOBER, 15);
     var filter = FilterBuilder.greaterThanOrEqual("birthDate", birthDate);
@@ -388,10 +365,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_lower_than() throws Exception {
     var deathDate = LocalDate.of(2016, Month.FEBRUARY, 19);
     var filter = FilterBuilder.lessThan("deathDate", deathDate);
@@ -411,10 +385,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_lower_than_or_equal() throws Exception {
     var deathDate = LocalDate.of(2016, Month.FEBRUARY, 19);
     var filter = FilterBuilder.lessThanOrEqual("deathDate", deathDate);
@@ -436,10 +407,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_is_null() throws Exception {
     var filter = FilterBuilder.isNull("deathDate");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -458,10 +426,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_is_not_null() throws Exception {
     var filter = FilterBuilder.isNotNull("deathDate");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -480,10 +445,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_is_empty() throws Exception {
     var filter = FilterBuilder.isEmpty("books");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -502,10 +464,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_is_not_empty() throws Exception {
     var filter = FilterBuilder.isNotEmpty("books");
     var result = mockMvc.perform(MockMvcRequestBuilders.get(authorFilterRequest(filter)))
@@ -524,10 +483,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_in() throws Exception {
     var filter = FilterBuilder.in(
         "name",
@@ -550,10 +506,7 @@ class ReadyOnlyDalControllerTest {
   }
 
   @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
-  )
+  @WithMockUser(value = "ADMIN", authorities = {"DEVELOPER", "AUTHOR_READ"})
   void test_exists() throws Exception {
     var filter = FilterBuilder.exists(
         FilterBuilder.like("books.title", "*Barone*")
@@ -573,7 +526,6 @@ class ReadyOnlyDalControllerTest {
         () -> assertTrue(authors.stream().allMatch(existsPredicate))
     );
   }
-
 
   private String authorFilterRequest(Filter filter) {
     return String.format("%s?q=%s", AuthorReadyOnlyDalController.PATH, filter.generate());

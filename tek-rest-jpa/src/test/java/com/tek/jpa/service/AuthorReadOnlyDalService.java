@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class AuthorReadOnlyDalService extends ReadOnlyDalService<Author, Integer> {
 
   @Override
-  public DalRepository<Author, Integer> repository() {
+  public DalRepository<Author, Integer> dalRepository() {
     return context.getBean(AuthorRepository.class);
   }
 

@@ -34,14 +34,14 @@ class WritableDalServiceTest {
   private AuthorWritableDalService dalService;
 
   //------------------------------------- Create methods -------------------------------------------
+
   @Test
   @WithMockUser(
       value = "USER",
       authorities = {"USER", "AUTHOR_READ"}
   )
   void test_method_argument_not_valid_exception() {
-    var author = new Author();
-    assertThrows(MethodArgumentNotValidException.class, () -> dalService.create(author));
+    assertThrows(MethodArgumentNotValidException.class, () -> dalService.create(new Author()));
   }
 
   @Test
@@ -49,7 +49,7 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"USER", "AUTHOR_READ"}
   )
-  void test_create_with_user_view() throws MethodArgumentNotValidException {
+  void test_create_with_user_view() {
     var author = Author.builder()
         .name("marco")
         .surname("pagan")
@@ -67,7 +67,7 @@ class WritableDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
-  void test_create_with_developer_view() throws MethodArgumentNotValidException {
+  void test_create_with_developer_view() {
     var author = Author.builder()
         .name("marco")
         .surname("pagan")
@@ -81,6 +81,7 @@ class WritableDalServiceTest {
   }
 
   //------------------------------------- Read methods ---------------------------------------------
+
   @Test
   @WithMockUser(
       value = "USER",
@@ -95,7 +96,7 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"USER", "AUTHOR_READ"}
   )
-  void test_findById_with_user_view() throws EntityNotFoundException {
+  void test_findById_with_user_view() {
     assertNull(dalService.findById(1).getId());
   }
 
@@ -104,7 +105,7 @@ class WritableDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
-  void test_findById_with_developer_view() throws EntityNotFoundException {
+  void test_findById_with_developer_view() {
     assertNotNull(dalService.findById(1).getId());
   }
 
@@ -135,4 +136,14 @@ class WritableDalServiceTest {
         () -> assertTrue(authors.stream().allMatch(notNullIdPredicate))
     );
   }
+
+  //------------------------------------- Delete methods -------------------------------------------
+  @Test
+  @WithMockUser(value = "ADMIN")
+  void test_delete() {
+    assertNotNull(dalService.findById(1));
+    dalService.deleteById(1);
+    assertThrows(EntityNotFoundException.class, () -> dalService.findById(1));
+  }
+
 }

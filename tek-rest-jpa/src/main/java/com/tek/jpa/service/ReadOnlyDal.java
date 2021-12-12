@@ -1,7 +1,6 @@
 package com.tek.jpa.service;
 
 import com.tek.jpa.repository.DalRepository;
-import com.tek.rest.shared.exception.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +17,10 @@ public interface ReadOnlyDal<E, I> {
 
   EntityManager entityManager();
 
-  DalRepository<E, I> repository();
+  DalRepository<E, I> dalRepository();
 
   Page<E> findAll(Specification<E> specification, Pageable pageable);
 
-  E findById(I id) throws EntityNotFoundException;
+  E findById(I id);
 
 }

@@ -4,6 +4,7 @@ import com.tek.jpa.service.WritableDal;
 import java.lang.reflect.Method;
 import javax.annotation.PostConstruct;
 import javax.validation.Validator;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -20,24 +21,26 @@ public abstract class WritableDalService<E, I> extends ReadOnlyDalService<E, I>
   private SpringValidatorAdapter validatorAdapter;
 
   @PostConstruct
-  private void writableDalServiceSetup() throws NoSuchMethodException {
+  @SneakyThrows
+  private void writableDalServiceSetup() {
     createMethod = getClass().getMethod("create", Object.class);
     validatorAdapter = new SpringValidatorAdapter(validator);
   }
 
   @Override
-  public E create(E entity) throws MethodArgumentNotValidException {
+  @SneakyThrows
+  public E create(E entity) {
     final var authorizedEntity = select.apply(entity);
     var validation = new BeanPropertyBindingResult(null, getEntityType().getName());
     validatorAdapter.validate(authorizedEntity, validation);
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
     }
-    return select.apply(repository().save(authorizedEntity));
+    return select.apply(dalRepository().save(authorizedEntity));
   }
 
   @Override
   public void deleteById(I id) {
-    repository().deleteById(id);
+    dalRepository().deleteById(id);
   }
 }

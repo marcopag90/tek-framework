@@ -36,7 +36,7 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
   protected abstract Class<?> selectFields();
 
   @PostConstruct
-  private void setup() {
+  private void readOnlyDalServiceSetup() {
     entityClass = getEntityType().getJavaType();
     repository = repository();
     objectMapper = context.getBean(ObjectMapper.class)
@@ -45,15 +45,14 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
 
   @Override
   public Page<E> findAll(Specification<E> specification, Pageable pageable) {
-    final var page = repository.findAll(specification, pageable);
-    return page.map(select);
+    return repository.findAll(specification, pageable).map(select);
   }
 
   @Override
   public E findById(I id) throws EntityNotFoundException {
-    final var entity = repository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(entityClass, id));
-    return select.apply(entity);
+    return select.apply(
+        repository.findById(id).orElseThrow(() -> new EntityNotFoundException(entityClass, id))
+    );
   }
 
   protected final UnaryOperator<E> select = entity -> {
@@ -69,7 +68,7 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
   };
 
   @SuppressWarnings("unchecked")
-  private EntityType<E> getEntityType() {
+  protected final EntityType<E> getEntityType() {
     var resolvableType = ResolvableType.forClass(getClass()).as(BaseReadOnlyDalService.class);
     return entityManager().getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }

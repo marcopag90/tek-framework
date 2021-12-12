@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
+//TODO check if this is needed
 public class DalRepositoryImpl<T, I> extends SimpleJpaRepository<T, I> {
 
   public DalRepositoryImpl(

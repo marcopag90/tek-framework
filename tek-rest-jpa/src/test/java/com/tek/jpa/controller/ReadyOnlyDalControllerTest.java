@@ -44,7 +44,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-class BaseReadyOnlyDalControllerTest {
+class ReadyOnlyDalControllerTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper mapper;

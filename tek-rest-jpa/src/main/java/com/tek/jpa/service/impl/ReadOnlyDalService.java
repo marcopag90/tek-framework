@@ -4,7 +4,7 @@ package com.tek.jpa.service.impl;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.repository.DalRepository;
-import com.tek.jpa.service.ReadOnlyDalService;
+import com.tek.jpa.service.ReadOnlyDal;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
 import java.util.function.UnaryOperator;
@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
-public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService<E, I> {
+public abstract class ReadOnlyDalService<E, I> implements ReadOnlyDal<E, I> {
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
@@ -69,7 +69,7 @@ public abstract class BaseReadOnlyDalService<E, I> implements ReadOnlyDalService
 
   @SuppressWarnings("unchecked")
   protected final EntityType<E> getEntityType() {
-    var resolvableType = ResolvableType.forClass(getClass()).as(BaseReadOnlyDalService.class);
+    var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
     return entityManager().getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }
 

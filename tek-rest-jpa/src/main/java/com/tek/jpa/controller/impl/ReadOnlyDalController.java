@@ -1,7 +1,8 @@
 package com.tek.jpa.controller.impl;
 
-import com.tek.jpa.controller.ReadOnlyDalController;
-import com.tek.jpa.service.impl.BaseReadOnlyDalService;
+import com.tek.jpa.controller.ReadOnlyDalApi;
+import com.tek.jpa.service.ReadOnlyDal;
+import com.tek.jpa.service.impl.ReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
  *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API
  *   </li>
  *   <li>
- *     implement the method <i>getService()</i> to define the {@link com.tek.jpa.service.ReadOnlyDalService} to use.
+ *     implement the method <i>getService()</i> to define the {@link ReadOnlyDal} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>
@@ -44,12 +45,12 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class BaseReadOnlyDalController<E, I> implements ReadOnlyDalController<E, I> {
+public abstract class ReadOnlyDalController<E, I> implements ReadOnlyDalApi<E, I> {
 
   @Autowired
   protected ApplicationContext context;
 
-  private BaseReadOnlyDalService<E, I> service;
+  private ReadOnlyDalService<E, I> service;
 
   @PostConstruct
   void setup() {

@@ -1,6 +1,6 @@
 package com.tek.jpa.service.impl;
 
-import com.tek.jpa.service.WritableDalService;
+import com.tek.jpa.service.WritableDal;
 import java.lang.reflect.Method;
 import javax.annotation.PostConstruct;
 import javax.validation.Validator;
@@ -10,8 +10,8 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-public abstract class BaseWritableDalService<E, I> extends BaseReadOnlyDalService<E, I>
-    implements WritableDalService<E, I> {
+public abstract class WritableDalService<E, I> extends ReadOnlyDalService<E, I>
+    implements WritableDal<E, I> {
 
   @Autowired
   protected Validator validator;
@@ -36,4 +36,8 @@ public abstract class BaseWritableDalService<E, I> extends BaseReadOnlyDalServic
     return select.apply(repository().save(authorizedEntity));
   }
 
+  @Override
+  public void deleteById(I id) {
+    repository().deleteById(id);
+  }
 }

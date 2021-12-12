@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.lang.NonNull;
 
 /**
  * <ul>
@@ -47,7 +48,10 @@ public class TekRestJpaModuleConfiguration extends TekModuleConfiguration {
   static class HibernateConditional implements Condition {
 
     @Override
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+    public boolean matches(
+        @NonNull ConditionContext context,
+        @NonNull AnnotatedTypeMetadata metadata
+    ) {
       try {
         Class.forName("org.hibernate.internal.SessionImpl");
         return true;

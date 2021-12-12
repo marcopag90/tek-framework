@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.lang.NonNull;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -51,8 +52,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = Exception.class)
   @Order
   public ResponseEntity<Object> handleGenericException(
-      Exception ex,
-      WebRequest request
+      @NonNull Exception ex,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,10 +73,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleMissingServletRequestParameter(
-      MissingServletRequestParameterException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull MissingServletRequestParameterException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
@@ -93,10 +94,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
-      HttpMediaTypeNotSupportedException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull HttpMediaTypeNotSupportedException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     StringBuilder builder = new StringBuilder();
     builder.append(ex.getContentType());
@@ -118,10 +119,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
-      MethodArgumentNotValidException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull MethodArgumentNotValidException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
@@ -141,8 +142,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(javax.validation.ConstraintViolationException.class)
   protected ResponseEntity<Object> handleConstraintViolation(
-      javax.validation.ConstraintViolationException ex,
-      WebRequest request
+      @NonNull javax.validation.ConstraintViolationException ex,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setRequest(request);
@@ -161,8 +162,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(EntityNotFoundException.class)
   protected ResponseEntity<Object> handleEntityNotFound(
-      EntityNotFoundException ex,
-      WebRequest request
+      @NonNull EntityNotFoundException ex,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.NOT_FOUND);
@@ -180,10 +181,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(
-      HttpMessageNotReadableException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull HttpMessageNotReadableException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     final var srvReq = (ServletWebRequest) request;
     log.debug("{} to {}", srvReq.getHttpMethod(), srvReq.getRequest().getServletPath());
@@ -202,10 +203,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotWritable(
-      HttpMessageNotWritableException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull HttpMessageNotWritableException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -222,10 +223,10 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @Override
   protected ResponseEntity<Object> handleNoHandlerFoundException(
-      NoHandlerFoundException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request
+      @NonNull NoHandlerFoundException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatus status,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
@@ -246,8 +247,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
   protected ResponseEntity<Object> handleEntityNotFound(
-      javax.persistence.EntityNotFoundException ex,
-      WebRequest request
+      @NonNull javax.persistence.EntityNotFoundException ex,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.NOT_FOUND);
@@ -263,8 +264,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-      MethodArgumentTypeMismatchException ex,
-      WebRequest request
+      @NonNull MethodArgumentTypeMismatchException ex,
+      @NonNull WebRequest request
   ) {
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);

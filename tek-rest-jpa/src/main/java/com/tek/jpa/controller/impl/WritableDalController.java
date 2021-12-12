@@ -1,6 +1,6 @@
 package com.tek.jpa.controller.impl;
 
-import com.tek.jpa.controller.WritableDalController;
+import com.tek.jpa.controller.WritableDalApi;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -35,16 +35,8 @@ import com.tek.jpa.controller.WritableDalController;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class BaseWritableDalController<E, I> implements WritableDalController<E, I> {
+public abstract class WritableDalController<E, I> extends ReadOnlyDalController<E, I> implements
+    WritableDalApi<E, I> {
 
-  //  @Override
-//  public E create(E entity) {
-//    return repository.save(entity);
-//  }
-//
-//  @Override
-//  public I delete(I id) {
-//    repository.deleteById(id);
-//    return id;
-//  }
+
 }

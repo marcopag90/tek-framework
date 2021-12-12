@@ -8,13 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
- * Service interface for jpa-based entities, allowing read-only crud operations.
+ * Interface for jpa-based entities, allowing read-only crud operations.
  *
  * @param <E> : a concrete {@link javax.persistence.Entity}
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface ReadOnlyDalService<E, I> {
+public interface ReadOnlyDal<E, I> {
 
   EntityManager entityManager();
 

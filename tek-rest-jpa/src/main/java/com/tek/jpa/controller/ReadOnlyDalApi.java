@@ -2,7 +2,6 @@ package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
-import com.tek.jpa.service.impl.ReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import com.tek.rest.shared.swagger.ApiPageable;
 import com.turkraft.springfilter.boot.Filter;
@@ -23,19 +22,15 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 public interface ReadOnlyDalApi<E, I> {
 
-  String CAN_READ = "this.readAuthorized()";
-
   boolean readAuthorized();
 
-  ReadOnlyDalService<E, I> getService();
-
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize(CAN_READ)
+  @PreAuthorize("this.readAuthorized()")
   @ApiPageable
   Page<E> findAll(@Filter(parameterName = FILTER_NAME) Specification<E> spec, Pageable page);
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize(CAN_READ)
+  @PreAuthorize("this.readAuthorized()")
   E findById(@PathVariable("id") I id) throws EntityNotFoundException;
 
 }

@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 public interface WritableDalApi<E, I> extends ReadOnlyDalApi<E, I> {
 
-  String CAN_CREATE = "this.createAuthorized()";
-  String CAN_UPDATE = "this.updateAuthorized()";
-  String CAN_DELETE = "this.deleteAuthorized()";
-
   boolean createAuthorized();
 
   boolean updateAuthorized();
@@ -32,11 +28,11 @@ public interface WritableDalApi<E, I> extends ReadOnlyDalApi<E, I> {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
-  @PreAuthorize(CAN_CREATE)
+  @PreAuthorize("this.createAuthorized()")
   E create(@RequestBody E entity);
 
   @DeleteMapping("/{id}")
-  @PreAuthorize(CAN_DELETE)
+  @PreAuthorize("this.deleteAuthorized()")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
   I deleteById(@PathVariable I id);
 }

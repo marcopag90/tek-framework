@@ -1,7 +1,6 @@
 package com.tek.jpa.controller.impl;
 
 import com.tek.jpa.controller.ReadOnlyDalApi;
-import com.tek.jpa.service.ReadOnlyDal;
 import com.tek.jpa.service.impl.ReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import javax.annotation.PostConstruct;
@@ -20,14 +19,14 @@ import org.springframework.data.jpa.domain.Specification;
  *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API
  *   </li>
  *   <li>
- *     implement the method <i>getService()</i> to define the {@link ReadOnlyDal} to use.
+ *     implement the method <i>getReadOnlyDalService()</i> to define the {@link ReadOnlyDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>
  * <pre class="code">
  * {@literal @RestController}
  * {@literal @RequestMapping}("books")
- * class BookController extends BaseReadOnlyDalController{@literal <}Book, Long{@literal >} {
+ * class BookController extends ReadOnlyDalController{@literal <}Book, Long{@literal >} {
  *
  *   {@literal @Override}
  *   public boolean readAuthorized() {
@@ -35,7 +34,7 @@ import org.springframework.data.jpa.domain.Specification;
  *   }
  *
  *   {@literal @Override}
- *   public BaseReadOnlyDalService{@literal <}Book, Long{@literal >} getService() {
+ *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} getService() {
  *     ...
  *   }
  * }
@@ -50,11 +49,13 @@ public abstract class ReadOnlyDalController<E, I> implements ReadOnlyDalApi<E, I
   @Autowired
   protected ApplicationContext context;
 
+  protected abstract ReadOnlyDalService<E, I> getReadOnlyDalService();
+
   private ReadOnlyDalService<E, I> service;
 
   @PostConstruct
   void setup() {
-    this.service = getService();
+    this.service = getReadOnlyDalService();
   }
 
   @Override

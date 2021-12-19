@@ -39,8 +39,8 @@ public class EntityManagerUtils {
    *   private Author author;
    * }
    * </pre>
-   * <p>The path <b>books.id.name</b> describes a path starting from the Author class and
-   * the tokens to walk down this path are "books", "id", "name".
+   * <p>The path <b>books.author.name</b> describes a path starting from the Author class and
+   * the tokens to walk down this path are "books", "author", "name".
    *
    * @param entityPath:  the entity path
    * @param managedType: the {@link ManagedType} of the entity

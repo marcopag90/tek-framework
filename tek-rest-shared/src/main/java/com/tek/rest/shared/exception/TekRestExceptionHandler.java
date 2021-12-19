@@ -6,6 +6,7 @@ import com.tek.rest.shared.dto.ApiError.ApiErrorDto;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -64,6 +65,11 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       dto.setMessage(ex.getMessage());
     }
     return buildResponseEntity(new ApiError(dto));
+  }
+
+  //TODO handleIllegalArgumentException
+  public ResponseEntity<Object> handleIllegalArgumentException() {
+    throw new NotImplementedException();
   }
 
   /**

@@ -1,5 +1,6 @@
 package com.tek.jpa.controller;
 
+import java.io.Serializable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface WritableDalApi<E, I> extends ReadOnlyDalApi<E, I> {
+public interface WritableDalApi<E extends Serializable, I extends Serializable>
+    extends ReadOnlyDalApi<E, I> {
 
   boolean createAuthorized();
 

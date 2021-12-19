@@ -3,7 +3,7 @@ package com.tek.jpa.controller;
 import com.tek.jpa.controller.impl.ReadOnlyDalController;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.service.BeerReadOnlyDalService;
-import com.tek.jpa.service.impl.ReadOnlyDalService;
+import com.tek.jpa.service.ReadOnlyDalService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +14,7 @@ public class BeerReadOnlyDalController extends ReadOnlyDalController<Beer, Long>
   public static final String PATH = "/BeerReadOnlyCrudController";
 
   @Override
-  public ReadOnlyDalService<Beer, Long> getReadOnlyDalService() {
+  public ReadOnlyDalService<Beer, Long> getDalService() {
     return context.getBean(BeerReadOnlyDalService.class);
   }
 

@@ -3,6 +3,7 @@ package com.tek.jpa.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tek.jpa.domain.Author.Views.DeveloperView;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +34,7 @@ import org.hibernate.annotations.OnDeleteAction;
     name = "Authors.full",
     includeAllAttributes = true
 )
-public class Author {
+public class Author implements Serializable {
 
   @Id
   @GeneratedValue

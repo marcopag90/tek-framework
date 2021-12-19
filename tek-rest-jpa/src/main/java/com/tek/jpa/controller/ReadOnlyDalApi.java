@@ -4,6 +4,7 @@ import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
 import com.tek.rest.shared.swagger.ApiPageable;
 import com.turkraft.springfilter.boot.Filter;
+import java.io.Serializable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,10 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
  * Interface to provide a read-only <i>CRUD</i> JPA Rest API.
  *
  * @param <E> : a concrete {@link javax.persistence.Entity}
- * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public interface ReadOnlyDalApi<E, I> {
+public interface ReadOnlyDalApi<E extends Serializable, I extends Serializable> {
 
   boolean readAuthorized();
 

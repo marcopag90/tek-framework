@@ -1,13 +1,17 @@
 package com.tek.jpa.controller.impl;
 
 import com.tek.jpa.controller.ReadOnlyDalApi;
-import com.tek.jpa.service.impl.ReadOnlyDalService;
+import com.tek.jpa.service.ReadOnlyDalService;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.ClassUtils;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -43,18 +47,21 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class ReadOnlyDalController<E, I> implements ReadOnlyDalApi<E, I> {
+public abstract class ReadOnlyDalController<E extends Serializable, I extends Serializable>
+    implements ReadOnlyDalApi<E, I> {
+
+  protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
   @Autowired
   protected ApplicationContext context;
 
-  protected abstract ReadOnlyDalService<E, I> getReadOnlyDalService();
+  protected abstract ReadOnlyDalService<E, I> getDalService();
 
   private ReadOnlyDalService<E, I> dalService;
 
   @PostConstruct
   void setup() {
-    this.dalService = getReadOnlyDalService();
+    this.dalService = getDalService();
   }
 
   @Override

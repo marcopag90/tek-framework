@@ -3,7 +3,7 @@ package com.tek.jpa.controller;
 import com.tek.jpa.controller.impl.ReadOnlyDalController;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.service.AuthorReadOnlyDalService;
-import com.tek.jpa.service.impl.ReadOnlyDalService;
+import com.tek.jpa.service.ReadOnlyDalService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ public class AuthorReadyOnlyDalController extends ReadOnlyDalController<Author, 
   }
 
   @Override
-  public ReadOnlyDalService<Author, Integer> getReadOnlyDalService() {
+  public ReadOnlyDalService<Author, Integer> getDalService() {
     return context.getBean(AuthorReadOnlyDalService.class);
   }
 }

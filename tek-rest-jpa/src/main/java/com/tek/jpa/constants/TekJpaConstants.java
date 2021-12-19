@@ -7,7 +7,8 @@ package com.tek.jpa.constants;
  */
 public class TekJpaConstants {
 
-  private TekJpaConstants() {}
+  private TekJpaConstants() {
+  }
 
   /**
    * Default packages to scan by Spring

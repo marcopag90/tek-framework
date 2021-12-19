@@ -1,13 +1,9 @@
 package com.tek.jpa.controller.impl;
 
 import com.tek.jpa.controller.WritableDalApi;
-import com.tek.jpa.service.impl.WritableDalService;
+import com.tek.jpa.service.WritableDalService;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -67,33 +63,22 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class WritableDalController<E, I> implements WritableDalApi<E, I> {
+public abstract class WritableDalController<E extends Serializable, I extends Serializable>
+    extends ReadOnlyDalController<E, I> implements WritableDalApi<E, I> {
 
-  @Autowired
-  protected ApplicationContext context;
-
-  protected abstract WritableDalService<E, I> getWritableDalService();
+  protected abstract WritableDalService<E, I> getDalService();
 
   private WritableDalService<E, I> dalService;
 
+  @Override
   @PostConstruct
   void setup() {
-    this.dalService = getWritableDalService();
+    this.dalService = getDalService();
   }
 
   @Override
   public E create(E entity) {
     return dalService.create(entity);
-  }
-
-  @Override
-  public Page<E> findAll(Specification<E> spec, Pageable page) {
-    return dalService.findAll(spec, page);
-  }
-
-  @Override
-  public E findById(I id) {
-    return dalService.findById(id);
   }
 
   @Override

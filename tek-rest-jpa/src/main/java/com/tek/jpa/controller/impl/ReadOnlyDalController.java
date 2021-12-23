@@ -55,13 +55,13 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
   @Autowired
   protected ApplicationContext context;
 
-  protected abstract ReadOnlyDalService<E, I> getDalService();
+  protected abstract ReadOnlyDalService<E, I> dalService();
 
   private ReadOnlyDalService<E, I> dalService;
 
   @PostConstruct
   void setup() {
-    this.dalService = getDalService();
+    this.dalService = dalService();
   }
 
   @Override

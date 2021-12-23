@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.domain.Author;
+import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;

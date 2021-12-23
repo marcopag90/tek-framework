@@ -1,15 +1,18 @@
 package com.tek.jpa.service;
 
-import com.tek.rest.shared.exception.EntityNotFoundException;
+import com.tek.jpa.repository.WritableDalRepository;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.SingularAttribute;
 import javax.validation.Validator;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -23,12 +26,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public abstract class WritableDalService<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalService<E, I> {
 
-  @Autowired
-  protected Validator validator;
-
   private Method createMethod;
-  private Method updateMethod;
-  private SpringValidatorAdapter validatorAdapter;
+  private Method patchMethod;
+
+  protected SpringValidatorAdapter validatorAdapter;
 
   @Override
   @PostConstruct
@@ -36,34 +37,94 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
   void setup() {
     super.setup();
     createMethod = getClass().getMethod("create", Serializable.class);
-    updateMethod = getClass().getMethod("update", Serializable.class, Map.class);
-    validatorAdapter = new SpringValidatorAdapter(validator);
+    patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);
+    validatorAdapter = new SpringValidatorAdapter(context.getBean(Validator.class));
   }
+
+  protected abstract WritableDalRepository<E, I> dalRepository();
 
   @SneakyThrows
   public E create(E entity) {
-    final var authorizedEntity = authorizeEntity.apply(entity);
+    final var entityView = this.entityView.apply(entity);
     final var validation = new BeanPropertyBindingResult(null, getEntityType().getName());
-    validatorAdapter.validate(authorizedEntity, validation);
+    validatorAdapter.validate(entityView, validation);
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
     }
-    final var createdEntity = dalRepository().save(authorizedEntity);
-    return authorizeEntity.apply(createdEntity);
+    final var savedEntity = dalRepository().create(entityView);
+    return this.entityView.apply(savedEntity);
   }
 
+  //TODO tests
   @SneakyThrows
-  public E update(I id, Map<String, Serializable> properties) {
-    final var repositoryEntity = dalRepository().findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(entityClass, id));
+  public E update(I id, Map<String, Serializable> properties, final Serializable version) {
     properties.keySet().forEach(k -> entityManagerUtils.validatePath(k, getEntityType()));
-    if (authorizedView() != null) {
-
+    final var entityType = getEntityType();
+    final var updatableProperties = sanitizeProperties(properties, entityType.getJavaType());
+    SingularAttribute<? super E, ?> versionAttribute = null;
+    if (entityType.hasVersionAttribute()) {
+      if (version == null) {
+        final var result = new BeanPropertyBindingResult(null, entityType.getName());
+        result.addError(new FieldError(
+            entityType.getName(),
+            "version",
+            null,
+            false,
+            null,
+            null,
+            "This entity requires a version to be updated"
+        ));
+        throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 2), result);
+      }
+      versionAttribute = getVersionAttribute(entityType);
     }
-    return null;
+    final var entity = findById(id);
+    final var wrapper = PropertyAccessorFactory.forBeanPropertyAccess(entity);
+    final var result = new BeanPropertyBindingResult(entity, entity.getClass().getName());
+    if (versionAttribute != null) {
+      final var storedVersion = wrapper.getPropertyValue(versionAttribute.getName());
+      if (storedVersion != null) {
+        final var convertedVersion = wrapper.convertIfNecessary(version, storedVersion.getClass());
+        if (!storedVersion.equals(convertedVersion)) {
+          result.addError(new FieldError(
+              entity.getClass().getName(),
+              "version",
+              convertedVersion,
+              false,
+              null,
+              null,
+              "The currently stored version (" + storedVersion + ") doesn't match!"
+          ));
+          throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 2), result);
+        }
+      }
+    }
+    wrapper.setAutoGrowNestedPaths(true);
+    wrapper.setPropertyValues(updatableProperties);
+    validatorAdapter.validate(entity, result);
+    if (result.hasErrors()) {
+      throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
+    }
+    final var savedEntity = dalRepository().update(entity);
+    return entityView.apply(savedEntity);
   }
 
   public void deleteById(I id) {
     dalRepository().deleteById(id);
+  }
+
+  @SuppressWarnings("squid:S1452")
+  protected final SingularAttribute<? super E, ?> getVersionAttribute(EntityType<E> entityType) {
+    return entityType.getSingularAttributes().stream()
+        .filter(SingularAttribute::isVersion).findFirst()
+        .orElse(null);
+  }
+
+  //TODO remove from properties values not allowed from the current entity view in a sneaky way
+  private Map<String, Serializable> sanitizeProperties(
+      Map<String, Serializable> properties,
+      Class<E> javaType
+  ) {
+    return properties;
   }
 }

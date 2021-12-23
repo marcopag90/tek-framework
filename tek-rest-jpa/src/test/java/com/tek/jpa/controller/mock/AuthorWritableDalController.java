@@ -1,9 +1,9 @@
-package com.tek.jpa.controller;
+package com.tek.jpa.controller.mock;
 
 import com.tek.jpa.controller.impl.WritableDalController;
 import com.tek.jpa.domain.Author;
-import com.tek.jpa.service.AuthorWritableDalService;
 import com.tek.jpa.service.WritableDalService;
+import com.tek.jpa.service.mock.AuthorWritableDalService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +39,7 @@ public class AuthorWritableDalController extends WritableDalController<Author, I
   }
 
   @Override
-  protected WritableDalService<Author, Integer> getDalService() {
+  protected WritableDalService<Author, Integer> dalService() {
     return context.getBean(AuthorWritableDalService.class);
   }
 }

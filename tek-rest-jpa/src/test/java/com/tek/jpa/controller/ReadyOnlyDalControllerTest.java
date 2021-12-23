@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Comparators;
 import com.tek.jpa.TekRestJpaApplication;
+import com.tek.jpa.controller.mock.AuthorReadyOnlyDalController;
+import com.tek.jpa.controller.mock.BeerReadOnlyDalController;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.repository.AuthorRepository;

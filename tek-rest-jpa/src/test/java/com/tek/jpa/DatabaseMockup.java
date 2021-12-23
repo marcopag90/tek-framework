@@ -4,9 +4,14 @@ import com.github.javafaker.Faker;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.domain.Book;
+import com.tek.jpa.domain.Project;
+import com.tek.jpa.domain.Store;
+import com.tek.jpa.domain.Store.Id;
 import com.tek.jpa.repository.AuthorRepository;
 import com.tek.jpa.repository.BeerRepository;
 import com.tek.jpa.repository.BookRepository;
+import com.tek.jpa.repository.ProjectRepository;
+import com.tek.jpa.repository.StoreRepository;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -22,12 +27,17 @@ public class DatabaseMockup implements CommandLineRunner {
   private final AuthorRepository authorRepository;
   private final BookRepository bookRepository;
   private final BeerRepository beerRepository;
+  private final StoreRepository storeRepository;
+  private final ProjectRepository projectRepository;
 
   @Override
   public void run(String... args) {
     createAuthors();
     createBrewery();
+    createStores();
+    createProjects();
   }
+
 
   private void createAuthors() {
     var calvino = Author.builder()
@@ -88,4 +98,18 @@ public class DatabaseMockup implements CommandLineRunner {
     beerRepository.saveAll(brewery);
   }
 
+  private void createStores() {
+    storeRepository.save(Store.builder().
+        id(new Id("Mediaworld", 1))
+        .build()
+    );
+  }
+
+  private void createProjects() {
+    projectRepository.save(Project.builder()
+        .name("TekFramework")
+        .type("Java")
+        .build()
+    );
+  }
 }

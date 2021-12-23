@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.TekRestJpaApplication;
+import com.tek.jpa.controller.mock.AuthorWritableDalController;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.repository.AuthorRepository;
 import com.tek.jpa.repository.BeerRepository;

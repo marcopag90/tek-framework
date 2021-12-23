@@ -66,14 +66,14 @@ import javax.annotation.PostConstruct;
 public abstract class WritableDalController<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalController<E, I> implements WritableDalApi<E, I> {
 
-  protected abstract WritableDalService<E, I> getDalService();
+  protected abstract WritableDalService<E, I> dalService();
 
   private WritableDalService<E, I> dalService;
 
   @Override
   @PostConstruct
   void setup() {
-    this.dalService = getDalService();
+    this.dalService = dalService();
   }
 
   @Override

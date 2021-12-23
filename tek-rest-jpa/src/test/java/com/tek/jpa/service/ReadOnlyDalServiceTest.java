@@ -8,6 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.domain.Author;
+import com.tek.jpa.domain.Project.ProjectId;
+import com.tek.jpa.domain.Store.Id;
+import com.tek.jpa.service.mock.AuthorReadOnlyDalService;
+import com.tek.jpa.service.mock.ProejctReadOnlyDalService;
+import com.tek.jpa.service.mock.StoreReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;
@@ -30,8 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ReadOnlyDalServiceTest {
 
-  @Autowired
-  private AuthorReadOnlyDalService dalService;
+  @Autowired private AuthorReadOnlyDalService authorReadOnlyDalService;
+  @Autowired private StoreReadOnlyDalService storeReadOnlyDalService;
+  @Autowired private ProejctReadOnlyDalService proejctReadOnlyDalService;
 
   @Test
   @WithMockUser(
@@ -39,7 +45,7 @@ class ReadOnlyDalServiceTest {
       authorities = {"USER", "AUTHOR_READ"}
   )
   void test_entity_not_found_exception() {
-    assertThrows(EntityNotFoundException.class, () -> dalService.findById(100));
+    assertThrows(EntityNotFoundException.class, () -> authorReadOnlyDalService.findById(100));
   }
 
   @Test
@@ -48,7 +54,7 @@ class ReadOnlyDalServiceTest {
       authorities = {"USER", "AUTHOR_READ"}
   )
   void test_findById_with_user_view() {
-    assertNull(dalService.findById(1).getId());
+    assertNull(authorReadOnlyDalService.findById(1).getId());
   }
 
   @Test
@@ -57,7 +63,25 @@ class ReadOnlyDalServiceTest {
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
   void test_findById_with_developer_view() {
-    assertNotNull(dalService.findById(1).getId());
+    assertNotNull(authorReadOnlyDalService.findById(1).getId());
+  }
+
+  @Test
+  @WithMockUser(
+      value = "ADMIN",
+      authorities = {"DEVELOPER", "AUTHOR_READ"}
+  )
+  void test_findById_with_embedded_id() {
+    assertNotNull(storeReadOnlyDalService.findById(new Id("Mediaworld", 1)));
+  }
+
+  @Test
+  @WithMockUser(
+      value = "ADMIN",
+      authorities = {"DEVELOPER", "AUTHOR_READ"}
+  )
+  void test_findById_with_idClass() {
+    assertNotNull(proejctReadOnlyDalService.findById(new ProjectId("TekFramework", "Java")));
   }
 
   @Test
@@ -66,7 +90,7 @@ class ReadOnlyDalServiceTest {
       authorities = {"USER", "AUTHOR_READ"}
   )
   void test_findAll_with_user_view() {
-    var authors = dalService.findAll(null, PageRequest.of(0, 20));
+    var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));
     Predicate<Author> nullIdPredicate = a -> a.getId() == null;
     Assertions.assertAll(
         () -> assertFalse(authors.isEmpty()),
@@ -80,7 +104,7 @@ class ReadOnlyDalServiceTest {
       authorities = {"DEVELOPER", "AUTHOR_READ"}
   )
   void test_findAll_with_developer_view() {
-    var authors = dalService.findAll(null, PageRequest.of(0, 20));
+    var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));
     Predicate<Author> notNullIdPredicate = a -> a.getId() != null;
     Assertions.assertAll(
         () -> assertFalse(authors.isEmpty()),

@@ -3,7 +3,7 @@ package com.tek.jpa.utils;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.tek.jpa.TekRestJpaApplication;
-import com.tek.jpa.service.AuthorWritableDalService;
+import com.tek.jpa.service.mock.AuthorWritableDalService;
 import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;

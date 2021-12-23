@@ -1,8 +1,9 @@
-package com.tek.jpa.service;
+package com.tek.jpa.service.mock;
 
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.repository.BeerRepository;
-import com.tek.jpa.repository.DalRepository;
+import com.tek.jpa.repository.ReadOnlyDalRepository;
+import com.tek.jpa.service.ReadOnlyDalService;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class BeerReadOnlyDalService extends ReadOnlyDalService<Beer, Long> {
   }
 
   @Override
-  public DalRepository<Beer, Long> dalRepository() {
-    return context.getBean(BeerRepository.class);
+  protected ReadOnlyDalRepository<Beer, Long> dalRepository() {
+    return new ReadOnlyDalRepository<>(context.getBean(BeerRepository.class)) {
+    };
   }
-
 }

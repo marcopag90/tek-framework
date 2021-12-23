@@ -2,11 +2,10 @@ package com.tek.jpa.service;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tek.jpa.repository.DalRepository;
+import com.tek.jpa.repository.ReadOnlyDalRepository;
 import com.tek.jpa.utils.EntityManagerUtils;
+import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
 import com.tek.rest.shared.exception.EntityNotFoundException;
-import com.turkraft.springfilter.FilterBuilder;
-import com.turkraft.springfilter.boot.FilterSpecification;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.UnaryOperator;
@@ -37,18 +36,16 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
-  @Autowired
-  protected ApplicationContext context;
-  @Getter
-  protected Class<E> entityClass;
+  @Autowired protected ApplicationContext context;
+  @Getter protected Class<E> entityClass;
   protected ObjectMapper objectMapper;
   protected EntityManagerUtils entityManagerUtils;
-  private DalRepository<E, I> repository;
+
+  private ReadOnlyDalRepository<E, I> repository;
 
   protected abstract EntityManager entityManager();
 
-  //TODO interface with implementation to restrict method access
-  protected abstract DalRepository<E, I> dalRepository();
+  protected abstract ReadOnlyDalRepository<E, I> dalRepository();
 
   @PostConstruct
   void setup() {
@@ -65,7 +62,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   }
 
   @Nullable
-  protected Class<?> authorizedView() {
+  protected Class<?> applyView() {
     return null;
   }
 
@@ -73,29 +70,24 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     if (where() != null) {
       specification.and(where());
     }
-    return repository.findAll(specification, pageable).map(authorizeEntity);
+    return repository.findAll(specification, pageable).map(entityView);
   }
 
-  /*
-  TODO
-     recuperare nome campo dell'id per creare la whereId
-   */
   @SneakyThrows
   public E findById(I id) {
-    final var whereId = new FilterSpecification<E>(FilterBuilder.equal("id", id));
+    final var whereId = new ByIdSpecification<>(getEntityType(), id);
     if (where() != null) {
       whereId.and(where());
     }
-    return authorizeEntity.apply(
+    return entityView.apply(
         repository.findOne(whereId).orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );
   }
 
-  protected final UnaryOperator<E> authorizeEntity = entity -> {
+  protected final UnaryOperator<E> entityView = entity -> {
     try {
       return objectMapper.readerFor(entityClass).readValue(
-          objectMapper.writerWithView(authorizedView()).withoutRootName()
-              .writeValueAsBytes(entity),
+          objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsString(entity),
           entityClass
       );
     } catch (IOException ex) {

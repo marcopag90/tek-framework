@@ -43,7 +43,7 @@
     <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     <springfox-legacy.version>2.9.2</springfox-legacy.version>
-    <spring-filter.version>2.0.4</spring-filter.version>
+    <spring-filter.version>2.0.5</spring-filter.version>
     <hibernate-types-52.version>2.12.1</hibernate-types-52.version>
     <commons-io.version>2.11.0</commons-io.version>
     <commons-beanutils.version>1.9.4</commons-beanutils.version>

@@ -53,7 +53,7 @@ public class EntityManagerUtils {
     validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), managedType);
   }
 
-  @SuppressWarnings({"rawtypes", "unchecked"})
+  @SuppressWarnings({"unchecked"})
   private void validatePath(
       @NonNull StringTokenizer pathTokenizer,
       @NonNull ManagedType<?> managedType
@@ -61,8 +61,7 @@ public class EntityManagerUtils {
     if (pathTokenizer.hasMoreTokens()) {
       final var attributePath = pathTokenizer.nextToken();
       final var attribute = managedType.getDeclaredAttribute(attributePath);
-      if (attribute instanceof PersistentAttribute) {
-        final var persistentAttribute = ((PersistentAttribute) attribute);
+      if (attribute instanceof final PersistentAttribute persistentAttribute) {
         final var persistenceType = persistentAttribute.getValueGraphType().getPersistenceType();
         final var attributeClass = persistentAttribute.getValueGraphType().getJavaType();
         if (persistenceType.equals(PersistenceType.BASIC)) {

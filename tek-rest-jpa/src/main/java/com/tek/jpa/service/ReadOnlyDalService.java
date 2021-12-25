@@ -22,6 +22,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
@@ -66,15 +67,18 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     return null;
   }
 
-  public Page<E> findAll(Specification<E> specification, Pageable pageable) {
-    if (where() != null) {
-      specification.and(where());
+  public Page<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
+    Specification<E> where;
+    if (specification != null) {
+      where = specification.and(where());
+    } else {
+      where = where();
     }
-    return repository.findAll(specification, pageable).map(entityView);
+    return repository.findAll(where, pageable).map(entityView);
   }
 
   @SneakyThrows
-  public E findById(I id) {
+  public E findById(@NonNull I id) {
     final var whereId = new ByIdSpecification<>(getEntityType(), id);
     if (where() != null) {
       whereId.and(where());

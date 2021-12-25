@@ -8,10 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.controller.mock.AuthorWritableDalController;
 import com.tek.jpa.domain.Author;
-import com.tek.jpa.repository.AuthorRepository;
-import com.tek.jpa.repository.BeerRepository;
-import com.tek.jpa.repository.BookRepository;
-import com.turkraft.springfilter.parser.Filter;
+import com.tek.jpa.repository.mock.AuthorRepository;
+import com.tek.jpa.repository.mock.BeerRepository;
+import com.tek.jpa.repository.mock.BookRepository;
 import java.time.LocalDate;
 import java.time.Month;
 import org.junit.jupiter.api.Assertions;
@@ -143,9 +142,5 @@ class WritableDalControllerTest {
         .andExpect(MockMvcResultMatchers.status().isNoContent())
         .andDo(print());
     Assertions.assertTrue(authorRepository.findById(1).isEmpty());
-  }
-
-  private String authorFilterRequest(Filter filter) {
-    return String.format("%s?q=%s", AuthorWritableDalController.PATH, filter.generate());
   }
 }

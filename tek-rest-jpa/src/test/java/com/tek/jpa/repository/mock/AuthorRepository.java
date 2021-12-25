@@ -1,6 +1,7 @@
-package com.tek.jpa.repository;
+package com.tek.jpa.repository.mock;
 
 import com.tek.jpa.domain.Author;
+import com.tek.jpa.repository.DalRepository;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

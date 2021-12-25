@@ -1,7 +1,7 @@
 package com.tek.jpa.repository;
 
 import java.io.Serializable;
-import org.springframework.stereotype.Repository;
+import org.springframework.lang.NonNull;
 
 /**
  * Repository for jpa-based entities, allowing all crud operations.
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-@Repository
 public abstract class WritableDalRepository<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalRepository<E, I> {
 
@@ -18,15 +17,15 @@ public abstract class WritableDalRepository<E extends Serializable, I extends Se
     super(repository);
   }
 
-  public E create(E entity) {
+  public E create(@NonNull E entity) {
     return repository.save(entity);
   }
 
-  public E update(E entity) {
+  public E update(@NonNull E entity) {
     return repository.save(entity);
   }
 
-  public void deleteById(I id) {
+  public void deleteById(@NonNull I id) {
     repository.deleteById(id);
   }
 

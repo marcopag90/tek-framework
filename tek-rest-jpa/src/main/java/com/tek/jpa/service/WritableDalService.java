@@ -11,6 +11,8 @@ import javax.validation.Validator;
 import lombok.SneakyThrows;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
@@ -44,7 +46,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
   protected abstract WritableDalRepository<E, I> dalRepository();
 
   @SneakyThrows
-  public E create(E entity) {
+  public E create(@NonNull E entity) {
     final var entityView = this.entityView.apply(entity);
     final var validation = new BeanPropertyBindingResult(null, getEntityType().getName());
     validatorAdapter.validate(entityView, validation);
@@ -57,7 +59,11 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
 
   //TODO tests
   @SneakyThrows
-  public E update(I id, Map<String, Serializable> properties, final Serializable version) {
+  public E update(
+      @NonNull I id,
+      @NonNull Map<String, Serializable> properties,
+      @Nullable final Serializable version
+  ) {
     properties.keySet().forEach(k -> entityManagerUtils.validatePath(k, getEntityType()));
     final var entityType = getEntityType();
     final var updatableProperties = sanitizeProperties(properties, entityType.getJavaType());
@@ -110,6 +116,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
   }
 
   public void deleteById(I id) {
+    findById(id);
     dalRepository().deleteById(id);
   }
 

@@ -45,7 +45,7 @@ public class TekRestSharedConfiguration extends TekModuleConfiguration implement
   }
 
   @Override
-  public void checkModuleConfiguration() throws TekModuleException {
+  public void checkModuleConfiguration() {
     //noop
   }
 

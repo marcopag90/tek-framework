@@ -38,7 +38,7 @@
   </distributionManagement>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
     <revision>3.0.1</revision>
     <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>

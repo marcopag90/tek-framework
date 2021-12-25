@@ -21,7 +21,7 @@ public class AuthorReadyOnlyDalController extends ReadOnlyDalController<Author, 
   }
 
   @Override
-  public ReadOnlyDalService<Author, Integer> dalService() {
+  public ReadOnlyDalService<Author, Integer> service() {
     return context.getBean(AuthorReadOnlyDalService.class);
   }
 }

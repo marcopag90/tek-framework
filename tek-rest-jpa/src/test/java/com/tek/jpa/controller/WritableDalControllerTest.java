@@ -20,6 +20,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
@@ -40,6 +41,9 @@ class WritableDalControllerTest {
   @Autowired private AuthorRepository authorRepository;
   @Autowired private BookRepository bookRepository;
   @Autowired private BeerRepository beerRepository;
+
+  @Autowired
+  ApplicationContext context;
 
   // -------------------------------------- Authorizations -----------------------------------------
 
@@ -100,8 +104,8 @@ class WritableDalControllerTest {
         .andExpect(jsonPath("$.deathDate").doesNotExist())
         .andExpect(jsonPath("$.pseudonym").doesNotExist())
         .andExpect(jsonPath("$.absolute").doesNotExist())
-        .andExpect(jsonPath("$.books").doesNotExist())
-        .andExpect(jsonPath("$.ratings").doesNotExist())
+        .andExpect(jsonPath("$.books").isEmpty())
+        .andExpect(jsonPath("$.ratings").isEmpty())
         .andDo(print());
   }
 
@@ -127,8 +131,8 @@ class WritableDalControllerTest {
         .andExpect(jsonPath("$.deathDate").doesNotExist())
         .andExpect(jsonPath("$.pseudonym").doesNotExist())
         .andExpect(jsonPath("$.absolute").doesNotExist())
-        .andExpect(jsonPath("$.books").doesNotExist())
-        .andExpect(jsonPath("$.ratings").doesNotExist())
+        .andExpect(jsonPath("$.books").isEmpty())
+        .andExpect(jsonPath("$.ratings").isEmpty())
         .andDo(print());
   }
 

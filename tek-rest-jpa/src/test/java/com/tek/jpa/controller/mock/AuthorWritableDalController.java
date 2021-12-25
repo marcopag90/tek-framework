@@ -39,7 +39,7 @@ public class AuthorWritableDalController extends WritableDalController<Author, I
   }
 
   @Override
-  protected WritableDalService<Author, Integer> dalService() {
+  protected WritableDalService<Author, Integer> service() {
     return context.getBean(AuthorWritableDalService.class);
   }
 }

@@ -11,7 +11,7 @@ import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Project.ProjectId;
 import com.tek.jpa.domain.Store.Id;
 import com.tek.jpa.service.mock.AuthorReadOnlyDalService;
-import com.tek.jpa.service.mock.ProejctReadOnlyDalService;
+import com.tek.jpa.service.mock.ProjectReadOnlyDalService;
 import com.tek.jpa.service.mock.StoreReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.util.function.Predicate;
@@ -34,7 +34,7 @@ class ReadOnlyDalServiceTest {
 
   @Autowired private AuthorReadOnlyDalService authorReadOnlyDalService;
   @Autowired private StoreReadOnlyDalService storeReadOnlyDalService;
-  @Autowired private ProejctReadOnlyDalService proejctReadOnlyDalService;
+  @Autowired private ProjectReadOnlyDalService proejctReadOnlyDalService;
 
   @Test
   @WithMockUser(

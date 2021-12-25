@@ -66,23 +66,24 @@ import javax.annotation.PostConstruct;
 public abstract class WritableDalController<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalController<E, I> implements WritableDalApi<E, I> {
 
-  protected abstract WritableDalService<E, I> dalService();
+  protected abstract WritableDalService<E, I> service();
 
-  private WritableDalService<E, I> dalService;
+  protected WritableDalService<E, I> service;
 
   @Override
   @PostConstruct
   void setup() {
-    this.dalService = dalService();
+    super.setup();
+    this.service = service();
   }
 
   @Override
   public E create(E entity) {
-    return dalService.create(entity);
+    return service.create(entity);
   }
 
   @Override
   public void deleteById(I id) {
-    dalService.deleteById(id);
+    service.deleteById(id);
   }
 }

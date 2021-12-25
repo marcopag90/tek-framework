@@ -14,7 +14,7 @@ public class BeerReadOnlyDalController extends ReadOnlyDalController<Beer, Long>
   public static final String PATH = "/BeerReadOnlyCrudController";
 
   @Override
-  public ReadOnlyDalService<Beer, Long> dalService() {
+  public ReadOnlyDalService<Beer, Long> service() {
     return context.getBean(BeerReadOnlyDalService.class);
   }
 

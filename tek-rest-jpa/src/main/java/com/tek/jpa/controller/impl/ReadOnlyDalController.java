@@ -55,22 +55,22 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
   @Autowired
   protected ApplicationContext context;
 
-  protected abstract ReadOnlyDalService<E, I> dalService();
+  protected abstract ReadOnlyDalService<E, I> service();
 
-  private ReadOnlyDalService<E, I> dalService;
+  protected ReadOnlyDalService<E, I> service;
 
   @PostConstruct
   void setup() {
-    this.dalService = dalService();
+    this.service = service();
   }
 
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {
-    return dalService.findAll(spec, pageable);
+    return service.findAll(spec, pageable);
   }
 
   @Override
   public E findById(I id) {
-    return dalService.findById(id);
+    return service.findById(id);
   }
 }

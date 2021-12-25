@@ -1,10 +1,12 @@
 package com.tek.jpa.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.repository.WritableDalRepository;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.validation.Validator;
@@ -28,22 +30,29 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public abstract class WritableDalService<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalService<E, I> {
 
-  private Method createMethod;
-  private Method patchMethod;
+  protected WritableDalRepository<E, I> repository;
+  protected final Method createMethod;
+  protected final Method patchMethod;
+  protected final SpringValidatorAdapter validatorAdapter;
 
-  protected SpringValidatorAdapter validatorAdapter;
+  protected abstract WritableDalRepository<E,I> repository();
 
-  @Override
-  @PostConstruct
-  @SneakyThrows
-  void setup() {
-    super.setup();
+  protected WritableDalService(
+      @NonNull EntityManager entityManager,
+      @NonNull ObjectMapper objectMapper,
+      @NonNull Validator validator
+  ) throws NoSuchMethodException {
+    super(entityManager, objectMapper);
     createMethod = getClass().getMethod("create", Serializable.class);
     patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);
-    validatorAdapter = new SpringValidatorAdapter(context.getBean(Validator.class));
+    validatorAdapter = new SpringValidatorAdapter(validator);
   }
 
-  protected abstract WritableDalRepository<E, I> dalRepository();
+  @PostConstruct
+  void setup() {
+    super.setup();
+    this.repository = repository();
+  }
 
   @SneakyThrows
   public E create(@NonNull E entity) {
@@ -53,7 +62,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
     }
-    final var savedEntity = dalRepository().create(entityView);
+    final var savedEntity = repository.create(entityView);
     return this.entityView.apply(savedEntity);
   }
 
@@ -111,13 +120,13 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (result.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
     }
-    final var savedEntity = dalRepository().update(entity);
+    final var savedEntity = repository.update(entity);
     return entityView.apply(savedEntity);
   }
 
   public void deleteById(I id) {
     findById(id);
-    dalRepository().deleteById(id);
+    repository.deleteById(id);
   }
 
   @SuppressWarnings("squid:S1452")

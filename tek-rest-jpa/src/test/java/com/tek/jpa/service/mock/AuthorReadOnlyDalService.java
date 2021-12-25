@@ -1,5 +1,6 @@
 package com.tek.jpa.service.mock;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Author.Views.DeveloperView;
 import com.tek.jpa.domain.Author.Views.UserView;
@@ -13,15 +14,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorReadOnlyDalService extends ReadOnlyDalService<Author, Integer> {
 
-  @Override
-  protected ReadOnlyDalRepository<Author, Integer> dalRepository() {
-    return new ReadOnlyDalRepository<>(context.getBean(AuthorRepository.class)) {
-    };
+  protected AuthorReadOnlyDalService(
+      EntityManager entityManager, ObjectMapper objectMapper
+  ) {
+    super(entityManager, objectMapper);
   }
 
   @Override
-  protected EntityManager entityManager() {
-    return context.getBean(EntityManager.class);
+  protected ReadOnlyDalRepository<Author, Integer> repository() {
+    return new ReadOnlyDalRepository<>(context.getBean(AuthorRepository.class)) {
+    };
   }
 
   @Override

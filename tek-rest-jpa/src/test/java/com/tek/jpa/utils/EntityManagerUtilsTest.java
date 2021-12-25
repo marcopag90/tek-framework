@@ -22,7 +22,7 @@ class EntityManagerUtilsTest {
 
   @Test
   void test_validate_path() {
-    final var utils = new EntityManagerUtils(dalService.entityManager());
+    final var utils = new EntityManagerUtils(dalService.entityManager);
     final var properties = List.of("name", "books", "books.author", "ratings");
     properties.forEach(
         prop -> utils.validatePath(prop, dalService.getEntityType())
@@ -31,7 +31,7 @@ class EntityManagerUtilsTest {
 
   @Test
   void test_validate_path_unknown_property() {
-    final var utils = new EntityManagerUtils(dalService.entityManager());
+    final var utils = new EntityManagerUtils(dalService.entityManager);
     final var path = "books.whatever";
     final var entityType = dalService.getEntityType();
     assertThrows(IllegalArgumentException.class, () -> utils.validatePath(path, entityType));

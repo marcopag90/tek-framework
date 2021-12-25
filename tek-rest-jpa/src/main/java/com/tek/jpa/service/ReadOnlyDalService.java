@@ -37,24 +37,45 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
-  @Autowired protected ApplicationContext context;
-  @Getter protected Class<E> entityClass;
-  protected ObjectMapper objectMapper;
+  @Autowired
+  protected ApplicationContext context;
+  @Getter
+  private Class<E> entityClass;
+
+  protected final ObjectMapper objectMapper;
   protected EntityManagerUtils entityManagerUtils;
+  protected ReadOnlyDalRepository<E, I> repository;
 
-  private ReadOnlyDalRepository<E, I> repository;
+  public final EntityManager entityManager;
+  public final UnaryOperator<E> entityView;
 
-  protected abstract EntityManager entityManager();
+  protected abstract ReadOnlyDalRepository<E, I> repository();
 
-  protected abstract ReadOnlyDalRepository<E, I> dalRepository();
+  protected ReadOnlyDalService(
+      @NonNull EntityManager entityManager,
+      @NonNull ObjectMapper objectMapper
+  ) {
+    this.entityManager = entityManager;
+    this.objectMapper = objectMapper;
+    entityView = entity -> {
+      try {
+        return objectMapper.readerFor(entityClass).readValue(
+            objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsString(entity),
+            entityClass
+        );
+      } catch (IOException ex) {
+        log.error("Error while applying function", ex);
+        return null;
+      }
+    };
+  }
 
   @PostConstruct
   void setup() {
-    entityClass = getEntityType().getJavaType();
-    entityManagerUtils = new EntityManagerUtils(entityManager());
-    repository = dalRepository();
-    objectMapper = context.getBean(ObjectMapper.class).copy()
-        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+    this.repository = repository();
+    this.entityClass = getEntityType().getJavaType();
+    this.objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+    this.entityManagerUtils = new EntityManagerUtils(entityManager);
   }
 
   @Nullable
@@ -88,21 +109,10 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     );
   }
 
-  protected final UnaryOperator<E> entityView = entity -> {
-    try {
-      return objectMapper.readerFor(entityClass).readValue(
-          objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsString(entity),
-          entityClass
-      );
-    } catch (IOException ex) {
-      log.error("Error while applying function", ex);
-      return null;
-    }
-  };
 
   @SuppressWarnings("unchecked")
   public final EntityType<E> getEntityType() {
     var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
-    return entityManager().getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
+    return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }
 }

@@ -73,9 +73,10 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       @NonNull Map<String, Serializable> properties,
       @Nullable final Serializable version
   ) {
-    properties.keySet().forEach(k -> entityManagerUtils.validatePath(k, getEntityType()));
     final var entityType = getEntityType();
-    final var updatableProperties = sanitizeProperties(properties, entityType.getJavaType());
+    for (String property: properties.keySet()) {
+      entityUtils.validatePath(property, entityType, applyView());
+    }
     SingularAttribute<? super E, ?> versionAttribute = null;
     if (entityType.hasVersionAttribute()) {
       if (version == null) {
@@ -115,7 +116,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       }
     }
     wrapper.setAutoGrowNestedPaths(true);
-    wrapper.setPropertyValues(updatableProperties);
+    wrapper.setPropertyValues(properties);
     validatorAdapter.validate(entity, result);
     if (result.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
@@ -125,8 +126,9 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
   }
 
   public void deleteById(I id) {
-    findById(id);
-    repository.deleteById(id);
+    if (findById(id) != null) {
+      repository.deleteById(id);
+    }
   }
 
   @SuppressWarnings("squid:S1452")
@@ -134,13 +136,5 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return entityType.getSingularAttributes().stream()
         .filter(SingularAttribute::isVersion).findFirst()
         .orElse(null);
-  }
-
-  //TODO remove from properties values not allowed from the current entity view in a sneaky way
-  private Map<String, Serializable> sanitizeProperties(
-      Map<String, Serializable> properties,
-      Class<E> javaType
-  ) {
-    return properties;
   }
 }

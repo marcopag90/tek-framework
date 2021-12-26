@@ -1,28 +1,34 @@
 package com.tek.jpa.utils;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.Type.PersistenceType;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.metamodel.model.domain.PersistentAttribute;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
- * Utility to enhance the {@link EntityManager} with some useful methods.
+ * Utility to work with {@link javax.persistence.Entity}
  *
  * @author MarcoPagan
  */
-public class EntityManagerUtils {
+@Slf4j
+public class EntityUtils {
 
   private static final String PATH_TOKENIZER = ".";
   private Metamodel metamodel;
 
-  private EntityManagerUtils() {
+  private EntityUtils() {
   }
 
-  public EntityManagerUtils(@NonNull EntityManager entityManager) {
+  public EntityUtils(@NonNull EntityManager entityManager) {
     this.metamodel = entityManager.getMetamodel();
   }
 
@@ -48,19 +54,24 @@ public class EntityManagerUtils {
    */
   public void validatePath(
       @NonNull String entityPath,
-      @NonNull ManagedType<?> managedType
-  ) throws IllegalArgumentException {
-    validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), managedType);
+      @NonNull ManagedType<?> managedType,
+      @Nullable Class<?> viewClass
+  ) throws IllegalArgumentException, AccessDeniedException, NoSuchFieldException {
+    validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), managedType, viewClass);
   }
 
   @SuppressWarnings({"unchecked"})
   private void validatePath(
       @NonNull StringTokenizer pathTokenizer,
-      @NonNull ManagedType<?> managedType
-  ) throws IllegalArgumentException {
+      @NonNull ManagedType<?> managedType,
+      @Nullable Class<?> viewClass
+  ) throws IllegalArgumentException, AccessDeniedException, NoSuchFieldException {
     if (pathTokenizer.hasMoreTokens()) {
       final var attributePath = pathTokenizer.nextToken();
       final var attribute = managedType.getDeclaredAttribute(attributePath);
+      if (viewClass != null) {
+        validateView(managedType, viewClass, attributePath);
+      }
       if (attribute instanceof final PersistentAttribute persistentAttribute) {
         final var persistenceType = persistentAttribute.getValueGraphType().getPersistenceType();
         final var attributeClass = persistentAttribute.getValueGraphType().getJavaType();
@@ -68,11 +79,31 @@ public class EntityManagerUtils {
           return;
         }
         if (persistenceType.equals(PersistenceType.ENTITY)) {
-          final var attributeManagedType = metamodel.managedType(attributeClass);
-          validatePath(pathTokenizer, attributeManagedType);
+          validatePath(pathTokenizer, metamodel.managedType(attributeClass), viewClass);
         } else {
           throw new NotImplementedException("Type not yet implemented " + persistenceType);
         }
+      }
+    }
+  }
+
+  private void validateView(
+      @NonNull ManagedType<?> managedType,
+      @NonNull Class<?> view,
+      @NonNull String attributePath
+  ) throws NoSuchFieldException, AccessDeniedException {
+    final var jsonView = managedType.getJavaType()
+        .getDeclaredField(attributePath)
+        .getAnnotation(JsonView.class);
+    if (jsonView != null) {
+      final var declaredView = Arrays.stream(jsonView.value()).findFirst();
+      if (declaredView.isPresent() && !declaredView.get().equals(view)) {
+        log.warn(
+            "Access denied while trying to access path {} of managed type {}",
+            attributePath,
+            managedType
+        );
+        throw new AccessDeniedException("Operation not allowed!");
       }
     }
   }

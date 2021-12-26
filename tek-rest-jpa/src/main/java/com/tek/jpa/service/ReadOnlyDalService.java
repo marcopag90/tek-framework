@@ -3,7 +3,7 @@ package com.tek.jpa.service;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
-import com.tek.jpa.utils.EntityManagerUtils;
+import com.tek.jpa.utils.EntityUtils;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   private Class<E> entityClass;
 
   protected final ObjectMapper objectMapper;
-  protected EntityManagerUtils entityManagerUtils;
+  protected EntityUtils entityUtils;
   protected ReadOnlyDalRepository<E, I> repository;
 
   public final EntityManager entityManager;
@@ -75,7 +75,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     this.repository = repository();
     this.entityClass = getEntityType().getJavaType();
     this.objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-    this.entityManagerUtils = new EntityManagerUtils(entityManager);
+    this.entityUtils = new EntityUtils(entityManager);
   }
 
   @Nullable
@@ -108,7 +108,6 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
         repository.findOne(whereId).orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );
   }
-
 
   @SuppressWarnings("unchecked")
   public final EntityType<E> getEntityType() {

@@ -64,6 +64,7 @@ class TekRestExceptionHandlerTest {
   private MockMvc mockMvc;
 
   private static final String GENERIC_EXCEPTION = "/handleGenericException";
+  private static final String ILLEGAL_ARGUMENT_EXCEPTION = "/handleIllegalArgumentException";
   private static final String ACCESS_DENIED_EXCEPTION = "/handleAccessDeniedException";
   private static final String MISSING_SERVLET_REQUEST_PARAM_EXCEPTION = "/handleMissingServletRequestParameter";
   private static final String MEDIATYPE_NOT_SUPPORTED_EXCEPTION = "/handleHttpMediaTypeNotSupported";
@@ -84,6 +85,20 @@ class TekRestExceptionHandlerTest {
         .andExpect(jsonPath("$.apiError.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
         .andExpect(jsonPath("$.apiError.path").value(GENERIC_EXCEPTION))
         .andExpect(jsonPath("$.apiError.message").value("error"))
+        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andDo(MockMvcResultHandlers.print());
+  }
+
+  @Test
+  void test_handle_illegal_argument_exception() throws Exception {
+    var msg = "illegal argument";
+    var debugMessage = ExceptionUtils.getMessage(new IllegalArgumentException(msg));
+    mockMvc.perform(MockMvcRequestBuilders.get(ILLEGAL_ARGUMENT_EXCEPTION))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.apiError.path").value(ILLEGAL_ARGUMENT_EXCEPTION))
+        .andExpect(jsonPath("$.apiError.message").value(msg))
         .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
@@ -250,6 +265,11 @@ class TekRestExceptionHandlerTest {
     @GetMapping(GENERIC_EXCEPTION)
     void handleGenericException() throws Exception {
       throw new Exception("error");
+    }
+
+    @GetMapping(ILLEGAL_ARGUMENT_EXCEPTION)
+    void handleIllegalArgumentException() throws IllegalArgumentException {
+      throw new IllegalArgumentException("illegal argument");
     }
 
     @GetMapping(ACCESS_DENIED_EXCEPTION)

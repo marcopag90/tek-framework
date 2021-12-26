@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
+@SuppressWarnings("squid:S1948")
 public class ApiValidationError implements ApiSubError {
 
   private String object;

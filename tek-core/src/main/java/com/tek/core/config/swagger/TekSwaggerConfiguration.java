@@ -6,7 +6,6 @@ import com.tek.rest.shared.swagger.SwaggerIgnore;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,8 +35,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RequiredArgsConstructor
 public class TekSwaggerConfiguration {
 
-  @NonNull private final ApplicationContext context;
-  @NonNull private final TekCoreProperties coreProperties;
+  private final ApplicationContext context;
+  private final TekCoreProperties coreProperties;
 
   private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
 

@@ -3,7 +3,6 @@ package com.tek.jpa.controller.impl;
 import com.tek.jpa.controller.WritableDalApi;
 import com.tek.jpa.service.WritableDalService;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -68,22 +67,13 @@ public abstract class WritableDalController<E extends Serializable, I extends Se
 
   protected abstract WritableDalService<E, I> service();
 
-  protected WritableDalService<E, I> service;
-
-  @Override
-  @PostConstruct
-  void setup() {
-    super.setup();
-    this.service = service();
-  }
-
   @Override
   public E create(E entity) {
-    return service.create(entity);
+    return service().create(entity);
   }
 
   @Override
   public void deleteById(I id) {
-    service.deleteById(id);
+    service().deleteById(id);
   }
 }

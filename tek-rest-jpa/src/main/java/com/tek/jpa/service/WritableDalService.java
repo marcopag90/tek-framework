@@ -5,7 +5,6 @@ import com.tek.jpa.repository.WritableDalRepository;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
@@ -30,12 +29,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public abstract class WritableDalService<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalService<E, I> {
 
-  protected WritableDalRepository<E, I> repository;
   protected final Method createMethod;
   protected final Method patchMethod;
   protected final SpringValidatorAdapter validatorAdapter;
 
-  protected abstract WritableDalRepository<E,I> repository();
+  protected abstract WritableDalRepository<E, I> repository();
 
   protected WritableDalService(
       @NonNull EntityManager entityManager,
@@ -48,12 +46,6 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     validatorAdapter = new SpringValidatorAdapter(validator);
   }
 
-  @PostConstruct
-  void setup() {
-    super.setup();
-    this.repository = repository();
-  }
-
   @SneakyThrows
   public E create(@NonNull E entity) {
     final var entityView = this.entityView.apply(entity);
@@ -62,7 +54,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
     }
-    final var savedEntity = repository.create(entityView);
+    final var savedEntity = repository().create(entityView);
     return this.entityView.apply(savedEntity);
   }
 
@@ -74,7 +66,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       @Nullable final Serializable version
   ) {
     final var entityType = getEntityType();
-    for (String property: properties.keySet()) {
+    for (String property : properties.keySet()) {
       entityUtils.validatePath(property, entityType, applyView());
     }
     SingularAttribute<? super E, ?> versionAttribute = null;
@@ -121,13 +113,13 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (result.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
     }
-    final var savedEntity = repository.update(entity);
+    final var savedEntity = repository().update(entity);
     return entityView.apply(savedEntity);
   }
 
   public void deleteById(I id) {
     if (findById(id) != null) {
-      repository.deleteById(id);
+      repository().deleteById(id);
     }
   }
 

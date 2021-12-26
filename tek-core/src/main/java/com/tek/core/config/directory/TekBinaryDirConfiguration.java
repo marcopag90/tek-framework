@@ -7,7 +7,6 @@ import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.service.TekFileService;
 import java.io.File;
 import javax.annotation.PostConstruct;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,8 +30,8 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class TekBinaryDirConfiguration {
 
-  @NonNull private final TekCoreProperties coreProperties;
-  @NonNull private final TekFileService fileService;
+  private final TekCoreProperties coreProperties;
+  private final TekFileService fileService;
 
   private File binaryDirectoryPath;
 

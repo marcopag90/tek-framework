@@ -71,8 +71,8 @@ public class ApiError implements Serializable {
       return null;
     }
     String pathValue = null;
-    if (request instanceof ServletWebRequest) {
-      pathValue = ((ServletWebRequest) request).getRequest().getRequestURI();
+    if (request instanceof ServletWebRequest servletWebRequest) {
+      pathValue = servletWebRequest.getRequest().getRequestURI();
     }
     return pathValue;
   }

@@ -25,6 +25,7 @@ public class EntityUtils {
   private static final String PATH_TOKENIZER = ".";
   private Metamodel metamodel;
 
+  @SuppressWarnings("unused")
   private EntityUtils() {
   }
 
@@ -60,7 +61,7 @@ public class EntityUtils {
     validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), managedType, viewClass);
   }
 
-  @SuppressWarnings({"unchecked"})
+  @SuppressWarnings({"unchecked", "squid:S3740"})
   private void validatePath(
       @NonNull StringTokenizer pathTokenizer,
       @NonNull ManagedType<?> managedType,

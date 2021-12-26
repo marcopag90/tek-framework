@@ -15,7 +15,6 @@ import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -42,13 +41,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Slf4j
 public class TekMailService {
 
-  @NonNull
   @Qualifier(TEK_CORE_FILE_TIMESTAMP_BEAN)
   private final SimpleDateFormat df;
 
-  @NonNull private final TekTmpDirFileService tmpFileService;
-  @NonNull private final ApplicationContext context;
-  @NonNull private final JavaMailSender mailSender;
+  private final TekTmpDirFileService tmpFileService;
+  private final ApplicationContext context;
+  private final JavaMailSender mailSender;
 
   private final String newLine = System.getProperty("line.separator");
 

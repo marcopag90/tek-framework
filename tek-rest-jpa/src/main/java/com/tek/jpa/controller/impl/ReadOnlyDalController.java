@@ -3,7 +3,6 @@ package com.tek.jpa.controller.impl;
 import com.tek.jpa.controller.ReadOnlyDalApi;
 import com.tek.jpa.service.ReadOnlyDalService;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,20 +56,13 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
 
   protected abstract ReadOnlyDalService<E, I> service();
 
-  protected ReadOnlyDalService<E, I> service;
-
-  @PostConstruct
-  void setup() {
-    this.service = service();
-  }
-
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {
-    return service.findAll(spec, pageable);
+    return service().findAll(spec, pageable);
   }
 
   @Override
   public E findById(I id) {
-    return service.findById(id);
+    return service().findById(id);
   }
 }

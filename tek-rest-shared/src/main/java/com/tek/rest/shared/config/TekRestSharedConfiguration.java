@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.tek.rest.shared.TekRestSharedAutoConfig;
 import com.tek.shared.TekModuleConfiguration;
-import com.tek.shared.exception.TekModuleException;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -52,8 +51,8 @@ public class TekRestSharedConfiguration extends TekModuleConfiguration implement
   @Override
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
     for (HttpMessageConverter<?> converter : converters) {
-      if (converter instanceof MappingJackson2HttpMessageConverter) {
-        final var mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+      if (converter instanceof MappingJackson2HttpMessageConverter messageConverter) {
+        final var mapper = messageConverter.getObjectMapper();
         mapper.setSerializationInclusion(Include.NON_NULL);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         final var serializerModule = new SimpleModule();

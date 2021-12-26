@@ -7,8 +7,6 @@ import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import java.util.Locale;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
@@ -32,12 +30,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  */
 @Configuration
 @ConditionalOnClass(TekCoreAutoConfig.class)
-@RequiredArgsConstructor
 @Slf4j
-public class TekLocaleConfiguration implements WebMvcConfigurer {
-
-  @NonNull
-  private final TekCoreProperties coreProperties;
+public record TekLocaleConfiguration(TekCoreProperties coreProperties) implements WebMvcConfigurer {
 
   public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 

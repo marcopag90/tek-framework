@@ -1,7 +1,6 @@
 package com.tek.core.aop;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,11 +15,8 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-@RequiredArgsConstructor
 @Slf4j
-public class MailDeliveryAspect {
-
-  private final TekCoreProperties properties;
+public record MailDeliveryAspect(TekCoreProperties properties) {
 
   @Around("@annotation(CanSendMail)")
   @SneakyThrows

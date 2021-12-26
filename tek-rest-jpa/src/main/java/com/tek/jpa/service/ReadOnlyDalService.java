@@ -44,7 +44,6 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   protected final ObjectMapper objectMapper;
   protected EntityUtils entityUtils;
-  protected ReadOnlyDalRepository<E, I> repository;
 
   public final EntityManager entityManager;
   public final UnaryOperator<E> entityView;
@@ -72,7 +71,6 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   @PostConstruct
   void setup() {
-    this.repository = repository();
     this.entityClass = getEntityType().getJavaType();
     this.objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
     this.entityUtils = new EntityUtils(entityManager);
@@ -95,7 +93,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     } else {
       where = where();
     }
-    return repository.findAll(where, pageable).map(entityView);
+    return repository().findAll(where, pageable).map(entityView);
   }
 
   @SneakyThrows
@@ -105,7 +103,8 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
       whereId.and(where());
     }
     return entityView.apply(
-        repository.findOne(whereId).orElseThrow(() -> new EntityNotFoundException(entityClass, id))
+        repository().findOne(whereId)
+            .orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );
   }
 

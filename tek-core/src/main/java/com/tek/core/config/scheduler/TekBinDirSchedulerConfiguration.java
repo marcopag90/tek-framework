@@ -9,7 +9,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -40,8 +39,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class TekBinDirSchedulerConfiguration {
 
-  @NonNull private final TekCoreProperties coreProperties;
-  @NonNull private final TekFileService fileService;
+  private final TekCoreProperties coreProperties;
+  private final TekFileService fileService;
 
   private File directory;
   private Integer cleanAfter;

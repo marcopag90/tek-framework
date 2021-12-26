@@ -39,7 +39,7 @@
 
   <properties>
     <java.version>17</java.version>
-    <revision>3.0.1</revision>
+    <revision>3.0.2</revision>
     <!-- Dependencies versioning -->
     <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     <springfox-legacy.version>2.9.2</springfox-legacy.version>

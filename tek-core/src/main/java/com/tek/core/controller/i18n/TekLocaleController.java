@@ -7,7 +7,6 @@ import com.tek.core.config.i18n.TekCoreMessageSourceConfiguration;
 import com.tek.core.service.TekRestMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -48,10 +47,8 @@ class TekLocaleController {
     return ResponseEntity.ok(message);
   }
 
-  @NonNull
   @Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN)
   private final MessageSource messageSource;
 
-  @NonNull
   private final TekRestMessage tekRestMessage;
 }

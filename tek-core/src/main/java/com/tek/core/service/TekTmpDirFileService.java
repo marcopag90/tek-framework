@@ -4,7 +4,6 @@ import com.tek.core.config.directory.TekTmpDirConfiguration;
 import java.io.File;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TekTmpDirFileService {
 
-  @NonNull private final TekTmpDirConfiguration tmpDirConfiguration;
-  @NonNull private final TekFileService service;
+  private final TekTmpDirConfiguration tmpDirConfiguration;
+  private final TekFileService service;
 
   private File tmpDirectory;
 

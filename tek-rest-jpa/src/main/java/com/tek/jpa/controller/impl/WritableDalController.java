@@ -22,7 +22,7 @@ import java.io.Serializable;
  *     implement the method <i>deleteAuthorized()</i> to define who is allowed to access the delete API
  *   </li>
  *   <li>
- *     implement the method <i>getWritableDalService()</i> to define the {@link WritableDalService} to use.
+ *     implement the method <i>service()</i> to define the {@link WritableDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>
@@ -52,7 +52,7 @@ import java.io.Serializable;
  *   }
  *
  *   {@literal @Override}
- *   public WritableDalService{@literal <}Book, Long{@literal >} getWritableDalService() {
+ *   public WritableDalService{@literal <}Book, Long{@literal >} service() {
  *     return context.getBean(BookWritableDalService.class);
  *   }
  * }

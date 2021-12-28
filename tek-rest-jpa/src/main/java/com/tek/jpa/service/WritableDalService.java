@@ -21,6 +21,46 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * Service for jpa-based entities, allowing all crud operations.
+ * <p> A minimal setup requires the following actions:
+ * <ul>
+ *   <li>
+ *     implement the method <i>repository()</i> to qualify the {@link WritableDalRepository} to use;
+ *   </li>
+ *   <li>
+ *     <b>optionally</b> implement the <i>where()</i> method to specify a mandatory where condition
+ *     to be applied on every search query;
+ *   </li>
+ *   <li>
+ *     <b>optionally</b> implement the <i>applyView()</i> method to apply {@link com.fasterxml.jackson.annotation.JsonView}
+ *     classes, allowing to change the visibility of properties inside the Dal entity.
+ *     This operation acts as a projection over the annotated fields.
+ *   </li>
+ * </ul>
+ * <p>E.g:</p>
+ * <pre class="code">
+ * {@literal @Service}
+ * public class AuthorDalService extends WritableDalService{@literal <}Author, Integer{@literal >} {
+ *
+ *   {@literal @Override}
+ *   public WritableDalRepository repository() {
+ *     return context.getBean(AuthorRepository.class);
+ *   }
+ *
+ *   {@literal @Override}
+ *   public Specification{@literal <}Author{@literal >} where() {
+ *     ...
+ *   }
+ *
+ *   {@literal @Override}
+ *   public Class{@literal <}?{@literal >} applyView() {
+ *     var auth = SecurityContextHolder.getContext().getAuthentication();
+ *     if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("DEVELOPER"))) {
+ *       return DeveloperView.class;
+ *     }
+ *     return UserView.class;
+ *   }
+ * }
+ * </pre>
  *
  * @param <E> : a concrete {@link javax.persistence.Entity}
  * @param <I> : the {@link javax.persistence.Id}

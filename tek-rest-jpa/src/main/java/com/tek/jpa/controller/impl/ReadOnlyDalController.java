@@ -21,7 +21,7 @@ import org.springframework.util.ClassUtils;
  *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API
  *   </li>
  *   <li>
- *     implement the method <i>getReadOnlyDalService()</i> to define the {@link ReadOnlyDalService} to use.
+ *     implement the method <i>service()</i> to define the {@link ReadOnlyDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>
@@ -36,7 +36,7 @@ import org.springframework.util.ClassUtils;
  *   }
  *
  *   {@literal @Override}
- *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} getReadOnlyDalService() {
+ *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} service() {
  *     return context.getBean(BookReadOnlyDalService.class);
  *   }
  * }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.service.TekFileService;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @EnableConfigurationProperties(value = TekCoreProperties.class)
 @ContextConfiguration(
     classes = {
-        TekFileService.class,
+        TekFileUtils.class,
         TekBinaryDirConfiguration.class
     }
 )

@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 /**
- * Allows to decide if a mail has to be delivered or not.
+ * Allows deciding if a mail has to be delivered or not.
  *
  * @author MarcoPagan
  */

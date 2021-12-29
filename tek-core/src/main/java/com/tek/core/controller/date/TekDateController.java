@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 class TekDateController {
 
   @GetMapping("/date")
-  @ApiOperation(
-      value = "Allows to get the default java.util.Date format"
-  )
+  @ApiOperation(value = "Allows to get the default java.util.Date format")
   public ResponseEntity<Date> getDate() {
     return ResponseEntity.ok(new Date());
   }

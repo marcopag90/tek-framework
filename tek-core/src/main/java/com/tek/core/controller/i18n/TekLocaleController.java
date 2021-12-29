@@ -4,10 +4,8 @@ import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_MESSAGE_SOURC
 import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
 
 import com.tek.core.config.i18n.TekCoreMessageSourceConfiguration;
-import com.tek.core.service.TekRestMessage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author MarcoPagan
  */
 @RestController
-@RequiredArgsConstructor
-class TekLocaleController {
+record TekLocaleController(@Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN) MessageSource messageSource) {
 
   @PostMapping(
       value = TEK_LOCALE_PATH,
@@ -47,8 +44,4 @@ class TekLocaleController {
     return ResponseEntity.ok(message);
   }
 
-  @Qualifier(TEK_CORE_MESSAGE_SOURCE_BEAN)
-  private final MessageSource messageSource;
-
-  private final TekRestMessage tekRestMessage;
 }

@@ -1,11 +1,14 @@
 package com.tek.core.service;
 
 import com.tek.core.config.directory.TekTmpDirConfiguration;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 //TODO tests
@@ -15,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class TekTmpDirFileService {
 
   private final TekTmpDirConfiguration tmpDirConfiguration;
-  private final TekFileService service;
 
   private File tmpDirectory;
 
@@ -28,8 +30,9 @@ public class TekTmpDirFileService {
   /**
    * Attempt to create a file inside the default application tmp directory.
    */
-  public String createInTmpDir(String name) {
+  @NonNull
+  public String createInTmpDir(@NonNull String name) throws IOException {
     String directory = tmpDirectory + File.separator + LocalDate.now();
-    return service.deepCreate(directory, name);
+    return TekFileUtils.deepCreate(directory, name);
   }
 }

@@ -4,7 +4,7 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.service.TekFileService;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Configuration;
 public class TekBinaryDirConfiguration {
 
   private final TekCoreProperties coreProperties;
-  private final TekFileService fileService;
 
   private File binaryDirectoryPath;
 
@@ -47,7 +46,7 @@ public class TekBinaryDirConfiguration {
   public File binaryDirectory() {
     if (!this.binaryDirectoryPath.isDirectory()) {
       try {
-        final var dir = fileService.createDirectory(binaryDirectoryPath.toPath().toString());
+        final var dir = TekFileUtils.createDirectory(binaryDirectoryPath.toPath().toString());
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {

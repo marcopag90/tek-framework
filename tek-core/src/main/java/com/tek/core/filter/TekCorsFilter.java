@@ -8,7 +8,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -34,10 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@RequiredArgsConstructor
-public class TekCorsFilter implements Filter {
-
-  @NonNull private final TekCoreProperties coreProperties;
+public record TekCorsFilter(@NonNull TekCoreProperties coreProperties) implements Filter {
 
   @Override
   @SneakyThrows

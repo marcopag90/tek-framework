@@ -4,7 +4,7 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.service.TekFileService;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -40,7 +40,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class TekBinDirSchedulerConfiguration {
 
   private final TekCoreProperties coreProperties;
-  private final TekFileService fileService;
 
   private File directory;
   private Integer cleanAfter;
@@ -68,7 +67,7 @@ public class TekBinDirSchedulerConfiguration {
       final var dir = Paths.get(directory + File.separator + start).toFile();
       if (dir.exists()) {
         log.info("Performing clean of directory {}...", dir.getAbsolutePath());
-        fileService.deepDelete(dir);
+        TekFileUtils.deepDelete(dir);
         log.info("Directory {} successfully cleaned", dir.getAbsolutePath());
       }
       start = start.plusDays(1);

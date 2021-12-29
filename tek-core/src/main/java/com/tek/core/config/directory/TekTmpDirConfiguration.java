@@ -4,7 +4,7 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.service.TekFileService;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,6 @@ import org.springframework.context.annotation.Configuration;
 public class TekTmpDirConfiguration {
 
   private final TekCoreProperties coreProperties;
-  private final TekFileService fileService;
 
   private File tmpDirectory;
 
@@ -46,7 +45,7 @@ public class TekTmpDirConfiguration {
   public File tmpDirectory() {
     if (!this.tmpDirectory.isDirectory()) {
       try {
-        final var dir = fileService.createDirectory(tmpDirectory.toPath().toString());
+        final var dir = TekFileUtils.createDirectory(tmpDirectory.toPath().toString());
         log.info("Creating directory: [{}]", dir.getAbsolutePath());
         return dir;
       } catch (Exception e) {

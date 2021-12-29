@@ -6,6 +6,7 @@ import static java.lang.String.join;
 import com.tek.core.aop.CanSendMail;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.lang.NonNull;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -64,15 +66,21 @@ public class TekMailService {
    */
   @CanSendMail
   public void sendRequestExceptionMessage(
-      ServletWebRequest servletWebRequest,
-      Exception exception
-  ) {
+      @NonNull ServletWebRequest servletWebRequest,
+      @NonNull Exception exception
+  ) throws IOException {
     final var request = servletWebRequest.getRequest();
     final var requestUrl = request.getRequestURL().toString();
     final var to = new String[]{host};
     final var addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
-    String filename = tmpFileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
+    String filename;
+    try {
+      filename = tmpFileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
+    } catch (IOException e) {
+      log.error("Could not create file", e);
+      throw new IOException("Could not send mail", e);
+    }
     String text = join("")
         .concat("Exception on: " + subject)
         .concat(newLine)
@@ -94,7 +102,11 @@ public class TekMailService {
    * Sends a mail message with a text and an attachment
    */
   @CanSendMail
-  public void sendWithAttachment(String[] to, String subject, String text, String file) {
+  public void sendWithAttachment(
+      @NonNull String[] to,
+      @NonNull String subject,
+      @NonNull String text,
+      @NonNull String file) {
     var toArray = Arrays.toString(to);
     logMailSending(toArray);
     try {
@@ -122,7 +134,11 @@ public class TekMailService {
    * Sends a mail message with a simple text
    */
   @CanSendMail
-  public void sendSimpleMessage(String[] to, String subject, String text) {
+  public void sendSimpleMessage(
+      @NonNull String[] to,
+      @NonNull String subject,
+      @NonNull String text
+  ) {
     final var toArray = Arrays.toString(to);
     logMailSending(toArray);
     final var simpleMailMessage = new SimpleMailMessage();
@@ -138,15 +154,15 @@ public class TekMailService {
     logMailSuccess(toArray);
   }
 
-  private void logMailSending(String addresses) {
+  private void logMailSending(@NonNull String addresses) {
     log.debug("Sending mail to: {}", addresses);
   }
 
-  private void logMailSuccess(String addresses) {
+  private void logMailSuccess(@NonNull String addresses) {
     log.debug("Email sent to: {}", addresses);
   }
 
-  private void logMailError(String addresses, Exception ex) {
+  private void logMailError(@NonNull String addresses, @NonNull Exception ex) {
     log.error(
         "Unable to send mail to: {}, cause: [{}]",
         addresses,

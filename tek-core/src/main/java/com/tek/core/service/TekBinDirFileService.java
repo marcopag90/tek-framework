@@ -1,12 +1,14 @@
 package com.tek.core.service;
 
 import com.tek.core.config.directory.TekBinaryDirConfiguration;
+import com.tek.shared.io.TekFileUtils;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 //TODO tests
@@ -15,8 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TekBinDirFileService {
 
-  @NonNull private final TekBinaryDirConfiguration binaryDirConfiguration;
-  @NonNull private final TekFileService service;
+  private final TekBinaryDirConfiguration binaryDirConfiguration;
 
   private File binaryDirectory;
 
@@ -29,8 +30,9 @@ public class TekBinDirFileService {
   /**
    * Attempt to create a file inside the default application binary directory.
    */
-  public String createInBinDir(String name) {
+  @NonNull
+  public String createInBinDir(@NonNull String name) throws IOException {
     String directory = binaryDirectory + File.separator + LocalDate.now();
-    return service.deepCreate(directory, name);
+    return TekFileUtils.deepCreate(directory, name);
   }
 }

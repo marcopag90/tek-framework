@@ -1,6 +1,7 @@
 package com.tek.jpa.utils;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.tek.jpa.TekRestJpaApplication;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,12 @@ class EntityUtilsTest {
   private EntityUtils entityUtils;
 
   @BeforeAll
+  @Test
   void setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(authorService),
+        () -> assertNotNull(bookService)
+    );
     entityUtils = new EntityUtils(authorService.entityManager);
   }
 

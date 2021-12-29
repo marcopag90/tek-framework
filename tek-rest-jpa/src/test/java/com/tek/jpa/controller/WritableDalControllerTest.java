@@ -1,6 +1,7 @@
 package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.utils.TekRestSharedUtils.asJsonString;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -14,8 +15,11 @@ import com.tek.jpa.repository.mock.BookRepository;
 import java.time.LocalDate;
 import java.time.Month;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = TekRestJpaApplication.class)
 @TestPropertySource(properties = {"spring.config.location = classpath:application.yml"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
 @Transactional
 class WritableDalControllerTest {
@@ -43,7 +48,19 @@ class WritableDalControllerTest {
   @Autowired private BeerRepository beerRepository;
 
   @Autowired
-  ApplicationContext context;
+  private ApplicationContext context;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(mockMvc),
+        () -> assertNotNull(mapper),
+        () -> assertNotNull(authorRepository),
+        () -> assertNotNull(bookRepository),
+        () -> assertNotNull(beerRepository)
+    );
+  }
 
   // -------------------------------------- Authorizations -----------------------------------------
 

@@ -6,9 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties.TekLocaleType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +24,19 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @EnableConfigurationProperties(value = TekCoreProperties.class)
 @TestPropertySource("classpath:i18n-custom.properties")
 @TestMethodOrder(OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 class TekLocalePropertiesTest {
 
   @Autowired
   private TekCoreProperties coreCustomProperties;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(coreCustomProperties)
+    );
+  }
 
   @Test
   @Order(1)

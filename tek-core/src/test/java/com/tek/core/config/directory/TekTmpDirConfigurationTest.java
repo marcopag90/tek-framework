@@ -1,6 +1,7 @@
 package com.tek.core.config.directory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
@@ -8,6 +9,7 @@ import com.tek.core.service.TekFileService;
 import java.io.File;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,15 @@ class TekTmpDirConfigurationTest {
 
   @Autowired private TekCoreProperties properties;
   @Autowired private TekTmpDirConfiguration tmpDirConfiguration;
+
+  @BeforeAll
+  @Test
+  void setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(properties),
+        () -> assertNotNull(tmpDirConfiguration)
+    );
+  }
 
   @Test
   @Order(1)

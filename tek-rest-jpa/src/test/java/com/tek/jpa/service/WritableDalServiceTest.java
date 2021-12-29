@@ -13,8 +13,11 @@ import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,11 +30,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 @SpringBootTest(classes = TekRestJpaApplication.class)
 @TestPropertySource(properties = {"spring.config.location = classpath:application.yml"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 @Transactional
 class WritableDalServiceTest {
 
   @Autowired
   private AuthorWritableDalService dalService;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(dalService)
+    );
+  }
 
   //------------------------------------- Create methods -------------------------------------------
 
@@ -136,6 +148,9 @@ class WritableDalServiceTest {
         () -> assertTrue(authors.stream().allMatch(notNullIdPredicate))
     );
   }
+
+  //TODO update methods
+  //------------------------------------- Update methods -------------------------------------------
 
   //------------------------------------- Delete methods -------------------------------------------
   @Test

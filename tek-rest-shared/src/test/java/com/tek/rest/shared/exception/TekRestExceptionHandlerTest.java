@@ -19,7 +19,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -56,6 +60,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
         TestController.class
     }
 )
+@TestInstance(Lifecycle.PER_CLASS)
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
 class TekRestExceptionHandlerTest {
@@ -75,6 +80,12 @@ class TekRestExceptionHandlerTest {
   private static final String HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION = "/handleHttpMessageNotWritable";
   private static final String NO_HANDLER_FOUND_EXCEPTION = "/handleNoHandlerFoundException";
   private static final String METHOD_ARG_TYPE_MISMATCH_EXCEPTION = "/handleMethodArgumentTypeMismatch";
+
+  @BeforeAll
+  @Test
+  void setup() {
+    Assertions.assertNotNull(mockMvc);
+  }
 
   @Test
   void test_handle_generic_exception() throws Exception {

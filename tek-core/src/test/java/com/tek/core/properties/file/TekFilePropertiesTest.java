@@ -9,9 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.core.properties.TekCoreProperties;
 import java.io.File;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +27,19 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @EnableConfigurationProperties(TekCoreProperties.class)
 @TestPropertySource("classpath:file-custom.properties")
 @TestMethodOrder(OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 class TekFilePropertiesTest {
 
   @Autowired
   private TekCoreProperties coreCustomProperties;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(coreCustomProperties)
+    );
+  }
 
   @Test
   @Order(1)

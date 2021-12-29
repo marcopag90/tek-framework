@@ -9,5 +9,4 @@ public class TekRestJpaApplication {
   public static void main(String[] args) {
     SpringApplication.run(TekRestJpaApplication.class, args);
   }
-
 }

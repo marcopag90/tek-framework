@@ -2,6 +2,7 @@ package com.tek.jpa.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.collect.Comparators;
@@ -13,8 +14,11 @@ import com.turkraft.springfilter.boot.FilterSpecification;
 import java.util.Comparator;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,12 +32,21 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = TekRestJpaApplication.class)
 @TestPropertySource(properties = {"spring.config.location = classpath:application.yml"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @Transactional
 class ReadOnlyDalRepositoryTest {
 
   @Autowired
   private AuthorReadOnlyDalRepository repository;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(repository)
+    );
+  }
 
   @Test
   void test_findOne() {

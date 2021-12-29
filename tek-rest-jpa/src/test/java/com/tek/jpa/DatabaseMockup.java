@@ -16,19 +16,28 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import java.util.Objects;
+import javax.annotation.PostConstruct;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class DatabaseMockup implements CommandLineRunner {
+public record DatabaseMockup(
+    AuthorRepository authorRepository,
+    BookRepository bookRepository,
+    BeerRepository beerRepository,
+    StoreRepository storeRepository,
+    ProjectRepository projectRepository
+) implements CommandLineRunner {
 
-  private final AuthorRepository authorRepository;
-  private final BookRepository bookRepository;
-  private final BeerRepository beerRepository;
-  private final StoreRepository storeRepository;
-  private final ProjectRepository projectRepository;
+  @PostConstruct
+  private void setup() {
+    Objects.requireNonNull(authorRepository);
+    Objects.requireNonNull(bookRepository);
+    Objects.requireNonNull(beerRepository);
+    Objects.requireNonNull(storeRepository);
+    Objects.requireNonNull(projectRepository);
+  }
 
   @Override
   public void run(String... args) {
@@ -37,7 +46,6 @@ public class DatabaseMockup implements CommandLineRunner {
     createStores();
     createProjects();
   }
-
 
   private void createAuthors() {
     var calvino = Author.builder()

@@ -16,8 +16,11 @@ import com.tek.jpa.service.mock.StoreReadOnlyDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,12 +32,23 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = TekRestJpaApplication.class)
 @TestPropertySource(properties = {"spring.config.location = classpath:application.yml"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 @Transactional
 class ReadOnlyDalServiceTest {
 
   @Autowired private AuthorReadOnlyDalService authorReadOnlyDalService;
   @Autowired private StoreReadOnlyDalService storeReadOnlyDalService;
   @Autowired private ProjectReadOnlyDalService proejctReadOnlyDalService;
+
+  @BeforeAll
+  @Test
+  void test_setup() {
+    Assertions.assertAll(
+        () -> assertNotNull(authorReadOnlyDalService),
+        () -> assertNotNull(storeReadOnlyDalService),
+        () -> assertNotNull(proejctReadOnlyDalService)
+    );
+  }
 
   @Test
   @WithMockUser(
@@ -108,5 +122,4 @@ class ReadOnlyDalServiceTest {
         () -> assertTrue(authors.stream().allMatch(notNullIdPredicate))
     );
   }
-
 }

@@ -1,6 +1,6 @@
 package com.tek.jpa.controller.mock;
 
-import com.tek.jpa.controller.impl.ReadOnlyDalController;
+import com.tek.jpa.controller.ReadOnlyDalController;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.service.ReadOnlyDalService;
 import com.tek.jpa.service.mock.BeerReadOnlyDalService;

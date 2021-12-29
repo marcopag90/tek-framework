@@ -1,6 +1,5 @@
-package com.tek.jpa.controller.impl;
+package com.tek.jpa.controller;
 
-import com.tek.jpa.controller.ReadOnlyDalApi;
 import com.tek.jpa.service.ReadOnlyDalService;
 import java.io.Serializable;
 import org.slf4j.Logger;
@@ -14,11 +13,11 @@ import org.springframework.util.ClassUtils;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
- * to expose a read-only <i>CRUD</i> Rest API.
+ * to expose a read-only Rest API.
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
- *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API
+ *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API;
  *   </li>
  *   <li>
  *     implement the method <i>service()</i> to define the {@link ReadOnlyDalService} to use.

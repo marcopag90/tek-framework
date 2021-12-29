@@ -1,6 +1,5 @@
-package com.tek.jpa.controller.impl;
+package com.tek.jpa.controller;
 
-import com.tek.jpa.controller.WritableDalApi;
 import com.tek.jpa.service.WritableDalService;
 import java.io.Serializable;
 
@@ -10,16 +9,16 @@ import java.io.Serializable;
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
- *     implement the method <i>createAuthorized()</i> to define who is allowed to access the create API
+ *     implement the method <i>createAuthorized()</i> to define who is allowed to access the create API;
  *   </li>
  *   <li>
- *     implement the method <i>readAuthorized()</i> to define who is allowed to access the read API
+ *     implement the method <i>readAuthorized()</i> to define who is allowed to access the read API;
  *   </li>
  *   <li>
- *     implement the method <i>updateAuthorized()</i> to define who is allowed to access the update API
+ *     implement the method <i>updateAuthorized()</i> to define who is allowed to access the update API;
  *   </li>
  *   <li>
- *     implement the method <i>deleteAuthorized()</i> to define who is allowed to access the delete API
+ *     implement the method <i>deleteAuthorized()</i> to define who is allowed to access the delete API;
  *   </li>
  *   <li>
  *     implement the method <i>service()</i> to define the {@link WritableDalService} to use.

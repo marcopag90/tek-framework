@@ -27,7 +27,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
- * Service for jpa-based entities, allowing read-only crud operations.
+ * Abstract Data Access Layer for jpa-based entities, allowing read operations.
+ * <p> This layer sits in front of the repository layer and acts as a bridge to access the
+ * repository data: it defines and control what can be read and takes care of manipulating
+ * input/output data, according to the business logic provided by the developer.
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
@@ -35,7 +38,7 @@ import org.springframework.util.ClassUtils;
  *   </li>
  *   <li>
  *     <b>optionally</b> implement the <i>where()</i> method to specify a mandatory where condition
- *     to be applied on every search query;
+ *     to be applied on every query;
  *   </li>
  *   <li>
  *     <b>optionally</b> implement the <i>applyView()</i> method to apply {@link com.fasterxml.jackson.annotation.JsonView}

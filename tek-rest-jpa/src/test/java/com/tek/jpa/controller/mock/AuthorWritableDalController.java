@@ -1,6 +1,6 @@
 package com.tek.jpa.controller.mock;
 
-import com.tek.jpa.controller.impl.WritableDalController;
+import com.tek.jpa.controller.WritableDalController;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.service.WritableDalService;
 import com.tek.jpa.service.mock.AuthorWritableDalService;

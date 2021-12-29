@@ -22,7 +22,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * Default error response object returned from API call failures.
+ * Default DTO returned from Rest API call failures.
  *
  * @author MarcoPagan
  */

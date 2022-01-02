@@ -78,11 +78,12 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
 
   protected abstract WritableDalRepository<E, I> repository();
 
+  @SneakyThrows
   protected WritableDalService(
       @NonNull EntityManager entityManager,
       @NonNull ObjectMapper objectMapper,
       @NonNull Validator validator
-  ) throws NoSuchMethodException {
+  ) {
     super(entityManager, objectMapper);
     createMethod = getClass().getMethod("create", Serializable.class);
     patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);

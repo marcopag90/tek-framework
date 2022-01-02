@@ -1,11 +1,10 @@
 package com.tek.jpa.service.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tek.jpa.domain.Author;
-import com.tek.jpa.domain.Author.Views.DeveloperView;
-import com.tek.jpa.domain.Author.Views.UserView;
+import com.tek.jpa.domain.Employee;
+import com.tek.jpa.domain.Employee.EmployeeViews.DeveloperView;
 import com.tek.jpa.repository.WritableDalRepository;
-import com.tek.jpa.repository.mock.AuthorRepository;
+import com.tek.jpa.repository.mock.EmployeeRepository;
 import com.tek.jpa.service.WritableDalService;
 import javax.persistence.EntityManager;
 import javax.validation.Validator;
@@ -13,9 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorWritableDalService extends WritableDalService<Author, Integer> {
+public class EmployeeDalService extends WritableDalService<Employee, Long> {
 
-  protected AuthorWritableDalService(
+  protected EmployeeDalService(
       EntityManager entityManager,
       ObjectMapper objectMapper,
       Validator validator
@@ -24,8 +23,8 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
   }
 
   @Override
-  protected WritableDalRepository<Author, Integer> repository() {
-    return new WritableDalRepository<>(context.getBean(AuthorRepository.class)) {
+  protected WritableDalRepository<Employee, Long> repository() {
+    return new WritableDalRepository<>(context.getBean(EmployeeRepository.class)) {
     };
   }
 
@@ -35,6 +34,6 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
     if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("DEVELOPER"))) {
       return DeveloperView.class;
     }
-    return UserView.class;
+    return null;
   }
 }

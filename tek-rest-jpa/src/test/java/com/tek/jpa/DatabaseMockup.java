@@ -4,14 +4,20 @@ import com.github.javafaker.Faker;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.domain.Book;
+import com.tek.jpa.domain.Company;
+import com.tek.jpa.domain.Employee;
 import com.tek.jpa.domain.Project;
 import com.tek.jpa.domain.Store;
 import com.tek.jpa.domain.Store.Id;
 import com.tek.jpa.repository.mock.AuthorRepository;
 import com.tek.jpa.repository.mock.BeerRepository;
 import com.tek.jpa.repository.mock.BookRepository;
+import com.tek.jpa.repository.mock.CompanyRepository;
+import com.tek.jpa.repository.mock.EmployeeRepository;
 import com.tek.jpa.repository.mock.ProjectRepository;
 import com.tek.jpa.repository.mock.StoreRepository;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -27,7 +33,9 @@ public record DatabaseMockup(
     BookRepository bookRepository,
     BeerRepository beerRepository,
     StoreRepository storeRepository,
-    ProjectRepository projectRepository
+    ProjectRepository projectRepository,
+    EmployeeRepository employeeRepository,
+    CompanyRepository companyRepository
 ) implements CommandLineRunner {
 
   @PostConstruct
@@ -37,6 +45,8 @@ public record DatabaseMockup(
     Objects.requireNonNull(beerRepository);
     Objects.requireNonNull(storeRepository);
     Objects.requireNonNull(projectRepository);
+    Objects.requireNonNull(employeeRepository);
+    Objects.requireNonNull(companyRepository);
   }
 
   @Override
@@ -45,6 +55,7 @@ public record DatabaseMockup(
     createBrewery();
     createStores();
     createProjects();
+    createEmployees();
   }
 
   private void createAuthors() {
@@ -120,4 +131,21 @@ public record DatabaseMockup(
         .build()
     );
   }
+
+  private void createEmployees() {
+    final var tekReadySolution = companyRepository.save(Company.builder()
+        .name("Tek-Ready Solutions")
+        .build());
+
+    employeeRepository.save(Employee.builder()
+        .name("Marco")
+        .createdAt(Instant.now())
+        .income(new BigDecimal(33500))
+        .lastContract(LocalDate.of(2020, 10, 12))
+        .optLock(1L)
+        .company(tekReadySolution)
+        .build());
+
+  }
+
 }

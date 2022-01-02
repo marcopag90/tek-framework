@@ -53,7 +53,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "USER",
-      authorities = {"USER", "AUTHOR_READ"}
+      authorities = {"USER"}
   )
   void test_entity_not_found_exception() {
     assertThrows(EntityNotFoundException.class, () -> authorReadOnlyDalService.findById(100));
@@ -62,7 +62,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "USER",
-      authorities = {"USER", "AUTHOR_READ"}
+      authorities = {"USER"}
   )
   void test_findById_with_user_view() {
     assertNull(authorReadOnlyDalService.findById(1).getId());
@@ -71,7 +71,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
+      authorities = {"DEVELOPER"}
   )
   void test_findById_with_developer_view() {
     assertNotNull(authorReadOnlyDalService.findById(1).getId());
@@ -80,7 +80,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
+      authorities = {"DEVELOPER"}
   )
   void test_findById_with_embedded_id() {
     assertNotNull(storeReadOnlyDalService.findById(new Id("Mediaworld", 1)));
@@ -89,7 +89,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
+      authorities = {"DEVELOPER"}
   )
   void test_findById_with_idClass() {
     assertNotNull(proejctReadOnlyDalService.findById(new ProjectId("TekFramework", "Java")));
@@ -98,7 +98,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "USER",
-      authorities = {"USER", "AUTHOR_READ"}
+      authorities = {"USER"}
   )
   void test_findAll_with_user_view() {
     var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));
@@ -112,7 +112,7 @@ class ReadOnlyDalServiceTest {
   @Test
   @WithMockUser(
       value = "ADMIN",
-      authorities = {"DEVELOPER", "AUTHOR_READ"}
+      authorities = {"DEVELOPER"}
   )
   void test_findAll_with_developer_view() {
     var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));

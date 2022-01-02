@@ -51,7 +51,6 @@ class EntityUtilsTest {
     final var properties = Map.of(
         "name", "",
         "books", "",
-        "books.author", "",
         "ratings", ""
     );
     for (String property : properties.keySet()) {

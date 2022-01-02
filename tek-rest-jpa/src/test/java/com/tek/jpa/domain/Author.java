@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -37,7 +38,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Author implements Serializable {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonView(DeveloperView.class)
   private Integer id;
 

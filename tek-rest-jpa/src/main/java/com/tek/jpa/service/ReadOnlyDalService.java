@@ -78,6 +78,7 @@ import org.springframework.util.ClassUtils;
  */
 public abstract class ReadOnlyDalService<E extends Serializable, I extends Serializable> {
 
+  //TODO apply logging (WARN/INFO/DEBUG)
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
   @Autowired
@@ -93,6 +94,8 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   protected abstract ReadOnlyDalRepository<E, I> repository();
 
+  //TODO: move to json mapper, remove objectMapper from constructor and create a optional builder method
+  // with default implementation, to allow customizing the mapper inside the dal service
   protected ReadOnlyDalService(
       @NonNull EntityManager entityManager,
       @NonNull ObjectMapper objectMapper
@@ -102,7 +105,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     entityView = entity -> {
       try {
         return objectMapper.readerFor(entityClass).readValue(
-            objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsString(entity),
+            objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsBytes(entity),
             entityClass
         );
       } catch (IOException ex) {
@@ -139,6 +142,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     return repository().findAll(where, pageable).map(entityView);
   }
 
+  //TODO refactor to avoid throwing exception, this can be null! Move the exception on the delete and update methods
   @SneakyThrows
   public E findById(@NonNull I id) {
     final var whereId = new ByIdSpecification<>(getEntityType(), id);

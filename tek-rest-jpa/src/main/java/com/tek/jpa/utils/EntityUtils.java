@@ -70,9 +70,7 @@ public class EntityUtils {
     if (pathTokenizer.hasMoreTokens()) {
       final var attributePath = pathTokenizer.nextToken();
       final var attribute = managedType.getDeclaredAttribute(attributePath);
-      if (viewClass != null) {
-        validateView(managedType, viewClass, attributePath);
-      }
+      validateView(managedType, viewClass, attributePath);
       if (attribute instanceof final PersistentAttribute persistentAttribute) {
         final var persistenceType = persistentAttribute.getValueGraphType().getPersistenceType();
         final var attributeClass = persistentAttribute.getValueGraphType().getJavaType();
@@ -88,9 +86,10 @@ public class EntityUtils {
     }
   }
 
+  //TODO allow filtering of multiple views, based on JsonView array.
   private void validateView(
       @NonNull ManagedType<?> managedType,
-      @NonNull Class<?> view,
+      @Nullable Class<?> view,
       @NonNull String attributePath
   ) throws NoSuchFieldException, AccessDeniedException {
     final var jsonView = managedType.getJavaType()
@@ -100,9 +99,10 @@ public class EntityUtils {
       final var declaredView = Arrays.stream(jsonView.value()).findFirst();
       if (declaredView.isPresent() && !declaredView.get().equals(view)) {
         log.warn(
-            "Access denied while trying to access path {} of managed type {}",
+            "Access denied while trying to access path [{}] of managed type [{}] with view [{}]",
             attributePath,
-            managedType
+            managedType.getJavaType().getName(),
+            declaredView.get().getName()
         );
         throw new AccessDeniedException("Operation not allowed!");
       }

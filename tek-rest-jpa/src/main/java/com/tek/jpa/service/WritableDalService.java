@@ -2,6 +2,7 @@ package com.tek.jpa.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.repository.WritableDalRepository;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
@@ -90,8 +92,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     validatorAdapter = new SpringValidatorAdapter(validator);
   }
 
-  @SneakyThrows
-  public E create(@NonNull E entity) {
+  public E create(@NonNull E entity) throws MethodArgumentNotValidException {
     final var entityView = this.entityView.apply(entity);
     final var validation = new BeanPropertyBindingResult(null, getEntityType().getName());
     validatorAdapter.validate(entityView, validation);
@@ -102,12 +103,15 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return this.entityView.apply(savedEntity);
   }
 
-  @SneakyThrows
   public E update(
       @NonNull I id,
       @NonNull Map<String, Serializable> properties,
       @Nullable final Serializable version
-  ) {
+  ) throws
+      AccessDeniedException,
+      MethodArgumentNotValidException,
+      EntityNotFoundException,
+      NoSuchFieldException {
     final var entityType = getEntityType();
     for (String property : properties.keySet()) {
       entityUtils.validatePath(property, entityType, applyView());
@@ -160,7 +164,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return entityView.apply(findById(id));
   }
 
-  public void deleteById(I id) {
+  public void deleteById(I id) throws EntityNotFoundException {
     if (findById(id) != null) {
       repository().deleteById(id);
     }

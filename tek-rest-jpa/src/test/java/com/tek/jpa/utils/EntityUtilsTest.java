@@ -10,7 +10,6 @@ import com.tek.jpa.domain.Book.AuthorView;
 import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.jpa.service.mock.BookWritableDalService;
 import java.io.Serializable;
-import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -22,6 +21,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = TekRestJpaApplication.class)

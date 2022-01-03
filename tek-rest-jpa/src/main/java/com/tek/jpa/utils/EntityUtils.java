@@ -1,7 +1,6 @@
 package com.tek.jpa.utils;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
@@ -13,6 +12,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.metamodel.model.domain.PersistentAttribute;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * Utility to work with {@link javax.persistence.Entity}

@@ -35,7 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource(
     properties = {
         "tek.core.fileConfiguration.binary.enabled=true",
-        "tek.core.fileConfiguration.binary.directoryPath=C:/Users/MarcoPagan/Desktop/binDir"
+        "tek.core.fileConfiguration.binary.directoryPath=C:/binDir"
     })
 @TestMethodOrder(OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)

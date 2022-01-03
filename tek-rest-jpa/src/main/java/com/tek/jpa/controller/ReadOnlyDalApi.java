@@ -31,5 +31,4 @@ public interface ReadOnlyDalApi<E extends Serializable, I extends Serializable> 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("this.readAuthorized()")
   E findById(@PathVariable("id") I id);
-
 }

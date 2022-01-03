@@ -1,10 +1,12 @@
 package com.tek.jpa.controller;
 
+import com.tek.rest.shared.dto.UpdateRequest;
 import java.io.Serializable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +34,14 @@ public interface WritableDalApi<E extends Serializable, I extends Serializable>
   )
   @PreAuthorize("this.createAuthorized()")
   E create(@RequestBody E entity);
+
+  @PatchMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      value = "/{id}"
+  )
+  @PreAuthorize("this.updateAuthorized()")
+  E update(@PathVariable I id, @RequestBody UpdateRequest request);
 
   @DeleteMapping("/{id}")
   @PreAuthorize("this.deleteAuthorized()")

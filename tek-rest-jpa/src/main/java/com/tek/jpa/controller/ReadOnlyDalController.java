@@ -2,6 +2,7 @@ package com.tek.jpa.controller;
 
 import com.tek.jpa.service.ReadOnlyDalService;
 import java.io.Serializable;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
     return service().findAll(spec, pageable);
   }
 
+  @SneakyThrows
   @Override
   public E findById(I id) {
     return service().findById(id);

@@ -34,7 +34,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource(
     properties = {
         "tek.core.fileConfiguration.tmp.enabled=true",
-        "tek.core.fileConfiguration.tmp.directoryPath=C:/Users/MarcoPagan/Desktop/tmpDir"
+        "tek.core.fileConfiguration.tmp.directoryPath=C:/tmpDir"
     })
 @TestMethodOrder(OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)

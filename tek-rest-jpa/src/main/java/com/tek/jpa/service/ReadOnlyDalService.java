@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,9 +141,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     return repository().findAll(where, pageable).map(entityView);
   }
 
-  //TODO refactor to avoid throwing exception, this can be null! Move the exception on the delete and update methods
-  @SneakyThrows
-  public E findById(@NonNull I id) {
+  public E findById(@NonNull I id) throws EntityNotFoundException {
     final var whereId = new ByIdSpecification<>(getEntityType(), id);
     if (where() != null) {
       whereId.and(where());

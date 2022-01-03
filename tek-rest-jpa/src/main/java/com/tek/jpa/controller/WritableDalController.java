@@ -1,7 +1,9 @@
 package com.tek.jpa.controller;
 
 import com.tek.jpa.service.WritableDalService;
+import com.tek.rest.shared.dto.UpdateRequest;
 import java.io.Serializable;
+import lombok.SneakyThrows;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -66,11 +68,19 @@ public abstract class WritableDalController<E extends Serializable, I extends Se
 
   protected abstract WritableDalService<E, I> service();
 
+  @SneakyThrows
   @Override
-  public E create(E entity) {
+  public E create(E entity)  {
     return service().create(entity);
   }
 
+  @SneakyThrows
+  @Override
+  public E update(I id, UpdateRequest request) {
+    return service().update(id, request.getProperties(), request.getVersion());
+  }
+
+  @SneakyThrows
   @Override
   public void deleteById(I id) {
     service().deleteById(id);

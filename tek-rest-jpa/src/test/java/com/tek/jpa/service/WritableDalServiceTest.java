@@ -14,7 +14,6 @@ import com.tek.jpa.service.mock.EmployeeDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +28,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +70,7 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"USER"}
   )
-  void test_create_with_user_view() {
+  void test_create_with_user_view() throws MethodArgumentNotValidException {
     var author = Author.builder()
         .name("marco")
         .surname("pagan")
@@ -88,7 +88,7 @@ class WritableDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER"}
   )
-  void test_create_with_developer_view() {
+  void test_create_with_developer_view() throws MethodArgumentNotValidException {
     var author = Author.builder()
         .name("marco")
         .surname("pagan")
@@ -117,7 +117,7 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"USER"}
   )
-  void test_findById_with_user_view() {
+  void test_findById_with_user_view() throws EntityNotFoundException {
     assertNull(authorDalService.findById(1).getId());
   }
 
@@ -126,7 +126,7 @@ class WritableDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER"}
   )
-  void test_findById_with_developer_view() {
+  void test_findById_with_developer_view() throws EntityNotFoundException {
     assertNotNull(authorDalService.findById(1).getId());
   }
 
@@ -261,7 +261,8 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"USER"}
   )
-  void test_update_with_basic_type() {
+  void test_update_with_basic_type()
+      throws NoSuchFieldException, EntityNotFoundException, MethodArgumentNotValidException {
     Map<String, Serializable> properties = new HashMap<>();
     properties.put("name", "Marco Pagan");
     properties.put("income", "36000.50");
@@ -281,7 +282,8 @@ class WritableDalServiceTest {
       value = "USER",
       authorities = {"COMPANY"}
   )
-  void test_update_with_entity_type() {
+  void test_update_with_entity_type()
+      throws EntityNotFoundException, NoSuchFieldException, MethodArgumentNotValidException {
     Map<String, Serializable> properties = new HashMap<>();
     properties.put("company.id", 2);
     final var update = employeeDalService.update(1L, properties, 1L);
@@ -294,7 +296,7 @@ class WritableDalServiceTest {
   //------------------------------------- Delete methods -------------------------------------------
   @Test
   @WithMockUser(value = "ADMIN")
-  void test_delete() {
+  void test_delete() throws EntityNotFoundException {
     assertNotNull(authorDalService.findById(1));
     authorDalService.deleteById(1);
     assertThrows(EntityNotFoundException.class, () -> authorDalService.findById(1));

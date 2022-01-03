@@ -64,7 +64,7 @@ class ReadOnlyDalServiceTest {
       value = "USER",
       authorities = {"USER"}
   )
-  void test_findById_with_user_view() {
+  void test_findById_with_user_view() throws EntityNotFoundException {
     assertNull(authorReadOnlyDalService.findById(1).getId());
   }
 
@@ -73,7 +73,7 @@ class ReadOnlyDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER"}
   )
-  void test_findById_with_developer_view() {
+  void test_findById_with_developer_view() throws EntityNotFoundException {
     assertNotNull(authorReadOnlyDalService.findById(1).getId());
   }
 
@@ -82,7 +82,7 @@ class ReadOnlyDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER"}
   )
-  void test_findById_with_embedded_id() {
+  void test_findById_with_embedded_id() throws EntityNotFoundException {
     assertNotNull(storeReadOnlyDalService.findById(new Id("Mediaworld", 1)));
   }
 
@@ -91,7 +91,7 @@ class ReadOnlyDalServiceTest {
       value = "ADMIN",
       authorities = {"DEVELOPER"}
   )
-  void test_findById_with_idClass() {
+  void test_findById_with_idClass() throws EntityNotFoundException {
     assertNotNull(proejctReadOnlyDalService.findById(new ProjectId("TekFramework", "Java")));
   }
 

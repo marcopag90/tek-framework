@@ -1,6 +1,5 @@
 package com.tek.jpa.service.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Author;
 import com.tek.jpa.domain.Author.Views.DeveloperView;
 import com.tek.jpa.domain.Author.Views.UserView;
@@ -17,10 +16,9 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
 
   protected AuthorWritableDalService(
       EntityManager entityManager,
-      ObjectMapper objectMapper,
       Validator validator
   ) {
-    super(entityManager, objectMapper, validator);
+    super(entityManager, validator);
   }
 
   @Override

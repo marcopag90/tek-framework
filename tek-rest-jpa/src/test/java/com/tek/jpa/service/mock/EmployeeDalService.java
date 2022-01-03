@@ -1,6 +1,5 @@
 package com.tek.jpa.service.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Employee;
 import com.tek.jpa.domain.Employee.EmployeeViews.CompanyView;
 import com.tek.jpa.domain.Employee.EmployeeViews.DeveloperView;
@@ -17,10 +16,9 @@ public class EmployeeDalService extends WritableDalService<Employee, Long> {
 
   protected EmployeeDalService(
       EntityManager entityManager,
-      ObjectMapper objectMapper,
       Validator validator
   ) {
-    super(entityManager, objectMapper, validator);
+    super(entityManager, validator);
   }
 
   @Override

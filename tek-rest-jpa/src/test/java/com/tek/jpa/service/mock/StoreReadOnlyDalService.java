@@ -1,6 +1,5 @@
 package com.tek.jpa.service.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Store;
 import com.tek.jpa.domain.Store.Id;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
@@ -13,10 +12,9 @@ import org.springframework.stereotype.Service;
 public class StoreReadOnlyDalService extends ReadOnlyDalService<Store, Id> {
 
   protected StoreReadOnlyDalService(
-      EntityManager entityManager,
-      ObjectMapper objectMapper
+      EntityManager entityManager
   ) {
-    super(entityManager, objectMapper);
+    super(entityManager);
   }
 
   @Override

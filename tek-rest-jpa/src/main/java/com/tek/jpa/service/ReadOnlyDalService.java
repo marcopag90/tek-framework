@@ -1,7 +1,12 @@
 package com.tek.jpa.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
 import com.tek.jpa.utils.EntityUtils;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
@@ -9,7 +14,6 @@ import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.UnaryOperator;
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import lombok.Getter;
@@ -36,7 +40,11 @@ import org.springframework.util.ClassUtils;
  *     implement the method <i>repository()</i> to qualify the {@link ReadOnlyDalRepository} to use;
  *   </li>
  *   <li>
- *     <b>optionally</b> implement the <i>where()</i> method to specify a mandatory where condition
+ *     <b>optionally</b> implement the <i>withJsonBuilder()</i> method to customize the behaviour
+ *     of the {@link JsonMapper} used by the dal to serialize the entity;
+ *   </li>
+ *   <li>
+ *     <b>optionally</b> implement the <i>where()</i> method to specify a sql <i>where</i> condition
  *     to be applied on every query;
  *   </li>
  *   <li>
@@ -77,34 +85,31 @@ import org.springframework.util.ClassUtils;
  */
 public abstract class ReadOnlyDalService<E extends Serializable, I extends Serializable> {
 
-  //TODO apply logging (WARN/INFO/DEBUG)
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
   @Autowired
   protected ApplicationContext context;
   @Getter
-  private Class<E> entityClass;
+  private final Class<E> entityClass;
 
-  protected final ObjectMapper objectMapper;
-  protected EntityUtils entityUtils;
+  protected final JsonMapper jsonMapper;
+  protected final EntityUtils entityUtils;
 
   public final EntityManager entityManager;
   public final UnaryOperator<E> entityView;
 
   protected abstract ReadOnlyDalRepository<E, I> repository();
 
-  //TODO: move to json mapper, remove objectMapper from constructor and create a optional builder method
-  // with default implementation, to allow customizing the mapper inside the dal service
-  protected ReadOnlyDalService(
-      @NonNull EntityManager entityManager,
-      @NonNull ObjectMapper objectMapper
-  ) {
+  protected ReadOnlyDalService(@NonNull EntityManager entityManager) {
+    log.debug("Initializing {}", ClassUtils.getUserClass(this).getSimpleName());
     this.entityManager = entityManager;
-    this.objectMapper = objectMapper;
-    entityView = entity -> {
+    this.jsonMapper = initializeJsonMapper(withJsonBuilder());
+    this.entityClass = getEntityType().getJavaType();
+    this.entityUtils = new EntityUtils(entityManager);
+    this.entityView = entity -> {
       try {
-        return objectMapper.readerFor(entityClass).readValue(
-            objectMapper.writerWithView(applyView()).withoutRootName().writeValueAsBytes(entity),
+        return jsonMapper.readerFor(entityClass).readValue(
+            jsonMapper.writerWithView(applyView()).withoutRootName().writeValueAsBytes(entity),
             entityClass
         );
       } catch (IOException ex) {
@@ -114,18 +119,27 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     };
   }
 
-  @PostConstruct
-  void setup() {
-    this.entityClass = getEntityType().getJavaType();
-    this.objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-    this.entityUtils = new EntityUtils(entityManager);
+  /**
+   * Method to customize the {@link JsonMapper} of the dal entity, providing a builder that will be
+   * appended to the default one.
+   */
+  @Nullable
+  protected JsonMapper.Builder withJsonBuilder() {
+    return null;
   }
 
+  /**
+   * Method to append a sql <i>where</i> condition on all the query methods executed on the dal
+   * entity.
+   */
   @Nullable
   protected Specification<E> where() {
     return null;
   }
 
+  /**
+   * Method to apply a {@link com.fasterxml.jackson.annotation.JsonView} to the dal entity.
+   */
   @Nullable
   protected Class<?> applyView() {
     return null;
@@ -156,5 +170,17 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   public final EntityType<E> getEntityType() {
     var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
     return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
+  }
+
+  private JsonMapper initializeJsonMapper(@Nullable JsonMapper.Builder jsonMapper) {
+    final var builder = jsonMapper != null ? jsonMapper : JsonMapper.builder();
+    return builder
+        .addModule(new JavaTimeModule())
+        .addModule(new Hibernate5Module())
+        .addModule(new GuavaModule())
+        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true)
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .serializationInclusion(Include.NON_NULL)
+        .build();
   }
 }

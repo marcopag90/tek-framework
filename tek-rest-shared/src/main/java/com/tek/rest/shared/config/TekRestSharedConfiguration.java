@@ -1,17 +1,13 @@
 package com.tek.rest.shared.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.tek.rest.shared.TekRestSharedAutoConfig;
 import com.tek.shared.TekModuleConfiguration;
 import java.util.List;
-import lombok.SneakyThrows;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -59,19 +55,6 @@ public class TekRestSharedConfiguration extends TekModuleConfiguration implement
         serializerModule.addDeserializer(String.class, new TrimSerializer(String.class));
         mapper.registerModules(serializerModule);
       }
-    }
-  }
-
-  private static class TrimSerializer extends StdDeserializer<String> {
-
-    protected TrimSerializer(Class<?> vc) {
-      super(vc);
-    }
-
-    @Override
-    @SneakyThrows
-    public String deserialize(JsonParser jsonParser, DeserializationContext ctx) {
-      return jsonParser.getText() != null ? jsonParser.getText().trim() : null;
     }
   }
 

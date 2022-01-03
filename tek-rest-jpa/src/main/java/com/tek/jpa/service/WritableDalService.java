@@ -1,6 +1,6 @@
 package com.tek.jpa.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.tek.jpa.repository.WritableDalRepository;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
@@ -32,7 +32,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  *     implement the method <i>repository()</i> to qualify the {@link WritableDalRepository} to use;
  *   </li>
  *   <li>
- *     <b>optionally</b> implement the <i>where()</i> method to specify a mandatory where condition
+ *     <b>optionally</b> implement the <i>withJsonBuilder()</i> method to customize the behaviour
+ *     of the {@link JsonMapper} used by the dal to serialize the entity;
+ *   </li>
+ *   <li>
+ *     <b>optionally</b> implement the <i>where()</i> method to specify a sql <i>where</i> condition
  *     to be applied on every query;
  *   </li>
  *   <li>
@@ -83,10 +87,9 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
   @SneakyThrows
   protected WritableDalService(
       @NonNull EntityManager entityManager,
-      @NonNull ObjectMapper objectMapper,
       @NonNull Validator validator
   ) {
-    super(entityManager, objectMapper);
+    super(entityManager);
     createMethod = getClass().getMethod("create", Serializable.class);
     patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);
     validatorAdapter = new SpringValidatorAdapter(validator);

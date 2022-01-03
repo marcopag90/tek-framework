@@ -1,6 +1,5 @@
 package com.tek.jpa.service.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Beer;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
 import com.tek.jpa.repository.mock.BeerRepository;
@@ -12,10 +11,9 @@ import org.springframework.stereotype.Service;
 public class BeerReadOnlyDalService extends ReadOnlyDalService<Beer, Long> {
 
   protected BeerReadOnlyDalService(
-      EntityManager entityManager,
-      ObjectMapper objectMapper
+      EntityManager entityManager
   ) {
-    super(entityManager, objectMapper);
+    super(entityManager);
   }
 
   @Override

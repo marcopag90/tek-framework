@@ -102,7 +102,6 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return this.entityView.apply(savedEntity);
   }
 
-  //TODO tests
   @SneakyThrows
   public E update(
       @NonNull I id,

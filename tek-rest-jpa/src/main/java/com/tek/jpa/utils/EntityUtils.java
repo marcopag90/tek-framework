@@ -86,7 +86,6 @@ public class EntityUtils {
     }
   }
 
-  //TODO allow filtering of multiple views, based on JsonView array.
   private void validateView(
       @NonNull ManagedType<?> managedType,
       @Nullable Class<?> view,

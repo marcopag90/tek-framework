@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.domain.Author;
-import com.tek.jpa.repository.mock.EmployeeRepository;
 import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.jpa.service.mock.EmployeeDalService;
 import com.tek.rest.shared.exception.EntityNotFoundException;
@@ -44,7 +43,6 @@ class WritableDalServiceTest {
 
   @Autowired private AuthorWritableDalService authorDalService;
   @Autowired private EmployeeDalService employeeDalService;
-  @Autowired private EmployeeRepository employeeRepository;
 
   @BeforeAll
   @Test

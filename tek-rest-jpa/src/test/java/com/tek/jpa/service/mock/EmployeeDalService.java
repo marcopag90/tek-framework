@@ -2,6 +2,7 @@ package com.tek.jpa.service.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tek.jpa.domain.Employee;
+import com.tek.jpa.domain.Employee.EmployeeViews.CompanyView;
 import com.tek.jpa.domain.Employee.EmployeeViews.DeveloperView;
 import com.tek.jpa.repository.WritableDalRepository;
 import com.tek.jpa.repository.mock.EmployeeRepository;
@@ -30,9 +31,12 @@ public class EmployeeDalService extends WritableDalService<Employee, Long> {
 
   @Override
   protected Class<?> applyView() {
-    var auth = SecurityContextHolder.getContext().getAuthentication();
+    final var auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("DEVELOPER"))) {
       return DeveloperView.class;
+    }
+    if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("COMPANY"))) {
+      return CompanyView.class;
     }
     return null;
   }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,18 +19,19 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
-@ToString(exclude = "company")
-@EqualsAndHashCode(exclude = "company")
+@ToString
 @NamedEntityGraph(name = "Employee.full", includeAllAttributes = true)
 public class Employee implements Serializable {
 
@@ -50,17 +52,33 @@ public class Employee implements Serializable {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JsonView(CompanyView.class)
+  @ToString.Exclude
   private Company company;
 
   public static class EmployeeViews {
 
-    public static class CompanyView {
+    public static class DeveloperView {
 
     }
-
-    public static class DeveloperView {
+    public static class CompanyView {
 
     }
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Employee employee = (Employee) o;
+    return id != null && Objects.equals(id, employee.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }

@@ -133,10 +133,16 @@ public record DatabaseMockup(
   }
 
   private void createEmployees() {
-    final var tekReadySolution = companyRepository.save(Company.builder()
+    var tekReadySolution = Company.builder()
         .name("Tek-Ready Solutions")
-        .build());
-
+        .build();
+    var decathlon = Company.builder()
+        .name("Decathlon")
+        .build();
+    companyRepository.saveAll(List.of(
+        tekReadySolution,
+        decathlon
+    ));
     employeeRepository.save(Employee.builder()
         .name("Marco")
         .createdAt(Instant.now())
@@ -145,7 +151,5 @@ public record DatabaseMockup(
         .optLock(1L)
         .company(tekReadySolution)
         .build());
-
   }
-
 }

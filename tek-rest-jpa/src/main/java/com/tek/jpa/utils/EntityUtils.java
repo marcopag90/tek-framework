@@ -96,13 +96,16 @@ public class EntityUtils {
         .getDeclaredField(attributePath)
         .getAnnotation(JsonView.class);
     if (jsonView != null) {
-      final var declaredView = Arrays.stream(jsonView.value()).findFirst();
-      if (declaredView.isPresent() && !declaredView.get().equals(view)) {
-        log.warn(
-            "Access denied while trying to access path [{}] of managed type [{}] with view [{}]",
+      final var anyMatch = Arrays.asList(jsonView.value()).contains(view);
+      if (!anyMatch) {
+        log.warn(System.lineSeparator() + """
+                    Access denied on path [{}] of managed type [{}] with view [{}].
+                    Allowed views on path: {}
+                """,
             attributePath,
             managedType.getJavaType().getName(),
-            declaredView.get().getName()
+            view != null ? view.getName() : "null",
+            jsonView.value()
         );
         throw new AccessDeniedException("Operation not allowed!");
       }

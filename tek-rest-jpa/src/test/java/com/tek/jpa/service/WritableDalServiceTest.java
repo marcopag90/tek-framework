@@ -160,9 +160,7 @@ class WritableDalServiceTest {
     );
   }
 
-  //TODO update methods
   //------------------------------------- Update methods -------------------------------------------
-
   /*
   1) entityUtils.validatePath(property, entityType, applyView());
     1.1) unknown property
@@ -272,23 +270,26 @@ class WritableDalServiceTest {
     properties.put("lastContract", null);
     final var update = employeeDalService.update(1L, properties, 1L);
     Assertions.assertAll(
+        () -> assertNotNull(update),
         () -> assertEquals("Marco Pagan", update.getName()),
         () -> assertEquals(new BigDecimal("36000.50"), update.getIncome()),
         () -> assertNull(update.getLastContract())
     );
   }
 
-  //TODO
   //5.2
   @Test
   @WithMockUser(
       value = "USER",
-      authorities = {"USER"}
+      authorities = {"COMPANY"}
   )
   void test_update_with_entity_type() {
     Map<String, Serializable> properties = new HashMap<>();
+    properties.put("company.id", 2);
     final var update = employeeDalService.update(1L, properties, 1L);
     Assertions.assertAll(
+        () -> assertNotNull(update),
+        () -> assertEquals(2, update.getCompany().getId())
     );
   }
 

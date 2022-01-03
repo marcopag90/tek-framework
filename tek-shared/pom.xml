@@ -8,6 +8,7 @@
     <artifactId>tek-framework-parent</artifactId>
     <groupId>com.tek</groupId>
     <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>tek-shared</artifactId>

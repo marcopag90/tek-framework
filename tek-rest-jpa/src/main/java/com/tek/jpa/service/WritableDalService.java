@@ -157,8 +157,8 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (result.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
     }
-    final var savedEntity = repository().update(entity);
-    return entityView.apply(savedEntity);
+    repository().update(entity);
+    return entityView.apply(findById(id));
   }
 
   public void deleteById(I id) {

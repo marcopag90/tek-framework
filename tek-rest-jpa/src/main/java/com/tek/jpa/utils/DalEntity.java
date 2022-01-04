@@ -1,15 +1,19 @@
 package com.tek.jpa.utils;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.tek.jpa.service.ReadOnlyDalService;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.Type.PersistenceType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.metamodel.model.domain.PersistentAttribute;
+import org.springframework.core.ResolvableType;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,17 +24,35 @@ import org.springframework.security.access.AccessDeniedException;
  * @author MarcoPagan
  */
 @Slf4j
-public class EntityUtils {
+public class DalEntity<E extends Serializable> {
 
   private static final String PATH_TOKENIZER = ".";
+  private EntityManager entityManager;
   private Metamodel metamodel;
 
   @SuppressWarnings("unused")
-  private EntityUtils() {
+  private DalEntity() {
   }
 
-  public EntityUtils(@NonNull EntityManager entityManager) {
+  public DalEntity(@NonNull EntityManager entityManager) {
+    this.entityManager = entityManager;
     this.metamodel = entityManager.getMetamodel();
+  }
+
+  /**
+   * Method to resolve the {@link EntityType} via generics.
+   */
+  @SuppressWarnings("unchecked")
+  public EntityType<E> getEntityType() {
+    var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
+    return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
+  }
+
+  /**
+   * Method to obtain the concrete class of the entity.
+   */
+  public Class<E> getJavaType() {
+    return getEntityType().getJavaType();
   }
 
   /**

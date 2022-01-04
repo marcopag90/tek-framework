@@ -28,12 +28,12 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"spring.config.location = classpath:application.yml"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class EntityUtilsTest {
+class DalEntityTest {
 
   @Autowired private AuthorWritableDalService authorService;
   @Autowired private BookWritableDalService bookService;
 
-  private EntityUtils entityUtils;
+  private DalEntity<Author> dalEntity;
 
   @BeforeAll
   @Test
@@ -42,7 +42,7 @@ class EntityUtilsTest {
         () -> assertNotNull(authorService),
         () -> assertNotNull(bookService)
     );
-    entityUtils = new EntityUtils(authorService.entityManager);
+    dalEntity = new DalEntity<>(authorService.entityManager);
   }
 
   @Test
@@ -54,17 +54,17 @@ class EntityUtilsTest {
         "ratings", ""
     );
     for (String property : properties.keySet()) {
-      entityUtils.validatePath(property, authorService.getEntityType(), null);
+      dalEntity.validatePath(property, dalEntity.getEntityType(), null);
     }
   }
 
   @Test
   void test_validate_path_unknown_property() {
     final var path = "books.whatever";
-    final var entityType = authorService.getEntityType();
+    final var entityType = dalEntity.getEntityType();
     assertThrows(
         IllegalArgumentException.class,
-        () -> entityUtils.validatePath(path, entityType, null)
+        () -> dalEntity.validatePath(path, entityType, null)
     );
   }
 
@@ -75,7 +75,7 @@ class EntityUtilsTest {
     for (String property : properties.keySet()) {
       assertThrows(
           AccessDeniedException.class,
-          () -> entityUtils.validatePath(property, authorService.getEntityType(), view)
+          () -> dalEntity.validatePath(property, dalEntity.getEntityType(), view)
       );
     }
   }
@@ -89,7 +89,7 @@ class EntityUtilsTest {
         AccessDeniedException.class,
         () -> {
           for (String property : properties.keySet()) {
-            entityUtils.validatePath(property, bookService.getEntityType(), AuthorView.class);
+            dalEntity.validatePath(property, dalEntity.getEntityType(), AuthorView.class);
           }
         }
     );
@@ -103,7 +103,7 @@ class EntityUtilsTest {
     assertDoesNotThrow(
         () -> {
           for (String property : properties.keySet()) {
-            entityUtils.validatePath(property, bookService.getEntityType(), AuthorView.class);
+            dalEntity.validatePath(property, dalEntity.getEntityType(), AuthorView.class);
           }
         }
     );

@@ -1,5 +1,6 @@
 package com.tek.jpa.controller;
 
+import com.tek.jpa.service.IWritableDalService;
 import com.tek.jpa.service.WritableDalService;
 import com.tek.rest.shared.dto.UpdateRequest;
 import java.io.Serializable;
@@ -53,7 +54,7 @@ import lombok.SneakyThrows;
  *   }
  *
  *   {@literal @Override}
- *   public WritableDalService{@literal <}Book, Long{@literal >} service() {
+ *   public IWritableDalService{@literal <}Book, Long{@literal >} service() {
  *     return context.getBean(BookWritableDalService.class);
  *   }
  * }
@@ -66,7 +67,7 @@ import lombok.SneakyThrows;
 public abstract class WritableDalController<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalController<E, I> implements WritableDalApi<E, I> {
 
-  protected abstract WritableDalService<E, I> service();
+  protected abstract IWritableDalService<E, I> service();
 
   @SneakyThrows
   @Override

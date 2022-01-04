@@ -8,20 +8,18 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
-import com.tek.jpa.utils.EntityUtils;
+import com.tek.jpa.utils.DalEntity;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.UnaryOperator;
 import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EntityType;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -83,7 +81,8 @@ import org.springframework.util.ClassUtils;
  * @param <I> : the {@link javax.persistence.Id}
  * @author MarcoPagan
  */
-public abstract class ReadOnlyDalService<E extends Serializable, I extends Serializable> {
+public abstract class ReadOnlyDalService<E extends Serializable, I extends Serializable>
+implements IReadOnlyDalService<E, I> {
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
@@ -93,7 +92,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   private final Class<E> entityClass;
 
   protected final JsonMapper jsonMapper;
-  protected final EntityUtils entityUtils;
+  protected final DalEntity<E> dalEntity;
 
   public final EntityManager entityManager;
   public final UnaryOperator<E> entityView;
@@ -103,9 +102,9 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   protected ReadOnlyDalService(@NonNull EntityManager entityManager) {
     log.debug("Initializing {}", ClassUtils.getUserClass(this).getSimpleName());
     this.entityManager = entityManager;
+    this.dalEntity = new DalEntity<>(entityManager);
+    this.entityClass = dalEntity.getJavaType();
     this.jsonMapper = initializeJsonMapper(withJsonBuilder());
-    this.entityClass = getEntityType().getJavaType();
-    this.entityUtils = new EntityUtils(entityManager);
     this.entityView = entity -> {
       try {
         return jsonMapper.readerFor(entityClass).readValue(
@@ -145,6 +144,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     return null;
   }
 
+  @Override
   public Page<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
     Specification<E> where;
     if (specification != null) {
@@ -155,8 +155,9 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     return repository().findAll(where, pageable).map(entityView);
   }
 
+  @Override
   public E findById(@NonNull I id) throws EntityNotFoundException {
-    final var whereId = new ByIdSpecification<>(getEntityType(), id);
+    final var whereId = new ByIdSpecification<>(dalEntity.getEntityType(), id);
     if (where() != null) {
       whereId.and(where());
     }
@@ -164,12 +165,6 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
         repository().findOne(whereId)
             .orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );
-  }
-
-  @SuppressWarnings("unchecked")
-  public final EntityType<E> getEntityType() {
-    var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
-    return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }
 
   private JsonMapper initializeJsonMapper(@Nullable JsonMapper.Builder jsonMapper) {

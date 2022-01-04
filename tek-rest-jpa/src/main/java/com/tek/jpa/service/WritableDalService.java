@@ -76,7 +76,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  * @author MarcoPagan
  */
 public abstract class WritableDalService<E extends Serializable, I extends Serializable>
-    extends ReadOnlyDalService<E, I> {
+    extends ReadOnlyDalService<E, I> implements IWritableDalService<E, I> {
 
   protected final Method createMethod;
   protected final Method patchMethod;
@@ -95,9 +95,13 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     validatorAdapter = new SpringValidatorAdapter(validator);
   }
 
+  @Override
   public E create(@NonNull E entity) throws MethodArgumentNotValidException {
     final var entityView = this.entityView.apply(entity);
-    final var validation = new BeanPropertyBindingResult(null, getEntityType().getName());
+    final var validation = new BeanPropertyBindingResult(
+        null,
+        dalEntity.getEntityType().getName()
+    );
     validatorAdapter.validate(entityView, validation);
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
@@ -106,6 +110,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return this.entityView.apply(savedEntity);
   }
 
+  @Override
   public E update(
       @NonNull I id,
       @NonNull Map<String, Serializable> properties,
@@ -115,9 +120,9 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       MethodArgumentNotValidException,
       EntityNotFoundException,
       NoSuchFieldException {
-    final var entityType = getEntityType();
+    final var entityType = dalEntity.getEntityType();
     for (String property : properties.keySet()) {
-      entityUtils.validatePath(property, entityType, applyView());
+      dalEntity.validatePath(property, entityType, applyView());
     }
     SingularAttribute<? super E, ?> versionAttribute = null;
     if (entityType.hasVersionAttribute()) {
@@ -167,7 +172,8 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     return entityView.apply(findById(id));
   }
 
-  public void deleteById(I id) throws EntityNotFoundException {
+  @Override
+  public void deleteById(@NonNull I id) throws EntityNotFoundException {
     if (findById(id) != null) {
       repository().deleteById(id);
     }

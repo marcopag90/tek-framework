@@ -1,5 +1,6 @@
 package com.tek.jpa.controller;
 
+import com.tek.jpa.service.IReadOnlyDalService;
 import com.tek.jpa.service.ReadOnlyDalService;
 import java.io.Serializable;
 import lombok.SneakyThrows;
@@ -36,7 +37,7 @@ import org.springframework.util.ClassUtils;
  *   }
  *
  *   {@literal @Override}
- *   public ReadOnlyDalService{@literal <}Book, Long{@literal >} service() {
+ *   public IReadOnlyDalService{@literal <}Book, Long{@literal >} service() {
  *     return context.getBean(BookReadOnlyDalService.class);
  *   }
  * }
@@ -54,7 +55,7 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
   @Autowired
   protected ApplicationContext context;
 
-  protected abstract ReadOnlyDalService<E, I> service();
+  protected abstract IReadOnlyDalService<E, I> service();
 
   @Override
   public Page<E> findAll(Specification<E> spec, Pageable pageable) {

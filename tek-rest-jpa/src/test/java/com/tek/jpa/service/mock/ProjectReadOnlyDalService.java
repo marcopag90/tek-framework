@@ -18,7 +18,7 @@ public class ProjectReadOnlyDalService extends ReadOnlyDalService<Project, Proje
   }
 
   @Override
-  protected ReadOnlyDalRepository<Project, ProjectId> repository() {
+  public ReadOnlyDalRepository<Project, ProjectId> repository() {
     return new ReadOnlyDalRepository<>(context.getBean(ProjectRepository.class)) {
     };
   }

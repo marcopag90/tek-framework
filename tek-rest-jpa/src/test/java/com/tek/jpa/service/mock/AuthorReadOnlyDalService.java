@@ -20,7 +20,7 @@ public class AuthorReadOnlyDalService extends ReadOnlyDalService<Author, Integer
   }
 
   @Override
-  protected ReadOnlyDalRepository<Author, Integer> repository() {
+  public ReadOnlyDalRepository<Author, Integer> repository() {
     return new ReadOnlyDalRepository<>(context.getBean(AuthorRepository.class)) {
     };
   }

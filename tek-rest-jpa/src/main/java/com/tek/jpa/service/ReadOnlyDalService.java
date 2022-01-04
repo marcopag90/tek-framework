@@ -15,11 +15,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.UnaryOperator;
 import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -82,19 +84,16 @@ import org.springframework.util.ClassUtils;
  * @author MarcoPagan
  */
 public abstract class ReadOnlyDalService<E extends Serializable, I extends Serializable>
-implements IReadOnlyDalService<E, I> {
+    implements IReadOnlyDalService<E, I> {
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
-  @Autowired
-  protected ApplicationContext context;
-  @Getter
-  private final Class<E> entityClass;
+  @Autowired protected ApplicationContext context;
+  @Getter private final Class<E> entityClass;
 
-  protected final JsonMapper jsonMapper;
-  protected final DalEntity<E> dalEntity;
-
+  public final JsonMapper jsonMapper;
   public final EntityManager entityManager;
+  public final DalEntity<E> dalEntity;
   public final UnaryOperator<E> entityView;
 
   protected abstract ReadOnlyDalRepository<E, I> repository();
@@ -102,7 +101,7 @@ implements IReadOnlyDalService<E, I> {
   protected ReadOnlyDalService(@NonNull EntityManager entityManager) {
     log.debug("Initializing {}", ClassUtils.getUserClass(this).getSimpleName());
     this.entityManager = entityManager;
-    this.dalEntity = new DalEntity<>(entityManager);
+    this.dalEntity = new DalEntity<>(entityManager, getEntityType());
     this.entityClass = dalEntity.getJavaType();
     this.jsonMapper = initializeJsonMapper(withJsonBuilder());
     this.entityView = entity -> {
@@ -177,5 +176,11 @@ implements IReadOnlyDalService<E, I> {
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .serializationInclusion(Include.NON_NULL)
         .build();
+  }
+
+  @SuppressWarnings("unchecked")
+  private EntityType<E> getEntityType() {
+    var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
+    return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
   }
 }

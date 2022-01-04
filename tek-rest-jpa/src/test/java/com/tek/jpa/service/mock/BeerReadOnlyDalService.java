@@ -17,7 +17,7 @@ public class BeerReadOnlyDalService extends ReadOnlyDalService<Beer, Long> {
   }
 
   @Override
-  protected ReadOnlyDalRepository<Beer, Long> repository() {
+  public ReadOnlyDalRepository<Beer, Long> repository() {
     return new ReadOnlyDalRepository<>(context.getBean(BeerRepository.class)) {
     };
   }

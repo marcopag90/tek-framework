@@ -1,7 +1,6 @@
 package com.tek.jpa.utils;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.tek.jpa.service.ReadOnlyDalService;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.StringTokenizer;
@@ -10,10 +9,10 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.Type.PersistenceType;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.metamodel.model.domain.PersistentAttribute;
-import org.springframework.core.ResolvableType;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,32 +26,21 @@ import org.springframework.security.access.AccessDeniedException;
 public class DalEntity<E extends Serializable> {
 
   private static final String PATH_TOKENIZER = ".";
-  private EntityManager entityManager;
-  private Metamodel metamodel;
+  @Getter private Metamodel metamodel;
+  @Getter private EntityType<E> entityType;
+  @Getter private Class<E> javaType;
 
   @SuppressWarnings("unused")
   private DalEntity() {
   }
 
-  public DalEntity(@NonNull EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public DalEntity(
+      @NonNull EntityManager entityManager,
+      @NonNull EntityType<E> entityType
+  ) {
     this.metamodel = entityManager.getMetamodel();
-  }
-
-  /**
-   * Method to resolve the {@link EntityType} via generics.
-   */
-  @SuppressWarnings("unchecked")
-  public EntityType<E> getEntityType() {
-    var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
-    return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
-  }
-
-  /**
-   * Method to obtain the concrete class of the entity.
-   */
-  public Class<E> getJavaType() {
-    return getEntityType().getJavaType();
+    this.entityType = entityType;
+    this.javaType = entityType.getJavaType();
   }
 
   /**
@@ -71,16 +59,17 @@ public class DalEntity<E extends Serializable> {
    * <p>The path <b>books.author.name</b> describes a path starting from the Author class and
    * the tokens to walk down this path are "books", "author", "name".
    *
-   * @param entityPath:  the entity path
-   * @param managedType: the {@link ManagedType} of the entity
+   * @param entityPath: the entity path
+   * @param viewClass:  the optional view to apply
    * @throws IllegalArgumentException if the path is invalid
+   * @throws AccessDeniedException    if the path is not accessible for the current viewClass
+   * @throws NoSuchFieldException     if a getter for the given path is not found
    */
   public void validatePath(
       @NonNull String entityPath,
-      @NonNull ManagedType<?> managedType,
       @Nullable Class<?> viewClass
   ) throws IllegalArgumentException, AccessDeniedException, NoSuchFieldException {
-    validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), managedType, viewClass);
+    validatePath(new StringTokenizer(entityPath, PATH_TOKENIZER), entityType, viewClass);
   }
 
   @SuppressWarnings({"unchecked", "squid:S3740"})

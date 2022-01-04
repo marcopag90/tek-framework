@@ -18,7 +18,7 @@ public class BookWritableDalService extends WritableDalService<Book, Long> {
   }
 
   @Override
-  protected WritableDalRepository<Book, Long> repository() {
+  public WritableDalRepository<Book, Long> repository() {
     return null;
   }
 }

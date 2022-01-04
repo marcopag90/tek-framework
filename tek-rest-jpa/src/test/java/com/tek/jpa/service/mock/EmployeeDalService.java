@@ -22,7 +22,7 @@ public class EmployeeDalService extends WritableDalService<Employee, Long> {
   }
 
   @Override
-  protected WritableDalRepository<Employee, Long> repository() {
+  public WritableDalRepository<Employee, Long> repository() {
     return new WritableDalRepository<>(context.getBean(EmployeeRepository.class)) {
     };
   }

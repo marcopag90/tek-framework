@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.domain.Author;
+import com.tek.jpa.domain.Book;
 import com.tek.jpa.domain.Book.AuthorView;
 import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.jpa.service.mock.BookWritableDalService;
@@ -30,19 +31,21 @@ import org.springframework.test.context.TestPropertySource;
 @TestInstance(Lifecycle.PER_CLASS)
 class DalEntityTest {
 
-  @Autowired private AuthorWritableDalService authorService;
-  @Autowired private BookWritableDalService bookService;
+  @Autowired private AuthorWritableDalService authorDalService;
+  @Autowired private BookWritableDalService bookDalService;
 
-  private DalEntity<Author> dalEntity;
+  private DalEntity<Author> authorDalEntity;
+  private DalEntity<Book> bookDalEntity;
 
   @BeforeAll
   @Test
   void setup() {
     Assertions.assertAll(
-        () -> assertNotNull(authorService),
-        () -> assertNotNull(bookService)
+        () -> assertNotNull(authorDalService),
+        () -> assertNotNull(bookDalService)
     );
-    dalEntity = new DalEntity<>(authorService.entityManager);
+    authorDalEntity = authorDalService.dalEntity;
+    bookDalEntity = bookDalService.dalEntity;
   }
 
   @Test
@@ -54,17 +57,16 @@ class DalEntityTest {
         "ratings", ""
     );
     for (String property : properties.keySet()) {
-      dalEntity.validatePath(property, dalEntity.getEntityType(), null);
+      authorDalEntity.validatePath(property, null);
     }
   }
 
   @Test
   void test_validate_path_unknown_property() {
     final var path = "books.whatever";
-    final var entityType = dalEntity.getEntityType();
     assertThrows(
         IllegalArgumentException.class,
-        () -> dalEntity.validatePath(path, entityType, null)
+        () -> authorDalEntity.validatePath(path, null)
     );
   }
 
@@ -75,7 +77,7 @@ class DalEntityTest {
     for (String property : properties.keySet()) {
       assertThrows(
           AccessDeniedException.class,
-          () -> dalEntity.validatePath(property, dalEntity.getEntityType(), view)
+          () -> authorDalEntity.validatePath(property, view)
       );
     }
   }
@@ -89,7 +91,7 @@ class DalEntityTest {
         AccessDeniedException.class,
         () -> {
           for (String property : properties.keySet()) {
-            dalEntity.validatePath(property, dalEntity.getEntityType(), AuthorView.class);
+            bookDalEntity.validatePath(property, AuthorView.class);
           }
         }
     );
@@ -103,7 +105,7 @@ class DalEntityTest {
     assertDoesNotThrow(
         () -> {
           for (String property : properties.keySet()) {
-            dalEntity.validatePath(property, dalEntity.getEntityType(), AuthorView.class);
+            bookDalEntity.validatePath(property, AuthorView.class);
           }
         }
     );

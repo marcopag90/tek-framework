@@ -22,7 +22,7 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
   }
 
   @Override
-  protected WritableDalRepository<Author, Integer> repository() {
+  public WritableDalRepository<Author, Integer> repository() {
     return new WritableDalRepository<>(context.getBean(AuthorRepository.class)) {
     };
   }

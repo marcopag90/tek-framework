@@ -18,7 +18,7 @@ public class StoreReadOnlyDalService extends ReadOnlyDalService<Store, Id> {
   }
 
   @Override
-  protected ReadOnlyDalRepository<Store, Id> repository() {
+  public ReadOnlyDalRepository<Store, Id> repository() {
     return new ReadOnlyDalRepository<>(context.getBean(StoreRepository.class)) {
     };
   }

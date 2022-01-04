@@ -80,7 +80,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
 
   protected final Method createMethod;
   protected final Method patchMethod;
-  protected final SpringValidatorAdapter validatorAdapter;
+  public final SpringValidatorAdapter validatorAdapter;
 
   protected abstract WritableDalRepository<E, I> repository();
 
@@ -122,7 +122,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       NoSuchFieldException {
     final var entityType = dalEntity.getEntityType();
     for (String property : properties.keySet()) {
-      dalEntity.validatePath(property, entityType, applyView());
+      dalEntity.validatePath(property, applyView());
     }
     SingularAttribute<? super E, ?> versionAttribute = null;
     if (entityType.hasVersionAttribute()) {

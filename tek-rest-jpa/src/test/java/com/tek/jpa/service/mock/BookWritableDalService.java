@@ -2,6 +2,7 @@ package com.tek.jpa.service.mock;
 
 import com.tek.jpa.domain.Book;
 import com.tek.jpa.repository.WritableDalRepository;
+import com.tek.jpa.repository.mock.BookRepository;
 import com.tek.jpa.service.WritableDalService;
 import javax.persistence.EntityManager;
 import javax.validation.Validator;
@@ -19,6 +20,7 @@ public class BookWritableDalService extends WritableDalService<Book, Long> {
 
   @Override
   public WritableDalRepository<Book, Long> repository() {
-    return null;
+    return new WritableDalRepository<>(context.getBean(BookRepository.class)) {
+    };
   }
 }

@@ -12,19 +12,19 @@ import lombok.SneakyThrows;
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
- *     implement the method <i>createAuthorized()</i> to define who is allowed to access the create API;
+ *     implement the <i>createAuthorized()</i> method to define who is allowed to access the create API;
  *   </li>
  *   <li>
- *     implement the method <i>readAuthorized()</i> to define who is allowed to access the read API;
+ *     implement the <i>readAuthorized()</i> method to define who is allowed to access the read API;
  *   </li>
  *   <li>
- *     implement the method <i>updateAuthorized()</i> to define who is allowed to access the update API;
+ *     implement the <i>updateAuthorized()</i> method to define who is allowed to access the update API;
  *   </li>
  *   <li>
- *     implement the method <i>deleteAuthorized()</i> to define who is allowed to access the delete API;
+ *     implement the <i>deleteAuthorized()</i> method to define who is allowed to access the delete API;
  *   </li>
  *   <li>
- *     implement the method <i>service()</i> to define the {@link WritableDalService} to use.
+ *     implement the <i>service()</i> method to define the {@link WritableDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>

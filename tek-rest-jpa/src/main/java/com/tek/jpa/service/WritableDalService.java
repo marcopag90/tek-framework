@@ -29,7 +29,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
- *     implement the method <i>repository()</i> to qualify the {@link WritableDalRepository} to use;
+ *     implement the <i>repository()</i> method to qualify the {@link WritableDalRepository} to use;
  *   </li>
  *   <li>
  *     <b>optionally</b> implement the <i>withJsonBuilder()</i> method to customize the behaviour

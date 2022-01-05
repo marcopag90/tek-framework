@@ -19,10 +19,10 @@ import org.springframework.util.ClassUtils;
  * <p> A minimal setup requires the following actions:
  * <ul>
  *   <li>
- *     implement the method <i>readAuthorized()</i> to define who is allowed to access the API;
+ *     implement the <i>readAuthorized()</i> method to define who is allowed to access the API;
  *   </li>
  *   <li>
- *     implement the method <i>service()</i> to define the {@link ReadOnlyDalService} to use.
+ *     implement the <i>service()</i> method to define the {@link ReadOnlyDalService} to use.
  *   </li>
  * </ul>
  * <p>E.g:</p>

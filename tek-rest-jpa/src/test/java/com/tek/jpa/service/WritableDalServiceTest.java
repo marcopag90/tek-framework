@@ -1,11 +1,9 @@
 package com.tek.jpa.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.tek.jpa.TekRestJpaApplication;
 import com.tek.jpa.domain.Author;
@@ -17,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -27,7 +24,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
@@ -98,63 +94,6 @@ class WritableDalServiceTest {
         () -> assertEquals(author.getName(), createdAuthor.getName()),
         () -> assertEquals(author.getSurname(), createdAuthor.getSurname()),
         () -> assertNotNull(createdAuthor.getId())
-    );
-  }
-
-  //------------------------------------- Read methods ---------------------------------------------
-
-  @Test
-  @WithMockUser(
-      value = "USER",
-      authorities = {"USER"}
-  )
-  void test_entity_not_found_exception() {
-    assertThrows(EntityNotFoundException.class, () -> authorDalService.findById(100));
-  }
-
-  @Test
-  @WithMockUser(
-      value = "USER",
-      authorities = {"USER"}
-  )
-  void test_findById_with_user_view() throws EntityNotFoundException {
-    assertNull(authorDalService.findById(1).getId());
-  }
-
-  @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER"}
-  )
-  void test_findById_with_developer_view() throws EntityNotFoundException {
-    assertNotNull(authorDalService.findById(1).getId());
-  }
-
-  @Test
-  @WithMockUser(
-      value = "USER",
-      authorities = {"USER"}
-  )
-  void test_findAll_with_user_view() {
-    var authors = authorDalService.findAll(null, PageRequest.of(0, 20));
-    Predicate<Author> nullIdPredicate = a -> a.getId() == null;
-    Assertions.assertAll(
-        () -> assertFalse(authors.isEmpty()),
-        () -> assertTrue(authors.stream().allMatch(nullIdPredicate))
-    );
-  }
-
-  @Test
-  @WithMockUser(
-      value = "ADMIN",
-      authorities = {"DEVELOPER"}
-  )
-  void test_findAll_with_developer_view() {
-    var authors = authorDalService.findAll(null, PageRequest.of(0, 20));
-    Predicate<Author> notNullIdPredicate = a -> a.getId() != null;
-    Assertions.assertAll(
-        () -> assertFalse(authors.isEmpty()),
-        () -> assertTrue(authors.stream().allMatch(notNullIdPredicate))
     );
   }
 

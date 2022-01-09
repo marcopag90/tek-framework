@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration to setup file directories used to store binaries files.
+ * Configuration to set up file directories used to store binaries files.
  *
  * @author MarcoPagan
  */

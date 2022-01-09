@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration to setup file directories used by application.
+ * Configuration to set up file directories used by application.
  *
  * @author MarcoPagan
  */

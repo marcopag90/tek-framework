@@ -31,7 +31,7 @@ public class TekTmpDirFileService {
    * Attempt to create a file inside the default application tmp directory.
    */
   @NonNull
-  public String createInTmpDir(@NonNull String name) throws IOException {
+  public File createInTmpDir(@NonNull String name) throws IOException {
     String directory = tmpDirectory + File.separator + LocalDate.now();
     return TekFileUtils.deepCreate(directory, name);
   }

@@ -6,6 +6,7 @@ import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.io.TekFileUtils;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
@@ -55,7 +56,7 @@ public class TekTmpDirSchedulerConfiguration {
       cron = "${tek.core.fileConfiguration.tmp.cron}",
       zone = "${spring.jackson.time-zone:Europe/Rome}"
   )
-  public void cleanTmpDirectory() {
+  public void cleanTmpDirectory() throws IOException {
     final var today = LocalDate.now();
     log.info("Today date: {}", today);
     var start = today.minusDays(cleanAfter);

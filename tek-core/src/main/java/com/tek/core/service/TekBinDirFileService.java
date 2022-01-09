@@ -31,7 +31,7 @@ public class TekBinDirFileService {
    * Attempt to create a file inside the default application binary directory.
    */
   @NonNull
-  public String createInBinDir(@NonNull String name) throws IOException {
+  public File createInBinDir(@NonNull String name) throws IOException {
     String directory = binaryDirectory + File.separator + LocalDate.now();
     return TekFileUtils.deepCreate(directory, name);
   }

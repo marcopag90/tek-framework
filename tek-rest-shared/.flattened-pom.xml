@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tek</groupId>
   <artifactId>tek-rest-shared</artifactId>
-  <version>3.0.2</version>
+  <version>3.0.3</version>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>com.tek</groupId>
       <artifactId>tek-shared</artifactId>
-      <version>3.0.2</version>
+      <version>3.0.3</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

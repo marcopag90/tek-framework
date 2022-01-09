@@ -5,6 +5,7 @@ import static java.lang.String.join;
 
 import com.tek.core.aop.CanSendMail;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -74,9 +75,9 @@ public class TekMailService {
     final var to = new String[]{host};
     final var addresses = Arrays.toString(to);
     String subject = context.getApplicationName();
-    String filename;
+    File file;
     try {
-      filename = tmpFileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
+      file = tmpFileService.createInTmpDir(df.format(new Date()) + "_exception.txt");
     } catch (IOException e) {
       log.error("Could not create file", e);
       throw new IOException("Could not send mail", e);
@@ -87,11 +88,11 @@ public class TekMailService {
         .concat("Request URL: " + requestUrl);
     logMailSending(addresses);
     try (
-        final var out = new BufferedWriter(new FileWriter(filename, true));
+        final var out = new BufferedWriter(new FileWriter(file, true));
         final var pWriter = new PrintWriter(out, true);
     ) {
       exception.printStackTrace(pWriter);
-      sendWithAttachment(to, subject, text, filename);
+      sendWithAttachment(to, subject, text, file);
     } catch (Exception ex) {
       logMailError(Arrays.toString(to), ex);
     }
@@ -106,7 +107,7 @@ public class TekMailService {
       @NonNull String[] to,
       @NonNull String subject,
       @NonNull String text,
-      @NonNull String file) {
+      @NonNull File file) {
     var toArray = Arrays.toString(to);
     logMailSending(toArray);
     try {

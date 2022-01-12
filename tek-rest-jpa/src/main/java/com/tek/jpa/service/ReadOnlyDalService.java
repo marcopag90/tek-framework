@@ -145,12 +145,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   @Override
   public Page<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
-    Specification<E> where;
-    if (specification != null) {
-      where = specification.and(where());
-    } else {
-      where = where();
-    }
+    final var where = specification != null ? specification.and(where()) : where();
     return repository().findAll(where, pageable).map(entityView);
   }
 

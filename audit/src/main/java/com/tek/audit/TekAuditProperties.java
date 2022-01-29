@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import static com.tek.audit.TekAuditConstant.TEK_AUDIT;
 
 /**
- * Tek Audit Module properties to be evaluated from application.yaml / application.properties files.
+ * Tek Audit Module properties to be evaluated from application.yaml / application.properties
+ * files.
  *
  * @author MarcoPagan
  */
@@ -18,9 +19,9 @@ import static com.tek.audit.TekAuditConstant.TEK_AUDIT;
 @Setter
 public class TekAuditProperties {
 
-    /**
-     * Parameter to determine the max payload length to persist or to log.
-     **/
-    private int payloadLength = 4096;
+  /**
+   * Parameter to determine the max payload length to persist or to log.
+   **/
+  private int payloadLength = 4096;
 
 }

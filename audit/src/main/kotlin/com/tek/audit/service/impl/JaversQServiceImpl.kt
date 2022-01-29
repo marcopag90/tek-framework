@@ -162,9 +162,10 @@ class JaversQServiceImpl(
             PropertyChangeType.PROPERTY_REMOVED -> auditMessageSource.getAuditSource().getMessage(
                 javersPropertyRemoved, null, LocaleContextHolder.getLocale()
             )
-            PropertyChangeType.PROPERTY_VALUE_CHANGED -> auditMessageSource.getAuditSource().getMessage(
-                javersPropertyValueChanged, null, LocaleContextHolder.getLocale()
-            )
+            PropertyChangeType.PROPERTY_VALUE_CHANGED -> auditMessageSource.getAuditSource()
+                .getMessage(
+                    javersPropertyValueChanged, null, LocaleContextHolder.getLocale()
+                )
             else -> throw NotImplementedError()
         }
     }

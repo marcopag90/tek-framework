@@ -12,6 +12,6 @@ import java.util.HashMap;
 @ToString
 public class ServletResponseDto {
 
-    private Integer status;
-    private Long duration;
+  private Integer status;
+  private Long duration;
 }

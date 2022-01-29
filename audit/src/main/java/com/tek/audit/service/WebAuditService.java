@@ -11,21 +11,21 @@ import java.util.Optional;
 
 public interface WebAuditService {
 
-    // -------------------------- CRUD ------------------------------------------
+  // -------------------------- CRUD ------------------------------------------
 
-    Optional<WebAudit> read(long id);
+  Optional<WebAudit> read(long id);
 
-    Page<WebAudit> list(Specification<WebAudit> spec, Pageable pageable);
+  Page<WebAudit> list(Specification<WebAudit> spec, Pageable pageable);
 
-    void delete(long id);
+  void delete(long id);
 
-    // -------------------------- BUSINESS --------------------------------------
+  // -------------------------- BUSINESS --------------------------------------
 
-    WebAudit logRequest(ServletRequestDto dto);
+  WebAudit logRequest(ServletRequestDto dto);
 
-    WebAudit logResponse(Long id, ServletResponseDto responseDto);
+  WebAudit logResponse(Long id, ServletResponseDto responseDto);
 
-    WebAudit updateRequest(Long id, String body);
+  WebAudit updateRequest(Long id, String body);
 }
 
 

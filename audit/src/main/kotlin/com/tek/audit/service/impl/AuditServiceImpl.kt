@@ -30,12 +30,14 @@ class AuditServiceImpl(
 
         val sb: StringBuilder = StringBuilder()
         val jsonRequestMap = hashMapOf<String, Any?>()
-        val parameters: Map<String, String> = createRequestParameterMap(httpServletRequest, jsonRequestMap)
+        val parameters: Map<String, String> =
+            createRequestParameterMap(httpServletRequest, jsonRequestMap)
 
         sb.append("REQUEST ")
         sb.append("method=[").append(httpServletRequest.method).append("] ")
         sb.append("path=[").append(httpServletRequest.requestURI).append("] ")
-        sb.append("headers=[").append(createRequestHeaderMap(httpServletRequest, jsonRequestMap)).append("] ")
+        sb.append("headers=[").append(createRequestHeaderMap(httpServletRequest, jsonRequestMap))
+            .append("] ")
         if (parameters.isNotEmpty())
             sb.append("parameters=[").append(parameters).append("] ")
 
@@ -65,7 +67,8 @@ class AuditServiceImpl(
         sb.append("RESPONSE ")
         sb.append("method=[").append(httpServletRequest.method).append("] ")
         sb.append("path=[").append(httpServletRequest.requestURI).append("] ")
-        sb.append("responseHeaders=[").append(createResponseParameterMap(httpServletResponse, jsonResponseMap))
+        sb.append("responseHeaders=[")
+            .append(createResponseParameterMap(httpServletResponse, jsonResponseMap))
         sb.append("] ")
 
         body?.let {

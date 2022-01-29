@@ -46,7 +46,7 @@ public class WritableDalRepositoryTest {
     final var marco = Author.builder()
         .name("Marco")
         .surname("Pagan")
-        .birthDate(LocalDate.of(1990,5,23))
+        .birthDate(LocalDate.of(1990, 5, 23))
         .pseudonym("Pag")
         .build();
     final var savedMarco = repository.create(marco);

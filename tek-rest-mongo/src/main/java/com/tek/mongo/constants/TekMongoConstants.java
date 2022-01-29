@@ -7,7 +7,8 @@ package com.tek.mongo.constants;
  */
 public class TekMongoConstants {
 
-  private TekMongoConstants() {}
+  private TekMongoConstants() {
+  }
 
   /**
    * Default packages to scan by Spring

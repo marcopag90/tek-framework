@@ -24,9 +24,9 @@ import static com.tek.core.TekCoreConstant.TEK_PACKAGES_TO_SCAN;
 @EnableJpaAuditing
 public class TekApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TekApplication.class);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(TekApplication.class);
+  }
 }
 
 

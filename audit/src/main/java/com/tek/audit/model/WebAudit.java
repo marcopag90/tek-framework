@@ -31,40 +31,40 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class WebAudit {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @Type(type = "jsonb")
-    @Column(name = "request", columnDefinition = "jsonb")
-    @Basic
-    private AuditWebRequest request;
+  @Type(type = "jsonb")
+  @Column(name = "request", columnDefinition = "jsonb")
+  @Basic
+  private AuditWebRequest request;
 
-    @Column(name = "status")
-    private Integer status;
+  @Column(name = "status")
+  private Integer status;
 
-    @Column(name = "duration")
-    private Long duration;
+  @Column(name = "duration")
+  private Long duration;
 
-    @Column(name = "created_at")
-    @CreatedDate
-    private Instant createdAt;
+  @Column(name = "created_at")
+  @CreatedDate
+  private Instant createdAt;
 
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    private Instant updatedAt;
+  @Column(name = "updated_at")
+  @LastModifiedDate
+  private Instant updatedAt;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WebAudit webAudit = (WebAudit) o;
-        return id.equals(webAudit.id);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {return true;}
+    if (o == null || getClass() != o.getClass()) {return false;}
+    WebAudit webAudit = (WebAudit) o;
+    return id.equals(webAudit.id);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

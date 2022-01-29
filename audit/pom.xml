@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.tek</groupId>
-        <artifactId>tek-framework</artifactId>
-        <version>3.0.0</version>
-    </parent>
+  <parent>
+    <groupId>com.tek</groupId>
+    <artifactId>tek-framework</artifactId>
+    <version>3.0.0</version>
+  </parent>
 
-    <artifactId>tek-audit</artifactId>
-    <name>tek-audit</name>
-    <description>tek audit module</description>
+  <artifactId>tek-audit</artifactId>
+  <name>tek-audit</name>
+  <description>tek audit module</description>
 
-    <dependencies>
-        <!-- Framework -->
-        <dependency>
-            <groupId>com.tek</groupId>
-            <artifactId>tek-core</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <!--Auditing-->
-        <dependency>
-            <groupId>org.javers</groupId>
-            <artifactId>javers-spring-boot-starter-sql</artifactId>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!-- Framework -->
+    <dependency>
+      <groupId>com.tek</groupId>
+      <artifactId>tek-core</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <!--Auditing-->
+    <dependency>
+      <groupId>org.javers</groupId>
+      <artifactId>javers-spring-boot-starter-sql</artifactId>
+    </dependency>
+  </dependencies>
 </project>

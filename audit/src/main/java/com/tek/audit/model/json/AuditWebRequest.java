@@ -18,14 +18,14 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuditWebRequest implements Serializable {
 
-    private String method;
-    private String requestUrl;
-    private String requestUri;
-    private HashMap<String, String> headers;
-    private Multimap parameters;
-    private String queryString;
-    private String authType;
-    private String principalName;
-    private JsonNode body;
-    private Instant issuedAt;
+  private String method;
+  private String requestUrl;
+  private String requestUri;
+  private HashMap<String, String> headers;
+  private Multimap parameters;
+  private String queryString;
+  private String authType;
+  private String principalName;
+  private JsonNode body;
+  private Instant issuedAt;
 }

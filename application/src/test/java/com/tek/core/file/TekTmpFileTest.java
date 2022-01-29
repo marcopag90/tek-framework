@@ -26,87 +26,87 @@ import java.util.Objects;
 @Slf4j
 public class TekTmpFileTest {
 
-    @Autowired
-    @SuppressWarnings("unused")
-    private TekCoreProperties coreProperties;
+  @Autowired
+  @SuppressWarnings("unused")
+  private TekCoreProperties coreProperties;
 
-    @Autowired
-    @SuppressWarnings("unused")
-    private TekFileService fileService;
+  @Autowired
+  @SuppressWarnings("unused")
+  private TekFileService fileService;
 
-    private File directory;
-    private Integer cleanAfter;
+  private File directory;
+  private Integer cleanAfter;
 
-    @PostConstruct
-    private void init() {
-        directory = coreProperties.getFile().getTmp().getDirectory();
-        cleanAfter = coreProperties.getFile().getTmp().getCleanAfter();
+  @PostConstruct
+  private void init() {
+    directory = coreProperties.getFile().getTmp().getDirectory();
+    cleanAfter = coreProperties.getFile().getTmp().getCleanAfter();
+  }
+
+  @Test
+  @Order(1)
+  public void testCreateTmpFiles() {
+    if (!directory.exists()) {
+      log.error(
+          "Directory {} doesn't exist. Check [{}]",
+          TekDirConfiguration.class.getSimpleName(),
+          directory
+      );
+      throw new TestAbortedException("Aborted test due to missing directory");
+    }
+    LocalDate today = LocalDate.now();
+    log.info("Today date: {}", today);
+    LocalDate start = today.minusDays(cleanAfter);
+    log.info("Creating test directories starting from date {}", start);
+    while (start.isBefore(today)) {
+      String localDir = directory + File.separator + start;
+      for (int i = 0; i < cleanAfter; i++) {
+        String fileName = "test_" + i + ".txt";
+        fileService.deepCreate(localDir, fileName);
+      }
+      start = start.plusDays(1);
+    }
+    int expectedNumberOfFiles = cleanAfter * cleanAfter;
+    int createdNumberOfFiles = FileUtils.listFiles
+        (directory, new String[]{"txt"}, true).size();
+
+    Assertions.assertEquals(expectedNumberOfFiles, createdNumberOfFiles);
+  }
+
+  @Test
+  @Order(2)
+  public void testCleanTmpDirectory() throws IOException {
+    int expectedNumberOfDeleteFiles = cleanAfter * cleanAfter;
+    int deletedNumberOfFiles = FileUtils.listFiles
+        (directory, new String[]{"txt"}, true).size();
+
+    if (deletedNumberOfFiles == 0) {
+      log.error("Directory {} is empty", directory);
+      throw new TestAbortedException("Aborted test due to empty directory");
     }
 
-    @Test
-    @Order(1)
-    public void testCreateTmpFiles() {
-        if (!directory.exists()) {
-            log.error(
-                "Directory {} doesn't exist. Check [{}]",
-                TekDirConfiguration.class.getSimpleName(),
-                directory
-            );
-            throw new TestAbortedException("Aborted test due to missing directory");
-        }
-        LocalDate today = LocalDate.now();
-        log.info("Today date: {}", today);
-        LocalDate start = today.minusDays(cleanAfter);
-        log.info("Creating test directories starting from date {}", start);
-        while (start.isBefore(today)) {
-            String localDir = directory + File.separator + start;
-            for (int i = 0; i < cleanAfter; i++) {
-                String fileName = "test_" + i + ".txt";
-                fileService.deepCreate(localDir, fileName);
-            }
-            start = start.plusDays(1);
-        }
-        int expectedNumberOfFiles = cleanAfter * cleanAfter;
-        int createdNumberOfFiles = FileUtils.listFiles
-            (directory, new String[]{"txt"}, true).size();
+    LocalDate today = LocalDate.now();
+    log.info("Today date: {}", today);
+    LocalDate start = today.minusDays(cleanAfter);
+    log.info("cleanAfter parameter: {} days, starting date is {}", cleanAfter, start);
 
-        Assertions.assertEquals(expectedNumberOfFiles, createdNumberOfFiles);
+    while (start.isBefore(today)) {
+      File dir = Paths.get(directory + File.separator + start).toFile();
+      if (!directory.exists()) {
+        log.error(
+            "Directory {} doesn't exist. Check [{}]",
+            TekDirConfiguration.class.getSimpleName(),
+            directory
+        );
+        throw new TestAbortedException("Aborted test due to missing directory");
+      }
+      log.info("Attempting to delete directory {}...", dir.getAbsolutePath());
+      fileService.deepDelete(dir);
+      start = start.plusDays(1);
     }
+    fileService.deepDelete(directory.getAbsoluteFile());
 
-    @Test
-    @Order(2)
-    public void testCleanTmpDirectory() throws IOException {
-        int expectedNumberOfDeleteFiles = cleanAfter * cleanAfter;
-        int deletedNumberOfFiles = FileUtils.listFiles
-            (directory, new String[]{"txt"}, true).size();
-
-        if (deletedNumberOfFiles == 0) {
-            log.error("Directory {} is empty", directory);
-            throw new TestAbortedException("Aborted test due to empty directory");
-        }
-
-        LocalDate today = LocalDate.now();
-        log.info("Today date: {}", today);
-        LocalDate start = today.minusDays(cleanAfter);
-        log.info("cleanAfter parameter: {} days, starting date is {}", cleanAfter, start);
-
-        while (start.isBefore(today)) {
-            File dir = Paths.get(directory + File.separator + start).toFile();
-            if (!directory.exists()) {
-                log.error(
-                    "Directory {} doesn't exist. Check [{}]",
-                    TekDirConfiguration.class.getSimpleName(),
-                    directory
-                );
-                throw new TestAbortedException("Aborted test due to missing directory");
-            }
-            log.info("Attempting to delete directory {}...", dir.getAbsolutePath());
-            fileService.deepDelete(dir);
-            start = start.plusDays(1);
-        }
-        fileService.deepDelete(directory.getAbsoluteFile());
-
-        Assertions.assertEquals(expectedNumberOfDeleteFiles, deletedNumberOfFiles);
-        Assertions.assertFalse(directory.exists());
-    }
+    Assertions.assertEquals(expectedNumberOfDeleteFiles, deletedNumberOfFiles);
+    Assertions.assertFalse(directory.exists());
+  }
 }

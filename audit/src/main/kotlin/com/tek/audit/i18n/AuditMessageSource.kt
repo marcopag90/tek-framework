@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
-class AuditMessageSource{
+class AuditMessageSource {
 
     @Bean(name = [AUDIT_MESSAGE_SOURCE])
     fun getAuditSource(): MessageSource =

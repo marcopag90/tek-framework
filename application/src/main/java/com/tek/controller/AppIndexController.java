@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class AppIndexController {
 
-    @GetMapping
-    public String index(Model model) {
-        return "forward:/index.html";
-    }
+  @GetMapping
+  public String index(Model model) {
+    return "forward:/index.html";
+  }
 }

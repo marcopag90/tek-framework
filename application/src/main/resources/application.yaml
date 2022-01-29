@@ -3,108 +3,108 @@ server.servlet.context-path: /api
 
 # Application Loggers
 logging.level:
-    org.springframework: INFO
-    com.tek: INFO
-    org.hibernate:
-        tool.hbm2ddl: DEBUG
-        SQL: DEBUG
-        type: TRACE #TRACE per vedere i parametri delle rsql
-        type.EnumType: INFO
-        type.BasicTypeRegistry: INFO
-        descriptor:
-            sql: DEBUG
-            sql.BasicExtractor: DEBUG
+  org.springframework: INFO
+  com.tek: INFO
+  org.hibernate:
+    tool.hbm2ddl: DEBUG
+    SQL: DEBUG
+    type: TRACE #TRACE per vedere i parametri delle rsql
+    type.EnumType: INFO
+    type.BasicTypeRegistry: INFO
+    descriptor:
+      sql: DEBUG
+      sql.BasicExtractor: DEBUG
 
 # Actuator endpoints
 management.endpoints.web.exposure.include: info, metrics, env
 
 spring:
-    application.name: Tek Framework Application
+  application.name: Tek Framework Application
 
-    # Maven-Spring Profilo attivo
-    profiles.active: @activeProfile@
+  # Maven-Spring Profilo attivo
+  profiles.active: @activeProfile@
 
-    # Output colorato
-    output.ansi.enabled: always
+  # Output colorato
+  output.ansi.enabled: always
 
-    # Cache busting per risorse statiche
-    resources.chain.strategy.content:
-        enabled: true
-        paths: /**
+  # Cache busting per risorse statiche
+  resources.chain.strategy.content:
+    enabled: true
+    paths: /**
 
-    # Resource Bundle settings
-    messages:
-        cache-seconds: -1
-        encoding: UTF-8
+  # Resource Bundle settings
+  messages:
+    cache-seconds: -1
+    encoding: UTF-8
 
-    # Default date timezone (old java.util.Date)
-    jackson.time-zone: Europe/Rome
+  # Default date timezone (old java.util.Date)
+  jackson.time-zone: Europe/Rome
 
-    # Configurazione Datasource
-    datasource:
-        url: ${DS_JDBC_URL:jdbc:postgresql://localhost/postgres}
-        driverClassName: ${DS_DRIVER_CLASS:org.postgresql.Driver}
-        username: ${DS_USER:tek}
-        password: ${DS_PASSWORD:tek}
-        # Schema
-        jpa.properties.hibernate.default_schema: tek
+  # Configurazione Datasource
+  datasource:
+    url: ${DS_JDBC_URL:jdbc:postgresql://localhost/postgres}
+    driverClassName: ${DS_DRIVER_CLASS:org.postgresql.Driver}
+    username: ${DS_USER:tek}
+    password: ${DS_PASSWORD:tek}
+    # Schema
+    jpa.properties.hibernate.default_schema: tek
 
-    # JPA settings
-    jpa:
-        # Configurazione creazione tabelle Hibernate
-        # create, update
-        hibernate.ddl-auto: ${DDL_AUTO:update}
+  # JPA settings
+  jpa:
+    # Configurazione creazione tabelle Hibernate
+    # create, update
+    hibernate.ddl-auto: ${DDL_AUTO:update}
 
-        # Jpa nelle view disattivato
-        open-in-view: false
-        properties.hibernate:
-            dialect: ${HIB_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
-            current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-            # Workaround. Vedi:
-            # https://github.com/pgjdbc/pgjdbc/issues/1102
-            # https://hibernate.atlassian.net/browse/HHH-12368
-            jdbc.lob.non_contextual_creation: true
+    # Jpa nelle view disattivato
+    open-in-view: false
+    properties.hibernate:
+      dialect: ${HIB_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
+      current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+      # Workaround. Vedi:
+      # https://github.com/pgjdbc/pgjdbc/issues/1102
+      # https://hibernate.atlassian.net/browse/HHH-12368
+      jdbc.lob.non_contextual_creation: true
 
-    # SMTP
-    # Inoltro IMAP:
-    # consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
-    # https://myaccount.google.com/lesssecureapps to test dev apps
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        username: marcopag90@gmail.com
-        password: Thohs1qu9094*
-        properties.mail.smtp:
-            auth: true
-            connectiontimeout: 5000
-            timeout: 5000
-            writetimeout: 5000
-            starttls.enable: true
+  # SMTP
+  # Inoltro IMAP:
+  # consenso ad app non sicure e sblocco antivirus in caso di certificato non riconosciuto a runtime
+  # https://myaccount.google.com/lesssecureapps to test dev apps
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: marcopag90@gmail.com
+    password: Thohs1qu9094*
+    properties.mail.smtp:
+      auth: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
+      starttls.enable: true
 
 javers:
-    sqlSchema: audit
+  sqlSchema: audit
 
 security:
-    # Workaround. Vedi:
-    # https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/
-    # 2.7.2 Changing the Filter Order
-    oauth2.resource.filter-order: 3
+  # Workaround. Vedi:
+  # https://docs.spring.io/spring-security-oauth2-boot/docs/current/reference/htmlsingle/
+  # 2.7.2 Changing the Filter Order
+  oauth2.resource.filter-order: 3
 
 # Tek Modules Configurations
 tek:
-    core:
-        scheduler.active: true
-        file:
-            tmp:
-                directory: tmp
-                cleanAfter: 5
-                cron: "*/60 * * * * *"
-            binary:
-                directory: upload
+  core:
+    scheduler.active: true
+    file:
+      tmp:
+        directory: tmp
+        cleanAfter: 5
+        cron: "*/60 * * * * *"
+      binary:
+        directory: upload
 
-        mail:
-            sendErrors: true
-            realDelivery: false
+    mail:
+      sendErrors: true
+      realDelivery: false
 #    # Tek-Security
 #    security:
 #        oauth2:

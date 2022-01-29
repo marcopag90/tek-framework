@@ -71,7 +71,7 @@ public abstract class WritableDalController<E extends Serializable, I extends Se
 
   @SneakyThrows
   @Override
-  public E create(E entity)  {
+  public E create(E entity) {
     return service().create(entity);
   }
 

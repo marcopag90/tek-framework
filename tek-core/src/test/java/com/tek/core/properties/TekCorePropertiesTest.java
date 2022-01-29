@@ -11,7 +11,6 @@ class TekCorePropertiesTest {
   void defaultValues() {
     final var properties = new TekCoreProperties();
     Assertions.assertAll(
-        () -> assertNotNull(properties.getCorsConfiguration()),
         () -> assertNotNull(properties.getLocaleConfiguration()),
         () -> assertNotNull(properties.getFileConfiguration()),
         () -> assertNotNull(properties.getFileConfiguration()),

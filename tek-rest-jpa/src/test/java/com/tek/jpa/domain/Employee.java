@@ -60,6 +60,7 @@ public class Employee implements Serializable {
     public static class DeveloperView {
 
     }
+
     public static class CompanyView {
 
     }

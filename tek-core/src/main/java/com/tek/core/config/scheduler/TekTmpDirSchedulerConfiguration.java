@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -36,20 +34,15 @@ import org.springframework.scheduling.annotation.Scheduled;
     name = "fileConfiguration.tmp.schedulerEnabled",
     havingValue = "true"
 )
-@RequiredArgsConstructor
 @Slf4j
 public class TekTmpDirSchedulerConfiguration {
 
-  private final TekCoreProperties coreProperties;
+  private final File directory;
+  private final Integer cleanAfter;
 
-  private File directory;
-  private Integer cleanAfter;
-
-  @SuppressWarnings("unused")
-  @PostConstruct
-  private void init() {
-    this.directory = coreProperties.getFileConfiguration().getTmp().getDirectoryPath();
-    this.cleanAfter = coreProperties.getFileConfiguration().getTmp().getCleanAfter();
+  public TekTmpDirSchedulerConfiguration(TekCoreProperties properties) {
+    this.directory = properties.getFileConfiguration().getTmp().getDirectoryPath();
+    this.cleanAfter = properties.getFileConfiguration().getTmp().getCleanAfter();
   }
 
   @Scheduled(

@@ -37,20 +37,20 @@ import static com.tek.audit.TekAuditConstant.TEK_WEB_AUDIT_PATH;
 @RequiredArgsConstructor
 public class TekWebAuditController {
 
-    @NonNull private final WebAuditService service;
-    @NonNull private final TekRestMessage tekRestMessage;
+  @NonNull private final WebAuditService service;
+  @NonNull private final TekRestMessage tekRestMessage;
 
-    @SuppressWarnings("unused")
-    @GetMapping(TekMapping.LIST)
-    @ApiPageable
-    public ResponseEntity<TekPage<WebAudit>> list(
-        @RequestParam(value = "q") String q,
-        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-    ) {
-        Node rootNode = new RSQLParser().parse(q);
-        Specification<WebAudit> spec = rootNode.accept(new TekRsqlVisitor<>());
-        TekPage<WebAudit> result = new TekPage<>(service.list(spec, pageable));
-        return ResponseEntity.ok(result);
-    }
+  @SuppressWarnings("unused")
+  @GetMapping(TekMapping.LIST)
+  @ApiPageable
+  public ResponseEntity<TekPage<WebAudit>> list(
+      @RequestParam(value = "q") String q,
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+  ) {
+    Node rootNode = new RSQLParser().parse(q);
+    Specification<WebAudit> spec = rootNode.accept(new TekRsqlVisitor<>());
+    TekPage<WebAudit> result = new TekPage<>(service.list(spec, pageable));
+    return ResponseEntity.ok(result);
+  }
 
 }

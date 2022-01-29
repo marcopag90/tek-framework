@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.tek.core.properties.TekCoreProperties;
-import com.tek.core.properties.i18n.TekLocaleProperties.TekLocaleType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -44,7 +43,7 @@ class TekLocalePropertiesTest {
     final var properties = new TekCoreProperties().getLocaleConfiguration();
     assertNotNull(properties);
     assertAll(
-        () -> assertEquals(TekLocaleType.SESSION, properties.getType()),
+        () -> assertEquals(TekLocaleConstants.SESSION, properties.getType()),
         () -> assertEquals("locale", properties.getCookieName()),
         () -> assertEquals(-1, properties.getCookieMaxAge())
     );
@@ -56,7 +55,7 @@ class TekLocalePropertiesTest {
     final var properties = coreCustomProperties.getLocaleConfiguration();
     assertNotNull(properties);
     assertAll(
-        () -> assertEquals(TekLocaleType.COOKIE, properties.getType()),
+        () -> assertEquals(TekLocaleConstants.COOKIE, properties.getType()),
         () -> assertEquals("custom-cookie", properties.getCookieName()),
         () -> assertEquals(1000, properties.getCookieMaxAge())
     );

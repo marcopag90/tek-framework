@@ -3,7 +3,7 @@ package com.tek.core.properties.i18n;
 import lombok.Data;
 
 /**
- * Configuration properties to manage app locale resolution.
+ * Configuration properties to manage locale resolution.
  * <p>
  * Fallback to default configuration if none provided.
  *
@@ -12,12 +12,10 @@ import lombok.Data;
 @Data
 public class TekLocaleProperties {
 
-  private TekLocaleType type = TekLocaleType.SESSION;
+  @TekLocaleTypeConstraint
+  private String type = TekLocaleConstants.SESSION;
+  private String postParameterName = "locale";
   private String cookieName = "locale";
   private Integer cookieMaxAge = -1;
-
-  public enum TekLocaleType {
-    SESSION, COOKIE, ACCEPTH_HEADER
-  }
 }
 

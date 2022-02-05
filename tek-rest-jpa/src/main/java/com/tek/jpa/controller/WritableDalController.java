@@ -3,8 +3,9 @@ package com.tek.jpa.controller;
 import com.tek.jpa.service.IWritableDalService;
 import com.tek.jpa.service.WritableDalService;
 import com.tek.rest.shared.dto.UpdateRequest;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
-import lombok.SneakyThrows;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * <p>Controller that <b>must</b> be extended by a concrete {@link org.springframework.web.bind.annotation.RestController}
@@ -69,21 +70,19 @@ public abstract class WritableDalController<E extends Serializable, I extends Se
 
   protected abstract IWritableDalService<E, I> service();
 
-  @SneakyThrows
   @Override
-  public E create(E entity) {
+  public E create(E entity) throws MethodArgumentNotValidException {
     return service().create(entity);
   }
 
-  @SneakyThrows
   @Override
-  public E update(I id, UpdateRequest request) {
+  public E update(I id, UpdateRequest request)
+      throws EntityNotFoundException, NoSuchFieldException, MethodArgumentNotValidException {
     return service().update(id, request.getProperties(), request.getVersion());
   }
 
-  @SneakyThrows
   @Override
-  public void deleteById(I id) {
+  public void deleteById(I id) throws EntityNotFoundException {
     service().deleteById(id);
   }
 }

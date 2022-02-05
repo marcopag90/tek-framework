@@ -1,12 +1,14 @@
 package com.tek.core.config.i18n;
 
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_LOCALE_CHANGE_INTERCEPTOR;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_SESSION_LOCALE_CONFIGURATION;
 import static com.tek.core.properties.i18n.TekLocaleConstants.SESSION;
 import static com.tek.shared.constants.TekSharedConstants.DEFAULT_LOCALE;
 
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,11 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-@Configuration
+@Configuration(TEK_CORE_SESSION_LOCALE_CONFIGURATION)
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(value = "tek.core.localeConfiguration.type", havingValue = SESSION)
-@Slf4j
 public class TekSessionLocaleConfiguration implements WebMvcConfigurer {
+
+  private final Logger log = LoggerFactory.getLogger(TekSessionLocaleConfiguration.class);
 
   @Autowired
   private TekCoreProperties coreProperties;
@@ -46,7 +49,7 @@ public class TekSessionLocaleConfiguration implements WebMvcConfigurer {
    * Interceptor that will switch to a new <i>locale</i> based on the value of the <i>locale</i>
    * parameter appended inside the Url request as a {@link org.springframework.web.bind.annotation.RequestParam}
    */
-  @Bean(TEK_LOCALE_CHANGE_INTERCEPTOR_BEAN)
+  @Bean(TEK_CORE_LOCALE_CHANGE_INTERCEPTOR)
   public LocaleChangeInterceptor localeChangeInterceptor() {
     final var properties = coreProperties.getLocaleConfiguration();
     final var interceptor = new LocaleChangeInterceptor();

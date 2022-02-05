@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.validation.Validator;
-import lombok.SneakyThrows;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
@@ -84,11 +83,10 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
 
   protected abstract WritableDalRepository<E, I> repository();
 
-  @SneakyThrows
   protected WritableDalService(
       @NonNull EntityManager entityManager,
       @NonNull Validator validator
-  ) {
+  ) throws NoSuchMethodException {
     super(entityManager);
     createMethod = getClass().getMethod("create", Serializable.class);
     patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);

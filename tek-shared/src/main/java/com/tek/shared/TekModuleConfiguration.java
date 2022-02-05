@@ -2,8 +2,8 @@ package com.tek.shared;
 
 import com.tek.shared.exception.TekModuleException;
 import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
@@ -12,11 +12,14 @@ import org.springframework.util.ClassUtils;
  *
  * @author MarcoPagan
  */
-@RequiredArgsConstructor
-@Slf4j
 public abstract class TekModuleConfiguration {
 
+  protected final Logger log = LoggerFactory.getLogger(TekModuleConfiguration.class);
   protected final ApplicationContext context;
+
+  protected TekModuleConfiguration(ApplicationContext context) {
+    this.context = context;
+  }
 
   public abstract void checkModuleConfiguration() throws TekModuleException;
 

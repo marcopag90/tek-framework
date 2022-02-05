@@ -1,5 +1,8 @@
 package com.tek.rest.shared.config;
 
+import static com.tek.rest.shared.constants.TekRestSharedBeanNames.TEK_REST_SHARED_CONFIGURATION;
+import static com.tek.rest.shared.constants.TekRestSharedBeanNames.TEK_REST_SHARED_GUAVA_MODULE;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
@@ -31,7 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_REST_SHARED_CONFIGURATION)
 @ConditionalOnClass(TekRestSharedAutoConfig.class)
 public class TekRestSharedConfiguration extends TekModuleConfiguration implements WebMvcConfigurer {
 
@@ -58,7 +61,7 @@ public class TekRestSharedConfiguration extends TekModuleConfiguration implement
     }
   }
 
-  @Bean
+  @Bean(TEK_REST_SHARED_GUAVA_MODULE)
   public Module guavaModule() {
     return new GuavaModule();
   }

@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.function.UnaryOperator;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
-import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +88,11 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
   @Autowired protected ApplicationContext context;
-  @Getter private final Class<E> entityClass;
+  private final Class<E> entityClass;
+
+  public Class<E> getEntityClass() {
+    return entityClass;
+  }
 
   public final JsonMapper jsonMapper;
   public final EntityManager entityManager;

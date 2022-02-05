@@ -8,7 +8,6 @@ import com.tek.core.properties.mail.TekMailProperties;
 import com.tek.core.properties.swagger.TekSwaggerProperties;
 import com.tek.core.properties.web.TekWebProperties;
 import javax.validation.Valid;
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
  * @author MarcoPagan
  */
 @ConfigurationProperties(prefix = TEK_CORE_PREFIX)
-@Data
 @Validated
 public class TekCoreProperties {
 
@@ -28,6 +26,46 @@ public class TekCoreProperties {
   private TekFileProperties fileConfiguration = new TekFileProperties();
   private TekMailProperties mailConfiguration = new TekMailProperties();
   private TekSwaggerProperties swaggerConfiguration = new TekSwaggerProperties();
+
+  public TekWebProperties getWebConfiguration() {
+    return webConfiguration;
+  }
+
+  public void setWebConfiguration(TekWebProperties webConfiguration) {
+    this.webConfiguration = webConfiguration;
+  }
+
+  public TekLocaleProperties getLocaleConfiguration() {
+    return localeConfiguration;
+  }
+
+  public void setLocaleConfiguration(TekLocaleProperties localeConfiguration) {
+    this.localeConfiguration = localeConfiguration;
+  }
+
+  public TekFileProperties getFileConfiguration() {
+    return fileConfiguration;
+  }
+
+  public void setFileConfiguration(TekFileProperties fileConfiguration) {
+    this.fileConfiguration = fileConfiguration;
+  }
+
+  public TekMailProperties getMailConfiguration() {
+    return mailConfiguration;
+  }
+
+  public void setMailConfiguration(TekMailProperties mailConfiguration) {
+    this.mailConfiguration = mailConfiguration;
+  }
+
+  public TekSwaggerProperties getSwaggerConfiguration() {
+    return swaggerConfiguration;
+  }
+
+  public void setSwaggerConfiguration(TekSwaggerProperties swaggerConfiguration) {
+    this.swaggerConfiguration = swaggerConfiguration;
+  }
 }
 
 

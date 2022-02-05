@@ -2,8 +2,8 @@ package com.tek.jpa.controller;
 
 import com.tek.jpa.service.IReadOnlyDalService;
 import com.tek.jpa.service.ReadOnlyDalService;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +62,8 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
     return service().findAll(spec, pageable);
   }
 
-  @SneakyThrows
   @Override
-  public E findById(I id) {
+  public E findById(I id) throws EntityNotFoundException {
     return service().findById(id);
   }
 }

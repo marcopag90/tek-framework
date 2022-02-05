@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
@@ -26,8 +23,6 @@ import org.springframework.web.context.request.WebRequest;
  *
  * @author MarcoPagan
  */
-@Getter
-@ToString
 @JsonTypeName("apiError")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class ApiError implements Serializable {
@@ -52,6 +47,34 @@ public class ApiError implements Serializable {
     this.path = resolvePath(dto.getRequest());
     this.message = resolveMessage(dto.getMessage());
     this.exceptionMessage = resolveDebugMessage(dto.getEx());
+  }
+
+  public Instant getTimestamp() {
+    return timestamp;
+  }
+
+  public HttpStatus getStatus() {
+    return status;
+  }
+
+  public Integer getCode() {
+    return code;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public String getExceptionMessage() {
+    return exceptionMessage;
+  }
+
+  public List<ApiSubError> getSubErrors() {
+    return subErrors;
   }
 
   private int resolveCode(HttpStatus status) {
@@ -84,14 +107,45 @@ public class ApiError implements Serializable {
     return ExceptionUtils.getMessage(ex);
   }
 
-  @Getter
-  @Setter
+
   public static class ApiErrorDto {
 
     private HttpStatus status;
     private WebRequest request;
     private String message;
     private Throwable ex;
+
+    public HttpStatus getStatus() {
+      return status;
+    }
+
+    public void setStatus(HttpStatus status) {
+      this.status = status;
+    }
+
+    public WebRequest getRequest() {
+      return request;
+    }
+
+    public void setRequest(WebRequest request) {
+      this.request = request;
+    }
+
+    public String getMessage() {
+      return message;
+    }
+
+    public void setMessage(String message) {
+      this.message = message;
+    }
+
+    public Throwable getEx() {
+      return ex;
+    }
+
+    public void setEx(Throwable ex) {
+      this.ex = ex;
+    }
   }
 
   private void addSubError(ApiSubError subError) {

@@ -1,5 +1,6 @@
 package com.tek.core.config.scheduler;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_BIN_SCHEDULER_CONFIGURATION;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
@@ -10,8 +11,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +30,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_CORE_BIN_SCHEDULER_CONFIGURATION)
 @EnableScheduling
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(
@@ -36,11 +38,12 @@ import org.springframework.scheduling.annotation.Scheduled;
     name = "fileConfiguration.bin.schedulerEnabled",
     havingValue = "true"
 )
-@RequiredArgsConstructor
-@Slf4j
 public class TekBinDirSchedulerConfiguration {
 
-  private final TekCoreProperties coreProperties;
+  private final Logger log = LoggerFactory.getLogger(TekBinDirSchedulerConfiguration.class);
+
+  @Autowired
+  private TekCoreProperties coreProperties;
 
   private File directory;
   private Integer cleanAfter;

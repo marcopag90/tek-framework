@@ -3,9 +3,7 @@ package com.tek.core.properties.file;
 import com.tek.core.config.scheduler.TekBinDirSchedulerConfiguration;
 import com.tek.core.constants.TekSchedulerConstants;
 import java.io.File;
-import lombok.Data;
 
-@Data
 public class BinaryFileProperties {
 
   /**
@@ -27,4 +25,44 @@ public class BinaryFileProperties {
    * Upload directory cleans after (days)
    */
   private String cron = TekSchedulerConstants.CRON_DAILY_MIDNIGHT;
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public boolean isSchedulerEnabled() {
+    return schedulerEnabled;
+  }
+
+  public void setSchedulerEnabled(boolean schedulerEnabled) {
+    this.schedulerEnabled = schedulerEnabled;
+  }
+
+  public File getDirectoryPath() {
+    return directoryPath;
+  }
+
+  public void setDirectoryPath(File directoryPath) {
+    this.directoryPath = directoryPath;
+  }
+
+  public Integer getCleanAfter() {
+    return cleanAfter;
+  }
+
+  public void setCleanAfter(Integer cleanAfter) {
+    this.cleanAfter = cleanAfter;
+  }
+
+  public String getCron() {
+    return cron;
+  }
+
+  public void setCron(String cron) {
+    this.cron = cron;
+  }
 }

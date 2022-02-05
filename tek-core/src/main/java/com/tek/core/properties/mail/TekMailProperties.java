@@ -1,7 +1,5 @@
 package com.tek.core.properties.mail;
 
-import lombok.Data;
-
 /**
  * Configuration properties for email handling.
  * <p>
@@ -9,9 +7,24 @@ import lombok.Data;
  *
  * @author MarcoPagan
  */
-@Data
 public class TekMailProperties {
 
   private boolean sendErrors;
   private boolean realDelivery;
+
+  public boolean isSendErrors() {
+    return sendErrors;
+  }
+
+  public void setSendErrors(boolean sendErrors) {
+    this.sendErrors = sendErrors;
+  }
+
+  public boolean isRealDelivery() {
+    return realDelivery;
+  }
+
+  public void setRealDelivery(boolean realDelivery) {
+    this.realDelivery = realDelivery;
+  }
 }

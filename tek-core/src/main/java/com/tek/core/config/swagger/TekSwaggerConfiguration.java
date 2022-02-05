@@ -1,12 +1,16 @@
 package com.tek.core.config.swagger;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_SWAGGER_API;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_SWAGGER_API_INFO;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_SWAGGER_CONFIGURATION;
+
 import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.rest.shared.swagger.SwaggerIgnore;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
@@ -22,41 +26,40 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Swagger Configuration
  *
  * @author MarcoPagan
  */
-@Configuration
+//TODO fix this: https://www.vincenzoracca.com/blog/framework/spring/openapi/
+@Configuration(TEK_CORE_SWAGGER_CONFIGURATION)
 @ConditionalOnClass(TekCoreAutoConfig.class)
-@EnableSwagger2
-@RequiredArgsConstructor
+//@EnableSwagger2
 public class TekSwaggerConfiguration {
 
-  private final ApplicationContext context;
-  private final TekCoreProperties coreProperties;
+  @Autowired private ApplicationContext context;
+  @Autowired private TekCoreProperties coreProperties;
 
   private final Class<?>[] defaultIgnoredParameterTypes = {Pageable.class, Page.class, Sort.class};
 
   @Value("${git.build.version:undefined}")
   private String gitBuildVersion;
 
-  @Bean
+  @Bean(TEK_CORE_SWAGGER_API)
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
         .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
         .paths(PathSelectors.any())
         .build()
-        .apiInfo(getApiInfo())
+        .apiInfo(apiInfo())
         .ignoredParameterTypes(defaultIgnoredParameterTypes)
         .ignoredParameterTypes(getIgnoredParameterTypes());
   }
 
-  @Bean
-  public ApiInfo getApiInfo() {
+  @Bean(TEK_CORE_SWAGGER_API_INFO)
+  public ApiInfo apiInfo() {
     final var swaggerProperties = coreProperties.getSwaggerConfiguration();
     return new ApiInfo(
         context.getApplicationName(),

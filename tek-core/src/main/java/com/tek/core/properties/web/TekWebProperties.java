@@ -1,7 +1,5 @@
 package com.tek.core.properties.web;
 
-import lombok.Data;
-
 /**
  * Configuration properties for web content.
  * <p>
@@ -9,7 +7,6 @@ import lombok.Data;
  *
  * @author MarcoPagan
  */
-@Data
 public class TekWebProperties {
 
   /**
@@ -22,4 +19,19 @@ public class TekWebProperties {
    */
   private String indexPage = "index.html";
 
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public String getIndexPage() {
+    return indexPage;
+  }
+
+  public void setIndexPage(String indexPage) {
+    this.indexPage = indexPage;
+  }
 }

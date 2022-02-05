@@ -3,10 +3,9 @@ package com.tek.rest.shared.exception;
 import com.tek.rest.shared.TekRestSharedAutoConfig;
 import com.tek.rest.shared.dto.ApiError;
 import com.tek.rest.shared.dto.ApiError.ApiErrorDto;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
@@ -38,9 +37,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ConditionalOnClass(TekRestSharedAutoConfig.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-@RequiredArgsConstructor
-@Slf4j
 public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
+
+  private final Logger log = LoggerFactory.getLogger(TekRestExceptionHandler.class);
 
   @Autowired
   private ApplicationContext context;
@@ -319,7 +318,6 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(new ApiError(dto));
   }
 
-  @SneakyThrows
   private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
     return new ResponseEntity<>(apiError, apiError.getStatus());
   }

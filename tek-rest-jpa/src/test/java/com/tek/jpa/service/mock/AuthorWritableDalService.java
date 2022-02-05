@@ -17,7 +17,7 @@ public class AuthorWritableDalService extends WritableDalService<Author, Integer
   protected AuthorWritableDalService(
       EntityManager entityManager,
       Validator validator
-  ) {
+  ) throws NoSuchMethodException {
     super(entityManager, validator);
   }
 

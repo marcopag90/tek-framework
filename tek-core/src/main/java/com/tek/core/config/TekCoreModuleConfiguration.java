@@ -1,7 +1,7 @@
 package com.tek.core.config;
 
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_CONFIGURATION;
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_MODULE_CONFIGURATION;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_PROP_PLACEHOLDER_CONFIGURATION;
 import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 import static java.lang.String.join;
 
@@ -9,7 +9,8 @@ import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.TekModuleConfiguration;
 import com.tek.shared.exception.TekModuleException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -23,12 +24,12 @@ import org.springframework.core.io.ClassPathResource;
  *
  * @author MarcoPagan
  */
-@Configuration(TEK_CORE_CONFIGURATION)
+@Configuration(TEK_CORE_MODULE_CONFIGURATION)
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @EnableConfigurationProperties(TekCoreProperties.class)
-@Slf4j
 public class TekCoreModuleConfiguration extends TekModuleConfiguration {
 
+  private final Logger log = LoggerFactory.getLogger(TekCoreModuleConfiguration.class);
   private final String newLine = System.getProperty("line.separator");
   private final TekCoreProperties coreProperties;
 
@@ -40,7 +41,7 @@ public class TekCoreModuleConfiguration extends TekModuleConfiguration {
     this.coreProperties = coreProperties;
   }
 
-  @Bean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN)
+  @Bean(TEK_CORE_PROP_PLACEHOLDER_CONFIGURATION)
   public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
     final var propsConfig = new PropertySourcesPlaceholderConfigurer();
     propsConfig.setLocations(new ClassPathResource(GIT_PROPERTIES));

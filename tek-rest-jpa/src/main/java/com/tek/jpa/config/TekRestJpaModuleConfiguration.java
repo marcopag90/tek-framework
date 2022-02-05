@@ -1,5 +1,8 @@
 package com.tek.jpa.config;
 
+import static com.tek.jpa.constants.TekRestJpaBeanNames.TEK_REST_JPA_CONFIGURATION;
+import static com.tek.jpa.constants.TekRestJpaBeanNames.TEK_REST_JPA_HIBERNATE_5_MODULE;
+
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.tek.jpa.TekJpaAutoConfig;
@@ -23,7 +26,7 @@ import org.springframework.lang.NonNull;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_REST_JPA_CONFIGURATION)
 @ConditionalOnClass(value = {TekJpaAutoConfig.class})
 public class TekRestJpaModuleConfiguration extends TekModuleConfiguration {
 
@@ -36,7 +39,7 @@ public class TekRestJpaModuleConfiguration extends TekModuleConfiguration {
     //noop
   }
 
-  @Bean
+  @Bean(TEK_REST_JPA_HIBERNATE_5_MODULE)
   @Conditional(HibernateConditional.class)
   public Module hibernate5Module() {
     return new Hibernate5Module();

@@ -17,7 +17,7 @@ public class EmployeeDalService extends WritableDalService<Employee, Long> {
   protected EmployeeDalService(
       EntityManager entityManager,
       Validator validator
-  ) {
+  ) throws NoSuchMethodException {
     super(entityManager, validator);
   }
 

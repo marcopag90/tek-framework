@@ -1,10 +1,12 @@
 package com.tek.jpa.controller;
 
 import com.tek.rest.shared.dto.UpdateRequest;
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface WritableDalApi<E extends Serializable, I extends Serializable>
       produces = MediaType.APPLICATION_JSON_VALUE
   )
   @PreAuthorize("this.createAuthorized()")
-  E create(@RequestBody E entity);
+  E create(@RequestBody E entity) throws MethodArgumentNotValidException;
 
   @PatchMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -41,10 +43,11 @@ public interface WritableDalApi<E extends Serializable, I extends Serializable>
       value = "/{id}"
   )
   @PreAuthorize("this.updateAuthorized()")
-  E update(@PathVariable I id, @RequestBody UpdateRequest request);
+  E update(@PathVariable I id, @RequestBody UpdateRequest request)
+      throws EntityNotFoundException, NoSuchFieldException, MethodArgumentNotValidException;
 
   @DeleteMapping("/{id}")
   @PreAuthorize("this.deleteAuthorized()")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
-  void deleteById(@PathVariable I id);
+  void deleteById(@PathVariable I id) throws EntityNotFoundException;
 }

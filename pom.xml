@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.1</version>
+    <version>2.6.3</version>
   </parent>
 
   <groupId>com.tek</groupId>
@@ -58,7 +58,6 @@
     <module>tek-core</module>
     <module>tek-rest-shared</module>
     <module>tek-rest-jpa</module>
-    <!--    <module>tek-rest-mongo</module>-->
   </modules>
 
   <dependencies>
@@ -90,17 +89,17 @@
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger2</artifactId>
-        <version>${springfox-legacy.version}</version>
+        <version>${springfox-boot-starter.version}</version>
       </dependency>
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger-ui</artifactId>
-        <version>${springfox-legacy.version}</version>
+        <version>${springfox-boot-starter.version}</version>
       </dependency>
       <dependency>
         <groupId>io.springfox</groupId>
         <artifactId>springfox-spring-web</artifactId>
-        <version>${springfox-legacy.version}</version>
+        <version>${springfox-boot-starter.version}</version>
       </dependency>
       <!--REST Sql Query Language https://github.com/turkraft/spring-filter-->
       <dependency>

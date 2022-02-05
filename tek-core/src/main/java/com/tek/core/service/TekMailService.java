@@ -1,9 +1,12 @@
 package com.tek.core.service;
 
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_FILE_TIMESTAMP_BEAN;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_MAIL_SERVICE;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_WEB_MVC_FILE_TIMESTAMP;
 import static java.lang.String.join;
 
 import com.tek.core.aop.CanSendMail;
+import com.tek.core.config.directory.TekTmpDirConfiguration;
+import com.tek.core.dto.FileAttachmentDto;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,11 +20,12 @@ import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,26 +34,32 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.ServletWebRequest;
 
+//TODO noreplay address handling and principal info
+//TODO see if we can provide error timestamp to file
+//TODO testing with charset and/or encoding
+//TODO see if we can remove the TekTmpDirFileService dependency and create an exception msg on the fly
+
 /**
  * Utility service to send mail.
  * <p>
  * The service uses the {@link Async} feature to assure the email is sent in a non thread-blocking
- * response for the client.
+ * response for the caller.
  *
  * @author MarcoPagan
  */
-@Service
+@ConditionalOnBean(TekTmpDirConfiguration.class)
+@Service(TEK_CORE_MAIL_SERVICE)
 @Async
-@RequiredArgsConstructor
 @Slf4j
 public class TekMailService {
 
-  @Qualifier(TEK_CORE_FILE_TIMESTAMP_BEAN)
-  private final SimpleDateFormat df;
+  @Autowired
+  @Qualifier(TEK_CORE_WEB_MVC_FILE_TIMESTAMP)
+  private SimpleDateFormat df;
 
-  private final TekTmpDirFileService tmpFileService;
-  private final ApplicationContext context;
-  private final JavaMailSender mailSender;
+  @Autowired private TekTmpDirFileService tmpFileService;
+  @Autowired private ApplicationContext context;
+  @Autowired private JavaMailSender mailSender;
 
   private final String newLine = System.getProperty("line.separator");
 
@@ -57,13 +67,10 @@ public class TekMailService {
   @Value("${spring.mail.username}")
   private String host;
 
-  //TODO noreplay address handling and principal info
-  //TODO see if we can provide error timestamp to file
-
   /**
    * Sends a {@link Exception} message as an attachment, including {@link ServletWebRequest} as
    * text.
-   * <p>Requires a Servlet Context to be executed. </p>
+   * <p>Requires a Servlet Context to be executed.</p>
    */
   @CanSendMail
   public void sendRequestExceptionMessage(
@@ -92,7 +99,8 @@ public class TekMailService {
         final var pWriter = new PrintWriter(out, true);
     ) {
       exception.printStackTrace(pWriter);
-      sendWithAttachment(to, subject, text, file);
+      final var attachment = new FileAttachmentDto(file, null, "UTF-8");
+      sendWithAttachment(to, subject, text, attachment);
     } catch (Exception ex) {
       logMailError(Arrays.toString(to), ex);
     }
@@ -107,7 +115,8 @@ public class TekMailService {
       @NonNull String[] to,
       @NonNull String subject,
       @NonNull String text,
-      @NonNull File file) {
+      @NonNull FileAttachmentDto dto
+  ) {
     var toArray = Arrays.toString(to);
     logMailSending(toArray);
     try {
@@ -119,7 +128,7 @@ public class TekMailService {
       final var textBodyPart = new MimeBodyPart();
       textBodyPart.setText(text);
       final var fileBodyPart = new MimeBodyPart();
-      fileBodyPart.attachFile(file);
+      fileBodyPart.attachFile(dto.getFile(), dto.getContentType(), dto.getEncoding());
       emailContent.addBodyPart(textBodyPart);
       emailContent.addBodyPart(fileBodyPart);
       mimeMessage.setContent(emailContent);

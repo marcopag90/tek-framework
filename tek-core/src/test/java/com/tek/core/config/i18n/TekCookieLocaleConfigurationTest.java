@@ -1,6 +1,6 @@
 package com.tek.core.config.i18n;
 
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_RESOURCE_BUNDLE_BEAN;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_RESOURCE_BUNDLE;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tek.core.config.i18n.TekCookieLocaleConfigurationTest.CookieLocaleController;
@@ -93,7 +93,7 @@ class TekCookieLocaleConfigurationTest {
   static class CookieLocaleController {
 
     @Autowired
-    @Qualifier(TEK_CORE_RESOURCE_BUNDLE_BEAN)
+    @Qualifier(TEK_CORE_RESOURCE_BUNDLE)
     private MessageSource messageSource;
 
     @PostMapping

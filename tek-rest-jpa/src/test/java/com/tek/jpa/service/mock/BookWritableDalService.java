@@ -14,7 +14,7 @@ public class BookWritableDalService extends WritableDalService<Book, Long> {
   protected BookWritableDalService(
       EntityManager entityManager,
       Validator validator
-  ) {
+  ) throws NoSuchMethodException {
     super(entityManager, validator);
   }
 

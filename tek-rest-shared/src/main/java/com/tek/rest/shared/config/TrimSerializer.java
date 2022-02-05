@@ -3,7 +3,7 @@ package com.tek.rest.shared.config;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import lombok.SneakyThrows;
+import java.io.IOException;
 
 public class TrimSerializer extends StdDeserializer<String> {
 
@@ -12,8 +12,7 @@ public class TrimSerializer extends StdDeserializer<String> {
   }
 
   @Override
-  @SneakyThrows
-  public String deserialize(JsonParser jsonParser, DeserializationContext ctx) {
+  public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
     return jsonParser.getText() != null ? jsonParser.getText().trim() : null;
   }
 

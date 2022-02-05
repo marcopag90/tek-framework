@@ -57,7 +57,7 @@ class TekBinaryDirConfigurationTest {
   @Order(1)
   void test_BinaryDirectoryConfiguration() {
     final var propDir = properties.getFileConfiguration().getBinary().getDirectoryPath();
-    final var createdDir = configuration.binaryDirectory();
+    final var createdDir = configuration.binDirectory();
     checkDirectoryConfiguration(propDir, createdDir);
   }
 

@@ -9,10 +9,10 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.Type.PersistenceType;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.metamodel.model.domain.PersistentAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,13 +22,27 @@ import org.springframework.security.access.AccessDeniedException;
  *
  * @author MarcoPagan
  */
-@Slf4j
+@SuppressWarnings({"squid:S3457", "squid:S2629"})
 public class DalEntity<E extends Serializable> {
 
+  private final Logger log = LoggerFactory.getLogger(DalEntity.class);
+
   private static final String PATH_TOKENIZER = ".";
-  @Getter private Metamodel metamodel;
-  @Getter private EntityType<E> entityType;
-  @Getter private Class<E> javaType;
+  private Metamodel metamodel;
+  private EntityType<E> entityType;
+  private Class<E> javaType;
+
+  public Metamodel getMetamodel() {
+    return metamodel;
+  }
+
+  public EntityType<E> getEntityType() {
+    return entityType;
+  }
+
+  public Class<E> getJavaType() {
+    return javaType;
+  }
 
   @SuppressWarnings("unused")
   private DalEntity() {

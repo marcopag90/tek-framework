@@ -1,7 +1,5 @@
 package com.tek.core.properties.file;
 
-import lombok.Data;
-
 /**
  * Configuration properties for file handling.
  * <p>
@@ -9,11 +7,26 @@ import lombok.Data;
  *
  * @author MarcoPagan
  */
-@Data
 public class TekFileProperties {
 
   private TmpFileProperties tmp = new TmpFileProperties();
   private BinaryFileProperties binary = new BinaryFileProperties();
+
+  public TmpFileProperties getTmp() {
+    return tmp;
+  }
+
+  public void setTmp(TmpFileProperties tmp) {
+    this.tmp = tmp;
+  }
+
+  public BinaryFileProperties getBinary() {
+    return binary;
+  }
+
+  public void setBinary(BinaryFileProperties binary) {
+    this.binary = binary;
+  }
 }
 
 

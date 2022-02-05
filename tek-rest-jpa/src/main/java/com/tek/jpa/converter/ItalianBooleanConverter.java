@@ -1,17 +1,18 @@
 package com.tek.jpa.converter;
 
 import javax.persistence.AttributeConverter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Italian Boolean Type Conversion.
  *
  * @author MarcoPagan
  */
-@Slf4j
 public class ItalianBooleanConverter implements AttributeConverter<Boolean, String> {
 
+  private final Logger log = LoggerFactory.getLogger(ItalianBooleanConverter.class);
   private static final String NEWLINE = System.getProperty("line.separator");
 
   @Override

@@ -2,6 +2,7 @@ package com.tek.jpa.controller;
 
 import static com.tek.rest.shared.constants.TekRestSharedConstants.FILTER_NAME;
 
+import com.tek.rest.shared.exception.EntityNotFoundException;
 import com.tek.rest.shared.swagger.ApiPageable;
 import com.turkraft.springfilter.boot.Filter;
 import java.io.Serializable;
@@ -30,5 +31,5 @@ public interface ReadOnlyDalApi<E extends Serializable, I extends Serializable> 
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("this.readAuthorized()")
-  E findById(@PathVariable("id") I id);
+  E findById(@PathVariable("id") I id) throws EntityNotFoundException;
 }

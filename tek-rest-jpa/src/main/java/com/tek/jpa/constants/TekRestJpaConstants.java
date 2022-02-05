@@ -5,9 +5,9 @@ package com.tek.jpa.constants;
  *
  * @author MarcoPagan
  */
-public class TekJpaConstants {
+public class TekRestJpaConstants {
 
-  private TekJpaConstants() {
+  private TekRestJpaConstants() {
   }
 
   /**

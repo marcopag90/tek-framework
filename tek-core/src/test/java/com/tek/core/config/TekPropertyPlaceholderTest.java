@@ -1,7 +1,7 @@
 package com.tek.core.config;
 
 
-import static com.tek.core.constants.TekCoreBeanConstants.TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_PROP_PLACEHOLDER_CONFIGURATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,6 @@ class TekPropertyPlaceholderTest {
   @Test
   void testPlaceholderConfigurer() {
     this.context.withUserConfiguration(TekCoreModuleConfiguration.class)
-        .run(context -> assertThat(context).hasBean(TEK_CORE_PROP_PLACEHOLDER_CONF_BEAN));
+        .run(context -> assertThat(context).hasBean(TEK_CORE_PROP_PLACEHOLDER_CONFIGURATION));
   }
 }

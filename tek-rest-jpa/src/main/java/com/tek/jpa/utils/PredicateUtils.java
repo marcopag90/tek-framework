@@ -1,7 +1,9 @@
 package com.tek.jpa.utils;
 
+import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -9,7 +11,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
-import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 
@@ -18,7 +21,9 @@ import org.springframework.lang.NonNull;
  *
  * @author MarcoPagan
  */
-public class PredicateUtils {
+public final class PredicateUtils {
+
+  private static final Logger log = LoggerFactory.getLogger(PredicateUtils.class);
 
   private PredicateUtils() {
   }
@@ -28,7 +33,6 @@ public class PredicateUtils {
       Serializable id
   ) implements Specification<E> {
 
-    @SneakyThrows
     @Override
     public Predicate toPredicate(
         @NonNull Root<E> root,
@@ -42,10 +46,14 @@ public class PredicateUtils {
         final var names = classes.stream().map(Attribute::getName).toList();
         final var predicates = new ArrayList<Predicate>();
         for (String name : names) {
-          final var propertyDescriptor = new PropertyDescriptor(name, id.getClass());
-          final var getter = propertyDescriptor.getReadMethod();
-          final var value = getter.invoke(id);
-          predicates.add(cb.equal(root.get(name), value));
+          try {
+            final var propertyDescriptor = new PropertyDescriptor(name, id.getClass());
+            final var getter = propertyDescriptor.getReadMethod();
+            final var value = getter.invoke(id);
+            predicates.add(cb.equal(root.get(name), value));
+          } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
+            log.error(e.getMessage() != null ? e.getMessage() : "", e);
+          }
         }
         return cb.and(predicates.toArray(new Predicate[0]));
       }

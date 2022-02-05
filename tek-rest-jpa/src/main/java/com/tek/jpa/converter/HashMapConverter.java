@@ -3,7 +3,8 @@ package com.tek.jpa.converter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import javax.persistence.AttributeConverter;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hashmap String Type Conversion.
@@ -13,9 +14,9 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author MarcoPagan
  */
-@Slf4j
 public class HashMapConverter implements AttributeConverter<HashMap<String, Object>, String> {
 
+  private final Logger log = LoggerFactory.getLogger(HashMapConverter.class);
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @Override

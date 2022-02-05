@@ -2,7 +2,7 @@ package com.tek.shared.constants;
 
 import java.util.Locale;
 
-public class TekSharedConstants {
+public final class TekSharedConstants {
 
   private TekSharedConstants() {
   }

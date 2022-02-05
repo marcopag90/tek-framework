@@ -1,5 +1,7 @@
 package com.tek.core.config.directory;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_BIN_DIR;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_BIN_DIR_CONFIGURATION;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
@@ -19,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_CORE_BIN_DIR_CONFIGURATION)
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(
     prefix = TEK_CORE_PREFIX,
@@ -42,8 +44,8 @@ public class TekBinaryDirConfiguration {
   /**
    * Directory where to store binary files.
    */
-  @Bean
-  public File binaryDirectory() {
+  @Bean(TEK_CORE_BIN_DIR)
+  public File binDirectory() {
     if (!this.binaryDirectoryPath.isDirectory()) {
       try {
         final var dir = TekFileUtils.createDirectory(binaryDirectoryPath.toPath().toString());

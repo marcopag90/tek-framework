@@ -1,5 +1,7 @@
 package com.tek.core.service;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_BIN_FILE_SERVICE;
+
 import com.tek.core.config.directory.TekBinaryDirConfiguration;
 import com.tek.shared.io.TekFileUtils;
 import java.io.File;
@@ -8,11 +10,13 @@ import java.time.LocalDate;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 //TODO tests
-@Service
+@Service(TEK_CORE_BIN_FILE_SERVICE)
+@ConditionalOnBean(TekBinaryDirConfiguration.class)
 @RequiredArgsConstructor
 @Slf4j
 public class TekBinDirFileService {
@@ -24,7 +28,7 @@ public class TekBinDirFileService {
   @SuppressWarnings("unused")
   @PostConstruct
   private void init() {
-    this.binaryDirectory = binaryDirConfiguration.binaryDirectory();
+    this.binaryDirectory = binaryDirConfiguration.binDirectory();
   }
 
   /**

@@ -1,5 +1,7 @@
 package com.tek.core.config.directory;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_TMP_DIR;
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_TMP_DIR_CONFIGURATION;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
@@ -7,8 +9,9 @@ import com.tek.core.properties.TekCoreProperties;
 import com.tek.shared.io.TekFileUtils;
 import java.io.File;
 import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -19,17 +22,18 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_CORE_TMP_DIR_CONFIGURATION)
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(
     prefix = TEK_CORE_PREFIX,
     name = "fileConfiguration.tmp.enabled", havingValue = "true"
 )
-@RequiredArgsConstructor
-@Slf4j
 public class TekTmpDirConfiguration {
 
-  private final TekCoreProperties coreProperties;
+  private final Logger log = LoggerFactory.getLogger(TekTmpDirConfiguration.class);
+
+  @Autowired
+  private TekCoreProperties coreProperties;
 
   private File tmpDirectory;
 
@@ -41,7 +45,7 @@ public class TekTmpDirConfiguration {
   /**
    * Directory where to store temporary application files.
    */
-  @Bean
+  @Bean(TEK_CORE_TMP_DIR)
   public File tmpDirectory() {
     if (!this.tmpDirectory.isDirectory()) {
       try {

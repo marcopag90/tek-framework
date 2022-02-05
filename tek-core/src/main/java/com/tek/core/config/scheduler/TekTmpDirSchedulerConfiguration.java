@@ -1,5 +1,6 @@
 package com.tek.core.config.scheduler;
 
+import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_TMP_SCHEDULER_CONFIGURATION;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
 import com.tek.core.TekCoreAutoConfig;
@@ -9,7 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +28,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  *
  * @author MarcoPagan
  */
-@Configuration
+@Configuration(TEK_CORE_TMP_SCHEDULER_CONFIGURATION)
 @EnableScheduling
 @ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(
@@ -34,12 +36,13 @@ import org.springframework.scheduling.annotation.Scheduled;
     name = "fileConfiguration.tmp.schedulerEnabled",
     havingValue = "true"
 )
-@Slf4j
 public class TekTmpDirSchedulerConfiguration {
 
+  private final Logger log = LoggerFactory.getLogger(TekTmpDirSchedulerConfiguration.class);
   private final File directory;
   private final Integer cleanAfter;
 
+  @SuppressWarnings("unused")
   public TekTmpDirSchedulerConfiguration(TekCoreProperties properties) {
     this.directory = properties.getFileConfiguration().getTmp().getDirectoryPath();
     this.cleanAfter = properties.getFileConfiguration().getTmp().getCleanAfter();

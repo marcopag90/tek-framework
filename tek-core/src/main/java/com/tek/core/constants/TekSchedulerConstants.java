@@ -23,7 +23,7 @@ second, minute, hour, day of month, month, day(s) of week
  *
  * @author MarcoPagan
  */
-public class TekSchedulerConstants {
+public final class TekSchedulerConstants {
 
   private TekSchedulerConstants() {
   }

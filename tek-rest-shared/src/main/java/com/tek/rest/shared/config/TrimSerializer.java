@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class TrimSerializer extends StdDeserializer<String> {
 
-  protected TrimSerializer(Class<?> vc) {
+  public TrimSerializer(Class<?> vc) {
     super(vc);
   }
 

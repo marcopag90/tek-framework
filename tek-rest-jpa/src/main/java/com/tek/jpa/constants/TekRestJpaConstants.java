@@ -5,7 +5,7 @@ package com.tek.jpa.constants;
  *
  * @author MarcoPagan
  */
-public class TekRestJpaConstants {
+public final class TekRestJpaConstants {
 
   private TekRestJpaConstants() {
   }

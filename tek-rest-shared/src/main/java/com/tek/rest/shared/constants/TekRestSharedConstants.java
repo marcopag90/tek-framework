@@ -1,6 +1,6 @@
 package com.tek.rest.shared.constants;
 
-public class TekRestSharedConstants {
+public final class TekRestSharedConstants {
 
   private TekRestSharedConstants() {
   }

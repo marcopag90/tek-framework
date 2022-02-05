@@ -2,13 +2,9 @@ package com.tek.core.dto;
 
 import java.io.File;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-@Getter
-@Setter
 public class FileAttachmentDto {
 
   private File file;
@@ -29,4 +25,27 @@ public class FileAttachmentDto {
     this.encoding = encoding;
   }
 
+  public File getFile() {
+    return file;
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public String getContentType() {
+    return contentType;
+  }
+
+  public void setContentType(String contentType) {
+    this.contentType = contentType;
+  }
+
+  public String getEncoding() {
+    return encoding;
+  }
+
+  public void setEncoding(String encoding) {
+    this.encoding = encoding;
+  }
 }

@@ -5,7 +5,7 @@ package com.tek.jpa.constants;
  *
  * @author MarcoPagan
  */
-public class TekRestJpaBeanNames {
+public final class TekRestJpaBeanNames {
 
   private TekRestJpaBeanNames() {
   }

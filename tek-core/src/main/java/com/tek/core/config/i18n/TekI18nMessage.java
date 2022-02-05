@@ -5,7 +5,7 @@ package com.tek.core.config.i18n;
  *
  * @author MarcoPagan
  */
-public class TekI18nMessage {
+public final class TekI18nMessage {
 
   private TekI18nMessage() {
   }

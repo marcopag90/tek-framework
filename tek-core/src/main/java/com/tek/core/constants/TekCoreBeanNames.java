@@ -5,7 +5,7 @@ package com.tek.core.constants;
  *
  * @author MarcoPagan
  */
-public class TekCoreBeanNames {
+public final class TekCoreBeanNames {
 
   private TekCoreBeanNames() {
   }

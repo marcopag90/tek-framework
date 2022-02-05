@@ -5,7 +5,7 @@ package com.tek.core.constants;
  *
  * @author MarcoPagan
  */
-public class TekCoreConstants {
+public final class TekCoreConstants {
 
   private TekCoreConstants() {
   }

@@ -5,7 +5,7 @@ package com.tek.rest.shared.constants;
  *
  * @author MarcoPagan
  */
-public class TekRestSharedBeanNames {
+public final class TekRestSharedBeanNames {
 
   private TekRestSharedBeanNames() {
   }

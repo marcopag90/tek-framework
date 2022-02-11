@@ -176,10 +176,10 @@ class TekRestExceptionHandlerTest {
         .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("$.path").value(METHOD_ARGUMENT_NOT_VALID_EXCEPTION))
         .andExpect(jsonPath("$.message").value("Validation error"))
-        .andExpect(jsonPath("$.subErrors[0].object").value("body"))
-        .andExpect(jsonPath("$.subErrors[0].field").value("name"))
-        .andExpect(jsonPath("$.subErrors[0].message").value("must not be blank"))
-        .andExpect(jsonPath("$.subErrors[0].rejectedValue").value(""))
+        .andExpect(jsonPath("$.validationErrors[0].object").value("body"))
+        .andExpect(jsonPath("$.validationErrors[0].field").value("name"))
+        .andExpect(jsonPath("$.validationErrors[0].message").value("must not be blank"))
+        .andExpect(jsonPath("$.validationErrors[0].rejectedValue").value(""))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -191,10 +191,10 @@ class TekRestExceptionHandlerTest {
         .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("$.path").value(CONSTRAINT_VIOLATION_EXCEPTION))
         .andExpect(jsonPath("$.message").value("Validation error"))
-        .andExpect(jsonPath("$.subErrors[0].object").value("Body"))
-        .andExpect(jsonPath("$.subErrors[0].field").value("name"))
-        .andExpect(jsonPath("$.subErrors[0].message").value("must not be blank"))
-        .andExpect(jsonPath("$.subErrors[0].rejectedValue").doesNotExist());
+        .andExpect(jsonPath("$.validationErrors[0].object").value("Body"))
+        .andExpect(jsonPath("$.validationErrors[0].field").value("name"))
+        .andExpect(jsonPath("$.validationErrors[0].message").value("must not be blank"))
+        .andExpect(jsonPath("$.validationErrors[0].rejectedValue").doesNotExist());
   }
 
   @Test

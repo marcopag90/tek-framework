@@ -57,6 +57,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull Exception ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     dto.setRequest(request);
@@ -73,6 +74,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull IllegalArgumentException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
@@ -94,6 +96,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull AccessDeniedException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.FORBIDDEN);
     dto.setRequest(request);
@@ -116,6 +119,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull javax.validation.ConstraintViolationException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setRequest(request);
     dto.setStatus(HttpStatus.BAD_REQUEST);
@@ -136,6 +140,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull EntityNotFoundException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.NOT_FOUND);
     dto.setRequest(request);
@@ -154,6 +159,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull javax.persistence.EntityNotFoundException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.NOT_FOUND);
     dto.setRequest(request);
@@ -171,6 +177,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull MethodArgumentTypeMismatchException ex,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
@@ -201,6 +208,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage(), ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
@@ -222,6 +230,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     StringBuilder builder = new StringBuilder();
     builder.append(ex.getContentType());
     builder.append(" media type is not supported. Supported media types are ");
@@ -247,6 +256,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage(), ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);
@@ -270,6 +280,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var srvReq = (ServletWebRequest) request;
     log.debug("{} to {}", srvReq.getHttpMethod(), srvReq.getRequest().getServletPath());
     final var dto = new ApiErrorDto();
@@ -292,6 +303,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     dto.setRequest(request);
@@ -312,6 +324,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
       @NonNull HttpStatus status,
       @NonNull WebRequest request
   ) {
+    log.error(ex.getMessage() != null ? ex.getMessage() : "", ex);
     final var dto = new ApiErrorDto();
     dto.setStatus(HttpStatus.BAD_REQUEST);
     dto.setRequest(request);

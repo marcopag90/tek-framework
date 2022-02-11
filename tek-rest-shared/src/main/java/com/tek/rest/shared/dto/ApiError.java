@@ -37,8 +37,8 @@ public class ApiError implements Serializable {
   private String message;
   @JsonProperty("exceptionMessage")
   private String exceptionMessage;
-  @JsonProperty("subErrors")
-  private List<ApiSubError> subErrors;
+  @JsonProperty("validationErrors")
+  private List<ApiValidationError> validationErrors;
 
   private ApiError() {
     this.timestamp = Instant.now();
@@ -78,8 +78,8 @@ public class ApiError implements Serializable {
     return exceptionMessage;
   }
 
-  public List<ApiSubError> getSubErrors() {
-    return subErrors;
+  public List<ApiValidationError> getValidationErrors() {
+    return validationErrors;
   }
 
   private int resolveCode(HttpStatus status) {
@@ -153,11 +153,11 @@ public class ApiError implements Serializable {
     }
   }
 
-  private void addSubError(ApiSubError subError) {
-    if (subErrors == null) {
-      subErrors = new ArrayList<>();
+  private void addSubError(ApiValidationError subError) {
+    if (validationErrors == null) {
+      validationErrors = new ArrayList<>();
     }
-    subErrors.add(subError);
+    validationErrors.add(subError);
   }
 
   private void addValidationError(

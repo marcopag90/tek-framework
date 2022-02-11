@@ -1,9 +1,10 @@
 package com.tek.rest.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
 @SuppressWarnings("squid:S1948")
-public class ApiValidationError implements ApiSubError {
+public class ApiValidationError implements Serializable {
 
   @JsonProperty("object")
   private String object;

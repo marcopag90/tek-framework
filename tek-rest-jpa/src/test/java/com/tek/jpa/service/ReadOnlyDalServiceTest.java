@@ -104,8 +104,8 @@ class ReadOnlyDalServiceTest {
     var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));
     Predicate<Author> nullIdPredicate = a -> a.getId() == null;
     Assertions.assertAll(
-        () -> assertFalse(authors.isEmpty()),
-        () -> assertTrue(authors.stream().allMatch(nullIdPredicate))
+        () -> assertFalse(authors.getPage().isEmpty()),
+        () -> assertTrue(authors.getPage().stream().allMatch(nullIdPredicate))
     );
   }
 
@@ -118,8 +118,8 @@ class ReadOnlyDalServiceTest {
     var authors = authorReadOnlyDalService.findAll(null, PageRequest.of(0, 20));
     Predicate<Author> notNullIdPredicate = a -> a.getId() != null;
     Assertions.assertAll(
-        () -> assertFalse(authors.isEmpty()),
-        () -> assertTrue(authors.stream().allMatch(notNullIdPredicate))
+        () -> assertFalse(authors.getPage().isEmpty()),
+        () -> assertTrue(authors.getPage().stream().allMatch(notNullIdPredicate))
     );
   }
 }

@@ -49,6 +49,8 @@
     <commons-beanutils.version>1.9.4</commons-beanutils.version>
     <javafaker.version>1.0.2</javafaker.version>
     <guava.version>31.0.1-jre</guava.version>
+    <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
+    <springdoc-openapi-data-rest.version>1.6.4</springdoc-openapi-data-rest.version>
     <!-- Plugin versioning -->
     <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
   </properties>
@@ -71,36 +73,6 @@
   <!-- Optional dependencies inherited by child modules: must be declared inside child.pom.xml-->
   <dependencyManagement>
     <dependencies>
-      <!--
-      Swagger Spring Boot dependencies
-      /*
-      FIXME
-        https://github.com/springfox/springfox/issues/3435
-        currently not used because of springfox form parameters regression
-        from springfox 2.9.2 to springfox 3.0.0
-      */
-      -->
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-boot-starter</artifactId>
-        <version>${springfox-boot-starter.version}</version>
-      </dependency>
-      <!-- Swagger Legacy dependencies-->
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger2</artifactId>
-        <version>${springfox-boot-starter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
-        <version>${springfox-boot-starter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-spring-web</artifactId>
-        <version>${springfox-boot-starter.version}</version>
-      </dependency>
       <!--REST Sql Query Language https://github.com/turkraft/spring-filter-->
       <dependency>
         <groupId>com.turkraft</groupId>

@@ -92,11 +92,11 @@ class TekRestExceptionHandlerTest {
     var debugMessage = ExceptionUtils.getMessage(new Exception("error"));
     mockMvc.perform(MockMvcRequestBuilders.get(GENERIC_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
-        .andExpect(jsonPath("$.apiError.path").value(GENERIC_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("error"))
-        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
+        .andExpect(jsonPath("$.path").value(GENERIC_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("error"))
+        .andExpect(jsonPath("$.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -106,11 +106,11 @@ class TekRestExceptionHandlerTest {
     var debugMessage = ExceptionUtils.getMessage(new IllegalArgumentException(msg));
     mockMvc.perform(MockMvcRequestBuilders.get(ILLEGAL_ARGUMENT_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(ILLEGAL_ARGUMENT_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(msg))
-        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(ILLEGAL_ARGUMENT_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(msg))
+        .andExpect(jsonPath("$.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -119,11 +119,11 @@ class TekRestExceptionHandlerTest {
     var debugMessage = ExceptionUtils.getMessage(new AccessDeniedException("Access denied!"));
     mockMvc.perform(MockMvcRequestBuilders.get(ACCESS_DENIED_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isForbidden())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.FORBIDDEN.name()))
-        .andExpect(jsonPath("$.apiError.path").value(ACCESS_DENIED_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("Access denied!"))
-        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.FORBIDDEN.name()))
+        .andExpect(jsonPath("$.path").value(ACCESS_DENIED_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("Access denied!"))
+        .andExpect(jsonPath("$.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -134,11 +134,11 @@ class TekRestExceptionHandlerTest {
     var debugMessage = ExceptionUtils.getMessage(ex);
     mockMvc.perform(MockMvcRequestBuilders.get(MISSING_SERVLET_REQUEST_PARAM_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(MISSING_SERVLET_REQUEST_PARAM_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(exMessage))
-        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(MISSING_SERVLET_REQUEST_PARAM_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(exMessage))
+        .andExpect(jsonPath("$.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -156,11 +156,11 @@ class TekRestExceptionHandlerTest {
     var debugMessage = ExceptionUtils.getMessage(ex);
     mockMvc.perform(MockMvcRequestBuilders.get(MEDIATYPE_NOT_SUPPORTED_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name()))
-        .andExpect(jsonPath("$.apiError.path").value(MEDIATYPE_NOT_SUPPORTED_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(exMessage))
-        .andExpect(jsonPath("$.apiError.exceptionMessage").value(debugMessage))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.UNSUPPORTED_MEDIA_TYPE.name()))
+        .andExpect(jsonPath("$.path").value(MEDIATYPE_NOT_SUPPORTED_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(exMessage))
+        .andExpect(jsonPath("$.exceptionMessage").value(debugMessage))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -172,14 +172,14 @@ class TekRestExceptionHandlerTest {
             .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(METHOD_ARGUMENT_NOT_VALID_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("Validation error"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].object").value("body"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].field").value("name"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].message").value("must not be blank"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].rejectedValue").value(""))
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(METHOD_ARGUMENT_NOT_VALID_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("Validation error"))
+        .andExpect(jsonPath("$.subErrors[0].object").value("body"))
+        .andExpect(jsonPath("$.subErrors[0].field").value("name"))
+        .andExpect(jsonPath("$.subErrors[0].message").value("must not be blank"))
+        .andExpect(jsonPath("$.subErrors[0].rejectedValue").value(""))
         .andDo(MockMvcResultHandlers.print());
   }
 
@@ -187,14 +187,14 @@ class TekRestExceptionHandlerTest {
   void test_handle_constraint_violation() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get(CONSTRAINT_VIOLATION_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(CONSTRAINT_VIOLATION_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("Validation error"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].object").value("Body"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].field").value("name"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].message").value("must not be blank"))
-        .andExpect(jsonPath("$.apiError.subErrors[0].rejectedValue").doesNotExist());
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(CONSTRAINT_VIOLATION_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("Validation error"))
+        .andExpect(jsonPath("$.subErrors[0].object").value("Body"))
+        .andExpect(jsonPath("$.subErrors[0].field").value("name"))
+        .andExpect(jsonPath("$.subErrors[0].message").value("must not be blank"))
+        .andExpect(jsonPath("$.subErrors[0].rejectedValue").doesNotExist());
   }
 
   @Test
@@ -202,30 +202,30 @@ class TekRestExceptionHandlerTest {
     EntityNotFoundException entityNotFoundException = new EntityNotFoundException(Body.class, 1);
     mockMvc.perform(MockMvcRequestBuilders.get(ENTITY_NOT_FOUND_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isNotFound())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.NOT_FOUND.name()))
-        .andExpect(jsonPath("$.apiError.path").value(ENTITY_NOT_FOUND_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(entityNotFoundException.getMessage()));
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.name()))
+        .andExpect(jsonPath("$.path").value(ENTITY_NOT_FOUND_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(entityNotFoundException.getMessage()));
   }
 
   @Test
   void test_handle_http_message_not_readable() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get(HTTP_MESSAGE_NOT_READABLE_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(HTTP_MESSAGE_NOT_READABLE_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("Malformed JSON request"));
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(HTTP_MESSAGE_NOT_READABLE_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("Malformed JSON request"));
   }
 
   @Test
   void test_handle_http_message_not_writable() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get(HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
-        .andExpect(jsonPath("$.apiError.path").value(HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value("Error writing JSON output"));
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.INTERNAL_SERVER_ERROR.name()))
+        .andExpect(jsonPath("$.path").value(HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION))
+        .andExpect(jsonPath("$.message").value("Error writing JSON output"));
   }
 
   @Test
@@ -242,10 +242,10 @@ class TekRestExceptionHandlerTest {
     );
     mockMvc.perform(MockMvcRequestBuilders.get(NO_HANDLER_FOUND_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(NO_HANDLER_FOUND_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(exceptionMessage));
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(NO_HANDLER_FOUND_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(exceptionMessage));
   }
 
   @Test
@@ -260,10 +260,10 @@ class TekRestExceptionHandlerTest {
     );
     mockMvc.perform(MockMvcRequestBuilders.get(METHOD_ARG_TYPE_MISMATCH_EXCEPTION))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(jsonPath("$.apiError.timestamp").isNotEmpty())
-        .andExpect(jsonPath("$.apiError.status").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("$.apiError.path").value(METHOD_ARG_TYPE_MISMATCH_EXCEPTION))
-        .andExpect(jsonPath("$.apiError.message").value(exceptionMessage));
+        .andExpect(jsonPath("$.timestamp").isNotEmpty())
+        .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("$.path").value(METHOD_ARG_TYPE_MISMATCH_EXCEPTION))
+        .andExpect(jsonPath("$.message").value(exceptionMessage));
   }
 
   @RestController

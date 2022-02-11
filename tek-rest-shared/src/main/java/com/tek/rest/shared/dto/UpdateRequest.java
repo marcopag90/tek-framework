@@ -1,14 +1,15 @@
 package com.tek.rest.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Map;
 import org.springframework.lang.Nullable;
 
 public class UpdateRequest implements Serializable {
 
+  @JsonProperty("properties")
   private Map<String, Serializable> properties = Map.of();
-
-  @Nullable
+  @JsonProperty("version")
   private Serializable version;
 
   public Map<String, Serializable> getProperties() {
@@ -19,6 +20,7 @@ public class UpdateRequest implements Serializable {
     this.properties = properties;
   }
 
+  @Nullable
   public Serializable getVersion() {
     return version;
   }

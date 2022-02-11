@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
 import com.tek.jpa.utils.DalEntity;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
+import com.tek.rest.shared.dto.ApiPage;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
@@ -147,9 +147,9 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   }
 
   @Override
-  public Page<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
+  public ApiPage<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
     final var where = specification != null ? specification.and(where()) : where();
-    return repository().findAll(where, pageable).map(entityView);
+    return new ApiPage<>(repository().findAll(where, pageable).map(entityView));
   }
 
   @Override

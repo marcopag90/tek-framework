@@ -2,13 +2,13 @@ package com.tek.jpa.controller;
 
 import com.tek.jpa.service.IReadOnlyDalService;
 import com.tek.jpa.service.ReadOnlyDalService;
+import com.tek.rest.shared.dto.ApiPage;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ClassUtils;
@@ -58,7 +58,7 @@ public abstract class ReadOnlyDalController<E extends Serializable, I extends Se
   protected abstract IReadOnlyDalService<E, I> service();
 
   @Override
-  public Page<E> findAll(Specification<E> spec, Pageable pageable) {
+  public ApiPage<E> findAll(Specification<E> spec, Pageable pageable) {
     return service().findAll(spec, pageable);
   }
 

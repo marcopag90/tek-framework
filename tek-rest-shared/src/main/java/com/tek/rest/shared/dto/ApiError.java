@@ -1,7 +1,6 @@
 package com.tek.rest.shared.dto;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -23,23 +23,28 @@ import org.springframework.web.context.request.WebRequest;
  *
  * @author MarcoPagan
  */
-@JsonTypeName("apiError")
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class ApiError implements Serializable {
 
+  @JsonProperty("timestamp")
   private final Instant timestamp;
+  @JsonProperty("status")
   private HttpStatus status;
+  @JsonProperty("code")
   private Integer code;
+  @JsonProperty("path")
   private String path;
+  @JsonProperty("message")
   private String message;
+  @JsonProperty("exceptionMessage")
   private String exceptionMessage;
+  @JsonProperty("subErrors")
   private List<ApiSubError> subErrors;
 
   private ApiError() {
     this.timestamp = Instant.now();
   }
 
-  public ApiError(ApiErrorDto dto) {
+  public ApiError(@NonNull ApiErrorDto dto) {
     this();
     Objects.requireNonNull(dto.getStatus(), "status cannot be null!");
     this.status = dto.getStatus();

@@ -151,19 +151,20 @@ class ReadyOnlyDalControllerTest {
   @WithMockUser(value = "ADMIN")
   void test_pagination() throws Exception {
     var count = (double) beerRepository.count();
-    var page = 2;
+    var currentPage = 2;
     var size = 20;
     var sort = "id,desc";
     var totalPages = Math.ceil(count / size);
-    var pagination = String.format("page=%s&size=%s&sort=%s", page, size, sort);
+    var pagination = String.format("page=%s&size=%s&sort=%s", currentPage, size, sort);
     var url = String.format("%s?%s", BeerReadOnlyDalController.PATH, pagination);
     var result = mockMvc.perform(MockMvcRequestBuilders.get(url))
         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.totalElements").value(count))
+        .andExpect(jsonPath("$.currentPage").value(currentPage))
+        .andExpect(jsonPath("$.pageSize").value(size))
         .andExpect(jsonPath("$.totalPages").value(totalPages))
-        .andExpect(jsonPath("$.size").value(size))
-        .andExpect(jsonPath("$.number").value(page))
+        .andExpect(jsonPath("$.totalElements").value(count))
+        .andExpect(jsonPath("$.isLastPage").value(false))
         .andDo(print())
         .andReturn();
     var content = mapper.readTree(result.getResponse().getContentAsByteArray()).get("content");

@@ -26,18 +26,6 @@ public final class TekCoreConstants {
   public static final String TEK_CORE_PREFIX = "tek.core";
 
   /**
-   * Locale change API path
-   */
-  @SuppressWarnings("squid:S1075")
-  public static final String TEK_LOCALE_PATH = "/tek/locale";
-
-  /**
-   * Date format API path
-   */
-  @SuppressWarnings("squid:S1075")
-  public static final String TEK_DATE_PATH = "/tek/dateformat";
-
-  /**
    * Name of the git.properties file
    */
   public static final String GIT_PROPERTIES = "git.properties";

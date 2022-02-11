@@ -22,6 +22,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -50,8 +51,9 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    * @return the {@link ApiError} object
    */
   @ExceptionHandler(value = Exception.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @Order
-  public ResponseEntity<Object> handleGenericException(
+  public ResponseEntity<ApiError> handleGenericException(
       @NonNull Exception ex,
       @NonNull WebRequest request
   ) {
@@ -62,11 +64,12 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     if (StringUtils.isNotEmpty(ex.getMessage())) {
       dto.setMessage(ex.getMessage());
     }
-    return buildResponseEntity(new ApiError(dto));
+    final var apiError = new ApiError(dto);
+    return new ResponseEntity<>(apiError, apiError.getStatus());
   }
 
   @ExceptionHandler(value = IllegalArgumentException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException(
+  public ResponseEntity<ApiError> handleIllegalArgumentException(
       @NonNull IllegalArgumentException ex,
       @NonNull WebRequest request
   ) {
@@ -77,7 +80,8 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     if (StringUtils.isNotEmpty(ex.getMessage())) {
       dto.setMessage(ex.getMessage());
     }
-    return buildResponseEntity(new ApiError(dto));
+    final var apiError = new ApiError(dto);
+    return new ResponseEntity<>(apiError, apiError.getStatus());
   }
 
   /**
@@ -86,7 +90,7 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
    * @return the {@link ApiError} object
    */
   @ExceptionHandler(value = AccessDeniedException.class)
-  public ResponseEntity<Object> handleAccessDeniedException(
+  public ResponseEntity<ApiError> handleAccessDeniedException(
       @NonNull AccessDeniedException ex,
       @NonNull WebRequest request
   ) {
@@ -97,7 +101,91 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
     if (StringUtils.isNotEmpty(ex.getMessage())) {
       dto.setMessage(ex.getMessage());
     }
+    final var apiError = new ApiError(dto);
+    return new ResponseEntity<>(apiError, apiError.getStatus());
+  }
+
+  /**
+   * Handles javax.validation.{@link javax.validation.ConstraintViolationException}.
+   * <p>Triggered when @{@link org.springframework.validation.annotation.Validated} fails.
+   *
+   * @return the {@link ApiError} object
+   */
+  @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+  protected ResponseEntity<ApiError> handleConstraintViolation(
+      @NonNull javax.validation.ConstraintViolationException ex,
+      @NonNull WebRequest request
+  ) {
+    final var dto = new ApiErrorDto();
+    dto.setRequest(request);
+    dto.setStatus(HttpStatus.BAD_REQUEST);
+    dto.setMessage("Validation error");
+    dto.setEx(ex);
+    final var apiError = new ApiError(dto);
+    apiError.addValidationErrors(ex.getConstraintViolations());
+    return new ResponseEntity<>(apiError, apiError.getStatus());
+  }
+
+  /**
+   * Handles {@link EntityNotFoundException}.
+   *
+   * @return the {@link ApiError} object
+   */
+  @ExceptionHandler(EntityNotFoundException.class)
+  protected ResponseEntity<Object> handleEntityNotFound(
+      @NonNull EntityNotFoundException ex,
+      @NonNull WebRequest request
+  ) {
+    final var dto = new ApiErrorDto();
+    dto.setStatus(HttpStatus.NOT_FOUND);
+    dto.setRequest(request);
+    dto.setMessage(ex.getMessage());
+    dto.setEx(ex);
     return buildResponseEntity(new ApiError(dto));
+  }
+
+  /**
+   * Handle {@link javax.persistence.EntityNotFoundException}.
+   *
+   * @return the {@link ApiError} object
+   */
+  @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
+  protected ResponseEntity<Object> handleEntityNotFound(
+      @NonNull javax.persistence.EntityNotFoundException ex,
+      @NonNull WebRequest request
+  ) {
+    final var dto = new ApiErrorDto();
+    dto.setStatus(HttpStatus.NOT_FOUND);
+    dto.setRequest(request);
+    dto.setEx(ex);
+    return buildResponseEntity(new ApiError(dto));
+  }
+
+  /**
+   * Handle {@link MethodArgumentTypeMismatchException}
+   *
+   * @return the {@link ApiError} object
+   */
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  protected ResponseEntity<ApiError> handleMethodArgumentTypeMismatch(
+      @NonNull MethodArgumentTypeMismatchException ex,
+      @NonNull WebRequest request
+  ) {
+    final var dto = new ApiErrorDto();
+    dto.setStatus(HttpStatus.BAD_REQUEST);
+    dto.setRequest(request);
+    dto.setEx(ex);
+    Class<?> requiredType = ex.getRequiredType();
+    dto.setMessage(
+        String.format(
+            "The parameter '%s' of value '%s' could not be converted to type '%s'",
+            ex.getName(),
+            ex.getValue(),
+            (requiredType != null) ? requiredType.getSimpleName() : null
+        )
+    );
+    final var apiError = new ApiError(dto);
+    return new ResponseEntity<>(apiError, apiError.getStatus());
   }
 
   /**
@@ -170,45 +258,6 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handles javax.validation.{@link javax.validation.ConstraintViolationException}.
-   * <p>Triggered when @{@link org.springframework.validation.annotation.Validated} fails.
-   *
-   * @return the {@link ApiError} object
-   */
-  @ExceptionHandler(javax.validation.ConstraintViolationException.class)
-  protected ResponseEntity<Object> handleConstraintViolation(
-      @NonNull javax.validation.ConstraintViolationException ex,
-      @NonNull WebRequest request
-  ) {
-    final var dto = new ApiErrorDto();
-    dto.setRequest(request);
-    dto.setStatus(HttpStatus.BAD_REQUEST);
-    dto.setMessage("Validation error");
-    dto.setEx(ex);
-    final var apiError = new ApiError(dto);
-    apiError.addValidationErrors(ex.getConstraintViolations());
-    return buildResponseEntity(apiError);
-  }
-
-  /**
-   * Handles {@link EntityNotFoundException}.
-   *
-   * @return the {@link ApiError} object
-   */
-  @ExceptionHandler(EntityNotFoundException.class)
-  protected ResponseEntity<Object> handleEntityNotFound(
-      @NonNull EntityNotFoundException ex,
-      @NonNull WebRequest request
-  ) {
-    final var dto = new ApiErrorDto();
-    dto.setStatus(HttpStatus.NOT_FOUND);
-    dto.setRequest(request);
-    dto.setMessage(ex.getMessage());
-    dto.setEx(ex);
-    return buildResponseEntity(new ApiError(dto));
-  }
-
-  /**
    * Handle {@link HttpMessageNotReadableException}.
    * <p>Triggered when request JSON is malformed.
    *
@@ -272,49 +321,6 @@ public class TekRestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getRequestURL())
     );
     dto.setEx(ex);
-    return buildResponseEntity(new ApiError(dto));
-  }
-
-  /**
-   * Handle {@link javax.persistence.EntityNotFoundException}.
-   *
-   * @return the {@link ApiError} object
-   */
-  @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
-  protected ResponseEntity<Object> handleEntityNotFound(
-      @NonNull javax.persistence.EntityNotFoundException ex,
-      @NonNull WebRequest request
-  ) {
-    final var dto = new ApiErrorDto();
-    dto.setStatus(HttpStatus.NOT_FOUND);
-    dto.setRequest(request);
-    dto.setEx(ex);
-    return buildResponseEntity(new ApiError(dto));
-  }
-
-  /**
-   * Handle {@link MethodArgumentTypeMismatchException}
-   *
-   * @return the {@link ApiError} object
-   */
-  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-  protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-      @NonNull MethodArgumentTypeMismatchException ex,
-      @NonNull WebRequest request
-  ) {
-    final var dto = new ApiErrorDto();
-    dto.setStatus(HttpStatus.BAD_REQUEST);
-    dto.setRequest(request);
-    dto.setEx(ex);
-    Class<?> requiredType = ex.getRequiredType();
-    dto.setMessage(
-        String.format(
-            "The parameter '%s' of value '%s' could not be converted to type '%s'",
-            ex.getName(),
-            ex.getValue(),
-            (requiredType != null) ? requiredType.getSimpleName() : null
-        )
-    );
     return buildResponseEntity(new ApiError(dto));
   }
 

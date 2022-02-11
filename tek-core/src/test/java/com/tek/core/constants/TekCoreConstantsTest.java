@@ -4,8 +4,6 @@ import static com.tek.core.constants.TekCoreConstants.GIT_PROPERTIES;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PACKAGES_TO_SCAN;
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
-import static com.tek.core.constants.TekCoreConstants.TEK_DATE_PATH;
-import static com.tek.core.constants.TekCoreConstants.TEK_LOCALE_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Assertions;
@@ -19,8 +17,6 @@ class TekCoreConstantsTest {
         () -> assertEquals("com.tek.core", TEK_CORE_PACKAGES_TO_SCAN),
         () -> assertEquals("classpath:/i18n/core_messages", TEK_CORE_MESSAGE_BUNDLE),
         () -> assertEquals("tek.core", TEK_CORE_PREFIX),
-        () -> assertEquals("/tek/locale", TEK_LOCALE_PATH),
-        () -> assertEquals("/tek/dateformat", TEK_DATE_PATH),
         () -> assertEquals("git.properties", GIT_PROPERTIES)
     );
   }

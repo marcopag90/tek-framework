@@ -1,10 +1,17 @@
 package com.tek.rest.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@SuppressWarnings("squid:S1948")
 public class ApiValidationError implements ApiSubError {
 
+  @JsonProperty("object")
   private String object;
+  @JsonProperty("field")
   private String field;
+  @JsonProperty("rejectedValue")
   private Object rejectedValue;
+  @JsonProperty("message")
   private String message;
 
   public ApiValidationError(String object, String message) {

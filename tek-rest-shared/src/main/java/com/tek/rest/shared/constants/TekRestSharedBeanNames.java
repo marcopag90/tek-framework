@@ -12,4 +12,5 @@ public final class TekRestSharedBeanNames {
 
   public static final String TEK_REST_SHARED_CONFIGURATION = "com.tek.rest.shared.config.TekRestSharedConfiguration";
   public static final String TEK_REST_SHARED_GUAVA_MODULE = "com.tek.rest.shared.config.TekRestSharedConfiguration.guavaModule";
+  public static final String TEK_REST_SHARED_OPEN_API = "com.tek.rest.shared.config.TekRestSharedConfiguration.tekApi";
 }

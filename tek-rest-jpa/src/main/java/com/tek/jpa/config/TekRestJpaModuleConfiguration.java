@@ -5,10 +5,6 @@ import static com.tek.jpa.constants.TekRestJpaBeanNames.TEK_REST_JPA_HIBERNATE_5
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import com.tek.jpa.TekJpaAutoConfig;
-import com.tek.shared.TekModuleConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
@@ -27,17 +23,7 @@ import org.springframework.lang.NonNull;
  * @author MarcoPagan
  */
 @Configuration(TEK_REST_JPA_CONFIGURATION)
-@ConditionalOnClass(value = {TekJpaAutoConfig.class})
-public class TekRestJpaModuleConfiguration extends TekModuleConfiguration {
-
-  public TekRestJpaModuleConfiguration(ApplicationContext context) {
-    super(context);
-  }
-
-  @Override
-  public void checkModuleConfiguration() {
-    //noop
-  }
+public class TekRestJpaModuleConfiguration {
 
   @Bean(TEK_REST_JPA_HIBERNATE_5_MODULE)
   @Conditional(HibernateConditional.class)

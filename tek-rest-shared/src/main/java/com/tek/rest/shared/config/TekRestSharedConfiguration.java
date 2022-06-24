@@ -5,17 +5,17 @@ import static com.tek.rest.shared.constants.TekRestSharedBeanNames.TEK_REST_SHAR
 import static com.tek.rest.shared.constants.TekRestSharedBeanNames.TEK_REST_SHARED_OPEN_API;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.tek.rest.shared.TekRestSharedAutoConfig;
 import com.tek.rest.shared.constants.TekRestSharedConstants;
-import com.tek.shared.TekModuleConfiguration;
+import java.io.IOException;
 import java.util.List;
 import org.springdoc.core.GroupedOpenApi;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -38,17 +38,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author MarcoPagan
  */
 @Configuration(TEK_REST_SHARED_CONFIGURATION)
-@ConditionalOnClass(TekRestSharedAutoConfig.class)
-public class TekRestSharedConfiguration extends TekModuleConfiguration implements WebMvcConfigurer {
-
-  public TekRestSharedConfiguration(ApplicationContext context) {
-    super(context);
-  }
-
-  @Override
-  public void checkModuleConfiguration() {
-    //noop
-  }
+public class TekRestSharedConfiguration implements WebMvcConfigurer {
 
   @Override
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -61,6 +51,21 @@ public class TekRestSharedConfiguration extends TekModuleConfiguration implement
         serializerModule.addDeserializer(String.class, new TrimSerializer(String.class));
         mapper.registerModules(serializerModule);
       }
+    }
+  }
+
+  static class TrimSerializer extends StdDeserializer<String> {
+
+    public TrimSerializer(Class<?> vc) {
+      super(vc);
+    }
+
+    @Override
+    public String deserialize(
+        JsonParser jsonParser,
+        DeserializationContext ctx
+    ) throws IOException {
+      return jsonParser.getText() != null ? jsonParser.getText().trim() : null;
     }
   }
 

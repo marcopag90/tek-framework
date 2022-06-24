@@ -13,12 +13,9 @@ import org.springframework.lang.NonNull;
  *
  * @author MarcoPagan
  */
-public final class TekFileUtils {
+record TekFileUtils() {
 
   private static final Logger log = LoggerFactory.getLogger(TekFileUtils.class);
-
-  private TekFileUtils() {
-  }
 
   /**
    * Attempts to create a file. If the file has to be created inside a directory, the fully

@@ -2,13 +2,13 @@ package com.tek.core.properties;
 
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 
-import com.tek.core.properties.file.TekFileProperties;
 import com.tek.core.properties.i18n.TekLocaleProperties;
 import com.tek.core.properties.mail.TekMailProperties;
 import com.tek.core.properties.swagger.TekSwaggerProperties;
 import com.tek.core.properties.web.TekWebProperties;
 import javax.validation.Valid;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 
@@ -17,13 +17,14 @@ import org.springframework.validation.annotation.Validated;
  *
  * @author MarcoPagan
  */
+@Configuration
 @ConfigurationProperties(prefix = TEK_CORE_PREFIX)
 @Validated
 public class TekCoreProperties {
 
   private TekWebProperties webConfiguration = new TekWebProperties();
-  @Valid private TekLocaleProperties localeConfiguration = new TekLocaleProperties();
-  private TekFileProperties fileConfiguration = new TekFileProperties();
+  @Valid
+  private TekLocaleProperties localeConfiguration = new TekLocaleProperties();
   private TekMailProperties mailConfiguration = new TekMailProperties();
   private TekSwaggerProperties swaggerConfiguration = new TekSwaggerProperties();
 
@@ -41,14 +42,6 @@ public class TekCoreProperties {
 
   public void setLocaleConfiguration(TekLocaleProperties localeConfiguration) {
     this.localeConfiguration = localeConfiguration;
-  }
-
-  public TekFileProperties getFileConfiguration() {
-    return fileConfiguration;
-  }
-
-  public void setFileConfiguration(TekFileProperties fileConfiguration) {
-    this.fileConfiguration = fileConfiguration;
   }
 
   public TekMailProperties getMailConfiguration() {

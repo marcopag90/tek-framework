@@ -33,7 +33,7 @@ import org.springframework.lang.NonNull;
 public abstract class WritableDalRepository<E extends Serializable, I extends Serializable>
     extends ReadOnlyDalRepository<E, I> {
 
-  protected WritableDalRepository(DalRepository<E, I> repository) {
+  protected WritableDalRepository(JpaDalRepository<E, I> repository) {
     super(repository);
   }
 

@@ -93,31 +93,31 @@ class TekCoreBeanNamesTest {
             TEK_CORE_TMP_FILE_SERVICE
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekAcceptHeaderLocaleConfiguration",
+            "com.tek.core.i18n.TekAcceptHeaderLocaleConfiguration",
             TEK_CORE_ACCEPT_HEADER_CONFIGURATION
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekCookieLocaleConfiguration",
+            "com.tek.core.i18n.TekCookieLocaleConfiguration",
             TEK_CORE_COOKIE_LOCALE_CONFIGURATION
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekCookieLocaleConfiguration.localeResolver",
+            "com.tek.core.i18n.TekCookieLocaleConfiguration.localeResolver",
             TEK_CORE_COOKIE_LOCALE_RESOLVER
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekSessionLocaleConfiguration",
+            "com.tek.core.i18n.TekSessionLocaleConfiguration",
             TEK_CORE_SESSION_LOCALE_CONFIGURATION
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekSessionLocaleConfiguration.localeResolver",
+            "com.tek.core.i18n.TekSessionLocaleConfiguration.localeResolver",
             TEK_CORE_SESSION_LOCALE_RESOLVER
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekResourceBundleConfiguration",
+            "com.tek.core.i18n.TekResourceBundleConfiguration",
             TEK_CORE_RESOURCE_BUNDLE_CONFIGURATION
         ),
         () -> assertEquals(
-            "com.tek.core.config.i18n.TekResourceBundleConfiguration.tekMessageSource",
+            "com.tek.core.i18n.TekResourceBundleConfiguration.tekMessageSource",
             TEK_CORE_RESOURCE_BUNDLE
         ),
         () -> assertEquals(

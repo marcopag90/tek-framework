@@ -1,11 +1,11 @@
 package com.tek.core.aop;
 
 import com.tek.core.properties.TekCoreProperties;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-@Slf4j
 public record MailDeliveryAspect(TekCoreProperties properties) {
 
+  private static final Logger log = LoggerFactory.getLogger(MailDeliveryAspect.class);
+
   @Around("@annotation(CanSendMail)")
-  @SneakyThrows
-  public Object executeAround(ProceedingJoinPoint joinPoint) {
+  public Object executeAround(ProceedingJoinPoint joinPoint) throws Throwable {
     final var mailProperties = properties.getMailConfiguration();
     if (!mailProperties.isRealDelivery()) {
       log.warn("Skipping mail delivery since property tek.core.mail.realDelivery is false!");

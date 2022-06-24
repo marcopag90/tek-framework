@@ -1,5 +1,7 @@
 package com.tek.core.properties.i18n;
 
+import com.tek.core.constants.TekLocaleConstants;
+
 /**
  * Configuration properties to manage locale resolution.
  * <p>

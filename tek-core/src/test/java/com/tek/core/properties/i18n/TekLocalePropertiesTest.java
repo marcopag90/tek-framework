@@ -1,11 +1,10 @@
 package com.tek.core.properties.i18n;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.tek.core.constants.TekLocaleConstants;
 import com.tek.core.properties.TekCoreProperties;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -32,9 +31,7 @@ class TekLocalePropertiesTest {
   @BeforeAll
   @Test
   void test_setup() {
-    Assertions.assertAll(
-        () -> assertNotNull(coreCustomProperties)
-    );
+    assertNotNull(coreCustomProperties);
   }
 
   @Test
@@ -42,11 +39,9 @@ class TekLocalePropertiesTest {
   void defaultValues() {
     final var properties = new TekCoreProperties().getLocaleConfiguration();
     assertNotNull(properties);
-    assertAll(
-        () -> assertEquals(TekLocaleConstants.SESSION, properties.getType()),
-        () -> assertEquals("locale", properties.getCookieName()),
-        () -> assertEquals(-1, properties.getCookieMaxAge())
-    );
+    assertEquals(TekLocaleConstants.SESSION, properties.getType());
+    assertEquals("locale", properties.getCookieName());
+    assertEquals(-1, properties.getCookieMaxAge());
   }
 
   @Test
@@ -54,11 +49,9 @@ class TekLocalePropertiesTest {
   void customValues() {
     final var properties = coreCustomProperties.getLocaleConfiguration();
     assertNotNull(properties);
-    assertAll(
-        () -> assertEquals(TekLocaleConstants.COOKIE, properties.getType()),
-        () -> assertEquals("custom-cookie", properties.getCookieName()),
-        () -> assertEquals(1000, properties.getCookieMaxAge())
-    );
+    assertEquals(TekLocaleConstants.COOKIE, properties.getType());
+    assertEquals("custom-cookie", properties.getCookieName());
+    assertEquals(1000, properties.getCookieMaxAge());
   }
 
 }

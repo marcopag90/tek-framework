@@ -98,7 +98,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     final var entityView = this.entityView.apply(entity);
     final var validation = new BeanPropertyBindingResult(
         null,
-        dalEntity.getEntityType().getName()
+        jpaDalEntity.getEntityType().getName()
     );
     validatorAdapter.validate(entityView, validation);
     if (validation.hasErrors()) {
@@ -118,9 +118,9 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       MethodArgumentNotValidException,
       EntityNotFoundException,
       NoSuchFieldException {
-    final var entityType = dalEntity.getEntityType();
+    final var entityType = jpaDalEntity.getEntityType();
     for (String property : properties.keySet()) {
-      dalEntity.validatePath(property, applyView());
+      jpaDalEntity.validatePath(property, applyView());
     }
     SingularAttribute<? super E, ?> versionAttribute = null;
     if (entityType.hasVersionAttribute()) {

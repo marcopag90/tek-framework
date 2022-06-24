@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tek.jpa.repository.ReadOnlyDalRepository;
-import com.tek.jpa.utils.DalEntity;
+import com.tek.jpa.utils.JpaDalEntity;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
 import com.tek.rest.shared.dto.ApiPage;
 import com.tek.rest.shared.exception.EntityNotFoundException;
@@ -96,7 +96,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   public final JsonMapper jsonMapper;
   public final EntityManager entityManager;
-  public final DalEntity<E> dalEntity;
+  public final JpaDalEntity<E> jpaDalEntity;
   public final UnaryOperator<E> entityView;
 
   protected abstract ReadOnlyDalRepository<E, I> repository();
@@ -104,8 +104,8 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   protected ReadOnlyDalService(@NonNull EntityManager entityManager) {
     log.debug("Initializing {}", ClassUtils.getUserClass(this).getSimpleName());
     this.entityManager = entityManager;
-    this.dalEntity = new DalEntity<>(entityManager, getEntityType());
-    this.entityClass = dalEntity.getJavaType();
+    this.jpaDalEntity = new JpaDalEntity<>(entityManager, getEntityType());
+    this.entityClass = jpaDalEntity.getJavaType();
     this.jsonMapper = initializeJsonMapper(withJsonBuilder());
     this.entityView = entity -> {
       try {
@@ -154,7 +154,7 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   @Override
   public E findById(@NonNull I id) throws EntityNotFoundException {
-    final var whereId = new ByIdSpecification<>(dalEntity.getEntityType(), id);
+    final var whereId = new ByIdSpecification<>(jpaDalEntity.getEntityType(), id);
     if (where() != null) {
       whereId.and(where());
     }

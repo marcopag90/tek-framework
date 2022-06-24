@@ -5,7 +5,6 @@ import static com.tek.core.constants.TekCoreConstants.TEK_CORE_PREFIX;
 import com.tek.core.properties.TekCoreProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 record TekWebIndexController(TekCoreProperties coreProperties) {
 
   @GetMapping
-  public String index(Model model) {
+  public String index() {
     return String.format("forward:/%s", coreProperties.getWebConfiguration().getIndexPage());
   }
 }

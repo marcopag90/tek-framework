@@ -41,9 +41,9 @@ import org.springframework.util.ClassUtils;
 public abstract class ReadOnlyDalRepository<E extends Serializable, I extends Serializable> {
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
-  protected final DalRepository<E, I> repository;
+  protected final JpaDalRepository<E, I> repository;
 
-  protected ReadOnlyDalRepository(DalRepository<E, I> repository) {
+  protected ReadOnlyDalRepository(JpaDalRepository<E, I> repository) {
     this.repository = repository;
   }
 

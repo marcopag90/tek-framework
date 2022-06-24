@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = TekRestSharedConstants.TEK_DATE_PATH)
-class TekDateController {
+record TekDateController() {
 
   @GetMapping("/instant")
   @ResponseStatus(HttpStatus.OK)

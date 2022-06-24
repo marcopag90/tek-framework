@@ -1,5 +1,6 @@
 package com.tek.core.properties.i18n;
 
+import com.tek.core.constants.TekLocaleConstants;
 import io.micrometer.core.instrument.util.StringUtils;
 import java.lang.reflect.Field;
 import java.util.Arrays;

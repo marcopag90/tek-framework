@@ -1,6 +1,5 @@
 package com.tek.core.properties.mail;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,10 +42,7 @@ class TekMailPropertiesTest {
   void defaultValues() {
     final var properties = new TekCoreProperties().getMailConfiguration();
     assertNotNull(properties);
-    assertAll(
-        () -> assertFalse(properties.isSendErrors()),
-        () -> assertFalse(properties.isRealDelivery())
-    );
+    assertFalse(properties.isRealDelivery());
   }
 
   @Test
@@ -54,10 +50,6 @@ class TekMailPropertiesTest {
   void customValues() {
     final var properties = coreCustomProperties.getMailConfiguration();
     assertNotNull(properties);
-    assertAll(
-        () -> assertTrue(properties.isSendErrors()),
-        () -> assertTrue(properties.isRealDelivery())
-    );
+    assertTrue(properties.isRealDelivery());
   }
-
 }

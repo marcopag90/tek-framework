@@ -50,10 +50,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ReadyOnlyDalControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-  @Autowired private ObjectMapper mapper;
-  @Autowired private AuthorRepository authorRepository;
-  @Autowired private BeerRepository beerRepository;
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private ObjectMapper mapper;
+  @Autowired
+  private AuthorRepository authorRepository;
+  @Autowired
+  private BeerRepository beerRepository;
 
   @BeforeAll
   @Test

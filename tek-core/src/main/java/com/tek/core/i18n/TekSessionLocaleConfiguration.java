@@ -5,12 +5,10 @@ import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_SESSION_LOCALE_CO
 import static com.tek.core.constants.TekLocaleConstants.SESSION;
 import static com.tek.shared.constants.TekSharedConstants.DEFAULT_LOCALE;
 
-import com.tek.core.TekCoreAutoConfig;
 import com.tek.core.properties.TekCoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration(TEK_CORE_SESSION_LOCALE_CONFIGURATION)
-@ConditionalOnClass(TekCoreAutoConfig.class)
 @ConditionalOnProperty(value = "tek.core.localeConfiguration.type", havingValue = SESSION)
 public class TekSessionLocaleConfiguration implements WebMvcConfigurer {
 

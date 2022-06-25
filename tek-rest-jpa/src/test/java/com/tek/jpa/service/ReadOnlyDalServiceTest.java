@@ -36,9 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ReadOnlyDalServiceTest {
 
-  @Autowired private AuthorReadOnlyDalService authorReadOnlyDalService;
-  @Autowired private StoreReadOnlyDalService storeReadOnlyDalService;
-  @Autowired private ProjectReadOnlyDalService proejctReadOnlyDalService;
+  @Autowired
+  private AuthorReadOnlyDalService authorReadOnlyDalService;
+  @Autowired
+  private StoreReadOnlyDalService storeReadOnlyDalService;
+  @Autowired
+  private ProjectReadOnlyDalService proejctReadOnlyDalService;
 
   @BeforeAll
   @Test

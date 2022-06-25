@@ -41,11 +41,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class WritableDalControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-  @Autowired private ObjectMapper mapper;
-  @Autowired private AuthorRepository authorRepository;
-  @Autowired private BookRepository bookRepository;
-  @Autowired private BeerRepository beerRepository;
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private ObjectMapper mapper;
+  @Autowired
+  private AuthorRepository authorRepository;
+  @Autowired
+  private BookRepository bookRepository;
+  @Autowired
+  private BeerRepository beerRepository;
 
   @Autowired
   private ApplicationContext context;
@@ -69,7 +74,6 @@ class WritableDalControllerTest {
   void test_create_forbidden() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get(AuthorWritableDalController.PATH))
         .andExpect(MockMvcResultMatchers.status().isForbidden())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andDo(print());
   }
 

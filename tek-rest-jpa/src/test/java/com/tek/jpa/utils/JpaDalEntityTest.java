@@ -31,8 +31,10 @@ import org.springframework.test.context.TestPropertySource;
 @TestInstance(Lifecycle.PER_CLASS)
 class JpaDalEntityTest {
 
-  @Autowired private AuthorWritableDalService authorDalService;
-  @Autowired private BookWritableDalService bookDalService;
+  @Autowired
+  private AuthorWritableDalService authorDalService;
+  @Autowired
+  private BookWritableDalService bookDalService;
 
   private JpaDalEntity<Author> authorDalEntity;
   private JpaDalEntity<Book> bookDalEntity;

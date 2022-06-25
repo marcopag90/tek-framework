@@ -87,7 +87,8 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
 
-  @Autowired protected ApplicationContext context;
+  @Autowired
+  protected ApplicationContext context;
   private final Class<E> entityClass;
 
   public Class<E> getEntityClass() {

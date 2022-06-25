@@ -46,8 +46,10 @@ import org.springframework.web.context.request.WebRequest;
 @AutoConfigureMockMvc(addFilters = false)
 class TekAcceptHeaderLocaleConfigurationTest {
 
-  @Autowired private TekAcceptHeaderLocaleConfiguration configuration;
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private TekAcceptHeaderLocaleConfiguration configuration;
+  @Autowired
+  private MockMvc mockMvc;
 
   private static final String LOCALE_PATH = "/locale";
 

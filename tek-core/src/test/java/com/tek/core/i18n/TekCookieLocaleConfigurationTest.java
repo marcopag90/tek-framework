@@ -45,9 +45,12 @@ import org.springframework.web.context.request.WebRequest;
 @AutoConfigureMockMvc(addFilters = false)
 class TekCookieLocaleConfigurationTest {
 
-  @Autowired private TekCookieLocaleConfiguration configuration;
-  @Autowired private MockMvc mockMvc;
-  @Autowired private TekCoreProperties properties;
+  @Autowired
+  private TekCookieLocaleConfiguration configuration;
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private TekCoreProperties properties;
 
   private static final String LOCALE_PATH = "/locale";
 

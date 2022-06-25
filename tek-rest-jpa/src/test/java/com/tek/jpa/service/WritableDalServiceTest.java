@@ -37,8 +37,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 @Transactional
 class WritableDalServiceTest {
 
-  @Autowired private AuthorWritableDalService authorDalService;
-  @Autowired private EmployeeDalService employeeDalService;
+  @Autowired
+  private AuthorWritableDalService authorDalService;
+  @Autowired
+  private EmployeeDalService employeeDalService;
 
   @BeforeAll
   @Test

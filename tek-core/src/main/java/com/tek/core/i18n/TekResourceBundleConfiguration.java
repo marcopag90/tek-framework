@@ -5,16 +5,13 @@ import static com.tek.core.constants.TekCoreBeanNames.TEK_CORE_RESOURCE_BUNDLE_C
 import static com.tek.core.constants.TekCoreConstants.TEK_CORE_MESSAGE_BUNDLE;
 import static com.tek.shared.constants.TekSharedConstants.DEFAULT_LOCALE;
 
-import com.tek.core.TekCoreAutoConfig;
 import java.nio.charset.StandardCharsets;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 @Configuration(TEK_CORE_RESOURCE_BUNDLE_CONFIGURATION)
-@ConditionalOnClass(TekCoreAutoConfig.class)
 public class TekResourceBundleConfiguration {
 
   /**

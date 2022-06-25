@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import org.apache.commons.lang3.StringUtils;
@@ -46,9 +45,6 @@ public class ApiError implements Serializable {
 
   public ApiError(@NonNull ApiErrorDto dto) {
     this();
-    Objects.requireNonNull(dto.getStatus(), "status cannot be null!");
-    this.status = dto.getStatus();
-    this.code = resolveCode(dto.getStatus());
     this.path = resolvePath(dto.getRequest());
     this.message = resolveMessage(dto.getMessage());
     this.exceptionMessage = resolveDebugMessage(dto.getEx());
@@ -115,18 +111,9 @@ public class ApiError implements Serializable {
 
   public static class ApiErrorDto {
 
-    private HttpStatus status;
     private WebRequest request;
     private String message;
     private Throwable ex;
-
-    public HttpStatus getStatus() {
-      return status;
-    }
-
-    public void setStatus(HttpStatus status) {
-      this.status = status;
-    }
 
     public WebRequest getRequest() {
       return request;

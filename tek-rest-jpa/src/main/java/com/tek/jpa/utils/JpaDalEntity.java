@@ -3,6 +3,7 @@ package com.tek.jpa.utils;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.StringTokenizer;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
@@ -52,8 +53,8 @@ public class JpaDalEntity<E extends Serializable> {
       @NonNull EntityManager entityManager,
       @NonNull EntityType<E> entityType
   ) {
-    this.metamodel = entityManager.getMetamodel();
-    this.entityType = entityType;
+    this.metamodel = Objects.requireNonNull(entityManager).getMetamodel();
+    this.entityType = Objects.requireNonNull(entityType);
     this.javaType = entityType.getJavaType();
   }
 
@@ -87,7 +88,7 @@ public class JpaDalEntity<E extends Serializable> {
   }
 
   @SuppressWarnings({"unchecked", "squid:S3740"})
-  private void validatePath(
+  void validatePath(
       @NonNull StringTokenizer pathTokenizer,
       @NonNull ManagedType<?> managedType,
       @Nullable Class<?> viewClass
@@ -111,7 +112,7 @@ public class JpaDalEntity<E extends Serializable> {
     }
   }
 
-  private void validateView(
+  void validateView(
       @NonNull ManagedType<?> managedType,
       @Nullable Class<?> view,
       @NonNull String attributePath

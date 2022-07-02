@@ -1,4 +1,4 @@
-package com.tek.jpa.utils;
+package com.tek.jpa.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -10,6 +10,7 @@ import com.tek.jpa.domain.Book;
 import com.tek.jpa.domain.Book.AuthorView;
 import com.tek.jpa.service.mock.AuthorWritableDalService;
 import com.tek.jpa.service.mock.BookWritableDalService;
+import com.tek.jpa.utils.JpaDalEntity;
 import java.io.Serializable;
 import java.util.Map;
 import lombok.SneakyThrows;

@@ -1,26 +1,21 @@
 package com.tek.jpa.service.mock;
 
 import com.tek.jpa.domain.Book;
-import com.tek.jpa.repository.WritableDalRepository;
-import com.tek.jpa.repository.mock.BookRepository;
 import com.tek.jpa.service.WritableDalService;
 import javax.persistence.EntityManager;
 import javax.validation.Validator;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookWritableDalService extends WritableDalService<Book, Long> {
 
   protected BookWritableDalService(
+      ApplicationContext context,
       EntityManager entityManager,
       Validator validator
-  ) throws NoSuchMethodException {
-    super(entityManager, validator);
+  ) {
+    super(context, entityManager, validator);
   }
 
-  @Override
-  public WritableDalRepository<Book, Long> repository() {
-    return new WritableDalRepository<>(context.getBean(BookRepository.class)) {
-    };
-  }
 }

@@ -13,4 +13,6 @@ public interface IReadOnlyDalService<E extends Serializable, I extends Serializa
   ApiPage<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable);
 
   E findById(@NonNull I id) throws EntityNotFoundException;
+
+  Class<E> getEntityClass();
 }

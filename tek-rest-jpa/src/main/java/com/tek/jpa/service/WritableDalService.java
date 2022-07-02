@@ -1,17 +1,20 @@
 package com.tek.jpa.service;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.tek.jpa.repository.WritableDalRepository;
+import com.tek.rest.shared.exception.DalConfigurationException;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.validation.Validator;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,9 +30,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  * manipulating input/output data, according to the business logic provided by the developer.
  * <p> A minimal setup requires the following actions:
  * <ul>
- *   <li>
- *     implement the <i>repository()</i> method to qualify the {@link WritableDalRepository} to use;
- *   </li>
  *   <li>
  *     <b>optionally</b> implement the <i>withJsonBuilder()</i> method to customize the behaviour
  *     of the {@link JsonMapper} used by the dal to serialize the entity;
@@ -79,23 +79,28 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
 
   protected final Method createMethod;
   protected final Method patchMethod;
-  public final SpringValidatorAdapter validatorAdapter;
-
-  protected abstract WritableDalRepository<E, I> repository();
+  protected final SpringValidatorAdapter validatorAdapter;
 
   protected WritableDalService(
+      @NonNull ApplicationContext context,
       @NonNull EntityManager entityManager,
       @NonNull Validator validator
-  ) throws NoSuchMethodException {
-    super(entityManager);
-    createMethod = getClass().getMethod("create", Serializable.class);
-    patchMethod = getClass().getMethod("update", Serializable.class, Map.class, Serializable.class);
-    validatorAdapter = new SpringValidatorAdapter(validator);
+  ) {
+    super(context, entityManager);
+    try {
+      createMethod = getClass()
+          .getMethod("create", Serializable.class);
+      patchMethod = getClass()
+          .getMethod("update", Serializable.class, Map.class, Serializable.class);
+    } catch (NoSuchMethodException ex) {
+      throw new DalConfigurationException("Error while applying configuration", ex);
+    }
+    validatorAdapter = new SpringValidatorAdapter(Objects.requireNonNull(validator));
   }
 
   @Override
   public E create(@NonNull E entity) throws MethodArgumentNotValidException {
-    final var entityView = this.entityView.apply(entity);
+    final var entityView = this.entityView.apply(Objects.requireNonNull(entity));
     final var validation = new BeanPropertyBindingResult(
         null,
         jpaDalEntity.getEntityType().getName()
@@ -104,7 +109,7 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (validation.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(createMethod, 0), validation);
     }
-    final var savedEntity = repository().create(entityView);
+    final var savedEntity = repository.save(entityView);
     return this.entityView.apply(savedEntity);
   }
 
@@ -118,6 +123,8 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       MethodArgumentNotValidException,
       EntityNotFoundException,
       NoSuchFieldException {
+    Objects.requireNonNull(id);
+    Objects.requireNonNull(properties);
     final var entityType = jpaDalEntity.getEntityType();
     for (String property : properties.keySet()) {
       jpaDalEntity.validatePath(property, applyView());
@@ -139,7 +146,14 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
       }
       versionAttribute = getVersionAttribute(entityType);
     }
-    final var entity = findById(id);
+    Specification<E> whereId = queryById(id);
+    if (where() != null) {
+      whereId = whereId.and(where());
+    }
+    final var entity = entityView.apply(
+        repository.findOne(whereId)
+            .orElseThrow(() -> new EntityNotFoundException(entityClass, id))
+    );
     final var wrapper = PropertyAccessorFactory.forBeanPropertyAccess(entity);
     final var result = new BeanPropertyBindingResult(entity, entity.getClass().getName());
     if (versionAttribute != null) {
@@ -166,14 +180,22 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
     if (result.hasErrors()) {
       throw new MethodArgumentNotValidException(new MethodParameter(patchMethod, 1), result);
     }
-    repository().update(entity);
+    repository.save(entity);
     return entityView.apply(findById(id));
   }
 
   @Override
   public void deleteById(@NonNull I id) throws EntityNotFoundException {
-    if (findById(id) != null) {
-      repository().deleteById(id);
+    Specification<E> whereId = queryById(Objects.requireNonNull(id));
+    if (where() != null) {
+      whereId = whereId.and(where());
+    }
+    final var entity = entityView.apply(
+        repository.findOne(whereId)
+            .orElseThrow(() -> new EntityNotFoundException(entityClass, id))
+    );
+    if (entity != null) {
+      repository.deleteById(id);
     }
   }
 
@@ -183,4 +205,5 @@ public abstract class WritableDalService<E extends Serializable, I extends Seria
         .filter(SingularAttribute::isVersion).findFirst()
         .orElse(null);
   }
+
 }

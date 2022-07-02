@@ -7,23 +7,25 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.tek.jpa.repository.ReadOnlyDalRepository;
+import com.tek.jpa.repository.JpaDalRepository;
 import com.tek.jpa.utils.JpaDalEntity;
 import com.tek.jpa.utils.PredicateUtils.ByIdSpecification;
 import com.tek.rest.shared.dto.ApiPage;
+import com.tek.rest.shared.exception.DalConfigurationException;
 import com.tek.rest.shared.exception.EntityNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
@@ -35,9 +37,6 @@ import org.springframework.util.ClassUtils;
  * input/output data, according to the business logic provided by the developer.
  * <p> A minimal setup requires the following actions:
  * <ul>
- *   <li>
- *     implement the <i>repository()</i> method to qualify the {@link ReadOnlyDalRepository} to use;
- *   </li>
  *   <li>
  *     <b>optionally</b> implement the <i>withJsonBuilder()</i> method to customize the behaviour
  *     of the {@link JsonMapper} used by the dal to serialize the entity;
@@ -56,11 +55,6 @@ import org.springframework.util.ClassUtils;
  * <pre class="code">
  * {@literal @Service}
  * public class AuthorDalService extends ReadOnlyDalService{@literal <}Author, Integer{@literal >} {
- *
- *   {@literal @Override}
- *   public ReadOnlyDalRepository repository() {
- *     return context.getBean(AuthorRepository.class);
- *   }
  *
  *   {@literal @Override}
  *   public Specification{@literal <}Author{@literal >} where() {
@@ -86,28 +80,31 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
     implements IReadOnlyDalService<E, I> {
 
   protected Logger log = LoggerFactory.getLogger(ClassUtils.getUserClass(this).getSimpleName());
+  protected final Class<E> entityClass;
 
-  @Autowired
-  protected ApplicationContext context;
-  private final Class<E> entityClass;
+  protected final JsonMapper jsonMapper;
+  protected final JpaDalRepository<E, I> repository;
+  protected final EntityManager entityManager;
+  protected final JpaDalEntity<E> jpaDalEntity;
+  protected final UnaryOperator<E> entityView;
 
+  @Override
   public Class<E> getEntityClass() {
     return entityClass;
   }
 
-  public final JsonMapper jsonMapper;
-  public final EntityManager entityManager;
-  public final JpaDalEntity<E> jpaDalEntity;
-  public final UnaryOperator<E> entityView;
-
-  protected abstract ReadOnlyDalRepository<E, I> repository();
-
-  protected ReadOnlyDalService(@NonNull EntityManager entityManager) {
+  protected ReadOnlyDalService(
+      @NonNull ApplicationContext context,
+      @NonNull EntityManager entityManager
+  ) {
+    Objects.requireNonNull(context);
+    Objects.requireNonNull(entityManager);
     log.debug("Initializing {}", ClassUtils.getUserClass(this).getSimpleName());
     this.entityManager = entityManager;
     this.jpaDalEntity = new JpaDalEntity<>(entityManager, getEntityType());
     this.entityClass = jpaDalEntity.getJavaType();
     this.jsonMapper = initializeJsonMapper(withJsonBuilder());
+    this.repository = resolve(context);
     this.entityView = entity -> {
       try {
         return jsonMapper.readerFor(entityClass).readValue(
@@ -149,23 +146,24 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
 
   @Override
   public ApiPage<E> findAll(@Nullable Specification<E> specification, @NonNull Pageable pageable) {
+    Objects.requireNonNull(pageable);
     final var where = specification != null ? specification.and(where()) : where();
-    return new ApiPage<>(repository().findAll(where, pageable).map(entityView));
+    return new ApiPage<>(repository.findAll(where, pageable).map(entityView));
   }
 
   @Override
   public E findById(@NonNull I id) throws EntityNotFoundException {
-    final var whereId = new ByIdSpecification<>(jpaDalEntity.getEntityType(), id);
+    Specification<E> whereId = queryById(Objects.requireNonNull(id));
     if (where() != null) {
-      whereId.and(where());
+      whereId = whereId.and(where());
     }
     return entityView.apply(
-        repository().findOne(whereId)
+        repository.findOne(whereId)
             .orElseThrow(() -> new EntityNotFoundException(entityClass, id))
     );
   }
 
-  private JsonMapper initializeJsonMapper(@Nullable JsonMapper.Builder jsonMapper) {
+  protected JsonMapper initializeJsonMapper(@Nullable JsonMapper.Builder jsonMapper) {
     final var builder = jsonMapper != null ? jsonMapper : JsonMapper.builder();
     return builder
         .addModule(new JavaTimeModule())
@@ -178,8 +176,32 @@ public abstract class ReadOnlyDalService<E extends Serializable, I extends Seria
   }
 
   @SuppressWarnings("unchecked")
-  private EntityType<E> getEntityType() {
+  protected EntityType<E> getEntityType() {
     var resolvableType = ResolvableType.forClass(getClass()).as(ReadOnlyDalService.class);
     return entityManager.getMetamodel().entity((Class<E>) resolvableType.getGeneric(0).resolve());
+  }
+
+  protected Specification<E> queryById(@NonNull I id) {
+    return new ByIdSpecification<>(jpaDalEntity.getEntityType(), Objects.requireNonNull(id));
+  }
+
+  @SuppressWarnings("unchecked")
+  protected JpaDalRepository<E, I> resolve(ApplicationContext context) {
+    final var repositories = new Repositories(Objects.requireNonNull(context));
+    final var javaType = jpaDalEntity.getJavaType();
+    final var optional = repositories.getRepositoryFor(javaType);
+    final var simpleName = javaType.getSimpleName();
+    if (optional.isEmpty()) {
+      throw new DalConfigurationException("Could not find a repository for class " + simpleName);
+    }
+    final var springRepository = optional.get();
+    if (springRepository instanceof JpaDalRepository<?, ?> dalRepository) {
+      return (JpaDalRepository<E, I>) dalRepository;
+    } else {
+      throw new DalConfigurationException(
+          springRepository.getClass().getSimpleName() + " doesn't extend "
+              + JpaDalRepository.class.getSimpleName()
+      );
+    }
   }
 }

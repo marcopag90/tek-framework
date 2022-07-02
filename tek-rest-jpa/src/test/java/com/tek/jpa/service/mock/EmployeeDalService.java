@@ -3,11 +3,10 @@ package com.tek.jpa.service.mock;
 import com.tek.jpa.domain.Employee;
 import com.tek.jpa.domain.Employee.EmployeeViews.CompanyView;
 import com.tek.jpa.domain.Employee.EmployeeViews.DeveloperView;
-import com.tek.jpa.repository.WritableDalRepository;
-import com.tek.jpa.repository.mock.EmployeeRepository;
 import com.tek.jpa.service.WritableDalService;
 import javax.persistence.EntityManager;
 import javax.validation.Validator;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +14,13 @@ import org.springframework.stereotype.Service;
 public class EmployeeDalService extends WritableDalService<Employee, Long> {
 
   protected EmployeeDalService(
+      ApplicationContext context,
       EntityManager entityManager,
       Validator validator
-  ) throws NoSuchMethodException {
-    super(entityManager, validator);
+  ) {
+    super(context, entityManager, validator);
   }
 
-  @Override
-  public WritableDalRepository<Employee, Long> repository() {
-    return new WritableDalRepository<>(context.getBean(EmployeeRepository.class)) {
-    };
-  }
 
   @Override
   protected Class<?> applyView() {
